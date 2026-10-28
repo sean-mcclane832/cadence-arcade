@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cadence Arcade</title>
+<meta name="description" content="Game demos and experiments with the Cadence brain (cadence-net). Independent, not affiliated with Pragma Research.">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root { --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--fg);
+         font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace;
+         display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
+  main { width: 100%; max-width: 560px; }
+  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 28px; letter-spacing: .06em; margin: 0 0 6px; }
+  .sub { color: var(--dim); margin: 0 0 36px; font-size: 13px; }
+  .item { border-top: 1px solid var(--line); padding: 18px 0; }
+  .item:last-of-type { border-bottom: 1px solid var(--line); }
+  .name { font-family: "Silkscreen", monospace; font-size: 17px; letter-spacing: .05em; }
+  .name a { color: var(--fg); text-decoration: none; }
+  .name a:hover { color: var(--accent); }
+  .what { color: var(--dim); font-size: 13px; margin: 4px 0 10px; }
+  .links a { color: var(--accent); text-decoration: none; margin-right: 14px; font-size: 13px; }
+  .links a:hover { text-decoration: underline; }
+  footer { color: var(--dim); font-size: 12px; margin-top: 28px; }
+  footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+<main>
+  <h1>CADENCE ARCADE</h1>
+  <p class="sub">Game demos for the Cadence brain (cadence-net 0.89.0).</p>
+
+  <div class="item">
+    <div class="name"><a href="breakout/">ONE-FRAME BREAKOUT</a></div>
+    <div class="what">MinAtar Breakout, one frame at a time. Tests the 0.89.0 recall position term.</div>
+    <div class="links"><a href="breakout/">play</a><a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/classic">code</a></div>
+  </div>
+
+  <div class="item">
+    <div class="name"><a href="ember-field/">EMBER FIELD</a></div>
+    <div class="what">Original game. Learn which embers feed and which sting, then the colours swap.</div>
+    <div class="links"><a href="ember-field/">play</a><a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/game">code</a></div>
+  </div>
+
+  <footer>Independent experiments by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>.</footer>
+</main>
+</body>
+</html>
