@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breakout, Long Run</title>
+<meta name="description" content="One-Frame Breakout trained 10x longer: does a Cadence brain keep improving, and does the 0.89.0 recall position term start to matter?">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root { --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 40px 16px; }
+  main { max-width: 720px; margin: 0 auto; }
+  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 26px; letter-spacing: .06em; margin: 0 0 6px; }
+  h2 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 16px; letter-spacing: .05em; margin: 34px 0 10px; }
+  .sub, .dim { color: var(--dim); }
+  .sub { font-size: 13px; margin: 0 0 26px; }
+  a { color: var(--accent); }
+  svg { width: 100%; height: auto; display: block; }
+  svg .grid { stroke: var(--line); } svg .mark { stroke: var(--dim); stroke-dasharray: 3 4; }
+  svg .tick { fill: var(--dim); font: 11px "JetBrains Mono", monospace; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--dim); margin: 8px 0 0; }
+  i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--dim); font-weight: 400; }
+  ul { padding-left: 18px; } li { margin: 6px 0; }
+  footer { color: var(--dim); font-size: 12px; margin-top: 36px; } footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+<main>
+  <p class="sub"><a href="../">cadence arcade</a> / <a href="../breakout/">one-frame breakout</a> / long run</p>
+  <h1>BREAKOUT, 10X LONGER</h1>
+  <p class="sub">Same game, players and protocol as <a href="../breakout/">One-Frame Breakout</a>, but each life trains for 300 blocks (300,000 moments) instead of 30. 12 seeds per player. cadence-net 0.89.0.</p>
+
+  <p>The first run stopped while every curve was still climbing. So: what happens if you just keep going?</p>
+
+  <h2>Bricks per test game</h2>
+  <svg viewBox="0 0 640 340" role="img" aria-label="Bricks per test game over 300 training blocks">
+<line x1="44" x2="628" y1="304.0" y2="304.0" class="grid"/><text x="36" y="308.0" class="tick" text-anchor="end">0</text>
+<line x1="44" x2="628" y1="245.6" y2="245.6" class="grid"/><text x="36" y="249.6" class="tick" text-anchor="end">5</text>
+<line x1="44" x2="628" y1="187.2" y2="187.2" class="grid"/><text x="36" y="191.2" class="tick" text-anchor="end">10</text>
+<line x1="44" x2="628" y1="128.8" y2="128.8" class="grid"/><text x="36" y="132.8" class="tick" text-anchor="end">15</text>
+<line x1="44" x2="628" y1="70.4" y2="70.4" class="grid"/><text x="36" y="74.4" class="tick" text-anchor="end">20</text>
+<line x1="44" x2="628" y1="12.0" y2="12.0" class="grid"/><text x="36" y="16.0" class="tick" text-anchor="end">25</text>
+<text x="44.0" y="326" class="tick" text-anchor="middle">0</text>
+<text x="141.3" y="326" class="tick" text-anchor="middle">50</text>
+<text x="238.7" y="326" class="tick" text-anchor="middle">100</text>
+<text x="336.0" y="326" class="tick" text-anchor="middle">150</text>
+<text x="433.3" y="326" class="tick" text-anchor="middle">200</text>
+<text x="530.7" y="326" class="tick" text-anchor="middle">250</text>
+<text x="628.0" y="326" class="tick" text-anchor="middle">300</text>
+<text x="336" y="339" class="tick" text-anchor="middle">training block (1,000 moments each)</text>
+<line x1="102.4" x2="102.4" y1="12" y2="304" class="mark"/><text x="106.4" y="24" class="tick">first run ended here</text>
+<polygon points="53.7,259.7 73.2,233.9 92.7,221.6 112.1,221.2 131.6,210.2 151.1,204.1 170.5,192.7 190.0,191.9 209.5,190.4 228.9,193.0 248.4,197.3 267.9,181.7 287.3,180.0 306.8,167.5 326.3,165.8 345.7,154.1 365.2,160.1 384.7,169.1 404.1,145.6 423.6,160.5 443.1,153.0 462.5,153.7 482.0,159.9 501.5,153.9 520.9,167.6 540.4,167.6 559.9,148.9 579.3,144.0 598.8,146.4 618.3,143.5 618.3,165.9 598.8,178.1 579.3,174.0 559.9,172.8 540.4,180.0 520.9,185.9 501.5,181.0 482.0,183.1 462.5,184.6 443.1,184.8 423.6,174.4 404.1,193.9 384.7,185.3 365.2,184.9 345.7,188.7 326.3,189.0 306.8,191.6 287.3,199.3 267.9,207.5 248.4,210.2 228.9,209.1 209.5,216.7 190.0,213.8 170.5,214.3 151.1,225.1 131.6,234.1 112.1,238.3 92.7,244.9 73.2,245.6 53.7,271.4" fill="#ffb347" opacity="0.13"/>
+<polyline points="53.7,264.7 73.2,239.6 92.7,238.0 112.1,233.5 131.6,220.3 151.1,220.9 170.5,202.0 190.0,205.1 209.5,206.1 228.9,205.1 248.4,202.6 267.9,200.0 287.3,196.5 306.8,181.0 326.3,179.6 345.7,175.9 365.2,172.0 384.7,176.9 404.1,159.6 423.6,164.8 443.1,172.2 462.5,164.6 482.0,175.5 501.5,167.7 520.9,172.6 540.4,175.1 559.9,154.7 579.3,162.1 598.8,165.4 618.3,150.4" fill="none" stroke="#ffb347" stroke-width="2.2"/>
+<polyline points="53.7,265.1 73.2,250.3 92.7,239.0 112.1,228.1 131.6,229.8 151.1,215.2 170.5,224.8 190.0,216.8 209.5,220.5 228.9,218.3 248.4,229.4 267.9,209.8 287.3,199.3 306.8,202.8 326.3,203.4 345.7,197.5 365.2,198.9 384.7,181.4 404.1,194.6 423.6,198.1 443.1,191.1 462.5,191.7 482.0,185.1 501.5,173.6 520.9,180.8 540.4,169.9 559.9,196.2 579.3,174.4 598.8,186.4 618.3,182.7" fill="none" stroke="#c9a0ff" stroke-width="2.2"/>
+<polyline points="53.7,257.5 73.2,233.9 92.7,222.6 112.1,216.4 131.6,211.1 151.1,205.3 170.5,205.5 190.0,203.4 209.5,206.9 228.9,196.9 248.4,179.6 267.9,182.1 287.3,172.4 306.8,177.3 326.3,187.4 345.7,181.9 365.2,166.4 384.7,177.7 404.1,144.2 423.6,157.6 443.1,176.5 462.5,159.8 482.0,153.1 501.5,154.1 520.9,161.7 540.4,146.9 559.9,159.0 579.3,151.2 598.8,140.5 618.3,148.1" fill="none" stroke="#5fd3a5" stroke-width="2.2"/>
+<polyline points="53.7,273.0 73.2,259.8 92.7,244.4 112.1,240.7 131.6,237.4 151.1,235.1 170.5,238.8 190.0,237.2 209.5,237.4 228.9,236.1 248.4,233.9 267.9,236.5 287.3,235.7 306.8,235.1 326.3,238.2 345.7,237.8 365.2,237.0 384.7,236.3 404.1,237.6 423.6,236.3 443.1,232.6 462.5,238.0 482.0,236.6 501.5,233.9 520.9,234.3 540.4,233.9 559.9,234.9 579.3,232.8 598.8,232.0 618.3,233.7" fill="none" stroke="#8a8f98" stroke-width="2.2"/>
+<polygon points="53.7,264.3 73.2,238.1 92.7,222.8 112.1,205.4 131.6,182.0 151.1,169.7 170.5,173.4 190.0,158.1 209.5,172.5 228.9,144.8 248.4,142.0 267.9,141.8 287.3,123.2 306.8,140.3 326.3,125.0 345.7,122.5 365.2,123.7 384.7,111.5 404.1,99.8 423.6,90.0 443.1,97.3 462.5,87.6 482.0,69.3 501.5,78.7 520.9,95.2 540.4,77.8 559.9,79.4 579.3,72.5 598.8,67.5 618.3,65.9 618.3,97.3 598.8,85.4 579.3,91.9 559.9,117.8 540.4,106.6 520.9,128.6 501.5,103.5 482.0,107.8 462.5,114.7 443.1,131.9 423.6,114.0 404.1,121.3 384.7,123.2 365.2,133.6 345.7,132.7 326.3,143.4 306.8,160.7 287.3,153.5 267.9,162.3 248.4,178.4 228.9,179.3 209.5,190.9 190.0,187.2 170.5,195.7 151.1,198.4 131.6,198.9 112.1,219.3 92.7,230.5 73.2,247.0 53.7,270.9" fill="#5fb4ff" opacity="0.13"/>
+<polyline points="53.7,268.0 73.2,243.8 92.7,225.5 112.1,212.3 131.6,190.3 151.1,185.3 170.5,184.5 190.0,175.5 209.5,180.8 228.9,167.1 248.4,156.8 267.9,151.4 287.3,139.3 306.8,149.4 326.3,130.6 345.7,129.2 365.2,129.4 384.7,120.2 404.1,111.7 423.6,103.7 443.1,115.0 462.5,105.4 482.0,88.9 501.5,87.1 520.9,103.5 540.4,100.0 559.9,90.3 579.3,82.7 598.8,75.1 618.3,79.7" fill="none" stroke="#5fb4ff" stroke-width="2.2" stroke-dasharray="6 4"/>
+</svg>
+  <div class="legend"><span><i style="background:#ffb347"></i>Cadence, recall + position term</span><span><i style="background:#c9a0ff"></i>Cadence, recall, no position term</span><span><i style="background:#5fd3a5"></i>Cadence, no recall memory</span><span><i style="background:#8a8f98"></i>Plain MLP, one frame</span><span><i style="background:#5fb4ff"></i>Plain MLP, given two frames</span></div>
+  <p class="dim" style="font-size:12px">Median of 12 seeds, each point a 10-block window. Shaded: middle half of seeds for the position-term brain and the two-frame MLP.</p>
+
+  <h2>What it showed</h2>
+  <ul>
+    <li><b>Cadence keeps learning.</b> All three Cadence brains more than doubled after block 30 and were still rising at block 300.</li>
+    <li><b>One frame is a wall for a plain learner, not for Cadence.</b> The one-frame MLP flattens near 6 bricks: it can't tell which way the ball is moving. Every Cadence brain beats it on 12 of 12 seeds, by about 7 bricks. Its own state carries the moment before.</li>
+    <li><b>Handing the MLP the second frame wins in the long run.</b> At 30 blocks it was level with Cadence. By 300 it leads every Cadence brain (12/12 vs the position-term brain, 11/12 vs no-recall), about 6 bricks ahead.</li>
+    <li><b>The 0.89.0 position term: a lean, not a result.</b> Over the shipped recall memory it gains a median +3 bricks, but on 7 of 12 seeds only (p = 0.09). The first run's verdict was "null"; with 10x training it's "maybe, needs more seeds". Recall memory with or without it still doesn't beat having no recall at all.</li>
+  </ul>
+
+  <h2>Numbers</h2>
+  <div class="scroll"><table>
+    <tr><th>player</th><th>30 blocks</th><th>300 blocks [IQR]</th><th>agrees w/ coach</th></tr>
+    <tr><td><i style="background:#ffb347"></i>Cadence, recall + position term</td><td>5.7</td><td><b>13.1</b> <span class="dim">[11.8-13.7]</span></td><td>94%</td></tr><tr><td><i style="background:#c9a0ff"></i>Cadence, recall, no position term</td><td>5.6</td><td><b>10.4</b> <span class="dim">[8.0-12.3]</span></td><td>86%</td></tr><tr><td><i style="background:#5fd3a5"></i>Cadence, no recall memory</td><td>7.0</td><td><b>13.3</b> <span class="dim">[10.5-15.0]</span></td><td>88%</td></tr><tr><td><i style="background:#8a8f98"></i>Plain MLP, one frame</td><td>5.1</td><td><b>6.0</b> <span class="dim">[5.8-6.2]</span></td><td>91%</td></tr><tr><td><i style="background:#5fb4ff"></i>Plain MLP, given two frames</td><td>6.7</td><td><b>19.2</b> <span class="dim">[17.7-20.4]</span></td><td>90%</td></tr>
+  </table></div>
+  <p class="dim" style="font-size:12px">Bricks per test game over the last 10 blocks, median over seeds. The 30-block column is the first run (separate lives, same seeds).</p>
+
+  <div class="scroll"><table>
+    <tr><th>paired, by seed</th><th>wins</th><th>median diff</th><th>Wilcoxon p</th></tr>
+    <tr><td>Cadence, recall + position term vs Cadence, recall, no position term</td><td>7/12</td><td>+3.0</td><td>0.0884</td></tr><tr><td>Cadence, no recall memory vs Cadence, recall + position term</td><td>6/12</td><td>-0.6</td><td>1.0000</td></tr><tr><td>Cadence, recall + position term vs Plain MLP, one frame</td><td>12/12</td><td>+6.9</td><td>0.0005</td></tr><tr><td>Cadence, no recall memory vs Plain MLP, one frame</td><td>12/12</td><td>+7.2</td><td>0.0005</td></tr><tr><td>Plain MLP, given two frames vs Cadence, recall + position term</td><td>12/12</td><td>+6.2</td><td>0.0005</td></tr><tr><td>Plain MLP, given two frames vs Cadence, no recall memory</td><td>11/12</td><td>+5.9</td><td>0.0015</td></tr>
+  </table></div>
+
+  <h2>How it ran</h2>
+  <p class="dim" style="font-size:13px">One command on a desktop CPU, about 30 minutes per Cadence life and 3 per MLP life, 6 at a time: <code>run.py --seeds 10-21 --arms pos32,pos0,norecall,mlp1,mlp2 --blocks 300 --procs 6 --out runs/long10x</code>. Nothing else changed from the pre-declared protocol in <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/classic/run.py">run.py</a>. Raw lives in <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/classic/runs/long10x">runs/long10x</a>.</p>
+
+  <footer>Independent experiments by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>. Game: MinAtar Breakout (Young &amp; Tian 2019).</footer>
+</main>
+</body>
+</html>

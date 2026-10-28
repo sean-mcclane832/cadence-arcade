@@ -63,6 +63,34 @@ Published page: https://claude.ai/artifact/81ZMYFEZbsVPrT3HX5P5FJ (private).
 - No recall beat recall (11/12 vs plain recall, 8/12 vs position term): the settle already carries the
   previous moment. MLP two frames > one frame 12/12.
 
+## Long run: 10x the training (300 blocks)
+
+Same protocol, `--blocks 300`, arms pos32/pos0/norecall/mlp1/mlp2, seeds 10-21. Page:
+https://sean-mcclane832.github.io/cadence-arcade/breakout-long/ (built by `classic/long_page.py`, raw lives
+in `classic/runs/long10x`, summary in `classic/runs/long10x/summary.json`).
+
+| player | 30 blocks | 300 blocks, median [IQR] |
+| --- | --- | --- |
+| Cadence, recall + position term | 5.65 | 13.15 [11.82-13.74] |
+| Cadence, recall, `recall_position=0` | 5.57 | 10.38 [7.98-12.33] |
+| Cadence, no recall | 6.97 | 13.35 [10.50-14.95] |
+| plain MLP, one frame | 5.10 | 6.02 [5.84-6.18] |
+| plain MLP, two frames (reference) | 6.72 | 19.20 [17.70-20.38] |
+
+- Every Cadence arm roughly doubled after block 30 and was still rising at 300.
+- The one-frame MLP plateaus near 6 (it can't see the ball's direction); every Cadence arm beats it 12/12
+  by about 7. The settle carries the previous moment.
+- Given two frames, the MLP pulls clear in the long run: beats the position-term brain 12/12 (+6.2) and
+  no-recall 11/12 (+5.9). At 30 blocks they were level.
+- Position term vs none: +2.97 median, 7/12 seeds, Wilcoxon p = 0.09. A lean, not a result (it was a null
+  at 30 blocks). No recall is still as good as recall + position term (6/12, p = 1.0).
+
+```bash
+cd classic
+$PY run.py --seeds 10-21 --arms pos32,pos0,norecall,mlp1,mlp2 --blocks 300 --procs 6 --out runs/long10x   # ~1.5 h, 6 procs
+$PY long_page.py runs/long10x ../docs/breakout-long/index.html
+```
+
 ## Rerun
 
 ```bash
