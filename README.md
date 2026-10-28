@@ -82,8 +82,9 @@ in `classic/runs/long10x`, summary in `classic/runs/long10x/summary.json`).
   by about 7. The settle carries the previous moment.
 - Given two frames, the MLP pulls clear in the long run: beats the position-term brain 12/12 (+6.2) and
   no-recall 11/12 (+5.9). At 30 blocks they were level.
-- Position term vs none: +2.97 median, 7/12 seeds, Wilcoxon p = 0.09. A lean, not a result (it was a null
-  at 30 blocks). No recall is still as good as recall + position term (6/12, p = 1.0).
+- Position term vs none: +2.97 median, 7/12 seeds, p = 0.09 on seeds 10-21, so 24 more seeds (22-45,
+  `runs/long10x-more`) were run. Pooled 36 seeds: 17/36 wins, median -1.02, Wilcoxon p = 0.68. **Null**, as at
+  30 blocks; the lean was noise. No recall is as good as recall + position term (6/12, p = 1.0).
 
 ```bash
 cd classic

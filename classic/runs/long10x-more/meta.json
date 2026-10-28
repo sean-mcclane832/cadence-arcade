@@ -1,0 +1,25 @@
+{
+ "cadence": "0.89.0",
+ "python": "3.11.17",
+ "blocks": 300,
+ "train": 1000,
+ "test_eps": 3,
+ "cap": 300,
+ "last": 10,
+ "cadence_settings": {
+  "modules": [
+   32
+  ],
+  "teaching": "normalized",
+  "episodic": false
+ },
+ "seeds": [
+  22,
+  45
+ ],
+ "arms": [
+  "pos32",
+  "pos0"
+ ],
+ "mlp": "1 hidden layer of 32, softmax, online cross-entropy, lr 0.003"
+}

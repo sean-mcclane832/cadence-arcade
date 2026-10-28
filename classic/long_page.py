@@ -166,7 +166,7 @@ def page(S):
     <li><b>Cadence keeps learning.</b> All three Cadence brains more than doubled after block 30 and were still rising at block 300.</li>
     <li><b>One frame is a wall for a plain learner, not for Cadence.</b> The one-frame MLP flattens near 6 bricks: it can't tell which way the ball is moving. Every Cadence brain beats it on 12 of 12 seeds, by about 7 bricks. Its own state carries the moment before.</li>
     <li><b>Handing the MLP the second frame wins in the long run.</b> At 30 blocks it was level with Cadence. By 300 it leads every Cadence brain (12/12 vs the position-term brain, 11/12 vs no-recall), about 6 bricks ahead.</li>
-    <li><b>The 0.89.0 position term: a lean, not a result.</b> Over the shipped recall memory it gains a median +3 bricks, but on 7 of 12 seeds only (p = 0.09). The first run's verdict was "null"; with 10x training it's "maybe, needs more seeds". Recall memory with or without it still doesn't beat having no recall at all.</li>
+    <li><b>The 0.89.0 position term: null, confirmed.</b> On these 12 seeds it looked like +3 bricks (7/12, p = 0.09), so we ran 24 more seeds. Pooled over 36 seeds it wins 17, median -1.0 bricks, p = 0.68. The lean was noise. Recall memory with or without it doesn't beat having no recall at all.</li>
   </ul>
 
   <h2>Numbers</h2>
