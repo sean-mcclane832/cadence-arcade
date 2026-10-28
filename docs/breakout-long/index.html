@@ -71,8 +71,8 @@
   <h2>What it showed</h2>
   <ul>
     <li><b>Cadence keeps learning.</b> All three Cadence brains more than doubled after block 30 and were still rising at block 300.</li>
-    <li><b>One frame is a wall for a plain learner, not for Cadence.</b> The one-frame MLP flattens near 6 bricks: it can't tell which way the ball is moving. Every Cadence brain beats it on 12 of 12 seeds, by about 7 bricks. Its own state carries the moment before.</li>
-    <li><b>Handing the MLP the second frame wins in the long run.</b> At 30 blocks it was level with Cadence. By 300 it leads every Cadence brain (12/12 vs the position-term brain, 11/12 vs no-recall), about 6 bricks ahead.</li>
+    <li><b>One frame is a wall for a plain learner, not for Cadence.</b> The one-frame MLP flattens near 6 bricks: it can't tell which way the ball is moving. Every Cadence brain beats it on 12 of 12 seeds, by about 7 bricks. A <a href="https://github.com/sean-mcclane832/cadence-lab/blob/master/notes/settle_probe.md">follow-up probe</a> found why: Cadence wires in a working-memory copy of the last frame by default, so it has the ball's direction built in, not learned.</li>
+    <li><b>Handing the MLP the second frame wins in the long run.</b> At 30 blocks it was level with Cadence. By 300 it leads every Cadence brain (12/12 vs the position-term brain, 11/12 vs no-recall), about 6 bricks ahead. The probe says Cadence has nearly the same information (direction readable at 98% vs 99%), so the gap is in how it learns to use it.</li>
     <li><b>The 0.89.0 position term: null, confirmed.</b> On these 12 seeds it looked like +3 bricks (7/12, p = 0.09), so we ran 24 more seeds. Pooled over 36 seeds it wins 17, median -1.0 bricks, p = 0.68. The lean was noise. Recall memory with or without it doesn't beat having no recall at all.</li>
   </ul>
 
