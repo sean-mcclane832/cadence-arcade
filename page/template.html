@@ -1,0 +1,298 @@
+<title>Ember Field</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: the replay is the hero (two fields side by side, the brain's view beside them), then the life curve, then the story and the numbers. Dark-first, a night field. */
+:root {
+  --bg: #14120e; --panel: #1c1914; --line: #332e25; --fg: #efe7d8; --muted: #a69b88;
+  --amber: #f3a53c; --blue: #63aee9; --good: #8fd18a; --bad: #ef6f5e; --cad: #f3a53c; --mlp: #b9a7ef; --rnd: #7d7464;
+  --field: #0e0d0a; --grid: #221f19;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg: #eceee8; --panel: #f7f8f4; --line: #d3d6cc; --fg: #1d1f1a; --muted: #5d6157;
+  --amber: #c9790f; --blue: #2779bd; --good: #2f8a3a; --bad: #c4402e; --cad: #c9790f; --mlp: #6b55c4; --rnd: #8a8f82;
+  --field: #1a1915; --grid: #2a2720; color-scheme: light; } }
+:root[data-theme="light"] {
+  --bg: #eceee8; --panel: #f7f8f4; --line: #d3d6cc; --fg: #1d1f1a; --muted: #5d6157;
+  --amber: #c9790f; --blue: #2779bd; --good: #2f8a3a; --bad: #c4402e; --cad: #c9790f; --mlp: #6b55c4; --rnd: #8a8f82;
+  --field: #1a1915; --grid: #2a2720; color-scheme: light; }
+:root[data-theme="dark"] {
+  --bg: #14120e; --panel: #1c1914; --line: #332e25; --fg: #efe7d8; --muted: #a69b88;
+  --amber: #f3a53c; --blue: #63aee9; --good: #8fd18a; --bad: #ef6f5e; --cad: #f3a53c; --mlp: #b9a7ef; --rnd: #7d7464;
+  --field: #0e0d0a; --grid: #221f19; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 36px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(40px, 7vw, 76px)/.95 var(--display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+h1 .a { color: var(--amber); } h1 .b { color: var(--blue); }
+.lede { max-width: 62ch; color: var(--fg); font-size: 18px; margin: 0; }
+.lede b { color: var(--amber); font-weight: 700; }
+h2 { font: 700 26px/1.1 var(--display); margin: 0 0 6px; text-wrap: balance; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* replay */
+.stage { display: grid; gap: 14px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.player { display: grid; gap: 8px; min-width: 0; }
+.ptitle { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.ptitle strong { font: 700 17px/1.2 var(--display); }
+.ptitle .tag { font: 600 12px/1 var(--mono); padding: 5px 8px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+.ptitle .tag.on { color: var(--bg); background: var(--amber); border-color: var(--amber); }
+canvas.field { width: 100%; max-width: 100%; aspect-ratio: 9 / 7.6; display: block; border-radius: 6px; background: var(--field); }
+.tally { display: flex; gap: 16px; font: 14px/1.2 var(--mono); flex-wrap: wrap; }
+.tally .g { color: var(--good); } .tally .s { color: var(--bad); }
+.view { display: grid; gap: 6px; }
+.view .lab { font: 600 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+canvas.eye { width: 100%; height: 34px; display: block; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+button { font: 600 13px/1 var(--body); color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+#play { min-width: 82px; background: var(--amber); color: #1b1408; border-color: var(--amber); }
+.scrub { flex: 1 1 220px; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.scrub input { flex: 1; min-width: 0; accent-color: var(--amber); }
+.clock { font: 13px/1 var(--mono); color: var(--muted); white-space: nowrap; }
+.season { font: 600 13px/1 var(--mono); display: inline-flex; gap: 8px; align-items: center; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+/* curve */
+.curve { display: grid; gap: 10px; }
+.chart { width: 100%; overflow-x: auto; }
+.chart svg { display: block; width: 100%; min-width: 560px; height: auto; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 18px; height: 3px; display: inline-block; border-radius: 2px; }
+
+/* story */
+.cols { display: grid; grid-template-columns: 1.1fr .9fr; gap: 36px; align-items: start; }
+.cols > div { min-width: 0; display: grid; gap: 14px; }
+.rules { display: grid; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.rules div { display: grid; grid-template-columns: 86px 1fr; gap: 12px; }
+.rules dt { font: 600 12px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { font: 600 12px/1.2 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+td { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+ul.limits { margin: 0; padding-left: 18px; display: grid; gap: 6px; max-width: 70ch; }
+footer { font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
+
+@media (max-width: 760px) {
+  .fields { grid-template-columns: 1fr; }
+  .cols { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">A Cadence brain plays a game it was never told the rules of</div>
+    <h1>Ember Field</h1>
+    <p class="lede" id="lede"></p>
+  </header>
+
+  <section class="stage" aria-label="Replay">
+    <div class="controls">
+      <button id="play" type="button">Pause</button>
+      <div class="chips" id="stages" role="group" aria-label="Moment of life"></div>
+      <div class="scrub"><input id="scrub" type="range" min="0" max="399" value="0" aria-label="Moment within the clip"><span class="clock num" id="clock"></span></div>
+      <div class="chips" role="group" aria-label="Speed"><button type="button" data-speed="1">1×</button><button type="button" data-speed="3" aria-pressed="true">3×</button><button type="button" data-speed="8">8×</button></div>
+      <span class="season" id="season"></span>
+    </div>
+    <div class="fields">
+      <div class="player">
+        <div class="ptitle"><strong>Cadence brain</strong><span class="tag">one continuous life</span></div>
+        <canvas class="field" id="f0" width="540" height="456"></canvas>
+        <div class="tally" id="t0"></div>
+        <div class="view"><span class="lab">What it sees right now</span><canvas class="eye" id="e0" width="560" height="34"></canvas></div>
+      </div>
+      <div class="player">
+        <div class="ptitle"><strong>Plain neural net (MLP, Q-learning)</strong><span class="tag">same embers</span></div>
+        <canvas class="field" id="f1" width="540" height="456"></canvas>
+        <div class="tally" id="t1"></div>
+        <div class="view"><span class="lab">What it sees right now</span><canvas class="eye" id="e1" width="560" height="34"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="curve" aria-label="Score over a whole life">
+    <h2>A whole life, 45,000 moments</h2>
+    <p class="muted" id="curvecap"></p>
+    <div class="legend" id="legend"></div>
+    <div class="chart" id="chart"></div>
+  </section>
+
+  <section class="cols">
+    <div>
+      <h2>What you're watching</h2>
+      <p>Cadence is an open-source brain library from Pragma Research. Instead of being trained offline and then frozen, a Cadence brain lives: every moment it settles on what it sees, acts, and adjusts itself from what that action brought. It keeps an associative memory of what paid in which situation and votes with it, and it keeps learning for as long as life pays less than it wants, which in this game is always. Here one brain is born into a small field with no rules explained, only pay. Each half of the replay is one continuous life; the clips are cut from it at six points.</p>
+      <p id="story"></p>
+      <dl class="rules">
+        <div><dt>Field</dt><dd>9 columns by 7 rows. The lantern walks the bottom row.</dd></div>
+        <div><dt>Moves</dt><dd>Left, stay or right, once per moment.</dd></div>
+        <div><dt>Pay</dt><dd>+1 for catching the food colour, −1 for the sting colour, 0 for a miss.</dd></div>
+        <div><dt>Seasons</dt><dd>Amber is food until moment 15,000, blue until 30,000, then amber again. Nothing announces the turn.</dd></div>
+        <div><dt>Senses</dt><dd>16 numbers: for 3 columns either side and its own, how close the lowest amber and lowest blue ember are, plus a wall on each side. The strip under each field draws them.</dd></div>
+      </dl>
+    </div>
+    <div>
+      <h2>Across 12 lives</h2>
+      <p class="muted" id="tblcap"></p>
+      <div class="tbl"><table id="tbl"></table></div>
+      <h2>Limits</h2>
+      <ul class="limits">
+        <li>One small game I designed, 12 seeds per player. The Cadence settings (memory voting on, a need tied to the spread of its pay) were picked in a short sweep on other seeds; the MLP got no tuning.</li>
+        <li>The plain net is the better player overall. The Cadence brain learns to dodge reliably but only partly learns to chase food, and no setting I tried in a short sweep (critic rate, eligibility, temperature, memory rate, a second region) closed that gap.</li>
+        <li>The showcase life is the median Cadence seed by final-season score, not the best one.</li>
+        <li>A replay of recorded lives. The brains learned in Python on a desktop, not in your browser.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+(function () {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const W = 9, H = 7;
+  const show = DATA.show;
+  const names = Object.keys(show.cadence);
+  let stage = names[0], i = 0, playing = true, speed = 3, acc = 0, last = performance.now();
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { playing = false; }
+
+  document.getElementById("lede").innerHTML = DATA.lede;
+  document.getElementById("story").textContent = DATA.story;
+  document.getElementById("curvecap").textContent = DATA.curvecap;
+  document.getElementById("tblcap").textContent = DATA.tblcap;
+  document.getElementById("foot").innerHTML = DATA.foot;
+
+  // stage chips
+  const chips = document.getElementById("stages");
+  names.forEach(n => { const b = document.createElement("button"); b.type = "button"; b.textContent = n; b.dataset.stage = n;
+    b.addEventListener("click", () => { stage = n; i = 0; render(); }); chips.appendChild(b); });
+  document.querySelectorAll("[data-speed]").forEach(b => b.addEventListener("click", () => {
+    speed = +b.dataset.speed; document.querySelectorAll("[data-speed]").forEach(x => x.setAttribute("aria-pressed", x === b)); }));
+  const playBtn = document.getElementById("play");
+  playBtn.textContent = playing ? "Pause" : "Play";
+  playBtn.addEventListener("click", () => { playing = !playing; playBtn.textContent = playing ? "Pause" : "Play"; last = performance.now(); });
+  const scrub = document.getElementById("scrub");
+  scrub.addEventListener("input", () => { i = +scrub.value; render(); });
+
+  function drawField(cv, fr, flash) {
+    const g = cv.getContext("2d"), cw = cv.width / W, ch = cv.height / (H + 0.6);
+    g.fillStyle = css("--field"); g.fillRect(0, 0, cv.width, cv.height);
+    g.strokeStyle = css("--grid"); g.lineWidth = 1;
+    for (let c = 1; c < W; c++) { g.beginPath(); g.moveTo(c * cw + .5, 0); g.lineTo(c * cw + .5, H * ch); g.stroke(); }
+    // ground
+    g.fillStyle = css("--grid"); g.fillRect(0, (H - 0.5) * ch + ch * .55, cv.width, cv.height);
+    const [x, embers, , reward] = fr;
+    for (const [c, r, col] of embers) {
+      const cx = (c + .5) * cw, cy = (r + .5) * ch, rad = Math.min(cw, ch) * .26;
+      const color = col === 0 ? css("--amber") : css("--blue");
+      const grd = g.createRadialGradient(cx, cy, 0, cx, cy, rad * 2.4);
+      grd.addColorStop(0, color); grd.addColorStop(.35, color + "aa"); grd.addColorStop(1, color + "00");
+      g.fillStyle = grd; g.beginPath(); g.arc(cx, cy, rad * 2.4, 0, 7); g.fill();
+      g.fillStyle = "#fff8"; g.beginPath(); g.arc(cx, cy, rad * .35, 0, 7); g.fill();
+    }
+    // lantern
+    const lx = (x + .5) * cw, ly = (H - .5) * ch;
+    g.fillStyle = "#f6efe0"; g.beginPath(); g.roundRect(lx - cw * .28, ly - ch * .2, cw * .56, ch * .5, 6); g.fill();
+    g.fillStyle = "#1b1408"; g.beginPath(); g.arc(lx - cw * .1, ly, 3, 0, 7); g.arc(lx + cw * .1, ly, 3, 0, 7); g.fill();
+    if (flash) {
+      g.fillStyle = (flash > 0 ? css("--good") : css("--bad"));
+      g.font = `700 ${Math.round(ch * .55)}px ${css("--display").split(",")[0]}`; g.textAlign = "center";
+      g.fillText(flash > 0 ? "+1" : "−1", lx, ly - ch * .55);
+    }
+  }
+  function drawEye(cv, seen) {
+    const g = cv.getContext("2d"), n = 7, w = cv.width, h = cv.height;
+    g.clearRect(0, 0, w, h);
+    const cellw = (w - 40) / n;
+    for (let k = 0; k < n; k++) {
+      for (let col = 0; col < 2; col++) {
+        const v = +seen[k * 2 + col] / 3;
+        const color = col === 0 ? css("--amber") : css("--blue");
+        g.fillStyle = css("--line"); g.fillRect(20 + k * cellw + 2, col * h / 2 + 1, cellw - 4, h / 2 - 2);
+        if (v > 0) { g.globalAlpha = .25 + .75 * v; g.fillStyle = color; g.fillRect(20 + k * cellw + 2, col * h / 2 + 1, cellw - 4, h / 2 - 2); g.globalAlpha = 1; }
+      }
+    }
+    g.fillStyle = seen[14] === "3" ? css("--fg") : css("--line"); g.fillRect(2, 1, 12, h - 2);
+    g.fillStyle = seen[15] === "3" ? css("--fg") : css("--line"); g.fillRect(w - 14, 1, 12, h - 2);
+    g.strokeStyle = css("--fg"); g.lineWidth = 2; g.strokeRect(20 + 3 * cellw + 1, 0, cellw - 2, h);
+  }
+  function tally(frames, upto) {
+    let f = 0, s = 0; for (let k = 0; k <= upto; k++) { const r = frames[k][3]; if (r > 0) f++; else if (r < 0) s++; } return [f, s];
+  }
+  function render() {
+    const A = show.cadence[stage], B = show.mlp[stage];
+    i = Math.min(i, A.frames.length - 1);
+    scrub.max = A.frames.length - 1; scrub.value = i;
+    const fa = A.frames[i], fb = B.frames[i];
+    drawField(document.getElementById("f0"), fa, fa[3]);
+    drawField(document.getElementById("f1"), fb, fb[3]);
+    drawEye(document.getElementById("e0"), fa[4]); drawEye(document.getElementById("e1"), fb[4]);
+    const [af, as] = tally(A.frames, i), [bf, bs] = tally(B.frames, i);
+    document.getElementById("t0").innerHTML = `<span class="g">food ${af}</span><span class="s">stings ${as}</span><span class="muted">this clip</span>`;
+    document.getElementById("t1").innerHTML = `<span class="g">food ${bf}</span><span class="s">stings ${bs}</span><span class="muted">this clip</span>`;
+    const t = A.start + i, food = fa[6];
+    document.getElementById("clock").textContent = `moment ${t.toLocaleString()}`;
+    document.getElementById("season").innerHTML = `<span class="dot" style="background:${food === 0 ? css("--amber") : css("--blue")}"></span>food: ${food === 0 ? "amber" : "blue"}`;
+    chips.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.stage === stage));
+    marker(t);
+  }
+  function loop(now) {
+    if (playing) {
+      acc += (now - last) * speed / 1000 * 6; // 6 moments/s at 1x
+      while (acc >= 1) { acc -= 1; i++; if (i >= show.cadence[stage].frames.length) { i = 0; const k = names.indexOf(stage); stage = names[(k + 1) % names.length]; } }
+      render();
+    }
+    last = now; requestAnimationFrame(loop);
+  }
+
+  // life curve
+  const C = DATA.curve, n = C.cadence.med.length, win = DATA.window;
+  const vw = 1000, vh = 300, pl = 44, pr = 12, pt = 14, pb = 34;
+  const lo = Math.min(...["cadence", "mlp", "random"].flatMap(k => C[k].q1)), hi = Math.max(...["cadence", "mlp", "random"].flatMap(k => C[k].q3));
+  const ymin = Math.floor(lo / 10) * 10, ymax = Math.ceil(hi / 10) * 10;
+  const X = k => pl + (k + .5) / n * (vw - pl - pr), Y = v => pt + (ymax - v) / (ymax - ymin) * (vh - pt - pb);
+  const path = a => a.map((v, k) => (k ? "L" : "M") + X(k).toFixed(1) + " " + Y(v).toFixed(1)).join("");
+  const band = (a, b) => path(a) + b.slice().reverse().map((v, k) => "L" + X(n - 1 - k).toFixed(1) + " " + Y(v).toFixed(1)).join("") + "Z";
+  let svg = `<svg viewBox="0 0 ${vw} ${vh}" role="img" aria-label="Net score per ${win} moments over a whole life, median of 12 lives">`;
+  DATA.turns.forEach((t, k) => { const x0 = pl + t / (n * win) * (vw - pl - pr); svg += `<line x1="${x0}" x2="${x0}" y1="${pt}" y2="${vh - pb}" stroke="var(--muted)" stroke-dasharray="4 4"/><text x="${x0 + 6}" y="${pt + 12}" fill="var(--muted)" font-size="13" font-family="var(--mono)">season turn ${k + 1}</text>`; });
+  for (let v = ymin; v <= ymax; v += 10) { svg += `<line x1="${pl}" x2="${vw - pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="${v === 0 ? 1.5 : .6}"/><text x="${pl - 8}" y="${Y(v) + 4}" text-anchor="end" fill="var(--muted)" font-size="12" font-family="var(--mono)">${v}</text>`; }
+  for (let t = 0; t <= n * win; t += 5000) { const x0 = pl + t / (n * win) * (vw - pl - pr); svg += `<text x="${x0}" y="${vh - 12}" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="var(--mono)">${t / 1000}k</text>`; }
+  for (const [k, c] of [["random", "--rnd"], ["mlp", "--mlp"], ["cadence", "--cad"]]) {
+    svg += `<path d="${band(C[k].q1, C[k].q3)}" fill="var(${c})" opacity=".16"/><path d="${path(C[k].med)}" fill="none" stroke="var(${c})" stroke-width="${k === "cadence" ? 3 : 2}" stroke-linejoin="round"/>`;
+  }
+  svg += `<rect id="mark" x="0" y="${pt}" width="2" height="${vh - pt - pb}" fill="var(--fg)" opacity=".7"/></svg>`;
+  document.getElementById("chart").innerHTML = svg;
+  document.getElementById("legend").innerHTML = [["Cadence brain", "--cad"], ["Plain MLP", "--mlp"], ["Random", "--rnd"]].map(([l, c]) => `<span><i style="background:var(${c})"></i>${l}</span>`).join("") + `<span class="muted">line: median of 12 lives · band: middle half · white bar: replay position</span>`;
+  const mk = document.getElementById("mark");
+  function marker(t) { mk.setAttribute("x", (pl + t / (n * win) * (vw - pl - pr) - 1).toFixed(1)); }
+
+  // table
+  document.getElementById("tbl").innerHTML = DATA.table;
+
+  render(); requestAnimationFrame(loop);
+})();
+</script>
