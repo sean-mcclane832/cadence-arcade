@@ -1,0 +1,276 @@
+<title>One-Frame Breakout</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: six boards replay the same test game side by side (the hero), then the curves, the paired verdict, the explainer and the limits. Cabinet palette: brick rows red/orange/yellow as in the 1976 cabinet's colour overlay, everything else quiet. */
+:root {
+  --bg: #f1f0eb; --panel: #fbfaf6; --line: #d6d3c8; --fg: #1c1b18; --muted: #615e55;
+  --screen: #12131a; --cell: #1c1e28; --r1: #d9473b; --r2: #e98a2e; --r3: #e3c33f; --ball: #f4f2ea; --pad: #69b7e8; --ghost: #f4f2ea55;
+  --pos: #c8432f; --nopos: #2f6fb3; --norec: #7c6bb8; --mlp1: #8e8a7c; --mlp2: #2f8a5a; --rnd: #b9b4a5;
+  --good: #2f8a5a; --bad: #c8432f;
+  --display: "Silkscreen", "Courier New", monospace;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15161b; --panel: #1c1d24; --line: #31333d; --fg: #ecebe5; --muted: #a3a197;
+  --screen: #0b0c10; --cell: #171922; --ghost: #f4f2ea44;
+  --pos: #f0705a; --nopos: #6aa6e6; --norec: #a897ec; --mlp1: #a8a496; --mlp2: #5cc48b; --rnd: #6c6a62;
+  --good: #5cc48b; --bad: #f0705a; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #15161b; --panel: #1c1d24; --line: #31333d; --fg: #ecebe5; --muted: #a3a197;
+  --screen: #0b0c10; --cell: #171922; --ghost: #f4f2ea44;
+  --pos: #f0705a; --nopos: #6aa6e6; --norec: #a897ec; --mlp1: #a8a496; --mlp2: #5cc48b; --rnd: #6c6a62;
+  --good: #5cc48b; --bad: #f0705a; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px; }
+header { display: grid; gap: 12px; }
+.eyebrow { font: 600 12px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(34px, 6.4vw, 64px)/1 var(--display); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+h1 span { color: var(--pos); }
+.lede { max-width: 66ch; font-size: 18px; margin: 0; }
+h2 { font: 700 20px/1.2 var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h3 { font: 700 17px/1.3 var(--body); margin: 0; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+section { display: grid; gap: 14px; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+button { font: 600 13px/1 var(--body); color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--pos); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+#play { min-width: 82px; background: var(--pos); color: #fff; border-color: var(--pos); }
+.scrub { flex: 1 1 200px; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.scrub input { flex: 1; min-width: 0; accent-color: var(--pos); }
+.clock { font: 13px/1 var(--mono); color: var(--muted); white-space: nowrap; }
+label.tog { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; cursor: pointer; }
+
+.boards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.board { display: grid; gap: 6px; min-width: 0; }
+.bt { display: flex; align-items: center; gap: 8px; }
+.bt i { width: 12px; height: 12px; border-radius: 2px; flex: none; }
+.bt strong { font: 700 15px/1.25 var(--body); }
+canvas.scr { width: 100%; max-width: 100%; aspect-ratio: 1; display: block; border-radius: 6px; background: var(--screen); }
+.stat { display: flex; gap: 12px; flex-wrap: wrap; font: 13px/1.3 var(--mono); color: var(--muted); }
+.stat b { color: var(--fg); font-weight: 600; }
+.stat .lost { color: var(--bad); }
+.note { font-size: 14px; }
+
+.chart { width: 100%; overflow-x: auto; }
+.chart svg { display: block; width: 100%; min-width: 560px; height: auto; }
+.legend { display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 14px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 18px; height: 3px; display: inline-block; border-radius: 2px; }
+
+.verdict { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.vcard { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); display: grid; gap: 8px; min-width: 0; }
+.vcard .big { font: 700 26px/1.1 var(--display); }
+.vcard .tag { font: 600 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+
+.cols { display: grid; grid-template-columns: 1.05fr .95fr; gap: 36px; align-items: start; }
+.cols > div { min-width: 0; display: grid; gap: 14px; }
+.diagram { overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 420px; height: auto; }
+code { font: 14px var(--mono); background: var(--panel); border: 1px solid var(--line); padding: 1px 5px; border-radius: 4px; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { font: 600 12px/1.2 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+td { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; }
+ul.limits { margin: 0; padding-left: 18px; display: grid; gap: 8px; max-width: 72ch; }
+footer { font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
+
+@media (max-width: 820px) { .boards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cols, .verdict { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { .boards { gap: 10px; } .stat { font-size: 12px; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Cadence 0.89.0 · recall position term · MinAtar Breakout</div>
+    <h1>One-Frame <span>Breakout</span></h1>
+    <p class="lede" id="lede"></p>
+  </header>
+
+  <section aria-label="Replay">
+    <div class="controls">
+      <button id="play" type="button">Pause</button>
+      <div class="chips" id="stages" role="group" aria-label="Point in training"></div>
+      <div class="scrub"><input id="scrub" type="range" min="0" max="299" value="0" aria-label="Moment within the test game"><span class="clock" id="clock"></span></div>
+      <div class="chips" role="group" aria-label="Speed"><button type="button" data-speed="1">1×</button><button type="button" data-speed="3" aria-pressed="true">3×</button><button type="button" data-speed="8">8×</button></div>
+      <label class="tog"><input type="checkbox" id="ghost"> show where the ball was (hidden from players)</label>
+    </div>
+    <div class="boards" id="boards"></div>
+    <p class="muted note" id="replaynote"></p>
+  </section>
+
+  <section aria-label="Learning curves">
+    <h2>Bricks per test game, through training</h2>
+    <p class="muted" id="curvecap"></p>
+    <div class="legend" id="legend"></div>
+    <div class="chart" id="chart"></div>
+  </section>
+
+  <section aria-label="Did the position term help">
+    <h2>Did the position term help?</h2>
+    <p id="verdict"></p>
+    <div class="verdict" id="vcards"></div>
+    <div class="chart" id="pairs"></div>
+    <p class="muted" id="paircap"></p>
+  </section>
+
+  <section class="cols">
+    <div>
+      <h2>What's new in 0.89.0</h2>
+      <p>Cadence's recall memory keeps a list of the stream's recent moments. Before each decision the present moment looks over that list and reads back a blend of the moments that match it. Until 0.89.0 a match was decided by content alone: what a moment looked like, plus a fixed nudge toward newer ones. Nothing said <em>when</em> a moment happened, so "the frame just before this one" and "a similar frame twenty moments ago" were hard to tell apart.</p>
+      <p>0.89.0 gives every memory slot an age, and each read head learns a bonus per age that depends on what it hears right now (<code>recall_position</code>, 32 ages with their own bonus, older ones grouped by doubling). The bonuses start at zero and move only through taught lessons. Rewards never move them, so a brain that learns only from points reads exactly as one without the feature.</p>
+      <div class="diagram" id="diagram"></div>
+      <p class="muted note">Illustration, not measured values: the read's weight on each slot is its content match plus the learned bonus for its age.</p>
+      <h2>Why Breakout, and why one frame</h2>
+      <p>MinAtar's Breakout (Young &amp; Tian, 2019) is a 10×10 version of the 1976 Atari game, built as a small, fast reinforcement-learning benchmark. MinAtar normally adds a "trail" channel showing where the ball was one moment ago, because a single frame doesn't say which way the ball is moving. These players don't get the trail. They see one frame: ball column, ball row, paddle column. A ball rising to the left and a ball falling to the right look identical. Remembering the previous moment is the only way to know.</p>
+    </div>
+    <div>
+      <h2>How they learn</h2>
+      <p>A coach that knows the ball's direction plays the ball forward on a copy of the game and says which way to move. Every player plays the game itself and hears the coach's move at every training moment. Cadence takes it as a <code>lesson</code>, then acts. The MLPs take one gradient step. Every 1,000 training moments each player sits a test of three games with no coaching. All players get the same test games.</p>
+      <h2>Across 12 seeds</h2>
+      <p class="muted" id="tblcap"></p>
+      <div class="tbl"><table id="tbl"></table></div>
+      <h2>Limits</h2>
+      <ul class="limits" id="limits"></ul>
+    </div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+(function () {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const ARMS = DATA.arms;
+  const stages = Object.keys(DATA.clips[ARMS[0].key]);
+  let stage = stages[stages.length - 1], i = 0, playing = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let speed = 3, acc = 0, last = performance.now(), ghost = false;
+  for (const id of ["lede", "replaynote", "curvecap", "verdict", "paircap", "tblcap", "foot"]) document.getElementById(id).innerHTML = DATA.text[id];
+  document.getElementById("limits").innerHTML = DATA.text.limits.map(l => `<li>${l}</li>`).join("");
+  document.getElementById("tbl").innerHTML = DATA.table;
+  document.getElementById("vcards").innerHTML = DATA.vcards;
+
+  const boards = document.getElementById("boards");
+  ARMS.forEach((a, k) => {
+    const d = document.createElement("div"); d.className = "board";
+    d.innerHTML = `<div class="bt"><i style="background:var(${a.color})"></i><strong>${a.label}</strong></div>` +
+      `<canvas class="scr" id="c${k}" width="300" height="300" aria-label="${a.label} playing"></canvas><div class="stat" id="s${k}"></div>`;
+    boards.appendChild(d);
+  });
+  const chips = document.getElementById("stages");
+  stages.forEach(n => { const b = document.createElement("button"); b.type = "button"; b.textContent = DATA.stageNames[n]; b.dataset.stage = n;
+    b.addEventListener("click", () => { stage = n; i = 0; render(); }); chips.appendChild(b); });
+  document.querySelectorAll("[data-speed]").forEach(b => b.addEventListener("click", () => {
+    speed = +b.dataset.speed; document.querySelectorAll("[data-speed]").forEach(x => x.setAttribute("aria-pressed", x === b)); }));
+  const playBtn = document.getElementById("play");
+  playBtn.textContent = playing ? "Pause" : "Play";
+  playBtn.addEventListener("click", () => { playing = !playing; playBtn.textContent = playing ? "Pause" : "Play"; last = performance.now(); });
+  const scrub = document.getElementById("scrub");
+  scrub.addEventListener("input", () => { i = +scrub.value; render(); });
+  document.getElementById("ghost").addEventListener("change", e => { ghost = e.target.checked; render(); });
+
+  const maxLen = () => Math.max(...ARMS.map(a => DATA.clips[a.key][stage].length));
+  function draw(cv, fr) {
+    const g = cv.getContext("2d"), s = cv.width / 10;
+    g.fillStyle = css("--screen"); g.fillRect(0, 0, cv.width, cv.height);
+    g.fillStyle = css("--cell");
+    for (let y = 0; y < 10; y++) for (let x = 0; x < 10; x++) g.fillRect(x * s + 1, y * s + 1, s - 2, s - 2);
+    const rows = [css("--r1"), css("--r2"), css("--r3")];
+    for (let r = 0; r < 3; r++) for (let x = 0; x < 10; x++) if (fr[5][r * 10 + x] === "1") { g.fillStyle = rows[r]; g.fillRect(x * s + 1, (r + 1) * s + 2, s - 2, s - 4); }
+    if (ghost) { g.fillStyle = css("--ghost"); g.beginPath(); g.arc((fr[2] + .5) * s, (fr[3] + .5) * s, s * .3, 0, 7); g.fill(); }
+    g.fillStyle = css("--ball"); g.beginPath(); g.arc((fr[0] + .5) * s, (fr[1] + .5) * s, s * .32, 0, 7); g.fill();
+    g.fillStyle = css("--pad"); g.fillRect(fr[4] * s + 2, 9 * s + s * .3, s - 4, s * .45);
+  }
+  function render() {
+    const L = maxLen(); i = Math.min(i, L - 1); scrub.max = L - 1; scrub.value = i;
+    ARMS.forEach((a, k) => {
+      const F = DATA.clips[a.key][stage], j = Math.min(i, F.length - 1), fr = F[j];
+      draw(document.getElementById("c" + k), fr);
+      let bricks = 0, agree = 0, n = 0;
+      for (let t = 1; t <= j; t++) { const prev = F[t - 1][5], cur = F[t][5]; bricks += Math.max(0, [...prev].filter(c => c === "1").length - [...cur].filter(c => c === "1").length); }
+      for (let t = 0; t < Math.min(j, F.length - 1); t++) { n++; if (F[t][6] === F[t][7]) agree++; }
+      const end = F[F.length - 1], over = j === F.length - 1;
+      const status = over ? (end[8] ? `<span class="lost">ball lost at ${F.length - 1}</span>` : `<span>made it to ${F.length - 1}</span>`) : "";
+      document.getElementById("s" + k).innerHTML = `<span><b>${bricks}</b> bricks</span><span>coach ${n ? Math.round(100 * agree / n) : "–"}%</span>${status}`;
+    });
+    document.getElementById("clock").textContent = `moment ${i}`;
+    chips.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.stage === stage));
+  }
+  function loop(now) {
+    if (playing) {
+      acc += (now - last) * speed / 1000 * 4;
+      while (acc >= 1) { acc -= 1; i++; if (i >= maxLen() + 6) { i = 0; const k = stages.indexOf(stage); stage = stages[(k + 1) % stages.length]; } }
+      render();
+    }
+    last = now; requestAnimationFrame(loop);
+  }
+
+  // curves
+  const C = DATA.curves, n = C[ARMS[0].key].med.length;
+  const vw = 1000, vh = 320, pl = 44, pr = 14, pt = 14, pb = 36;
+  const hi = Math.ceil(Math.max(...ARMS.flatMap(a => C[a.key].q3)) / 2) * 2;
+  const X = k => pl + k / (n - 1) * (vw - pl - pr), Y = v => pt + (hi - v) / hi * (vh - pt - pb);
+  const path = a => a.map((v, k) => (k ? "L" : "M") + X(k).toFixed(1) + " " + Y(v).toFixed(1)).join("");
+  const band = (a, b) => path(a) + b.slice().reverse().map((v, k) => "L" + X(n - 1 - k).toFixed(1) + " " + Y(v).toFixed(1)).join("") + "Z";
+  let svg = `<svg viewBox="0 0 ${vw} ${vh}" role="img" aria-label="Median bricks per test game per block, six players">`;
+  for (let v = 0; v <= hi; v += 2) svg += `<line x1="${pl}" x2="${vw - pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="${v === 0 ? 1.4 : .6}"/><text x="${pl - 8}" y="${Y(v) + 4}" text-anchor="end" fill="var(--muted)" font-size="12" font-family="var(--mono)">${v}</text>`;
+  for (let k = 0; k < n; k += 5) svg += `<text x="${X(k)}" y="${vh - 14}" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="var(--mono)">${(k + 1)}k</text>`;
+  svg += `<text x="${vw - pr}" y="${vh - 14}" text-anchor="end" fill="var(--muted)" font-size="12" font-family="var(--mono)">training moments</text>`;
+  const xs = DATA.lastFrom; svg += `<rect x="${X(xs) - 6}" y="${pt}" width="${X(n - 1) - X(xs) + 12}" height="${vh - pt - pb}" fill="var(--fg)" opacity=".05"/><text x="${X(xs)}" y="${pt + 12}" fill="var(--muted)" font-size="12" font-family="var(--mono)">scored window</text>`;
+  for (const a of ARMS.slice().reverse()) {
+    if (a.band) svg += `<path d="${band(C[a.key].q1, C[a.key].q3)}" fill="var(${a.color})" opacity=".13"/>`;
+    svg += `<path d="${path(C[a.key].med)}" fill="none" stroke="var(${a.color})" stroke-width="${a.key === "pos32" ? 3 : 2}" stroke-linejoin="round"${a.dash ? ' stroke-dasharray="6 5"' : ""}/>`;
+  }
+  svg += "</svg>";
+  document.getElementById("chart").innerHTML = svg;
+  document.getElementById("legend").innerHTML = ARMS.map(a => `<span><i style="background:var(${a.color})"></i>${a.label}</span>`).join("") + `<span class="muted">median of 12 seeds · bands: middle half</span>`;
+
+  // paired dots
+  const P = DATA.pairs, pw = 1000, rowH = 54, ph = P.length * rowH + 46, ppl = 230, ppr = 20;
+  const all = P.flatMap(p => p.diff), m = Math.ceil(Math.max(1, ...all.map(Math.abs)));
+  const PX = v => ppl + (v + m) / (2 * m) * (pw - ppl - ppr);
+  let ps = `<svg viewBox="0 0 ${pw} ${ph}" role="img" aria-label="Per-seed difference in bricks per test game, with minus without the position term">`;
+  for (let v = -m; v <= m; v += (m > 4 ? 2 : 1)) ps += `<line x1="${PX(v)}" x2="${PX(v)}" y1="8" y2="${ph - 30}" stroke="var(--line)" stroke-width="${v === 0 ? 1.6 : .6}"/><text x="${PX(v)}" y="${ph - 10}" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="var(--mono)">${v > 0 ? "+" : ""}${v}</text>`;
+  P.forEach((p, r) => {
+    const y = 8 + r * rowH + rowH / 2;
+    ps += `<text x="${ppl - 14}" y="${y + 4}" text-anchor="end" fill="var(--fg)" font-size="14" font-family="var(--body)">${p.label}</text>`;
+    p.diff.forEach((d, k) => { ps += `<circle cx="${PX(d)}" cy="${y + ((k % 3) - 1) * 9}" r="6" fill="var(${d >= 0 ? "--pos" : "--nopos"})" opacity=".85"/>`; });
+    ps += `<line x1="${PX(p.median)}" x2="${PX(p.median)}" y1="${y - 20}" y2="${y + 20}" stroke="var(--fg)" stroke-width="3"/>`;
+  });
+  ps += "</svg>";
+  document.getElementById("pairs").innerHTML = ps;
+
+  // diagram (illustration)
+  const ages = [1, 2, 3, 4, 5, 6, 7, 8], content = [.55, .35, .5, .2, .45, .3, .6, .25], posb = [1.1, .25, 0, 0, 0, 0, 0, 0];
+  const dw = 640, dh = 210, bw = 56, x0 = 70, base = 150, sc = 70;
+  let dg = `<svg viewBox="0 0 ${dw} ${dh}" role="img" aria-label="Illustration: content match plus a learned bonus by age decides which past moment is read">`;
+  ages.forEach((a, k) => {
+    const x = x0 + k * (bw + 10);
+    dg += `<rect x="${x}" y="${base - content[k] * sc}" width="${bw}" height="${content[k] * sc}" fill="var(--nopos)" opacity=".75"/>`;
+    if (posb[k]) dg += `<rect x="${x}" y="${base - (content[k] + posb[k]) * sc}" width="${bw}" height="${posb[k] * sc}" fill="var(--pos)"/>`;
+    dg += `<text x="${x + bw / 2}" y="${base + 18}" text-anchor="middle" fill="var(--fg)" font-size="13" font-family="var(--mono)">${a}</text>`;
+  });
+  dg += `<text x="${x0 - 10}" y="${base + 18}" text-anchor="end" fill="var(--muted)" font-size="12" font-family="var(--mono)">age</text>`;
+  dg += `<rect x="${x0}" y="${base + 34}" width="12" height="12" fill="var(--nopos)" opacity=".75"/><text x="${x0 + 18}" y="${base + 44}" fill="var(--fg)" font-size="13" font-family="var(--body)">content match (what the moment looked like)</text>`;
+  dg += `<rect x="${x0 + 330}" y="${base + 34}" width="12" height="12" fill="var(--pos)"/><text x="${x0 + 348}" y="${base + 44}" fill="var(--fg)" font-size="13" font-family="var(--body)">learned bonus for its age (new)</text>`;
+  dg += `<text x="${x0}" y="22" fill="var(--muted)" font-size="12" font-family="var(--mono)">read weight on each remembered moment</text></svg>`;
+  document.getElementById("diagram").innerHTML = dg;
+
+  render(); requestAnimationFrame(loop);
+})();
+</script>
