@@ -39,3 +39,53 @@
 12:50:07 === leaving 1-1: capped; coach labels 3372, own rows 18632
 12:50:10   retention: 1-1 0/3 [898, 1128, 598]
 12:50:13 === 1-2 FIRST SIGHT x=[183, 184, 183] flags=0/3
+12:51:44   replayed 1-1: 318 decisions, x [722, 305, 722]
+12:53:18 1-2 r1: self-play 2722 decisions [(3, 323, False), (3, 677, False), (0, 184, False), (0, 355, False), (0, 173, False), (3, 678, False), (0, 904, False), (3, 178, False)]... +1760 own rows; coached 5 attempts +184 labels [(0, 180), (3, 484), (0, 182), (3, 183), (0, 180)]
+12:54:09   taught 1500 lessons (1944 rows here, replay 22004) agree ['0.32', '0.34', '0.31', '0.35'] 51s
+12:54:11 1-2 r1 SOLO x=[198, 196, 290] flags=0/3 median=198 practice 4 min  NEW BEST
+12:55:48   replayed 1-1: 314 decisions, x [297, 315, 687, 722]
+12:57:04 1-2 r2: self-play 2730 decisions [(0, 666, False), (0, 468, False), (0, 482, False), (0, 180, False), (0, 644, False), (0, 891, False), (0, 163, False), (0, 355, False)]... +1926 own rows; coached 5 attempts +190 labels [(0, 187), (31, 322), (0, 186), (51, 183), (0, 322)]
+12:57:58   taught 1500 lessons (4060 rows here, replay 22184) agree ['0.29', '0.27', '0.31', '0.27'] 54s
+12:58:01 1-2 r2 SOLO x=[482, 482, 177] flags=0/3 median=482 practice 8 min  NEW BEST
+12:58:02   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:59:40   replayed 1-1: 322 decisions, x [722, 722]
+13:00:32 1-2 r3: self-play 2788 decisions [(18, 663, False), (18, 664, False), (38, 852, False), (58, 677, False), (0, 355, False), (18, 941, False), (0, 181, False), (58, 354, False)]... +1685 own rows; coached 5 attempts +137 labels [(0, 187), (58, 186), (0, 187), (38, 354), (0, 176)]
+13:01:33   taught 1500 lessons (5882 rows here, replay 22389) agree ['0.31', '0.25', '0.28', '0.25'] 61s
+13:01:36 1-2 r3 SOLO x=[189, 322, 177] flags=0/3 median=189 practice 11 min
+13:01:38   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+13:03:29   replayed 1-1: 436 decisions, x [722, 287, 679, 723]
+13:05:09 1-2 r4: self-play 2732 decisions [(0, 658, False), (0, 873, False), (0, 355, False), (0, 174, False), (0, 177, False), (0, 892, False), (38, 662, False), (38, 354, False)]... +1946 own rows; coached 5 attempts +422 labels [(0, 354), (18, 258), (0, 482), (58, 354), (0, 324)]
+13:06:13   taught 1500 lessons (8250 rows here, replay 22604) agree ['0.29', '0.24', '0.28', '0.31'] 63s
+13:06:15 1-2 r4 SOLO x=[198, 196, 185] flags=0/3 median=196 practice 16 min
+13:06:15   rollback to the round-2 state (labels kept)
+13:06:17   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+13:08:02   replayed 1-1: 402 decisions, x [680, 899, 723]
+13:09:58 1-2 r5: self-play 2724 decisions [(18, 906, False), (0, 882, False), (0, 894, False), (58, 355, False), (0, 671, False), (0, 354, False), (58, 669, False), (58, 355, False)]... +1717 own rows; coached 5 attempts +307 labels [(0, 193), (38, 183), (0, 482), (18, 322), (0, 322)]
+13:10:53   taught 1500 lessons (10274 rows here, replay 22889) agree ['0.23', '0.24', '0.27', '0.26'] 55s
+13:10:55 1-2 r5 SOLO x=[210, 196, 260] flags=0/3 median=210 practice 21 min
+13:10:56   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+13:12:37   replayed 1-1: 315 decisions, x [898, 284, 680]
+13:14:03 1-2 r6: self-play 2784 decisions [(18, 354, False), (58, 677, False), (58, 355, False), (58, 354, False), (0, 453, False), (0, 893, False), (58, 354, False), (18, 665, False)]... +1714 own rows; coached 5 attempts +248 labels [(0, 183), (38, 323), (0, 387), (58, 657), (0, 186)]
+13:14:58   taught 1500 lessons (12236 rows here, replay 23150) agree ['0.27', '0.33', '0.27', '0.29'] 55s
+13:15:00 1-2 r6 SOLO x=[198, 196, 189] flags=0/3 median=196 practice 25 min
+13:15:00   rollback to the round-2 state (labels kept)
+13:15:01   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+13:16:48   replayed 1-1: 427 decisions, x [305, 289, 663, 309, 722]
+13:20:15 1-2 r7: self-play 2801 decisions [(58, 354, False), (38, 355, False), (38, 678, False), (0, 667, False), (0, 947, False), (0, 177, False), (38, 1193, False), (0, 166, False)]... +1919 own rows; coached 5 attempts +322 labels [(0, 258), (38, 354), (0, 188), (38, 482), (0, 482)]
+13:21:13   taught 1500 lessons (14477 rows here, replay 23372) agree ['0.28', '0.28', '0.27', '0.30'] 57s
+13:21:15 1-2 r7 SOLO x=[198, 196, 189] flags=0/3 median=196 practice 31 min
+13:21:16   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+13:22:51   replayed 1-1: 345 decisions, x [1438, 722]
+13:24:10 1-2 r8: self-play 2734 decisions [(0, 180, False), (0, 676, False), (0, 894, False), (0, 483, False), (0, 355, False), (38, 665, False), (38, 455, False), (0, 860, False)]... +1945 own rows; coached 5 attempts +284 labels [(0, 322), (18, 354), (0, 173), (38, 355), (0, 172)]
+13:25:04   taught 1500 lessons (16706 rows here, replay 23674) agree ['0.28', '0.29', '0.31', '0.31'] 54s
+13:25:06 1-2 r8 SOLO x=[198, 196, 189] flags=0/3 median=196 practice 35 min
+13:25:06   rollback to the round-2 state (labels kept)
+13:25:07   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+13:26:49   replayed 1-1: 323 decisions, x [898, 681, 306]
+13:27:40 1-2 r9: self-play 2799 decisions [(0, 673, False), (0, 184, False), (38, 354, False), (0, 652, False), (0, 354, False), (0, 354, False), (18, 856, False), (38, 483, False)]... +1861 own rows; coached 5 attempts +188 labels [(0, 173), (38, 354), (0, 184), (58, 354), (0, 193)]
+13:28:37   taught 1500 lessons (18755 rows here, replay 23942) agree ['0.27', '0.28', '0.25', '0.28'] 57s
+13:28:39 1-2 r9 SOLO x=[189, 188, 188] flags=0/3 median=188 practice 38 min
+13:28:39   leaving 1-2 with its best state (round 2)
+13:28:39 === leaving 1-2: capped; coach labels 2282, own rows 16473
+13:28:45   retention: 1-1 0/3 [303, 306, 302], 1-2 0/3 [482, 482, 177]
+13:28:47 === 1-3 FIRST SIGHT x=[311, 311, 311] flags=0/3
