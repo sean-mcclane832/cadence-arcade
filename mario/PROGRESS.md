@@ -90,3 +90,4 @@ headline. Page: docs/mario/levels/ (built by build_levels_page.py, clips by leve
 - 1-1 (pre-trained): first sight [594, 899, 434]; 9 rounds, 40 min, capped; best solo r6 [898, 1128, 598] (median 898; overnight r10 had 725). Coach labels 3,372, own rows 18,632.
 - 1-2: first sight [183, 184, 183]; 9 rounds, capped, 2 rollbacks; best solo r2 [482, 482, 177]. Retention after 1-2: 1-1 fell to [303, 306, 302] (from 898 median): strong forgetting with 10% old play.
 - 1-3: first sight [311, 311, 311]; 14 rounds, capped; best solo r14 [626, 746, 776] (median 746). Retention after 1-3: 1-1 [2020, 594, 594] (2,020 = furthest solo 1-1 yet), 1-2 [198, 196, 184].
+- 1-4: first sight [234, 234, 234]; capped; best solo r11 [551, 551, 551]. Retention after 1-4: 1-1 [695, 723, 696], 1-2 [198, 196, 189], 1-3 [420, 420, 420]. 2-1 first sight [322, 322, 322].
