@@ -28,9 +28,20 @@ possible (ideally the flag), with a replay page.
   (|grey - sky grey|, sky = 0) at 8x8 blocks makes answers screen-dependent; best was
   normalized + learning_surprise: 0.62 held-out (majority 0.58), train 0.74, ~0.12 s per lesson on
   one thread (7x faster).
-- [ ] Attempt 3 (running since 03:20, runs/main): 8x8 grey sky-distance, 1,664 inputs, 7 buttons,
-  teaching="normalized" + learning_surprise, uniform sampling, 3,000-5,000 lessons per round,
-  20 coach runs then DAgger rounds of 15 episodes. Deadline ~06:00.
+- [x] Attempt 3 (since 03:15, runs/main): 8x8 grey sky-distance, 1,664 inputs, 7 buttons,
+  teaching="normalized" + learning_surprise, uniform sampling, 3,000 lessons per round, 20 coach
+  runs then DAgger rounds of 15 episodes. Rounds 0-4: eval stuck at x 312.
+- [x] 03:54 resumed with cost-sensitive labels: the coach marks a label critical (weight 10) when
+  every other first button ends >50 px behind (usually: dies); lessons drawn by weight. 8 attempts
+  per round from the start, 7 from points along the coach path. Brain fits critical screens 88%.
+- [x] BUG found 04:12: pool workers cached the brain by path only, so every eval and DAgger attempt
+  used the first brain each worker loaded (eval flat at 306-312 for that reason). Fixed (reload on
+  mtime/size). Old evals flagged `eval_stale` in history.json; checkpoints re-measured fresh with
+  evalckpt.py: r03 median 312, r06 median 722 (best 898). First honest live eval, r07: 594 median.
+  DAgger labels collected before the fix are still valid coach labels, just less on-policy.
+  predict() is deterministic (same buttons on a rerun).
+- [ ] Training continues to ~05:52. assist.py (brain plays, coach rescues after a death/stall, exact
+  rewind by replaying buttons) on the r04 brain: flag, brain pressed 41.3%, 13 rescues.
 - [ ] Record the brain's run, build page, publish to docs/mario/.
 
 ## Doom precedent

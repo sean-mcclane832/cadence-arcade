@@ -39,16 +39,23 @@ def main():
     ap.add_argument("--start", type=int, default=None)
     ap.add_argument("--brain-live", action="store_true")
     ap.add_argument("--name", default="replay")
+    ap.add_argument("--assist", default=None, help="an assist.py JSON instead of an eval attempt")
     args = ap.parse_args()
     run = HERE / args.run
     hist = json.loads((run / "history.json").read_text())
     rnd = hist[args.round]
+    if "eval" not in rnd:
+        rnd = hist[args.round - 1]
     evals = rnd["eval"]
-    if args.start is None:
+    if args.assist:
+        pick = json.loads((HERE / args.assist).read_text())
+        pick["round"] = rnd["round"]
+    elif args.start is None:
         pick = max(evals, key=lambda e: (e["flag"], e["max_x"], -e["start"]))
     else:
         pick = next(e for e in evals if e["start"] == args.start)
     acts = pick["actions"]
+    who = pick.get("who", ["brain"] * len(acts))
 
     if args.brain_live:
         from cadence import Brain
@@ -64,15 +71,15 @@ def main():
 
     g = Game(noop_start=pick["start"])
     frames, per_frame = [], []
-    for a in acts:
+    for a, w in zip(acts, who):
         keep = []
         g.step(a, keep_frames=keep)
         for f in keep:
-            per_frame.append((a, int(g.env._x_position)))
+            per_frame.append((a, int(g.env._x_position), w))
             frames.append(f)
         if g.done:
             break
-    assert g.max_x == pick["max_x"] and g.flag == pick["flag"], (g.max_x, pick)
+    assert g.max_x == pick["max_x"] and g.flag == pick["flag"], (g.max_x, pick["max_x"], g.flag)
     g.close()
 
     out = (HERE / args.out).resolve()
@@ -98,7 +105,9 @@ def main():
                 decisions=pick["decisions"], fps=60 // EVERY, w=w, h=h, sheet=SHEET, sheets=sheets,
                 frames=len(kept), hold=hold,
                 button=[per_frame[fi][0] for fi in kept], x=[per_frame[fi][1] for fi in kept],
-                button_names=ACTION_NAMES)
+                button_names=ACTION_NAMES, who=[per_frame[fi][2] == "coach" for fi in kept],
+                assisted=bool(args.assist), rescues=pick.get("rescues", []),
+                brain_share=pick.get("brain_share", 1.0))
     (out / f"{args.name}.json").write_text(json.dumps(meta))
     total = sum((out / s).stat().st_size for s in sheets)
     print(f"round {rnd['round']} start {pick['start']} x {pick['max_x']} flag {pick['flag']}: "

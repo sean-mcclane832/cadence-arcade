@@ -27,6 +27,7 @@ from gym_super_mario_bros.smb_env import SuperMarioBrosEnv  # noqa: E402
 
 FRAMES = 4
 HORIZON = int(__import__("os").environ.get("MARIO_HORIZON", 16))
+CRITICAL_PX, CRITICAL_WEIGHT = 50.0, 10.0
 FAST_GAIN = 140  # px over HORIZON decisions; full speed is ~150-190
 # NES pad bits: right 0x80, left 0x40, down 0x20, up 0x10, start 0x08, select 0x04, B 0x02, A 0x01
 ACTIONS = [0x00, 0x80, 0x81, 0x82, 0x83, 0x01, 0x40]
@@ -143,6 +144,12 @@ class Game:
         return scores
 
     def coach(self) -> int:
+        return self.coach_weighted()[0]
+
+    def coach_weighted(self) -> tuple[int, float]:
+        """The coach's button and how much it matters. Weight CRITICAL_WEIGHT when the best plan
+        that starts with any OTHER button ends more than CRITICAL_PX behind (in practice: every
+        other first button dies), else 1. Fast-path running on open ground is weight 1."""
         # Fast path: if plain running survives the horizon at near full speed, run. (The full
         # menu prefers running within 2 px anyway; this only skips the search on open ground.)
         env = self.env
@@ -153,12 +160,16 @@ class Game:
         env._restore()
         env._time_last, env._x_position_last, env.done = saved
         if run >= 1e6 or (run > 0 and run - x0 >= FAST_GAIN):
-            return PLANS[0][0]
+            return PLANS[0][0], 1.0
         scores = self.coach_scores()
         best = scores.max()
         # the first plan (menu order) within 2 pixels of the best: run unless something is better
         i = int(np.flatnonzero(scores >= best - 2.0)[0])
-        return PLANS[i][0]
+        label = PLANS[i][0]
+        first = np.array([p[0] for p in PLANS])
+        other = scores[first != label]
+        alt = other.max() if len(other) else best
+        return label, (CRITICAL_WEIGHT if best - alt > CRITICAL_PX else 1.0)
 
     def close(self) -> None:
         self.env.close()

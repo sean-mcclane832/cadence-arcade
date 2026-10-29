@@ -64,11 +64,16 @@ def _worker_init():
 
 
 def _brain(path):
+    """The worker's copy of the brain, reloaded whenever the checkpoint file changes. (Until
+    04:15 on 2026-10-29 this keyed on the path alone, so pool workers kept the first brain they
+    loaded and every later eval/DAgger attempt played a stale brain; see PROGRESS.md.)"""
     global _BRAIN, _BRAIN_PATH
-    if path != _BRAIN_PATH:
+    st = os.stat(path)
+    key = (path, st.st_mtime_ns, st.st_size)
+    if key != _BRAIN_PATH:
         from cadence import Brain
         _BRAIN = Brain.load(path)
-        _BRAIN_PATH = path
+        _BRAIN_PATH = key
     return _BRAIN
 
 
@@ -83,12 +88,12 @@ def episode(task: dict) -> dict:
         if g.done:
             break
     brain = _brain(task["brain"]) if task["mode"] != "coach" else None
-    obs, labels, acts = [], [], []
+    obs, labels, acts, weights = [], [], [], []
     label_on = task.get("label", True)
     t0 = time.time()
     while not g.done and g.decisions < MAX_DECISIONS and g.stuck < STUCK:
         o = g.observation()
-        lab = g.coach() if label_on else -1
+        lab, wt = g.coach_weighted() if label_on else (-1, 0.0)
         if task["mode"] == "coach":
             a = lab if rng.random() >= task.get("eps", 0.0) else int(rng.integers(7))
         else:
@@ -96,6 +101,7 @@ def episode(task: dict) -> dict:
         if label_on:
             obs.append(np.round(o * 255).astype(np.uint8))
             labels.append(lab)
+            weights.append(wt)
         acts.append(a)
         g.step(a)
     out = dict(task={k: v for k, v in task.items() if k != "prefix"}, prefix_len=len(task.get("prefix", [])),
@@ -104,16 +110,18 @@ def episode(task: dict) -> dict:
     if label_on:
         out["obs"] = np.array(obs, dtype=np.uint8).reshape(-1, N_IN_())
         out["labels"] = np.array(labels, dtype=np.int64)
+        out["weights"] = np.array(weights, dtype=np.float64)
     g.close()
     return out
 
 
 # ---------------------------------------------------------------------------------- training
-def teach(brain, X, y, passes: float, rng, log) -> dict:
-    """Shuffled 32-row lessons drawn uniformly from the whole set. (Up-weighting rare buttons made
-    the readout swing between whole classes in the first attempt.)"""
+def teach(brain, X, y, passes: float, rng, log, W=None) -> dict:
+    """Shuffled 32-row lessons over the whole set, drawn in proportion to the coach's weights
+    (critical moments x10, see Game.coach_weighted; uniform when W is None). (Up-weighting rare
+    BUTTONS made the readout swing between whole classes in the first attempt.)"""
     n = len(y)
-    w = None
+    w = None if W is None else W / W.sum()
     lessons = int(np.clip(np.ceil(passes * n / 32), MIN_LESSONS, MAX_LESSONS))
     t = time.time()
     agree = []
@@ -167,12 +175,13 @@ def main() -> None:
     if args.resume and data_p.exists():
         d = np.load(data_p)
         X, y = d["X"], d["y"]
+        W = d["W"] if "W" in d.files else np.ones(len(y))
         brain = Brain.load(brain_p)
         coach_paths = {int(k): v for k, v in json.loads((out / "coach_paths.json").read_text()).items()}
         rnd = history[-1]["round"]
         log(f"resumed: {len(y)} samples, round {rnd}")
         if args.extra_teach:
-            rep = teach(brain, X, y, args.passes, rng, log)
+            rep = teach(brain, X, y, args.passes, rng, log, W)
             brain.save(brain_p)
             history[-1].setdefault("extra_teach", []).append(rep)
     else:
@@ -183,6 +192,7 @@ def main() -> None:
         t = time.time()
         res = pool.map(episode, tasks, chunksize=1)
         X = np.concatenate([r["obs"] for r in res]); y = np.concatenate([r["labels"] for r in res])
+        W = np.concatenate([r["weights"] for r in res])
         for r in res:
             if r["task"]["eps"] == 0.0 and r["flag"]:
                 coach_paths[r["task"]["start"]] = r["actions"]
@@ -190,12 +200,11 @@ def main() -> None:
         summ = [(r["task"]["start"], r["task"]["eps"], r["max_x"], r["flag"]) for r in res]
         log(f"round 0 coach: {len(y)} samples in {time.time() - t:.0f}s; runs {summ}")
         log(f"  label counts {np.bincount(y, minlength=7).tolist()}")
-        np.savez(data_p, X=X, y=y)  # save before teaching, so a stop never loses coach labels
+        np.savez(data_p, X=X, y=y, W=W)  # save before teaching, so a stop never loses coach labels
         os.environ["NUMBA_NUM_THREADS"] = str(args.workers)
         brain = compose_brain(args.seed, args.hidden)
-        rep = teach(brain, X, y, args.passes, rng, log)
+        rep = teach(brain, X, y, args.passes, rng, log, W)
         brain.save(brain_p)
-        np.savez(data_p, X=X, y=y)
         rnd = 0
         history.append(dict(round=0, samples=int(len(y)), teach=rep))
 
@@ -215,9 +224,9 @@ def main() -> None:
         rnd += 1
         # DAgger: the brain plays, the coach labels what it saw
         tasks = [dict(mode="brain", start=int(s), brain=str(brain_p), seed=rnd * 1000 + i)
-                 for i, s in enumerate(rng.integers(0, 32, 4))]
+                 for i, s in enumerate(rng.integers(0, 32, 8))]
         starts = sorted(coach_paths)
-        for i in range(11):
+        for i in range(7):
             s = starts[int(rng.integers(len(starts)))]
             path = coach_paths[s]
             k = int(rng.integers(0, max(1, len(path) - 10)))
@@ -226,16 +235,15 @@ def main() -> None:
         res = pool.map(episode, tasks, chunksize=1)
         Xn = np.concatenate([r["obs"] for r in res if len(r["labels"])])
         yn = np.concatenate([r["labels"] for r in res if len(r["labels"])])
+        Wn = np.concatenate([r["weights"] for r in res if len(r["labels"])])
         own_agree = float(np.mean([np.mean(np.array(r["actions"]) == r["labels"]) for r in res if len(r["labels"])]))
-        X = np.concatenate([X, Xn]); y = np.concatenate([y, yn])
-        np.savez(data_p, X=X, y=y)
+        X = np.concatenate([X, Xn]); y = np.concatenate([y, yn]); W = np.concatenate([W, Wn])
+        np.savez(data_p, X=X, y=y, W=W)
         log(f"round {rnd} dagger: +{len(yn)} samples ({len(y)} total) in {time.time() - t:.0f}s; "
             f"brain agreed with coach on its own path {own_agree:.3f}; reached "
-            f"{[(r['prefix_len'], r['max_x'], r['flag']) for r in res]}")
-        os.environ["NUMBA_NUM_THREADS"] = str(args.workers)
-        rep = teach(brain, X, y, args.passes, rng, log)
+            f"{[(r['prefix_len'], r['max_x'], r['flag']) for r in res]}; critical {int((Wn > 1).sum())}")
+        rep = teach(brain, X, y, args.passes, rng, log, W)
         brain.save(brain_p)
-        np.savez(data_p, X=X, y=y)
         history.append(dict(round=rnd, samples=int(len(y)), new=int(len(yn)), own_agree=own_agree,
                             teach=rep, dagger=[dict(start=r["task"]["start"], prefix=r["prefix_len"],
                                                     max_x=r["max_x"], flag=r["flag"]) for r in res]))

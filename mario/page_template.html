@@ -31,6 +31,11 @@
   .prog { position: relative; height: 10px; background: #1b1f26; border-radius: 5px; margin: 12px auto 0; max-width: 512px; }
   .prog .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 5px; }
   .prog .flag { position: absolute; right: 0; top: -5px; font-size: 11px; color: var(--good); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+  .player { position: relative; }
+  .badge { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); z-index: 2; font-family: "Silkscreen", monospace; font-size: 13px; letter-spacing: .08em; padding: 2px 10px; border-radius: 4px; background: var(--good); color: #0b0d10; }
+  .badge.coach { background: var(--bad); color: #fff; }
+  .tabnote { font-size: 13px; color: var(--dim); margin: 8px 0 0; }
   .readout { text-align: center; font-size: 12px; color: var(--dim); margin-top: 6px; }
   svg { width: 100%; height: auto; display: block; }
   svg .grid { stroke: var(--line); } svg .tick { fill: var(--dim); font: 11px "JetBrains Mono", monospace; }
@@ -54,7 +59,9 @@
   <p class="sub" id="lede-sub"></p>
   <p id="lede"></p>
 
+  <div class="tabs" id="tabs"></div>
   <div class="player">
+    <div class="badge" id="badge">BRAIN</div>
     <canvas id="screen" width="256" height="240" aria-label="Replay of the Cadence brain playing World 1-1"></canvas>
     <div class="pad" aria-label="buttons the brain is holding">
       <span class="key" data-k="left">&larr;</span><span class="key" data-k="right">&rarr;</span>
@@ -62,6 +69,7 @@
     </div>
     <div class="prog"><div class="fill" id="fill"></div><span class="flag">&#9873;</span></div>
     <div class="readout" id="readout">loading frames...</div>
+    <div class="tabnote" id="tabnote"></div>
     <div class="controls">
       <button id="play">pause</button>
       <button data-speed="0.5">0.5x</button><button data-speed="1" class="on">1x</button><button data-speed="2">2x</button>
@@ -122,14 +130,15 @@ for (const r of D.rows) {
 (function () {
   const W = 640, H = 300, L = 48, R = 12, Tp = 12, B = 40;
   const c = D.curve, n = Math.max(1, c.length - 1), ymax = 3300;
-  const X = (i) => L + (W - L - R) * (c.length === 1 ? 0.5 : i / n);
+  const r0 = c[0].round, r1 = c[c.length - 1].round;
+  const X = (i) => L + (W - L - R) * (r1 === r0 ? 0.5 : (c[i].round - r0) / (r1 - r0));
   const Y = (v) => Tp + (H - Tp - B) * (1 - v / ymax);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="farthest x per round">`;
   for (const v of [0, 500, 1000, 1500, 2000, 2500, 3000]) s += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${L - 6}" y="${Y(v) + 4}" class="tick" text-anchor="end">${v}</text>`;
   s += `<line x1="${L}" x2="${W - R}" y1="${Y(D.flag_x)}" y2="${Y(D.flag_x)}" stroke="var(--good)" stroke-dasharray="4 4"/>`;
   const step = Math.max(1, Math.ceil(c.length / 12));
   c.forEach((p, i) => { if (i % step === 0 || i === c.length - 1) s += `<text x="${X(i)}" y="${H - B + 16}" class="tick" text-anchor="middle">${p.round}</text>`; });
-  s += `<text x="${(L + W - R) / 2}" y="${H - 6}" class="tick" text-anchor="middle">round (0 = after watching the coach only)</text>`;
+  s += `<text x="${(L + W - R) / 2}" y="${H - 6}" class="tick" text-anchor="middle">DAgger round (one brain, measured after each round)</text>`;
   c.forEach((p, i) => p.xs.forEach((v, j) => { s += `<circle cx="${X(i) + (j - 2) * 2.2}" cy="${Y(v)}" r="2.6" fill="#8a8f98" opacity=".75"/>`; }));
   const med = c.map((p, i) => [X(i), Y([...p.xs].sort((a, b) => a - b)[2])]);
   s += `<polyline fill="none" stroke="var(--accent)" stroke-width="2.4" points="${med.map(q => q.join(",")).join(" ")}"/>`;
@@ -139,19 +148,28 @@ for (const r of D.rows) {
 
 // ---- replay
 (function () {
-  const R = D.replay, cv = $("#screen"), ctx = cv.getContext("2d");
-  const imgs = R.sheets.map((n) => { const im = new Image(); im.src = n; return im; });
-  let loaded = 0, i = 0, playing = true, speed = 1, acc = 0, last = null;
-  const per = R.sheet * R.sheet, scrub = $("#scrub"); scrub.max = R.frames - 1;
+  const cv = $("#screen"), ctx = cv.getContext("2d");
+  let R = null, imgs = [], loaded = 0, i = 0, playing = true, speed = 1, acc = 0, last = null;
+  const scrub = $("#scrub");
   const bits = { 0: [], 1: ["right"], 2: ["right", "A"], 3: ["right", "B"], 4: ["right", "A", "B"], 5: ["A"], 6: ["left"] };
   const keys = [...document.querySelectorAll(".key")];
+  function load(k) {
+    R = D.replays[k]; loaded = 0; i = 0; acc = 0;
+    scrub.max = R.frames - 1;
+    imgs = R.sheets.map((n) => { const im = new Image(); im.onload = () => { loaded++; if (loaded === imgs.length) draw(); else $("#readout").textContent = `loading frames ${loaded}/${imgs.length}`; }; im.src = n; return im; });
+    document.querySelectorAll("#tabs button").forEach((b, j) => b.classList.toggle("on", j === k));
+    $("#tabnote").innerHTML = R.note;
+  }
   function draw() {
-    const s = Math.floor(i / per), j = i % per, r = Math.floor(j / R.sheet), c = j % R.sheet;
+    const per = R.sheet * R.sheet, s = Math.floor(i / per), j = i % per, r = Math.floor(j / R.sheet), c = j % R.sheet;
     ctx.drawImage(imgs[s], c * R.w, r * R.h, R.w, R.h, 0, 0, R.w, R.h);
     const b = bits[R.button[i]] || [];
     keys.forEach((k) => k.classList.toggle("lit", b.includes(k.dataset.k)));
+    const coach = R.who && R.who[i];
+    const bd = $("#badge"); bd.textContent = coach ? "COACH DRIVING" : "BRAIN DRIVING"; bd.classList.toggle("coach", !!coach);
     const x = R.x[i];
     $("#fill").style.width = Math.min(100, 100 * x / D.flag_x) + "%";
+    $("#fill").style.background = coach ? "var(--bad)" : "var(--accent)";
     const t = (Math.min(i, R.frames - 1 - R.hold) / R.fps).toFixed(1);
     const end = i >= R.frames - R.hold ? (R.flag ? "  FLAG!" : "  (attempt ends)") : "";
     $("#readout").textContent = `x ${x} / ${D.flag_x}   t ${t}s   button: ${R.button_names[R.button[i]]}${end}`;
@@ -159,20 +177,21 @@ for (const r of D.rows) {
   }
   function tick(ts) {
     if (last === null) last = ts;
-    const dt = (ts - last) / 1000; last = ts;
-    if (playing && loaded === imgs.length) {
+    const dt = Math.min(0.1, (ts - last) / 1000); last = ts;
+    if (playing && R && loaded === imgs.length) {
       acc += dt * R.fps * speed;
       while (acc >= 1) { acc -= 1; i = (i + 1) % R.frames; }
       draw();
     }
     requestAnimationFrame(tick);
   }
-  imgs.forEach((im) => im.onload = () => { loaded++; if (loaded === imgs.length) { draw(); } else $("#readout").textContent = `loading frames ${loaded}/${imgs.length}`; });
+  D.replays.forEach((r, k) => { const b = document.createElement("button"); b.textContent = r.label; b.onclick = () => load(k); $("#tabs").appendChild(b); });
   $("#play").onclick = () => { playing = !playing; $("#play").textContent = playing ? "pause" : "play"; };
   document.querySelectorAll("[data-speed]").forEach((b) => b.onclick = () => {
     speed = +b.dataset.speed; document.querySelectorAll("[data-speed]").forEach((o) => o.classList.toggle("on", o === b));
   });
-  scrub.oninput = () => { i = +scrub.value; if (loaded === imgs.length) draw(); };
+  scrub.oninput = () => { i = +scrub.value; if (R && loaded === imgs.length) draw(); };
+  load(0);
   requestAnimationFrame(tick);
 })();
 </script>
