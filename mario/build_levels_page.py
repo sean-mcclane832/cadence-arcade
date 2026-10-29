@@ -116,19 +116,19 @@ def main():
         cells = "".join(f'<td class="n">{int(m[k]):,}</td>' if k in m else '<td class="n dim">-</td>' for k, _ in BASE_KEYS)
         fs_rows.append(f"<tr><td>{nm}</td>{fs_cell(B, nm)}{fs_cell(A, nm)}{cells}</tr>")
 
-    def clr(r):
+    def clr(r, stopped=False):
         if r is None:
             return '<td class="dim">-</td>'
         if r["cleared"]:
             c = r["cleared"]
             return f'<td><span class="ok">yes</span> {"first sight" if c["round"] == 0 else "r" + str(c["round"])} {html.escape(c["date"][11:])}</td>'
         if r["current"] and not r["capped"]:
-            return '<td class="dim">practising</td>'
+            return '<td class="dim">stopped</td>' if stopped else '<td class="dim">practising</td>'
         return '<td><span class="no">no</span></td>'
 
     pr_rows = "".join(
-        f'<tr><td>{nm}</td><td class="n">{(str(format(B[nm]["best_med"], ",")) if nm in B else "-")}</td>{clr(B.get(nm))}'
-        f'<td class="n">{(str(format(A[nm]["best_med"], ",")) if nm in A else "-")}</td>{clr(A.get(nm))}</tr>' for nm in names)
+        f'<tr><td>{nm}</td><td class="n">{(str(format(B[nm]["best_med"], ",")) if nm in B else "-")}</td>{clr(B.get(nm), True)}'
+        f'<td class="n">{(str(format(A[nm]["best_med"], ",")) if nm in A else "-")}</td>{clr(A.get(nm), True)}</tr>' for nm in names)
 
     def coach_rows(rows):
         return "".join(

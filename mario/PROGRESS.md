@@ -121,3 +121,9 @@ the best baseline on no new level.
 - 1-2 (senses): first sight [198, 196, 189]; 6 rounds capped, never beat round 0 (best state = the one it arrived with); retention 1-1 [594, 594, 596] kept.
 - 1-3 (senses): first sight [321x3] (= always-run); capped; best r5 [419x3]. Retention: 1-1 fell to [316x3] (from 594), 1-2 [198, 258, 260]. 1-4 first sight [234x3].
 - 1-4 (senses): first sight [234x3]; capped, never beat round 0. 2-1 first sight [324x3].
+- 2-1 (senses): first sight [324x3]; 6 rounds to 19:28 deadline; best r2 [338x3]; from r4 the
+  brain stood still (x 40) even after a rollback. Job ended 19:28 (EXIT 0, no worker failures all day).
+
+### Summary 2026-10-29
+First sight never beat the best baseline on a new level, blind or with new senses. No solo
+clears. Retention poor in both. The new senses did not help within 40 min per level from scratch.
