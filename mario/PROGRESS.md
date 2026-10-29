@@ -14,7 +14,23 @@ possible (ideally the flag), with a replay page.
 - [x] Baselines (random 594 median x, always-run 312, jump rhythm 311; 0 flags).
 - [x] Round 0 (3,259 coach screens, 306 lessons): brain only runs, dies at first Goomba (x 312).
   Raised lessons to 2,000-4,000 per round, resumed with --resume --extra-teach at 02:11.
-- [ ] (running, runs/main/log.txt) Imitation (teaching="normalized", 32-row lessons) + DAgger rounds on the brain's own path.
+- [x] Attempt 1 (grey 4x4 blocks, 6,656 inputs, 7 buttons, rare buttons up-weighted): training
+  agreement stuck at ~0.65 = the "run" share; brain always runs, dies at the first Goomba (x 312)
+  after 2 DAgger rounds. A backprop MLP on the same screens: 0.73 held-out. Kept in
+  runs/attempt1_grey7.
+- [x] Two-button coach (run / run+jump only) tested: cannot clear 1-1 (dies x 1221 / 2386, gets
+  stuck at 435 with a longer horizon), because Mario sometimes has to wait or back off. Dropped.
+- [x] Attempt 2 (colour 8x8 blocks): readout swung between "all run" and "all run+jump"
+  (agreement 0.70 <-> 0.23). Stopped; its coach screens were lost (train.py saved data only after
+  teaching; fixed: data is now saved right after collection).
+- [x] Sweep (sweep.py, attempt-1 screens, held-out = later coach runs): with raw [0,1] pixels every
+  teaching setting answers ONE button for every screen (input-independent). Sky-distance input
+  (|grey - sky grey|, sky = 0) at 8x8 blocks makes answers screen-dependent; best was
+  normalized + learning_surprise: 0.62 held-out (majority 0.58), train 0.74, ~0.12 s per lesson on
+  one thread (7x faster).
+- [ ] Attempt 3 (running since 03:20, runs/main): 8x8 grey sky-distance, 1,664 inputs, 7 buttons,
+  teaching="normalized" + learning_surprise, uniform sampling, 3,000-5,000 lessons per round,
+  20 coach runs then DAgger rounds of 15 episodes. Deadline ~06:00.
 - [ ] Record the brain's run, build page, publish to docs/mario/.
 
 ## Doom precedent

@@ -36,13 +36,14 @@ sys.path.insert(0, str(HERE))
 EVAL_STARTS = (0, 5, 11, 17, 23)
 MAX_DECISIONS = int(os.environ.get("MARIO_MAX_DECISIONS", 700))
 STUCK = 40
-MIN_LESSONS = int(os.environ.get("MARIO_MIN_LESSONS", 2000))
-MAX_LESSONS = int(os.environ.get("MARIO_MAX_LESSONS", 4000))
+MIN_LESSONS = int(os.environ.get("MARIO_MIN_LESSONS", 3000))
+MAX_LESSONS = int(os.environ.get("MARIO_MAX_LESSONS", 5000))
 
 
 def compose_brain(seed: int, hidden: int):
     from cadence import Brain
-    return Brain.compose(N_IN_(), 7, modules=(hidden,), seed=seed, teaching="normalized")
+    return Brain.compose(N_IN_(), 7, modules=(hidden,), seed=seed, teaching="normalized",
+                         learning_surprise=True)
 
 
 def N_IN_():
@@ -109,11 +110,10 @@ def episode(task: dict) -> dict:
 
 # ---------------------------------------------------------------------------------- training
 def teach(brain, X, y, passes: float, rng, log) -> dict:
-    """Shuffled 32-row lessons over the whole set, with rare buttons up-weighted (1/sqrt freq)."""
+    """Shuffled 32-row lessons drawn uniformly from the whole set. (Up-weighting rare buttons made
+    the readout swing between whole classes in the first attempt.)"""
     n = len(y)
-    freq = np.bincount(y, minlength=7).astype(float)
-    w = 1.0 / np.sqrt(np.maximum(freq[y], 1.0))
-    w /= w.sum()
+    w = None
     lessons = int(np.clip(np.ceil(passes * n / 32), MIN_LESSONS, MAX_LESSONS))
     t = time.time()
     agree = []
@@ -178,7 +178,8 @@ def main() -> None:
     else:
         # round 0: coach demonstrations
         tasks = [dict(mode="coach", start=s, eps=0.0, seed=s) for s in (0, 3, 8, 13, 20, 27)]
-        tasks += [dict(mode="coach", start=s, eps=0.12, seed=100 + s) for s in (1, 6, 15, 24, 30, 2)]
+        tasks += [dict(mode="coach", start=s, eps=0.12, seed=100 + s) for s in (1, 6, 15, 24, 30, 2, 9, 18)]
+        tasks += [dict(mode="coach", start=s, eps=0.25, seed=200 + s) for s in (4, 10, 16, 22, 28, 31)]
         t = time.time()
         res = pool.map(episode, tasks, chunksize=1)
         X = np.concatenate([r["obs"] for r in res]); y = np.concatenate([r["labels"] for r in res])
@@ -189,6 +190,7 @@ def main() -> None:
         summ = [(r["task"]["start"], r["task"]["eps"], r["max_x"], r["flag"]) for r in res]
         log(f"round 0 coach: {len(y)} samples in {time.time() - t:.0f}s; runs {summ}")
         log(f"  label counts {np.bincount(y, minlength=7).tolist()}")
+        np.savez(data_p, X=X, y=y)  # save before teaching, so a stop never loses coach labels
         os.environ["NUMBA_NUM_THREADS"] = str(args.workers)
         brain = compose_brain(args.seed, args.hidden)
         rep = teach(brain, X, y, args.passes, rng, log)
@@ -213,9 +215,9 @@ def main() -> None:
         rnd += 1
         # DAgger: the brain plays, the coach labels what it saw
         tasks = [dict(mode="brain", start=int(s), brain=str(brain_p), seed=rnd * 1000 + i)
-                 for i, s in enumerate(rng.integers(0, 32, 3))]
+                 for i, s in enumerate(rng.integers(0, 32, 4))]
         starts = sorted(coach_paths)
-        for i in range(6):
+        for i in range(11):
             s = starts[int(rng.integers(len(starts)))]
             path = coach_paths[s]
             k = int(rng.integers(0, max(1, len(path) - 10)))
@@ -226,6 +228,7 @@ def main() -> None:
         yn = np.concatenate([r["labels"] for r in res if len(r["labels"])])
         own_agree = float(np.mean([np.mean(np.array(r["actions"]) == r["labels"]) for r in res if len(r["labels"])]))
         X = np.concatenate([X, Xn]); y = np.concatenate([y, yn])
+        np.savez(data_p, X=X, y=y)
         log(f"round {rnd} dagger: +{len(yn)} samples ({len(y)} total) in {time.time() - t:.0f}s; "
             f"brain agreed with coach on its own path {own_agree:.3f}; reached "
             f"{[(r['prefix_len'], r['max_x'], r['flag']) for r in res]}")

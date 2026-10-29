@@ -5,8 +5,8 @@ the pip package; no ROM bytes live in this repo). One decision holds a button co
 FRAMES emulator frames.
 
 What the brain sees (`Game.observation`): the playfield below the score bar, grey, averaged in
-4 x 4 blocks to 52 x 64, for the present frame and the frame of the previous decision. 6,656 numbers
-in [0, 1]. Nothing else: no RAM, no positions, no enemy list.
+8 x 8 pixel blocks to 26 x 32, as distance from the sky's grey, for the present frame and the frame
+of the previous decision. 1,664 numbers in [0, 1]. Nothing else: no RAM, no positions, no enemy list.
 
 The coach (`Game.coach`) is NOT a learner. At every decision it saves the emulator, tries a fixed
 menu of short button plans (run, run-jump of several heights, wait, back off...) for HORIZON
@@ -26,14 +26,15 @@ warnings.filterwarnings("ignore", message=".*Gym has been unmaintained.*")
 from gym_super_mario_bros.smb_env import SuperMarioBrosEnv  # noqa: E402
 
 FRAMES = 4
-HORIZON = 16
+HORIZON = int(__import__("os").environ.get("MARIO_HORIZON", 16))
 FAST_GAIN = 140  # px over HORIZON decisions; full speed is ~150-190
 # NES pad bits: right 0x80, left 0x40, down 0x20, up 0x10, start 0x08, select 0x04, B 0x02, A 0x01
 ACTIONS = [0x00, 0x80, 0x81, 0x82, 0x83, 0x01, 0x40]
 ACTION_NAMES = ["noop", "right", "right+jump", "run", "run+jump", "jump", "left"]
 N_ACTIONS = len(ACTIONS)
-TOP, ROWS, COLS, BLOCK = 32, 52, 64, 4
+TOP, ROWS, COLS, BLOCK = 32, 26, 32, 8
 N_FRAME = ROWS * COLS
+SKY = (0.299 * 92 + 0.587 * 148 + 0.114 * 252) / 255.0  # grey level of the 1-1 sky
 N_IN = 2 * N_FRAME
 LEVEL_END = 3161  # x of the flagpole in 1-1 (approx; the flag flag is what counts)
 
@@ -61,11 +62,14 @@ PLANS = _plans()
 
 
 def frame_features(screen: np.ndarray) -> np.ndarray:
-    """240 x 256 x 3 uint8 screen -> 52 x 64 grey blocks in [0, 1] (flattened)."""
+    """240 x 256 x 3 uint8 screen -> 26 x 32 grey blocks (8 x 8 px each), as distance from the sky
+    grey, flattened. Sky reads 0 and things (ground, pipes, Goombas, Mario) light up, the way an
+    Atari screen is mostly black. Raw [0, 1] pixels on a bright sky gave a brain whose answer did
+    not depend on the screen at all (sweep.py)."""
     s = screen[TOP:TOP + ROWS * BLOCK].astype(np.float32)
-    grey = s[..., 0] * 0.299 + s[..., 1] * 0.587 + s[..., 2] * 0.114
+    grey = (s[..., 0] * 0.299 + s[..., 1] * 0.587 + s[..., 2] * 0.114) / 255.0
     blocks = grey.reshape(ROWS, BLOCK, COLS, BLOCK).mean(axis=(1, 3))
-    return (blocks / 255.0).reshape(-1)
+    return np.abs(blocks - SKY).reshape(-1)
 
 
 class Game:

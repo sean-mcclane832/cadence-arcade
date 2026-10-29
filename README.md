@@ -107,3 +107,41 @@ $PY identity.py                                               # reward-only chec
 $PY summarize.py                                              # table + paired tests -> runs/summary.json
 $PY build_page.py page/one-frame-breakout.html                # single-file replay page (prose in page_text.json)
 ```
+
+# mario/: Super Mario Bros. World 1-1, one Cadence brain
+
+One Cadence brain (cadence-net 0.91.1, founder seed 0, one region of 256 neurons) learns to play
+World 1-1 of the real NES game from the screen: 26 x 32 colour blocks of the present frame and of the
+frame one decision ago, 7 buttons (noop, right, right+jump, run, run+jump, jump, left), 4 frames
+per decision. It learns by imitation from a look-ahead coach that tries button plans in a saved
+emulator, then by DAgger: the brain plays, its own buttons are executed, and the coach labels every
+screen it reached (the recipe in Cadence's [teach guide](https://github.com/muellerberndt/cadence/blob/main/docs/teach.md#teach-on-the-brains-own-path)).
+It is one brain, trained once and continued round after round, not an average over seeds. Page:
+https://sean-mcclane832.github.io/cadence-arcade/mario/ . Progress notes in `mario/PROGRESS.md`.
+
+- `mario/game.py`: the body (nes-py), the brain's view, and the coach.
+- `mario/train.py`: coach demos, then DAgger rounds; checkpoints and `history.json` in `runs/main`.
+- `mario/baselines.py`: random, always-run, jump rhythm, and an MLP on the brain's final data set.
+- `mario/record.py` + `mario/build_page.py` + `mario/page_template.html` + `mario/page_text.json`:
+  real frames of the brain's best eval attempt (replayed from its stored buttons, checked to end at
+  the same x) and the page.
+
+### Rerun (Windows; nes-py needs a C++ compiler)
+
+```bat
+:: once, in a "x64 Native Tools" prompt or after vcvars64.bat (MSVC 2019 Build Tools work):
+set DISTUTILS_USE_SDK=1 & set MSSdk=1
+uv venv --python 3.11 .venv-mario
+uv pip install --python .venv-mario\Scripts\python.exe "cadence-net[fast]==0.91.1" "numpy<2" pillow setuptools wheel
+uv pip install --python .venv-mario\Scripts\python.exe --no-build-isolation-package nes-py nes-py gym-super-mario-bros
+```
+
+```bash
+cd mario; PY=../.venv-mario/Scripts/python.exe
+$PY train.py --out runs/main --hours 3 --workers 5     # one brain; --resume continues it
+$PY baselines.py --out runs/baselines.json --mlp runs/main
+$PY record.py --run runs/main --out ../docs/mario --brain-live
+$PY build_page.py --run runs/main --baselines runs/baselines.json --out ../docs/mario
+```
+
+No ROM is in this repo: gym-super-mario-bros installs its own copy, and `*.nes` is git-ignored.
