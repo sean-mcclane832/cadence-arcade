@@ -3,3 +3,6 @@ __pycache__/
 .venv/
 runs/tmp/
 .venv*/
+mario/runs/**/*.npz
+mario/runs/*_stdout.txt
+*.nes

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mario 1-1</title>
+<meta name="description" content="One Cadence brain plays Super Mario Bros. World 1-1 from the screen. Real NES frames of its run, its learning curve, and the honest caveats.">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root { --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; --good: #7bd88f; --bad: #ff6b6b; --panel: #12151a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 40px 16px; }
+  main { max-width: 720px; margin: 0 auto; }
+  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 26px; letter-spacing: .06em; margin: 0 0 6px; }
+  h2 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 16px; letter-spacing: .05em; margin: 34px 0 10px; }
+  .sub, .dim { color: var(--dim); }
+  .sub { font-size: 13px; margin: 0 0 22px; }
+  a { color: var(--accent); }
+  .player { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+  canvas#screen { width: 100%; max-width: 512px; aspect-ratio: 256 / 240; display: block; margin: 0 auto; image-rendering: pixelated; background: #000; border-radius: 4px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 10px auto 0; max-width: 512px; font-size: 13px; }
+  button { font: inherit; font-size: 13px; color: var(--fg); background: #1b1f26; border: 1px solid var(--line); border-radius: 5px; padding: 4px 10px; cursor: pointer; }
+  button:hover { border-color: var(--accent); } button.on { border-color: var(--accent); color: var(--accent); }
+  input[type=range] { flex: 1 1 160px; accent-color: var(--accent); }
+  .pad { display: flex; gap: 6px; align-items: center; justify-content: center; margin: 10px auto 0; font-size: 12px; }
+  .key { min-width: 34px; text-align: center; padding: 3px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--dim); }
+  .key.lit { color: #111; background: var(--accent); border-color: var(--accent); }
+  .prog { position: relative; height: 10px; background: #1b1f26; border-radius: 5px; margin: 12px auto 0; max-width: 512px; }
+  .prog .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 5px; }
+  .prog .flag { position: absolute; right: 0; top: -5px; font-size: 11px; color: var(--good); }
+  .readout { text-align: center; font-size: 12px; color: var(--dim); margin-top: 6px; }
+  svg { width: 100%; height: auto; display: block; }
+  svg .grid { stroke: var(--line); } svg .tick { fill: var(--dim); font: 11px "JetBrains Mono", monospace; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--dim); margin: 8px 0 0; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--dim); font-weight: 400; }
+  tr.me td { color: var(--accent); }
+  ul, ol { padding-left: 20px; } li { margin: 6px 0; }
+  .callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; margin: 16px 0; }
+  code { font-size: 13px; color: #d7c6a5; }
+  footer { color: var(--dim); font-size: 12px; margin-top: 36px; } footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+<main>
+  <p class="sub"><a href="../">cadence arcade</a> / mario 1-1</p>
+  <h1>MARIO 1-1</h1>
+  <p class="sub" id="lede-sub"></p>
+  <p id="lede"></p>
+
+  <div class="player">
+    <canvas id="screen" width="256" height="240" aria-label="Replay of the Cadence brain playing World 1-1"></canvas>
+    <div class="pad" aria-label="buttons the brain is holding">
+      <span class="key" data-k="left">&larr;</span><span class="key" data-k="right">&rarr;</span>
+      <span class="key" data-k="B">B run</span><span class="key" data-k="A">A jump</span>
+    </div>
+    <div class="prog"><div class="fill" id="fill"></div><span class="flag">&#9873;</span></div>
+    <div class="readout" id="readout">loading frames...</div>
+    <div class="controls">
+      <button id="play">pause</button>
+      <button data-speed="0.5">0.5x</button><button data-speed="1" class="on">1x</button><button data-speed="2">2x</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" aria-label="scrub">
+    </div>
+  </div>
+
+  <h2>What you're seeing</h2>
+  <div id="seeing"></div>
+
+  <h2>How far it gets, round by round</h2>
+  <div id="chart"></div>
+  <div class="legend"><span><i style="background:var(--accent)"></i>median of 5 starts</span><span><i style="background:#8a8f98"></i>each start</span><span><i style="background:var(--good)"></i>flagpole</span></div>
+  <p class="dim" style="font-size:13px" id="chart-note"></p>
+
+  <h2>Against simple players</h2>
+  <div class="scroll"><table id="table"><thead><tr><th>player</th><th>median x</th><th>best x</th><th>flags</th><th>note</th></tr></thead><tbody></tbody></table></div>
+  <p class="dim" style="font-size:13px">x is Mario's position in the level in pixels; the flagpole is at about <span id="flagx"></span>. Each player plays the same 5 starts (0, 5, 11, 17, 23 idle frames before the first button).</p>
+
+  <h2>How it learned</h2>
+  <div id="how"></div>
+
+  <h2>Honest caveats</h2>
+  <div id="caveats"></div>
+
+  <h2>About Doom</h2>
+  <div id="doom"></div>
+
+  <footer>
+    <p id="ver"></p>
+    <p>Independent demo, not affiliated with Pragma Research. Super Mario Bros. is Nintendo's; the game runs in <a href="https://github.com/Kautenja/nes-py">nes-py</a> via <a href="https://github.com/Kautenja/gym-super-mario-bros">gym-super-mario-bros</a>. No ROM is in the repo. Frames shown are recorded from the emulator.
+    Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">cadence-arcade/mario</a>.</p>
+  </footer>
+</main>
+<script>
+const D = /*DATA*/null;
+const $ = (s) => document.querySelector(s);
+const T = D.text;
+$("#lede-sub").innerHTML = T.sub;
+$("#lede").innerHTML = T.lede;
+$("#seeing").innerHTML = T.seeing;
+$("#how").innerHTML = T.how;
+$("#caveats").innerHTML = T.caveats;
+$("#doom").innerHTML = T.doom;
+$("#chart-note").innerHTML = T.chart_note || "";
+$("#flagx").textContent = D.flag_x;
+$("#ver").textContent = `cadence-net ${D.version}. One brain (founder seed 0), ${D.rounds} DAgger rounds, ${D.samples.toLocaleString()} labelled screens.`;
+
+// ---- table
+const tb = $("#table tbody");
+for (const r of D.rows) {
+  const tr = document.createElement("tr"); if (r.name.startsWith("Cadence")) tr.className = "me";
+  tr.innerHTML = `<td>${r.name}</td><td>${Math.round(r.median)}</td><td>${r.best}</td><td>${r.flags}</td><td class="dim">${r.note}</td>`;
+  tb.appendChild(tr);
+}
+
+// ---- chart
+(function () {
+  const W = 640, H = 300, L = 48, R = 12, Tp = 12, B = 40;
+  const c = D.curve, n = Math.max(1, c.length - 1), ymax = 3300;
+  const X = (i) => L + (W - L - R) * (c.length === 1 ? 0.5 : i / n);
+  const Y = (v) => Tp + (H - Tp - B) * (1 - v / ymax);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="farthest x per round">`;
+  for (const v of [0, 500, 1000, 1500, 2000, 2500, 3000]) s += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${L - 6}" y="${Y(v) + 4}" class="tick" text-anchor="end">${v}</text>`;
+  s += `<line x1="${L}" x2="${W - R}" y1="${Y(D.flag_x)}" y2="${Y(D.flag_x)}" stroke="var(--good)" stroke-dasharray="4 4"/>`;
+  const step = Math.max(1, Math.ceil(c.length / 12));
+  c.forEach((p, i) => { if (i % step === 0 || i === c.length - 1) s += `<text x="${X(i)}" y="${H - B + 16}" class="tick" text-anchor="middle">${p.round}</text>`; });
+  s += `<text x="${(L + W - R) / 2}" y="${H - 6}" class="tick" text-anchor="middle">round (0 = after watching the coach only)</text>`;
+  c.forEach((p, i) => p.xs.forEach((v, j) => { s += `<circle cx="${X(i) + (j - 2) * 2.2}" cy="${Y(v)}" r="2.6" fill="#8a8f98" opacity=".75"/>`; }));
+  const med = c.map((p, i) => [X(i), Y([...p.xs].sort((a, b) => a - b)[2])]);
+  s += `<polyline fill="none" stroke="var(--accent)" stroke-width="2.4" points="${med.map(q => q.join(",")).join(" ")}"/>`;
+  med.forEach((q) => { s += `<circle cx="${q[0]}" cy="${q[1]}" r="3.4" fill="var(--accent)"/>`; });
+  $("#chart").innerHTML = s + "</svg>";
+})();
+
+// ---- replay
+(function () {
+  const R = D.replay, cv = $("#screen"), ctx = cv.getContext("2d");
+  const imgs = R.sheets.map((n) => { const im = new Image(); im.src = n; return im; });
+  let loaded = 0, i = 0, playing = true, speed = 1, acc = 0, last = null;
+  const per = R.sheet * R.sheet, scrub = $("#scrub"); scrub.max = R.frames - 1;
+  const bits = { 0: [], 1: ["right"], 2: ["right", "A"], 3: ["right", "B"], 4: ["right", "A", "B"], 5: ["A"], 6: ["left"] };
+  const keys = [...document.querySelectorAll(".key")];
+  function draw() {
+    const s = Math.floor(i / per), j = i % per, r = Math.floor(j / R.sheet), c = j % R.sheet;
+    ctx.drawImage(imgs[s], c * R.w, r * R.h, R.w, R.h, 0, 0, R.w, R.h);
+    const b = bits[R.button[i]] || [];
+    keys.forEach((k) => k.classList.toggle("lit", b.includes(k.dataset.k)));
+    const x = R.x[i];
+    $("#fill").style.width = Math.min(100, 100 * x / D.flag_x) + "%";
+    const t = (Math.min(i, R.frames - 1 - R.hold) / R.fps).toFixed(1);
+    const end = i >= R.frames - R.hold ? (R.flag ? "  FLAG!" : "  (attempt ends)") : "";
+    $("#readout").textContent = `x ${x} / ${D.flag_x}   t ${t}s   button: ${R.button_names[R.button[i]]}${end}`;
+    scrub.value = i;
+  }
+  function tick(ts) {
+    if (last === null) last = ts;
+    const dt = (ts - last) / 1000; last = ts;
+    if (playing && loaded === imgs.length) {
+      acc += dt * R.fps * speed;
+      while (acc >= 1) { acc -= 1; i = (i + 1) % R.frames; }
+      draw();
+    }
+    requestAnimationFrame(tick);
+  }
+  imgs.forEach((im) => im.onload = () => { loaded++; if (loaded === imgs.length) { draw(); } else $("#readout").textContent = `loading frames ${loaded}/${imgs.length}`; });
+  $("#play").onclick = () => { playing = !playing; $("#play").textContent = playing ? "pause" : "play"; };
+  document.querySelectorAll("[data-speed]").forEach((b) => b.onclick = () => {
+    speed = +b.dataset.speed; document.querySelectorAll("[data-speed]").forEach((o) => o.classList.toggle("on", o === b));
+  });
+  scrub.oninput = () => { i = +scrub.value; if (loaded === imgs.length) draw(); };
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

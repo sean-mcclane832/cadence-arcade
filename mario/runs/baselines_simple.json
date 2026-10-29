@@ -1,0 +1,218 @@
+{
+ "random": [
+  {
+   "start": 0,
+   "max_x": 722,
+   "flag": false,
+   "decisions": 148
+  },
+  {
+   "start": 0,
+   "max_x": 594,
+   "flag": false,
+   "decisions": 152
+  },
+  {
+   "start": 0,
+   "max_x": 689,
+   "flag": false,
+   "decisions": 113
+  },
+  {
+   "start": 0,
+   "max_x": 307,
+   "flag": false,
+   "decisions": 38
+  },
+  {
+   "start": 0,
+   "max_x": 299,
+   "flag": false,
+   "decisions": 63
+  },
+  {
+   "start": 5,
+   "max_x": 722,
+   "flag": false,
+   "decisions": 157
+  },
+  {
+   "start": 5,
+   "max_x": 722,
+   "flag": false,
+   "decisions": 184
+  },
+  {
+   "start": 5,
+   "max_x": 722,
+   "flag": false,
+   "decisions": 186
+  },
+  {
+   "start": 5,
+   "max_x": 296,
+   "flag": false,
+   "decisions": 43
+  },
+  {
+   "start": 5,
+   "max_x": 311,
+   "flag": false,
+   "decisions": 37
+  },
+  {
+   "start": 11,
+   "max_x": 668,
+   "flag": false,
+   "decisions": 109
+  },
+  {
+   "start": 11,
+   "max_x": 294,
+   "flag": false,
+   "decisions": 47
+  },
+  {
+   "start": 11,
+   "max_x": 311,
+   "flag": false,
+   "decisions": 37
+  },
+  {
+   "start": 11,
+   "max_x": 722,
+   "flag": false,
+   "decisions": 167
+  },
+  {
+   "start": 11,
+   "max_x": 595,
+   "flag": false,
+   "decisions": 142
+  },
+  {
+   "start": 17,
+   "max_x": 287,
+   "flag": false,
+   "decisions": 53
+  },
+  {
+   "start": 17,
+   "max_x": 594,
+   "flag": false,
+   "decisions": 164
+  },
+  {
+   "start": 17,
+   "max_x": 287,
+   "flag": false,
+   "decisions": 46
+  },
+  {
+   "start": 17,
+   "max_x": 288,
+   "flag": false,
+   "decisions": 42
+  },
+  {
+   "start": 17,
+   "max_x": 666,
+   "flag": false,
+   "decisions": 129
+  },
+  {
+   "start": 23,
+   "max_x": 722,
+   "flag": false,
+   "decisions": 203
+  },
+  {
+   "start": 23,
+   "max_x": 290,
+   "flag": false,
+   "decisions": 50
+  },
+  {
+   "start": 23,
+   "max_x": 898,
+   "flag": false,
+   "decisions": 185
+  },
+  {
+   "start": 23,
+   "max_x": 595,
+   "flag": false,
+   "decisions": 143
+  },
+  {
+   "start": 23,
+   "max_x": 294,
+   "flag": false,
+   "decisions": 37
+  }
+ ],
+ "run": [
+  {
+   "start": 0,
+   "max_x": 315,
+   "flag": false,
+   "decisions": 27
+  },
+  {
+   "start": 5,
+   "max_x": 312,
+   "flag": false,
+   "decisions": 27
+  },
+  {
+   "start": 11,
+   "max_x": 312,
+   "flag": false,
+   "decisions": 27
+  },
+  {
+   "start": 17,
+   "max_x": 312,
+   "flag": false,
+   "decisions": 27
+  },
+  {
+   "start": 23,
+   "max_x": 312,
+   "flag": false,
+   "decisions": 27
+  }
+ ],
+ "run+jump rhythm": [
+  {
+   "start": 0,
+   "max_x": 314,
+   "flag": false,
+   "decisions": 30
+  },
+  {
+   "start": 5,
+   "max_x": 311,
+   "flag": false,
+   "decisions": 30
+  },
+  {
+   "start": 11,
+   "max_x": 311,
+   "flag": false,
+   "decisions": 30
+  },
+  {
+   "start": 17,
+   "max_x": 311,
+   "flag": false,
+   "decisions": 30
+  },
+  {
+   "start": 23,
+   "max_x": 311,
+   "flag": false,
+   "decisions": 30
+  }
+ ]
+}
