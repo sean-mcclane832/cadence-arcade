@@ -50,3 +50,31 @@
 17:25:08 === leaving 1-2: capped; coach labels 577, own rows 10894
 17:25:21   retention: 1-1 0/3 [594, 594, 596], 1-2 0/3 [198, 196, 189]
 17:25:31 === 1-3 FIRST SIGHT x=[321, 321, 321] flags=0/3
+17:30:00   replayed 1-2: 323 decisions, x [673, 683, 859]
+17:30:00 1-3 r1: self-play 2723 decisions [(0, 277, False), (7, 390, False), (7, 412, False), (7, 318, False), (0, 313, False), (0, 392, False), (0, 315, False), (0, 391, False)]... +1395 own rows; coached 5 attempts +121 labels [(0, 321), (7, 321), (0, 321), (7, 321), (0, 321)]
+17:32:43   taught 1500 lessons (1516 rows here, replay 27743) agree ['0.31', '0.30', '0.27', '0.26'] 163s
+17:32:49 1-3 r1 SOLO x=[321, 321, 321] flags=0/3 median=321 practice 7 min
+17:36:50   replayed 1-1: 306 decisions, x [898, 724]
+17:36:50 1-3 r2: self-play 2712 decisions [(7, 418, False), (0, 319, False), (0, 296, False), (0, 392, False), (0, 408, False), (7, 286, False), (7, 315, False), (7, 285, False)]... +1480 own rows; coached 5 attempts +121 labels [(0, 321), (7, 321), (0, 321), (7, 321), (0, 321)]
+17:39:22   taught 1500 lessons (3117 rows here, replay 28018) agree ['0.32', '0.29', '0.26', '0.27'] 152s
+17:39:28 1-3 r2 SOLO x=[321, 321, 321] flags=0/3 median=321 practice 14 min
+17:44:08   replayed 1-2: 431 decisions, x [902, 852, 170, 670]
+17:44:08 1-3 r3: self-play 2719 decisions [(0, 313, False), (0, 400, False), (7, 396, False), (7, 314, False), (7, 743, False), (7, 317, False), (7, 415, False), (7, 304, False)]... +1439 own rows; coached 5 attempts +121 labels [(0, 321), (7, 321), (0, 321), (7, 321), (0, 321)]
+17:46:46   taught 1500 lessons (4677 rows here, replay 28213) agree ['0.22', '0.19', '0.28', '0.28'] 158s
+17:46:51 1-3 r3 SOLO x=[317, 317, 317] flags=0/3 median=317 practice 21 min
+17:50:57   replayed 1-1: 324 decisions, x [297, 722, 710, 307]
+17:50:57 1-3 r4: self-play 2711 decisions [(0, 420, False), (7, 281, False), (0, 415, False), (7, 290, False), (0, 312, False), (7, 385, False), (7, 406, False), (7, 317, False)]... +1383 own rows; coached 5 attempts +133 labels [(0, 317), (7, 315), (0, 317), (7, 315), (0, 317)]
+17:53:29   taught 1500 lessons (6193 rows here, replay 28556) agree ['0.23', '0.27', '0.26', '0.22'] 152s
+17:53:35 1-3 r4 SOLO x=[318, 318, 318] flags=0/3 median=318 practice 28 min
+17:57:38   replayed 1-2: 334 decisions, x [978, 179, 482]
+17:57:38 1-3 r5: self-play 2712 decisions [(0, 743, False), (7, 314, False), (7, 437, False), (0, 660, False), (0, 313, False), (0, 634, False), (0, 391, False), (0, 397, False)]... +1512 own rows; coached 5 attempts +154 labels [(0, 318), (7, 315), (0, 318), (7, 315), (0, 318)]
+18:00:04   taught 1500 lessons (7859 rows here, replay 28771) agree ['0.21', '0.24', '0.22', '0.24'] 147s
+18:00:10 1-3 r5 SOLO x=[419, 419, 419] flags=0/3 median=419 practice 35 min  NEW BEST
+18:04:20   replayed 1-1: 388 decisions, x [867, 724]
+18:04:20 1-3 r6: self-play 2721 decisions [(0, 302, False), (2, 419, False), (2, 626, False), (0, 281, False), (0, 429, False), (2, 315, False), (2, 312, False), (0, 393, False)]... +1555 own rows; coached 5 attempts +186 labels [(0, 419), (22, 419), (0, 419), (2, 419), (0, 419)]
+18:06:49   taught 1500 lessons (9600 rows here, replay 29008) agree ['0.27', '0.28', '0.24', '0.31'] 149s
+18:06:55 1-3 r6 SOLO x=[321, 321, 321] flags=0/3 median=321 practice 41 min
+18:06:57   leaving 1-3 with its best state (round 5)
+18:06:57 === leaving 1-3: capped; coach labels 836, own rows 8764
+18:07:16   retention: 1-1 0/3 [316, 316, 316], 1-2 0/3 [198, 258, 260], 1-3 0/3 [419, 419, 419]
+18:07:25 === 1-4 FIRST SIGHT x=[234, 234, 234] flags=0/3
