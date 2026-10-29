@@ -1,2 +1,41 @@
 12:09:37 new job: cadence 0.91.1, brain from runs/main/brain_e10.npz, menu lean
 12:09:42 === 1-1 FIRST SIGHT x=[594, 899, 434] flags=0/3
+12:13:01 1-1 r1: self-play 3123 decisions [(0, 722, False), (111, 899, False), (0, 898, False), (0, 283, False), (0, 683, False), (0, 722, False), (0, 305, False), (91, 899, False)]... +1706 own rows; coached 6 attempts +496 labels [(0, 594), (111, 899), (0, 899), (71, 899), (0, 899), (91, 899)]
+12:14:13   taught 1500 lessons (2202 rows here, replay 0) agree ['0.42', '0.41', '0.40', '0.49'] 72s
+12:14:17 1-1 r1 SOLO x=[315, 595, 595] flags=0/3 median=595 practice 5 min  NEW BEST
+12:18:05 1-1 r2: self-play 3115 decisions [(111, 899, False), (0, 722, False), (111, 899, False), (0, 722, False), (0, 679, False), (111, 899, False), (111, 899, False), (111, 899, False)]... +2118 own rows; coached 6 attempts +480 labels [(0, 1130), (91, 1434), (0, 595), (111, 1526), (0, 299), (111, 1523)]
+12:18:58   taught 1500 lessons (4800 rows here, replay 0) agree ['0.38', '0.43', '0.44', '0.41'] 53s
+12:19:01 1-1 r2 SOLO x=[594, 594, 1435] flags=0/3 median=594 practice 9 min
+12:19:02   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:21:36 1-1 r3: self-play 3134 decisions [(78, 1127, False), (0, 722, False), (0, 313, False), (0, 1787, False), (118, 1958, False), (78, 1137, False), (78, 1650, False), (0, 696, False)]... +2244 own rows; coached 6 attempts +437 labels [(0, 1435), (78, 1678), (0, 1435), (78, 311), (0, 314), (98, 1517)]
+12:22:29   taught 1500 lessons (7481 rows here, replay 0) agree ['0.41', '0.38', '0.38', '0.39'] 53s
+12:22:31 1-1 r3 SOLO x=[594, 594, 594] flags=0/3 median=594 practice 13 min
+12:22:33   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:26:07 1-1 r4: self-play 3077 decisions [(78, 1424, False), (118, 2470, False), (0, 722, False), (78, 1507, False), (118, 1427, False), (78, 1430, False), (118, 1432, False), (118, 1441, False)]... +2172 own rows; coached 6 attempts +314 labels [(0, 594), (78, 898), (0, 311), (98, 311), (0, 314), (78, 898)]
+12:26:58   taught 1500 lessons (9967 rows here, replay 0) agree ['0.41', '0.39', '0.38', '0.38'] 51s
+12:27:01 1-1 r4 SOLO x=[722, 898, 722] flags=0/3 median=722 practice 17 min  NEW BEST
+12:27:03   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:31:27 1-1 r5: self-play 3119 decisions [(0, 722, False), (98, 1415, False), (98, 1522, False), (0, 722, False), (0, 723, False), (98, 1128, False), (0, 683, False), (0, 306, False)]... +2069 own rows; coached 6 attempts +415 labels [(0, 722), (78, 1129), (0, 898), (118, 311), (0, 722), (118, 311)]
+12:32:20   taught 1500 lessons (12451 rows here, replay 0) agree ['0.38', '0.40', '0.39', '0.38'] 52s
+12:32:22 1-1 r5 SOLO x=[434, 434, 722] flags=0/3 median=434 practice 23 min
+12:32:23   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:35:12 1-1 r6: self-play 3007 decisions [(78, 1781, False), (98, 1137, False), (98, 1410, False), (118, 2018, False), (0, 898, False), (0, 699, False), (118, 1430, False), (78, 898, False)]... +2039 own rows; coached 6 attempts +287 labels [(0, 722), (78, 311), (0, 434), (98, 311), (0, 434), (118, 1435)]
+12:36:06   taught 1500 lessons (14777 rows here, replay 0) agree ['0.35', '0.38', '0.37', '0.40'] 54s
+12:36:09 1-1 r6 SOLO x=[898, 1128, 598] flags=0/3 median=898 practice 26 min  NEW BEST
+12:36:10   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:39:53 1-1 r7: self-play 3020 decisions [(0, 303, False), (0, 1128, False), (0, 898, False), (0, 303, False), (98, 1410, False), (0, 312, False), (118, 1674, False), (0, 297, False)]... +2043 own rows; coached 6 attempts +321 labels [(0, 1128), (118, 1435), (0, 598), (118, 311), (0, 314), (118, 311)]
+12:40:51   taught 1500 lessons (17141 rows here, replay 0) agree ['0.36', '0.38', '0.38', '0.39'] 58s
+12:40:54 1-1 r7 SOLO x=[722, 722, 722] flags=0/3 median=722 practice 31 min
+12:40:55   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:44:14 1-1 r8: self-play 3136 decisions [(98, 1435, False), (0, 664, False), (98, 1138, False), (0, 308, False), (118, 1956, False), (0, 898, False), (0, 688, False), (0, 293, False)]... +1954 own rows; coached 6 attempts +267 labels [(0, 722), (118, 311), (0, 675), (118, 1678), (0, 313), (98, 1149)]
+12:45:11   taught 1500 lessons (19362 rows here, replay 0) agree ['0.38', '0.37', '0.43', '0.34'] 56s
+12:45:14 1-1 r8 SOLO x=[434, 434, 722] flags=0/3 median=434 practice 36 min
+12:45:14   rollback to the round-6 state (labels kept)
+12:45:15   retune failed: ValueError("learning_eta is set by teaching ('founder' or 'normalized'); learning=LearnerConfig(...) sets it as an expert")
+12:49:10 1-1 r9: self-play 3138 decisions [(0, 305, False), (0, 1958, False), (0, 296, False), (0, 301, False), (0, 307, False), (98, 1512, False), (98, 1121, False), (0, 307, False)]... +2287 own rows; coached 6 attempts +355 labels [(0, 598), (118, 311), (0, 434), (78, 311), (0, 722), (98, 311)]
+12:50:04   taught 1500 lessons (22004 rows here, replay 0) agree ['0.34', '0.35', '0.35', '0.41'] 54s
+12:50:06 1-1 r9 SOLO x=[315, 315, 687] flags=0/3 median=315 practice 40 min
+12:50:07   leaving 1-1 with its best state (round 6)
+12:50:07 === leaving 1-1: capped; coach labels 3372, own rows 18632
+12:50:10   retention: 1-1 0/3 [898, 1128, 598]
+12:50:13 === 1-2 FIRST SIGHT x=[183, 184, 183] flags=0/3

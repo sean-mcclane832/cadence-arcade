@@ -69,3 +69,22 @@ a component control, not the complete expert. No public Cadence Doom demo was fo
 - Venv: `P:/projects/cadence-arcade/.venv-mario` (uv, py3.11, cadence-net 0.91.1 from the local
   clone, non-editable, numpy<2 for old gym).
 - Build: see README for the vcvars command.
+
+## 2026-10-29 in-order run (runs/inorder, levels.py)
+One brain plays 1-1, 1-2, 1-3, ... in order; first sight (3 solo attempts before practice) is the
+headline. Page: docs/mario/levels/ (built by build_levels_page.py, clips by levels_update.py).
+- Start brain: runs/main/brain_e10.npz (overnight round 10; round 8's brain was never saved, the
+  checkpoint watcher began at round 9). So 1-1 is not a real first sight.
+- Fixed before launch: (1) the smoke run's WinError 5 in DuplicateHandle came from an outside stop:
+  taskkill took the workers first, multiprocessing.Pool spawned replacements, the parent was gone
+  when they unpickled its pipe handles. Pool also hangs forever if a worker dies mid-task. Now a
+  ProcessPoolExecutor that rebuilds itself and retries (then runs the task in the main process).
+  (2) Coach stuck in 1-2 at x 1,218 (low ceiling over a gap: every running jump hit the bricks and
+  fell). A brute-force search found run 7-8 then a 1-2 decision hop; added run-then-hop plans.
+  Then stuck on top of the exit pipe at x 2,674: pipe entry (RAM 0x0E = 2/3) now scores as
+  progress and x carries across the area change. Coach clears 1-2 (ct_1-2_lean_v2/v3).
+  (3) Caps: 38 min practice per level, rounds ~5 min. (4) Added old-level PLAY: 10% of each
+  round's self-play decisions are spent on a random earlier level (reward learning + own good
+  stretches added to that level's data), on top of the 3-in-32 replay rows.
+- Launched 12:09, until 19:25, 5 workers + main, detached (runs/inorder/run.sh).
+- 1-1 (pre-trained): first sight [594, 899, 434]; 9 rounds, 40 min, capped; best solo r6 [898, 1128, 598] (median 898; overnight r10 had 725). Coach labels 3,372, own rows 18,632.
