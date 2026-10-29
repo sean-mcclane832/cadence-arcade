@@ -89,6 +89,10 @@
   <div class="scroll"><table id="table"><thead><tr><th>player</th><th>median x</th><th>best x</th><th>flags</th><th>note</th></tr></thead><tbody></tbody></table></div>
   <p class="dim" style="font-size:13px">x is Mario's position in the level in pixels; the flagpole is at about <span id="flagx"></span>. Each player plays the same 5 starts (0, 5, 11, 17, 23 idle frames before the first button).</p>
 
+  <h2>The whole level, with rescues</h2>
+  <p id="assist-intro"></p>
+  <div class="scroll"><table id="atable"><thead><tr><th>start</th><th>reached flag</th><th>buttons pressed by the brain</th><th>coach rescues</th></tr></thead><tbody></tbody></table></div>
+
   <h2>How it learned</h2>
   <div id="how"></div>
 
@@ -125,6 +129,18 @@ for (const r of D.rows) {
   tr.innerHTML = `<td>${r.name}</td><td>${Math.round(r.median)}</td><td>${r.best}</td><td>${r.flags}</td><td class="dim">${r.note}</td>`;
   tb.appendChild(tr);
 }
+
+// ---- assisted table
+(function () {
+  const F = D.final_summary; if (!F) return;
+  $("#assist-intro").innerHTML = T.assist_intro || "";
+  const tb = $("#atable tbody");
+  for (const r of F.assist) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${r.start}</td><td>${r.flag ? "yes" : "no"}</td><td>${(100 * r.brain_share).toFixed(0)}%</td><td>${r.rescues}</td>`;
+    tb.appendChild(tr);
+  }
+})();
 
 // ---- chart
 (function () {

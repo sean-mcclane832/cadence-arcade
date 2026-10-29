@@ -27,7 +27,7 @@ def main():
     base = json.loads((HERE / args.baselines).read_text())
     out = (HERE / args.out).resolve()
     replays = []
-    for name, label in (("assist", "full level, assisted"), ("replay", "brain alone")):
+    for name, label in (("replay", "brain alone"), ("assist", "full level, assisted")):
         f = out / f"{name}.json"
         if f.exists():
             r = json.loads(f.read_text())
@@ -61,13 +61,18 @@ def main():
         rows.append(dict(name=name, median=float(np.median(xs)), best=int(max(xs)),
                          flags=f"{sum(r['flag'] for r in recs)}/{len(recs)}", note=note))
 
-    row("Cadence brain (this one)", final["eval"], f"after {final['round']} DAgger rounds")
+    honest = [h for h in hist if "eval" in h and not h.get("eval_stale")]
+    best = max(honest, key=lambda h: (float(np.median([e["max_x"] for e in h["eval"]])), h["round"]))
+    row(f"Cadence brain, best round ({best['round']})", best["eval"], "the brain-alone replay is from this round")
+    row(f"Cadence brain, final (round {final['round']})", final["eval"], "same brain at the end of training")
     if "mlp" in base:
         row("plain MLP, same screens", base["mlp"], "backprop + Adam on the brain's final data set")
     row("random buttons", base["random"], "5 random streams per start")
     row("always run", base["run"], "hold right + B")
     row("run + jump rhythm", base["run+jump rhythm"], "jump 8, run 4, repeat")
-    data = dict(curve=curve, rows=rows, replays=replays, flag_x=FLAG_X, version=cadence.__version__,
+    fs = run / "final_summary.json"
+    final_summary = json.loads(fs.read_text()) if fs.exists() else None
+    data = dict(final_summary=final_summary, curve=curve, rows=rows, replays=replays, flag_x=FLAG_X, version=cadence.__version__,
                 samples=final["samples"], rounds=final["round"], text=text,
                 mlp_info=base.get("mlp_info"))
     tpl = (HERE / "page_template.html").read_text(encoding="utf-8")

@@ -1,0 +1,3 @@
+norm_surprise {'lesson': 0, 'test': 0.01977401129943503, 'train': 0.024045261669024046, 'pred_counts': [0, 0, 708, 0, 0, 0, 0], 'sec': 10}
+norm_surprise {'lesson': 500, 'test': 0.576271186440678, 'train': 0.637906647807638, 'pred_counts': [0, 0, 0, 708, 0, 0, 0], 'sec': 391}
+norm_surprise {'lesson': 1000, 'test': 0.384180790960452, 'train': 0.3041018387553041, 'pred_counts': [0, 0, 0, 0, 708, 0, 0], 'sec': 646}

@@ -1,0 +1,78 @@
+01:56:27 cadence 0.91.1 hidden=256 seed=0 workers=5
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+02:09:44 round 0 coach: 3259 samples in 797s; runs [(0, 0.0, 3161, True), (3, 0.0, 3161, True), (8, 0.0, 3161, True), (13, 0.0, 3161, True), (20, 0.0, 3161, True), (27, 0.0, 3161, True), (1, 0.12, 3161, True), (6, 0.12, 2472, False), (15, 0.12, 3161, True), (24, 0.12, 2018, False), (30, 0.12, 3161, True), (2, 0.12, 3161, True)]
+02:09:44   label counts [16, 1, 81, 2117, 950, 12, 82]
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+02:09:46   lesson 0/306 agree(sample)=0.285 1s
+02:10:23   lesson 200/306 agree(sample)=0.672 38s
+02:10:49 round 0 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+02:11:30 cadence 0.91.1 hidden=256 seed=0 workers=5
+02:11:31 resumed: 3259 samples, round 0
+02:11:32   lesson 0/2000 agree(sample)=0.672 1s
+02:11:57   lesson 200/2000 agree(sample)=0.672 26s
+02:12:24   lesson 400/2000 agree(sample)=0.633 53s
+02:12:56   lesson 600/2000 agree(sample)=0.633 84s
+02:13:26   lesson 800/2000 agree(sample)=0.660 114s
+02:13:54   lesson 1000/2000 agree(sample)=0.648 143s
+02:14:25   lesson 1200/2000 agree(sample)=0.629 174s
+02:14:58   lesson 1400/2000 agree(sample)=0.660 206s
+02:15:39   lesson 1600/2000 agree(sample)=0.656 247s
+02:16:19   lesson 1800/2000 agree(sample)=0.645 287s
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+02:17:06 round 0 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+02:18:38 round 1 dagger: +277 samples (3536 total) in 93s; brain agreed with coach on its own path 0.507; reached [(0, 312, False), (0, 312, False), (0, 312, False), (157, 2020, False), (249, 2914, False), (237, 1961, False), (60, 898, False), (193, 2371, False), (95, 1434, False)]
+02:18:39   lesson 0/2000 agree(sample)=0.621 0s
+02:19:17   lesson 200/2000 agree(sample)=0.613 38s
+02:19:54   lesson 400/2000 agree(sample)=0.652 76s
+02:20:33   lesson 600/2000 agree(sample)=0.562 115s
+02:21:13   lesson 800/2000 agree(sample)=0.656 155s
+02:21:53   lesson 1000/2000 agree(sample)=0.633 194s
+02:22:33   lesson 1200/2000 agree(sample)=0.613 235s
+02:23:29   lesson 1400/2000 agree(sample)=0.633 291s
+02:24:24   lesson 1600/2000 agree(sample)=0.645 346s
+02:25:20   lesson 1800/2000 agree(sample)=0.602 402s
+02:26:20 round 1 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+02:28:10 round 2 dagger: +201 samples (3737 total) in 109s; brain agreed with coach on its own path 0.549; reached [(0, 312, False), (0, 312, False), (0, 315, False), (114, 1521, False), (222, 2744, False), (86, 1128, False), (5, 312, False), (122, 1514, False), (189, 2355, False)]
+02:28:11   lesson 0/2000 agree(sample)=0.617 1s
+02:28:55   lesson 200/2000 agree(sample)=0.578 45s

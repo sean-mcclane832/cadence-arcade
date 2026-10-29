@@ -40,9 +40,24 @@ possible (ideally the flag), with a replay page.
   evalckpt.py: r03 median 312, r06 median 722 (best 898). First honest live eval, r07: 594 median.
   DAgger labels collected before the fix are still valid coach labels, just less on-policy.
   predict() is deterministic (same buttons on a rerun).
-- [ ] Training continues to ~05:52. assist.py (brain plays, coach rescues after a death/stall, exact
-  rewind by replaying buttons) on the r04 brain: flag, brain pressed 41.3%, 13 rescues.
-- [ ] Record the brain's run, build page, publish to docs/mario/.
+- [x] Training ended 05:56 after round 21 (deadline), 1,664 inputs, ~20k labelled screens.
+  Honest evals (median x of 5 starts): r03 312, r06 722, r07 594, r08 1417 (best 1783), r09 596,
+  r10 725, r11-21 between 306 and 722, r21 594. Peak at r08, then a plateau with big swings.
+- [x] Baselines (runs/baselines.json): random 594 (best 898), always-run 312, jump rhythm 311,
+  backprop MLP on the final screens 596 (best 1561). The final-round brain is no better than random
+  by median; the best round is ~2.4x random.
+- [x] Assisted runs (final.py, round-10 brain): flag on starts 0/5/11/23, brain pressed 59/66/69/60%
+  of buttons, 11/8/7/11 rescues. Start 17 looped on rescues and was stopped. Round-4 brain: 41%.
+- [x] Page: docs/mario/ (brain-alone replay = round 8 start 0, x 1783; assisted = round 10 start 11),
+  index entry, README section. Real NES frames replayed from stored buttons, checked to end at the
+  same x.
+
+## Next steps
+- Steady the brain: the plateau after round 8 suggests the label pile keeps growing with conflicting
+  coach choices. Try a 2-3 button coach that can still wait (run / run+jump / left), more lessons on
+  recent DAgger rounds, or lower teaching rates late in training.
+- Keep the best round: checkpoint every round from the start (the watcher only began at round 9).
+- Try the continuing stream (act with the working trace) instead of predict, as upstream advises.
 
 ## Doom precedent
 Upstream muellerberndt/cadence #118 "Build and qualify the full native Doom expert" is an open

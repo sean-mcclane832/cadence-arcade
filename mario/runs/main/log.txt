@@ -1,0 +1,384 @@
+03:15:10 cadence 0.91.1 hidden=256 seed=0 workers=5
+03:31:02 round 0 coach: 4767 samples in 952s; runs [(0, 0.0, 3161, True), (3, 0.0, 3161, True), (8, 0.0, 3161, True), (13, 0.0, 3161, True), (20, 0.0, 3161, True), (27, 0.0, 3161, True), (1, 0.12, 3161, True), (6, 0.12, 2472, False), (15, 0.12, 3161, True), (24, 0.12, 2018, False), (30, 0.12, 3161, True), (2, 0.12, 3161, True), (9, 0.12, 1128, False), (18, 0.12, 3161, True), (4, 0.25, 1149, False), (10, 0.25, 1148, False), (16, 0.25, 3161, True), (22, 0.25, 2471, False), (28, 0.25, 1524, False), (31, 0.25, 1439, False)]
+03:31:02   label counts [22, 4, 111, 3168, 1317, 25, 120]
+03:31:03   lesson 0/3000 agree(sample)=0.633 1s
+03:31:10   lesson 200/3000 agree(sample)=0.613 8s
+03:31:18   lesson 400/3000 agree(sample)=0.676 16s
+03:31:26   lesson 600/3000 agree(sample)=0.578 24s
+03:31:35   lesson 800/3000 agree(sample)=0.672 33s
+03:31:43   lesson 1000/3000 agree(sample)=0.660 41s
+03:31:51   lesson 1200/3000 agree(sample)=0.562 49s
+03:32:01   lesson 1400/3000 agree(sample)=0.672 59s
+03:32:09   lesson 1600/3000 agree(sample)=0.746 67s
+03:32:19   lesson 1800/3000 agree(sample)=0.637 77s
+03:32:27   lesson 2000/3000 agree(sample)=0.723 85s
+03:32:36   lesson 2200/3000 agree(sample)=0.746 94s
+03:32:45   lesson 2400/3000 agree(sample)=0.684 103s
+03:32:54   lesson 2600/3000 agree(sample)=0.703 112s
+03:33:04   lesson 2800/3000 agree(sample)=0.727 122s
+03:33:16 round 0 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+03:35:02 round 1 dagger: +407 samples (5174 total) in 106s; brain agreed with coach on its own path 0.512; reached [(0, 312, False), (0, 315, False), (0, 312, False), (0, 315, False), (10, 315, False), (22, 434, False), (235, 2914, False), (174, 1952, False), (249, 1961, False), (152, 1793, False), (199, 1961, False), (266, 1961, False), (22, 434, False), (24, 434, False), (50, 722, False)]
+03:35:04   lesson 0/3000 agree(sample)=0.668 1s
+03:35:14   lesson 200/3000 agree(sample)=0.668 11s
+03:35:22   lesson 400/3000 agree(sample)=0.676 20s
+03:35:31   lesson 600/3000 agree(sample)=0.641 29s
+03:35:40   lesson 800/3000 agree(sample)=0.762 38s
+03:35:51   lesson 1000/3000 agree(sample)=0.613 48s
+03:36:01   lesson 1200/3000 agree(sample)=0.684 58s
+03:36:10   lesson 1400/3000 agree(sample)=0.656 68s
+03:36:18   lesson 1600/3000 agree(sample)=0.633 76s
+03:36:27   lesson 1800/3000 agree(sample)=0.762 85s
+03:36:37   lesson 2000/3000 agree(sample)=0.586 94s
+03:36:46   lesson 2200/3000 agree(sample)=0.617 104s
+03:36:56   lesson 2400/3000 agree(sample)=0.703 113s
+03:37:05   lesson 2600/3000 agree(sample)=0.703 123s
+03:37:14   lesson 2800/3000 agree(sample)=0.699 132s
+03:37:24 round 1 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+03:39:14 round 2 dagger: +439 samples (5613 total) in 110s; brain agreed with coach on its own path 0.522; reached [(0, 312, False), (0, 315, False), (0, 315, False), (0, 315, False), (78, 1128, False), (127, 1793, False), (7, 315, False), (58, 898, False), (237, 1961, False), (126, 1953, False), (196, 2403, False), (168, 1953, False), (56, 898, False), (252, 2914, False), (255, 1961, False)]
+03:39:14   lesson 0/3000 agree(sample)=0.652 0s
+03:39:26   lesson 200/3000 agree(sample)=0.664 13s
+03:39:38   lesson 400/3000 agree(sample)=0.602 24s
+03:39:49   lesson 600/3000 agree(sample)=0.617 36s
+03:40:00   lesson 800/3000 agree(sample)=0.645 46s
+03:40:12   lesson 1000/3000 agree(sample)=0.695 58s
+03:40:24   lesson 1200/3000 agree(sample)=0.695 70s
+03:40:34   lesson 1400/3000 agree(sample)=0.676 80s
+03:40:47   lesson 1600/3000 agree(sample)=0.719 93s
+03:40:59   lesson 1800/3000 agree(sample)=0.652 105s
+03:41:11   lesson 2000/3000 agree(sample)=0.688 117s
+03:41:23   lesson 2200/3000 agree(sample)=0.660 129s
+03:41:35   lesson 2400/3000 agree(sample)=0.645 141s
+03:41:47   lesson 2600/3000 agree(sample)=0.707 153s
+03:41:59   lesson 2800/3000 agree(sample)=0.617 165s
+03:42:12 round 2 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+03:44:36 round 3 dagger: +435 samples (6048 total) in 143s; brain agreed with coach on its own path 0.462; reached [(0, 315, False), (0, 315, False), (0, 315, False), (0, 315, False), (201, 1961, False), (11, 312, False), (156, 1793, False), (175, 2131, False), (58, 898, False), (125, 1792, False), (203, 2403, False), (66, 898, False), (147, 1955, False), (23, 434, False), (84, 1128, False)]
+03:44:37   lesson 0/3000 agree(sample)=0.672 1s
+03:44:48   lesson 200/3000 agree(sample)=0.664 13s
+03:45:00   lesson 400/3000 agree(sample)=0.691 24s
+03:45:10   lesson 600/3000 agree(sample)=0.633 35s
+03:45:21   lesson 800/3000 agree(sample)=0.672 46s
+03:45:33   lesson 1000/3000 agree(sample)=0.695 57s
+03:45:43   lesson 1200/3000 agree(sample)=0.676 68s
+03:45:55   lesson 1400/3000 agree(sample)=0.656 79s
+03:46:06   lesson 1600/3000 agree(sample)=0.645 91s
+03:46:17   lesson 1800/3000 agree(sample)=0.742 101s
+03:46:29   lesson 2000/3000 agree(sample)=0.684 113s
+03:46:40   lesson 2200/3000 agree(sample)=0.695 124s
+03:46:51   lesson 2400/3000 agree(sample)=0.660 135s
+03:47:03   lesson 2600/3000 agree(sample)=0.672 147s
+03:47:14   lesson 2800/3000 agree(sample)=0.699 159s
+03:47:26 round 3 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+03:49:46 round 4 dagger: +488 samples (6536 total) in 140s; brain agreed with coach on its own path 0.510; reached [(0, 312, False), (0, 312, False), (0, 312, False), (0, 315, False), (122, 1512, False), (93, 1672, False), (103, 1672, False), (51, 722, False), (200, 2356, False), (251, 1961, False), (253, 3154, False), (55, 722, False), (80, 1128, False), (60, 898, False), (203, 2403, False)]
+03:49:46   lesson 0/3000 agree(sample)=0.695 0s
+03:49:58   lesson 200/3000 agree(sample)=0.648 13s
+03:50:11   lesson 400/3000 agree(sample)=0.617 26s
+03:50:25   lesson 600/3000 agree(sample)=0.680 39s
+03:50:38   lesson 800/3000 agree(sample)=0.711 52s
+03:50:52   lesson 1000/3000 agree(sample)=0.660 66s
+03:51:05   lesson 1200/3000 agree(sample)=0.664 80s
+03:51:18   lesson 1400/3000 agree(sample)=0.645 92s
+03:51:30   lesson 1600/3000 agree(sample)=0.676 104s
+03:51:41   lesson 1800/3000 agree(sample)=0.648 116s
+03:51:53   lesson 2000/3000 agree(sample)=0.684 127s
+03:52:05   lesson 2200/3000 agree(sample)=0.684 140s
+03:52:19   lesson 2400/3000 agree(sample)=0.695 153s
+03:52:32   lesson 2600/3000 agree(sample)=0.691 167s
+03:52:47   lesson 2800/3000 agree(sample)=0.625 181s
+03:53:01 round 4 EVAL max_x=[315, 312, 312, 312, 312] flags=0/5 median=312
+03:54:39 cadence 0.91.1 hidden=256 seed=0 workers=5
+03:54:39 resumed: 6536 samples, round 4
+03:54:42 round 4 EVAL max_x=[303, 306, 306, 306, 306] flags=0/5 median=306
+03:55:59 round 5 dagger: +331 samples (6867 total) in 77s; brain agreed with coach on its own path 0.709; reached [(0, 306, False), (0, 303, False), (0, 315, False), (0, 315, False), (0, 306, False), (0, 303, False), (0, 315, False), (0, 315, False), (83, 1128, False), (113, 1514, False), (221, 1961, False), (109, 1409, False), (151, 2028, False), (7, 303, False), (201, 1961, False)]; critical 99
+03:56:01   lesson 0/3000 agree(sample)=0.680 2s
+03:56:16   lesson 200/3000 agree(sample)=0.656 17s
+03:56:30   lesson 400/3000 agree(sample)=0.684 31s
+03:56:45   lesson 600/3000 agree(sample)=0.668 46s
+03:56:59   lesson 800/3000 agree(sample)=0.625 60s
+03:57:14   lesson 1000/3000 agree(sample)=0.574 75s
+03:57:29   lesson 1200/3000 agree(sample)=0.641 90s
+03:57:44   lesson 1400/3000 agree(sample)=0.613 105s
+03:57:59   lesson 1600/3000 agree(sample)=0.672 120s
+03:58:12   lesson 1800/3000 agree(sample)=0.688 133s
+03:58:26   lesson 2000/3000 agree(sample)=0.660 147s
+03:58:40   lesson 2200/3000 agree(sample)=0.617 161s
+03:58:55   lesson 2400/3000 agree(sample)=0.621 176s
+03:59:09   lesson 2600/3000 agree(sample)=0.688 190s
+03:59:24   lesson 2800/3000 agree(sample)=0.715 205s
+03:59:38 round 5 EVAL max_x=[303, 306, 306, 306, 306] flags=0/5 median=306
+04:01:43 round 6 dagger: +451 samples (7318 total) in 125s; brain agreed with coach on its own path 0.623; reached [(0, 303, False), (0, 306, False), (0, 306, False), (0, 303, False), (0, 303, False), (0, 306, False), (0, 306, False), (0, 303, False), (246, 1961, False), (58, 898, False), (138, 1789, False), (31, 596, False), (239, 1961, False), (200, 2403, False), (5, 312, False)]; critical 144
+04:01:44   lesson 0/3000 agree(sample)=0.664 1s
+04:01:54   lesson 200/3000 agree(sample)=0.684 11s
+04:02:05   lesson 400/3000 agree(sample)=0.605 22s
+04:02:15   lesson 600/3000 agree(sample)=0.699 32s
+04:02:28   lesson 800/3000 agree(sample)=0.648 45s
+04:02:40   lesson 1000/3000 agree(sample)=0.664 57s
+04:02:53   lesson 1200/3000 agree(sample)=0.656 70s
+04:03:07   lesson 1400/3000 agree(sample)=0.691 84s
+04:03:20   lesson 1600/3000 agree(sample)=0.660 97s
+04:03:33   lesson 1800/3000 agree(sample)=0.586 110s
+04:03:45   lesson 2000/3000 agree(sample)=0.691 121s
+04:03:58   lesson 2200/3000 agree(sample)=0.660 135s
+04:04:13   lesson 2400/3000 agree(sample)=0.676 149s
+04:04:27   lesson 2600/3000 agree(sample)=0.641 163s
+04:04:41   lesson 2800/3000 agree(sample)=0.664 178s
+04:04:54 round 6 EVAL max_x=[303, 306, 306, 306, 306] flags=0/5 median=306
+04:07:27 round 7 dagger: +562 samples (7880 total) in 153s; brain agreed with coach on its own path 0.640; reached [(0, 303, False), (0, 303, False), (0, 304, False), (0, 303, False), (0, 306, False), (0, 304, False), (0, 303, False), (0, 306, False), (148, 2226, False), (138, 1954, False), (78, 1128, False), (248, 2962, False), (146, 1954, False), (56, 898, False), (271, 3156, False)]; critical 170
+04:07:28   lesson 0/3000 agree(sample)=0.688 1s
+04:07:43   lesson 200/3000 agree(sample)=0.637 16s
+04:07:57   lesson 400/3000 agree(sample)=0.672 30s
+04:08:10   lesson 600/3000 agree(sample)=0.645 43s
+04:08:24   lesson 800/3000 agree(sample)=0.684 57s
+04:08:38   lesson 1000/3000 agree(sample)=0.648 71s
+04:08:54   lesson 1200/3000 agree(sample)=0.645 87s
+04:09:10   lesson 1400/3000 agree(sample)=0.645 103s
+04:09:25   lesson 1600/3000 agree(sample)=0.621 119s
+04:09:42   lesson 1800/3000 agree(sample)=0.707 135s
+04:09:58   lesson 2000/3000 agree(sample)=0.684 151s
+04:10:13   lesson 2200/3000 agree(sample)=0.684 166s
+04:10:33   lesson 2400/3000 agree(sample)=0.578 186s
+04:11:01   lesson 2600/3000 agree(sample)=0.633 214s
+04:11:26   lesson 2800/3000 agree(sample)=0.512 239s
+04:11:46 round 7 EVAL max_x=[303, 306, 306, 306, 306] flags=0/5 median=306
+04:13:07 cadence 0.91.1 hidden=256 seed=0 workers=5
+04:13:07 resumed: 7880 samples, round 7
+04:13:10 round 7 EVAL max_x=[594, 594, 594, 302, 302] flags=0/5 median=594
+04:16:57 round 8 dagger: +731 samples (8611 total) in 226s; brain agreed with coach on its own path 0.609; reached [(0, 594, False), (0, 594, False), (0, 305, False), (0, 305, False), (0, 594, False), (0, 594, False), (0, 305, False), (0, 305, False), (83, 1125, False), (113, 1514, False), (221, 1961, False), (109, 1434, False), (151, 2130, False), (7, 594, False), (201, 1961, False)]; critical 165
+04:16:58   lesson 0/3000 agree(sample)=0.629 2s
+04:17:14   lesson 200/3000 agree(sample)=0.648 18s
+04:17:31   lesson 400/3000 agree(sample)=0.672 34s
+04:17:46   lesson 600/3000 agree(sample)=0.406 50s
+04:18:03   lesson 800/3000 agree(sample)=0.469 66s
+04:18:19   lesson 1000/3000 agree(sample)=0.695 82s
+04:18:36   lesson 1200/3000 agree(sample)=0.617 99s
+04:18:51   lesson 1400/3000 agree(sample)=0.605 114s
+04:19:07   lesson 1600/3000 agree(sample)=0.645 131s
+04:19:23   lesson 1800/3000 agree(sample)=0.719 146s
+04:19:37   lesson 2000/3000 agree(sample)=0.645 160s
+04:19:52   lesson 2200/3000 agree(sample)=0.672 175s
+04:20:05   lesson 2400/3000 agree(sample)=0.660 188s
+04:20:19   lesson 2600/3000 agree(sample)=0.594 202s
+04:20:32   lesson 2800/3000 agree(sample)=0.660 215s
+04:20:50 round 8 EVAL max_x=[1783, 1417, 1416, 1417, 1417] flags=0/5 median=1417
+04:25:44 round 9 dagger: +1351 samples (9962 total) in 294s; brain agreed with coach on its own path 0.625; reached [(0, 1417, False), (0, 1417, False), (0, 1417, False), (0, 1783, False), (0, 1416, False), (0, 1417, False), (0, 1416, False), (0, 1417, False), (246, 1961, False), (58, 1129, False), (138, 1793, False), (31, 1129, False), (239, 1961, False), (200, 2472, False), (5, 1435, False)]; critical 309
+04:25:46   lesson 0/3000 agree(sample)=0.613 1s
+04:26:01   lesson 200/3000 agree(sample)=0.609 16s
+04:26:17   lesson 400/3000 agree(sample)=0.664 33s
+04:26:33   lesson 600/3000 agree(sample)=0.590 49s
+04:26:49   lesson 800/3000 agree(sample)=0.621 64s
+04:27:04   lesson 1000/3000 agree(sample)=0.621 80s
+04:27:21   lesson 1200/3000 agree(sample)=0.625 96s
+04:27:38   lesson 1400/3000 agree(sample)=0.625 113s
+04:27:55   lesson 1600/3000 agree(sample)=0.574 130s
+04:28:12   lesson 1800/3000 agree(sample)=0.684 148s
+04:28:29   lesson 2000/3000 agree(sample)=0.539 165s
+04:28:45   lesson 2200/3000 agree(sample)=0.660 181s
+04:29:00   lesson 2400/3000 agree(sample)=0.652 195s
+04:29:15   lesson 2600/3000 agree(sample)=0.672 211s
+04:29:32   lesson 2800/3000 agree(sample)=0.637 228s
+04:29:51 round 9 EVAL max_x=[315, 298, 704, 596, 596] flags=0/5 median=596
+04:34:13 round 10 dagger: +1080 samples (11042 total) in 262s; brain agreed with coach on its own path 0.445; reached [(0, 701, False), (0, 701, False), (0, 596, False), (0, 1415, False), (0, 704, False), (0, 596, False), (0, 301, False), (0, 298, False), (148, 2162, False), (138, 2162, False), (78, 2019, False), (248, 2962, False), (146, 2162, False), (56, 1128, False), (271, 3156, False)]; critical 523
+04:34:14   lesson 0/3000 agree(sample)=0.555 1s
+04:34:30   lesson 200/3000 agree(sample)=0.672 17s
+04:34:46   lesson 400/3000 agree(sample)=0.488 33s
+04:35:02   lesson 600/3000 agree(sample)=0.516 49s
+04:35:18   lesson 800/3000 agree(sample)=0.629 65s
+04:35:32   lesson 1000/3000 agree(sample)=0.648 80s
+04:35:48   lesson 1200/3000 agree(sample)=0.605 95s
+04:36:03   lesson 1400/3000 agree(sample)=0.625 110s
+04:36:17   lesson 1600/3000 agree(sample)=0.664 124s
+04:36:33   lesson 1800/3000 agree(sample)=0.648 140s
+04:36:48   lesson 2000/3000 agree(sample)=0.621 155s
+04:37:03   lesson 2200/3000 agree(sample)=0.652 170s
+04:37:19   lesson 2400/3000 agree(sample)=0.602 186s
+04:37:33   lesson 2600/3000 agree(sample)=0.648 200s
+04:37:46   lesson 2800/3000 agree(sample)=0.664 213s
+04:38:03 round 10 EVAL max_x=[898, 723, 898, 725, 722] flags=0/5 median=725
+04:42:41 round 11 dagger: +1003 samples (12045 total) in 279s; brain agreed with coach on its own path 0.464; reached [(0, 594, False), (0, 707, False), (0, 898, False), (0, 898, False), (0, 723, False), (0, 722, False), (0, 723, False), (0, 707, False), (52, 722, False), (52, 722, False), (32, 434, False), (106, 1408, False), (30, 723, False), (219, 1961, False), (256, 3161, True)]; critical 387
+04:42:42   lesson 0/3000 agree(sample)=0.594 1s
+04:42:55   lesson 200/3000 agree(sample)=0.668 14s
+04:43:07   lesson 400/3000 agree(sample)=0.672 26s
+04:43:20   lesson 600/3000 agree(sample)=0.668 39s
+04:43:33   lesson 800/3000 agree(sample)=0.512 52s
+04:43:47   lesson 1000/3000 agree(sample)=0.664 66s
+04:44:00   lesson 1200/3000 agree(sample)=0.664 79s
+04:44:13   lesson 1400/3000 agree(sample)=0.684 92s
+04:44:27   lesson 1600/3000 agree(sample)=0.652 106s
+04:44:40   lesson 1800/3000 agree(sample)=0.578 119s
+04:44:54   lesson 2000/3000 agree(sample)=0.641 133s
+04:45:07   lesson 2200/3000 agree(sample)=0.707 146s
+04:45:19   lesson 2400/3000 agree(sample)=0.621 158s
+04:45:31   lesson 2600/3000 agree(sample)=0.625 170s
+04:45:44   lesson 2800/3000 agree(sample)=0.680 182s
+04:45:57 round 11 EVAL max_x=[722, 722, 722, 724, 594] flags=0/5 median=722
+04:49:34 round 12 dagger: +910 samples (12955 total) in 217s; brain agreed with coach on its own path 0.511; reached [(0, 722, False), (0, 722, False), (0, 724, False), (0, 722, False), (0, 724, False), (0, 722, False), (0, 594, False), (0, 722, False), (248, 2962, False), (33, 722, False), (54, 722, False), (116, 1675, False), (33, 722, False), (57, 898, False), (198, 2403, False)]; critical 241
+04:49:35   lesson 0/3000 agree(sample)=0.684 1s
+04:49:49   lesson 200/3000 agree(sample)=0.578 15s
+04:50:02   lesson 400/3000 agree(sample)=0.645 28s
+04:50:16   lesson 600/3000 agree(sample)=0.668 42s
+04:50:29   lesson 800/3000 agree(sample)=0.723 55s
+04:50:42   lesson 1000/3000 agree(sample)=0.488 68s
+04:50:57   lesson 1200/3000 agree(sample)=0.598 83s
+04:51:12   lesson 1400/3000 agree(sample)=0.668 98s
+04:51:25   lesson 1600/3000 agree(sample)=0.438 111s
+04:51:36   lesson 1800/3000 agree(sample)=0.574 122s
+04:51:49   lesson 2000/3000 agree(sample)=0.258 135s
+04:52:03   lesson 2200/3000 agree(sample)=0.598 149s
+04:52:17   lesson 2400/3000 agree(sample)=0.543 163s
+04:52:31   lesson 2600/3000 agree(sample)=0.621 177s
+04:52:45   lesson 2800/3000 agree(sample)=0.637 191s
+04:53:02 round 12 EVAL max_x=[596, 596, 434, 306, 594] flags=0/5 median=594
+04:56:38 round 13 dagger: +901 samples (13856 total) in 216s; brain agreed with coach on its own path 0.529; reached [(0, 596, False), (0, 306, False), (0, 596, False), (0, 596, False), (0, 596, False), (0, 434, False), (0, 434, False), (0, 306, False), (26, 596, False), (92, 1434, False), (97, 1435, False), (156, 2021, False), (229, 2962, False), (225, 2962, False), (195, 2386, False)]; critical 136
+04:56:39   lesson 0/3000 agree(sample)=0.637 1s
+04:56:52   lesson 200/3000 agree(sample)=0.605 14s
+04:57:05   lesson 400/3000 agree(sample)=0.621 27s
+04:57:19   lesson 600/3000 agree(sample)=0.590 41s
+04:57:34   lesson 800/3000 agree(sample)=0.633 56s
+04:57:48   lesson 1000/3000 agree(sample)=0.516 70s
+04:58:03   lesson 1200/3000 agree(sample)=0.508 85s
+04:58:17   lesson 1400/3000 agree(sample)=0.617 99s
+04:58:32   lesson 1600/3000 agree(sample)=0.590 114s
+04:58:48   lesson 1800/3000 agree(sample)=0.617 129s
+04:59:02   lesson 2000/3000 agree(sample)=0.672 143s
+04:59:16   lesson 2200/3000 agree(sample)=0.508 158s
+04:59:30   lesson 2400/3000 agree(sample)=0.617 172s
+04:59:44   lesson 2600/3000 agree(sample)=0.551 186s
+04:59:57   lesson 2800/3000 agree(sample)=0.598 199s
+05:00:14 round 13 EVAL max_x=[434, 434, 306, 306, 306] flags=0/5 median=306
+05:02:15 round 14 dagger: +508 samples (14364 total) in 121s; brain agreed with coach on its own path 0.610; reached [(0, 303, False), (0, 306, False), (0, 306, False), (0, 434, False), (0, 434, False), (0, 306, False), (0, 306, False), (0, 306, False), (239, 1961, False), (47, 722, False), (19, 434, False), (234, 2914, False), (132, 1668, False), (161, 1961, False), (204, 2474, False)]; critical 108
+05:02:16   lesson 0/3000 agree(sample)=0.656 1s
+05:02:30   lesson 200/3000 agree(sample)=0.652 15s
+05:02:44   lesson 400/3000 agree(sample)=0.605 29s
+05:02:58   lesson 600/3000 agree(sample)=0.652 43s
+05:03:12   lesson 800/3000 agree(sample)=0.504 57s
+05:03:26   lesson 1000/3000 agree(sample)=0.547 71s
+05:03:39   lesson 1200/3000 agree(sample)=0.578 84s
+05:03:54   lesson 1400/3000 agree(sample)=0.582 99s
+05:04:08   lesson 1600/3000 agree(sample)=0.617 113s
+05:04:24   lesson 1800/3000 agree(sample)=0.637 129s
+05:04:40   lesson 2000/3000 agree(sample)=0.656 145s
+05:04:54   lesson 2200/3000 agree(sample)=0.652 159s
+05:05:09   lesson 2400/3000 agree(sample)=0.594 174s
+05:05:21   lesson 2600/3000 agree(sample)=0.645 186s
+05:05:35   lesson 2800/3000 agree(sample)=0.633 200s
+05:05:51 round 14 EVAL max_x=[679, 722, 306, 306, 702] flags=0/5 median=679
+05:08:09 round 15 dagger: +671 samples (15035 total) in 138s; brain agreed with coach on its own path 0.620; reached [(0, 306, False), (0, 700, False), (0, 303, False), (0, 694, False), (0, 306, False), (0, 679, False), (0, 699, False), (0, 306, False), (118, 1674, False), (194, 2164, False), (3, 702, False), (134, 1659, False), (1, 679, False), (125, 1790, False), (42, 699, False)]; critical 255
+05:08:10   lesson 0/3000 agree(sample)=0.598 1s
+05:08:24   lesson 200/3000 agree(sample)=0.621 15s
+05:08:38   lesson 400/3000 agree(sample)=0.590 29s
+05:08:51   lesson 600/3000 agree(sample)=0.559 42s
+05:09:05   lesson 800/3000 agree(sample)=0.570 56s
+05:09:19   lesson 1000/3000 agree(sample)=0.625 70s
+05:09:33   lesson 1200/3000 agree(sample)=0.629 84s
+05:09:47   lesson 1400/3000 agree(sample)=0.609 98s
+05:09:59   lesson 1600/3000 agree(sample)=0.637 110s
+05:10:12   lesson 1800/3000 agree(sample)=0.594 123s
+05:10:25   lesson 2000/3000 agree(sample)=0.660 136s
+05:10:40   lesson 2200/3000 agree(sample)=0.680 151s
+05:10:56   lesson 2400/3000 agree(sample)=0.645 167s
+05:11:12   lesson 2600/3000 agree(sample)=0.637 183s
+05:11:27   lesson 2800/3000 agree(sample)=0.633 198s
+05:11:43 round 15 EVAL max_x=[434, 434, 434, 306, 306] flags=0/5 median=434
+05:14:37 round 16 dagger: +612 samples (15647 total) in 174s; brain agreed with coach on its own path 0.427; reached [(0, 312, False), (0, 312, False), (0, 434, False), (0, 306, False), (0, 303, False), (0, 434, False), (0, 303, False), (0, 434, False), (102, 1521, False), (243, 2914, False), (98, 1521, False), (101, 1524, False), (27, 434, False), (28, 434, False), (84, 1128, False)]; critical 67
+05:14:38   lesson 0/3000 agree(sample)=0.566 1s
+05:14:51   lesson 200/3000 agree(sample)=0.629 14s
+05:15:05   lesson 400/3000 agree(sample)=0.629 28s
+05:15:19   lesson 600/3000 agree(sample)=0.613 42s
+05:15:35   lesson 800/3000 agree(sample)=0.602 58s
+05:15:49   lesson 1000/3000 agree(sample)=0.621 72s
+05:16:03   lesson 1200/3000 agree(sample)=0.609 86s
+05:16:16   lesson 1400/3000 agree(sample)=0.551 99s
+05:16:31   lesson 1600/3000 agree(sample)=0.605 115s
+05:16:46   lesson 1800/3000 agree(sample)=0.598 129s
+05:17:00   lesson 2000/3000 agree(sample)=0.680 143s
+05:17:16   lesson 2200/3000 agree(sample)=0.582 160s
+05:17:31   lesson 2400/3000 agree(sample)=0.680 174s
+05:17:46   lesson 2600/3000 agree(sample)=0.648 189s
+05:18:02   lesson 2800/3000 agree(sample)=0.570 205s
+05:18:18 round 16 EVAL max_x=[303, 306, 306, 306, 306] flags=0/5 median=306
+05:20:09 round 17 dagger: +384 samples (16031 total) in 110s; brain agreed with coach on its own path 0.641; reached [(0, 306, False), (0, 303, False), (0, 306, False), (0, 306, False), (0, 306, False), (0, 303, False), (0, 306, False), (0, 306, False), (89, 1434, False), (179, 2163, False), (169, 2131, False), (120, 1521, False), (119, 1524, False), (257, 1961, False), (212, 1961, False)]; critical 68
+05:20:10   lesson 0/3000 agree(sample)=0.621 1s
+05:20:26   lesson 200/3000 agree(sample)=0.566 17s
+05:20:40   lesson 400/3000 agree(sample)=0.484 31s
+05:20:55   lesson 600/3000 agree(sample)=0.617 46s
+05:21:09   lesson 800/3000 agree(sample)=0.594 60s
+05:21:23   lesson 1000/3000 agree(sample)=0.574 74s
+05:21:39   lesson 1200/3000 agree(sample)=0.617 90s
+05:21:56   lesson 1400/3000 agree(sample)=0.621 107s
+05:22:12   lesson 1600/3000 agree(sample)=0.598 123s
+05:22:27   lesson 1800/3000 agree(sample)=0.652 138s
+05:22:43   lesson 2000/3000 agree(sample)=0.637 154s
+05:22:58   lesson 2200/3000 agree(sample)=0.633 169s
+05:23:11   lesson 2400/3000 agree(sample)=0.633 182s
+05:23:24   lesson 2600/3000 agree(sample)=0.590 195s
+05:23:39   lesson 2800/3000 agree(sample)=0.609 210s
+05:23:56 round 17 EVAL max_x=[303, 722, 722, 722, 722] flags=0/5 median=722
+05:28:15 round 18 dagger: +808 samples (16839 total) in 260s; brain agreed with coach on its own path 0.516; reached [(0, 722, False), (0, 722, False), (0, 303, False), (0, 303, False), (0, 722, False), (0, 303, False), (0, 306, False), (0, 306, False), (265, 1961, False), (217, 2756, False), (219, 2744, False), (234, 2914, False), (28, 722, False), (5, 722, False), (227, 2914, False)]; critical 181
+05:28:17   lesson 0/3000 agree(sample)=0.660 1s
+05:28:30   lesson 200/3000 agree(sample)=0.559 15s
+05:28:44   lesson 400/3000 agree(sample)=0.570 29s
+05:28:56   lesson 600/3000 agree(sample)=0.664 41s
+05:29:09   lesson 800/3000 agree(sample)=0.602 53s
+05:29:23   lesson 1000/3000 agree(sample)=0.586 68s
+05:29:37   lesson 1200/3000 agree(sample)=0.637 81s
+05:29:51   lesson 1400/3000 agree(sample)=0.582 96s
+05:30:05   lesson 1600/3000 agree(sample)=0.590 109s
+05:30:19   lesson 1800/3000 agree(sample)=0.641 124s
+05:30:32   lesson 2000/3000 agree(sample)=0.656 137s
+05:30:46   lesson 2200/3000 agree(sample)=0.605 151s
+05:31:02   lesson 2400/3000 agree(sample)=0.574 167s
+05:31:16   lesson 2600/3000 agree(sample)=0.574 181s
+05:31:31   lesson 2800/3000 agree(sample)=0.668 195s
+05:31:45 round 18 EVAL max_x=[434, 434, 434, 434, 434] flags=0/5 median=434
+05:36:25 round 19 dagger: +942 samples (17781 total) in 280s; brain agreed with coach on its own path 0.335; reached [(0, 434, False), (0, 679, False), (0, 434, False), (0, 434, False), (0, 434, False), (0, 434, False), (0, 434, False), (0, 434, False), (249, 2914, False), (239, 2914, False), (137, 1781, False), (47, 684, False), (208, 2898, False), (23, 434, False), (63, 898, False)]; critical 503
+05:36:26   lesson 0/3000 agree(sample)=0.633 1s
+05:36:38   lesson 200/3000 agree(sample)=0.598 13s
+05:36:51   lesson 400/3000 agree(sample)=0.551 27s
+05:37:05   lesson 600/3000 agree(sample)=0.586 40s
+05:37:18   lesson 800/3000 agree(sample)=0.641 53s
+05:37:31   lesson 1000/3000 agree(sample)=0.617 66s
+05:37:45   lesson 1200/3000 agree(sample)=0.656 80s
+05:37:59   lesson 1400/3000 agree(sample)=0.562 95s
+05:38:13   lesson 1600/3000 agree(sample)=0.645 108s
+05:38:24   lesson 1800/3000 agree(sample)=0.664 120s
+05:38:37   lesson 2000/3000 agree(sample)=0.559 133s
+05:38:51   lesson 2200/3000 agree(sample)=0.594 147s
+05:39:06   lesson 2400/3000 agree(sample)=0.598 161s
+05:39:19   lesson 2600/3000 agree(sample)=0.582 175s
+05:39:35   lesson 2800/3000 agree(sample)=0.613 190s
+05:39:53 round 19 EVAL max_x=[596, 596, 596, 596, 594] flags=0/5 median=596
+05:44:17 round 20 dagger: +928 samples (18709 total) in 264s; brain agreed with coach on its own path 0.377; reached [(0, 594, False), (0, 596, False), (0, 596, False), (0, 594, False), (0, 596, False), (0, 594, False), (0, 596, False), (0, 594, False), (72, 898, False), (159, 1952, False), (212, 1961, False), (199, 2403, False), (245, 2947, False), (217, 2754, False), (38, 596, False)]; critical 107
+05:44:18   lesson 0/3000 agree(sample)=0.645 1s
+05:44:33   lesson 200/3000 agree(sample)=0.648 16s
+05:44:48   lesson 400/3000 agree(sample)=0.582 31s
+05:45:02   lesson 600/3000 agree(sample)=0.520 45s
+05:45:16   lesson 800/3000 agree(sample)=0.578 59s
+05:45:30   lesson 1000/3000 agree(sample)=0.648 73s
+05:45:44   lesson 1200/3000 agree(sample)=0.598 87s
+05:46:00   lesson 1400/3000 agree(sample)=0.566 103s
+05:46:15   lesson 1600/3000 agree(sample)=0.699 118s
+05:46:30   lesson 1800/3000 agree(sample)=0.652 133s
+05:46:46   lesson 2000/3000 agree(sample)=0.641 149s
+05:47:00   lesson 2200/3000 agree(sample)=0.598 163s
+05:47:15   lesson 2400/3000 agree(sample)=0.641 178s
+05:47:29   lesson 2600/3000 agree(sample)=0.633 192s
+05:47:43   lesson 2800/3000 agree(sample)=0.586 206s
+05:47:58 round 20 EVAL max_x=[596, 434, 596, 698, 306] flags=0/5 median=596
+05:52:12 round 21 dagger: +909 samples (19618 total) in 254s; brain agreed with coach on its own path 0.452; reached [(0, 596, False), (0, 306, False), (0, 698, False), (0, 596, False), (0, 596, False), (0, 434, False), (0, 596, False), (0, 434, False), (94, 1434, False), (195, 1961, False), (215, 2404, False), (138, 1787, False), (11, 596, False), (21, 434, False), (25, 596, False)]; critical 426
+05:52:13   lesson 0/3000 agree(sample)=0.605 1s
+05:52:27   lesson 200/3000 agree(sample)=0.625 15s
+05:52:41   lesson 400/3000 agree(sample)=0.586 29s
+05:52:54   lesson 600/3000 agree(sample)=0.609 42s
+05:53:06   lesson 800/3000 agree(sample)=0.566 54s
+05:53:18   lesson 1000/3000 agree(sample)=0.539 67s
+05:53:33   lesson 1200/3000 agree(sample)=0.629 81s
+05:53:45   lesson 1400/3000 agree(sample)=0.590 93s
+05:53:59   lesson 1600/3000 agree(sample)=0.625 107s
+05:54:11   lesson 1800/3000 agree(sample)=0.559 120s
+05:54:28   lesson 2000/3000 agree(sample)=0.543 136s
+05:54:44   lesson 2200/3000 agree(sample)=0.414 152s
+05:55:00   lesson 2400/3000 agree(sample)=0.625 168s
+05:55:15   lesson 2600/3000 agree(sample)=0.613 183s
+05:55:30   lesson 2800/3000 agree(sample)=0.539 198s
+05:55:50 round 21 EVAL max_x=[315, 312, 594, 722, 722] flags=0/5 median=594
+05:55:50 deadline reached
+05:55:50 done

@@ -1,0 +1,42 @@
+02:38:12 cadence 0.91.1 hidden=256 seed=0 workers=5
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+02:54:02 round 0 coach: 4767 samples in 950s; runs [(0, 0.0, 3161, True), (3, 0.0, 3161, True), (8, 0.0, 3161, True), (13, 0.0, 3161, True), (20, 0.0, 3161, True), (27, 0.0, 3161, True), (1, 0.12, 3161, True), (6, 0.12, 2472, False), (15, 0.12, 3161, True), (24, 0.12, 2018, False), (30, 0.12, 3161, True), (2, 0.12, 3161, True), (9, 0.12, 1128, False), (18, 0.12, 3161, True), (4, 0.25, 1149, False), (10, 0.25, 1148, False), (16, 0.25, 3161, True), (22, 0.25, 2471, False), (28, 0.25, 1524, False), (31, 0.25, 1439, False)]
+02:54:02   label counts [22, 4, 111, 3168, 1317, 25, 120]
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+02:54:04   lesson 0/3000 agree(sample)=0.695 1s
+02:54:21   lesson 200/3000 agree(sample)=0.309 18s
+02:54:38   lesson 400/3000 agree(sample)=0.676 35s
+02:54:57   lesson 600/3000 agree(sample)=0.664 54s
+02:55:20   lesson 800/3000 agree(sample)=0.617 77s
+02:55:42   lesson 1000/3000 agree(sample)=0.664 100s
+02:56:02   lesson 1200/3000 agree(sample)=0.359 119s
+02:56:25   lesson 1400/3000 agree(sample)=0.637 142s
+02:56:48   lesson 1600/3000 agree(sample)=0.637 165s
+02:57:11   lesson 1800/3000 agree(sample)=0.246 188s
+02:57:33   lesson 2000/3000 agree(sample)=0.227 211s
+02:57:56   lesson 2200/3000 agree(sample)=0.695 234s
+02:58:19   lesson 2400/3000 agree(sample)=0.602 257s
+02:58:42   lesson 2600/3000 agree(sample)=0.723 280s
+02:59:05   lesson 2800/3000 agree(sample)=0.699 302s
