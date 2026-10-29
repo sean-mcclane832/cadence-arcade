@@ -62,32 +62,82 @@ def _plans(h: int = HORIZON) -> list[list[int]]:
 PLANS = _plans()
 
 
-def frame_features(screen: np.ndarray) -> np.ndarray:
+def _lean_plans(h: int = HORIZON) -> list[list[int]]:
+    """A 4-button menu (run, run+jump, wait, back off). The full menu has near-equal buttons
+    (right vs run, right+jump vs run+jump) whose ties make the labels conflict; this one keeps
+    waiting and backing off, which the 2-button coach lacked and needed."""
+    out = [[RUN] * h]
+    for k in (2, 3, 5, 8, 12):
+        out.append([RUNJUMP] * k + [RUN] * (h - k))
+    for m, k in ((2, 8), (4, 8), (1, 5)):
+        out.append([RUN] * m + [RUNJUMP] * k + [RUN] * (h - m - k))
+    for k in (3, 8):
+        out.append([RUNJUMP] * k + [NOOP] * (h - k))
+    for k in (2, 5, 10):
+        out.append([NOOP] * k + [RUN] * (h - k))
+    for k in (3, 6):
+        out.append([LEFT] * k + [RUN] * (h - k))
+    out.append([NOOP] * 3 + [RUNJUMP] * 8 + [RUN] * (h - 11))
+    out.append([LEFT] * 3 + [RUNJUMP] * 8 + [RUN] * (h - 11))
+    out.append([NOOP] * 6 + [RUNJUMP] * 6 + [RUN] * (h - 12))
+    # run first, then a short hop: low ceilings over a gap (1-2 at x ~1,270) need a tap jump at the edge
+    for m in (5, 7, 9):
+        for k in (1, 2):
+            out.append([RUN] * m + [RUNJUMP] * k + [RUN] * (h - m - k))
+    if h >= 24:  # long back-offs for a running start under a low ceiling (1-2)
+        for k, m in ((8, 4), (10, 6), (12, 4)):
+            out.append([LEFT] * k + [RUN] * m + [RUNJUMP] * 8 + [RUN] * (h - k - m - 8))
+        out.append([LEFT] * 6 + [RUN] * 2 + [RUNJUMP] * 12 + [RUN] * (h - 20))
+    return out
+
+
+LEAN_PLANS = _lean_plans()
+MENUS = {"full": PLANS, "lean": LEAN_PLANS, "lean24": _lean_plans(24)}
+LEVEL_ENDS = {(1, 1): 3161}
+
+
+def background_grey(grey: np.ndarray) -> float:
+    """The commonest grey level of the playfield (sky, or black underground / in castles)."""
+    q = np.clip(np.round(grey * 255), 0, 255).astype(np.int64).reshape(-1)
+    return float(np.bincount(q, minlength=256).argmax()) / 255.0
+
+
+def frame_features(screen: np.ndarray, bg: float | None = SKY) -> np.ndarray:
     """240 x 256 x 3 uint8 screen -> 26 x 32 grey blocks (8 x 8 px each), as distance from the sky
     grey, flattened. Sky reads 0 and things (ground, pipes, Goombas, Mario) light up, the way an
     Atari screen is mostly black. Raw [0, 1] pixels on a bright sky gave a brain whose answer did
     not depend on the screen at all (sweep.py)."""
     s = screen[TOP:TOP + ROWS * BLOCK].astype(np.float32)
     grey = (s[..., 0] * 0.299 + s[..., 1] * 0.587 + s[..., 2] * 0.114) / 255.0
+    if bg is None:  # level-agnostic: distance from this frame's own background grey
+        bg = background_grey(grey)
     blocks = grey.reshape(ROWS, BLOCK, COLS, BLOCK).mean(axis=(1, 3))
-    return np.abs(blocks - SKY).reshape(-1)
+    return np.abs(blocks - bg).reshape(-1)
 
 
 class Game:
     """One life in World 1-1. A new Game is a new attempt from the start."""
 
-    def __init__(self, noop_start: int = 0):
-        self.env = SuperMarioBrosEnv(rom_mode="vanilla", lost_levels=False, target=(1, 1))
+    def __init__(self, noop_start: int = 0, level: tuple = (1, 1), menu: str = "full",
+                 bg_per_frame: bool = False):
+        self.level = tuple(level)
+        self.plans = MENUS[menu]
+        self.env = SuperMarioBrosEnv(rom_mode="vanilla", lost_levels=False, target=self.level)
         screen = self.env.reset()
+        # background grey: None = every frame's own commonest grey (level-agnostic; on 1-1 that
+        # is the sky grey SKY, so last night's brain sees the same numbers there)
+        self.bg = None if bg_per_frame else SKY
         for _ in range(noop_start):  # optional start jitter: idle frames before the first decision
             screen, _, _, _ = self.env.step(0)
-        self.cur = frame_features(screen)
+        self.cur = frame_features(screen, self.bg)
         self.prev = self.cur.copy()
         self.screen = screen.copy()
         self.done = False
         self.flag = False
         self.decisions = 0
-        self.x = int(self.env._x_position)
+        self.raw_x = int(self.env._x_position)
+        self.off = 0  # x carried across an area change (exit pipe -> the flag area restarts x near 0)
+        self.x = self.raw_x
         self.max_x = self.x
         self.stuck = 0
 
@@ -109,8 +159,12 @@ class Game:
                 self.flag = bool(info["flag_get"])
                 break
         self.screen = screen.copy()
-        self.prev, self.cur = self.cur, frame_features(screen)
-        self.x = int(self.env._x_position)
+        self.prev, self.cur = self.cur, frame_features(screen, self.bg)
+        raw = int(self.env._x_position)
+        if raw < self.raw_x - 600 and not self.done:  # new area (pipe), not a step back
+            self.off += self.raw_x + 16 - raw
+        self.raw_x = raw
+        self.x = raw + self.off
         if self.x > self.max_x:
             self.max_x, self.stuck = self.x, 0
         else:
@@ -129,14 +183,16 @@ class Game:
                     return 1e6 + env._x_position
                 if env._is_dying or env._is_dead:
                     return -1e5 + env._x_position
+                if env.ram[0x000E] in (2, 3):  # entering a pipe (1-2's exit to the flag area)
+                    return 5e5 + env._x_position
         return float(env._x_position)
 
     def coach_scores(self) -> np.ndarray:
         env = self.env
         saved = (env._time_last, env._x_position_last, env.done)
         env._backup()
-        scores = np.empty(len(PLANS))
-        for i, plan in enumerate(PLANS):
+        scores = np.empty(len(self.plans))
+        for i, plan in enumerate(self.plans):
             env._restore()
             scores[i] = self._simulate(plan)
         env._restore()
@@ -156,17 +212,17 @@ class Game:
         saved = (env._time_last, env._x_position_last, env.done)
         x0 = env._x_position
         env._backup()
-        run = self._simulate(PLANS[0])
+        run = self._simulate(self.plans[0])
         env._restore()
         env._time_last, env._x_position_last, env.done = saved
         if run >= 1e6 or (run > 0 and run - x0 >= FAST_GAIN):
-            return PLANS[0][0], 1.0
+            return self.plans[0][0], 1.0
         scores = self.coach_scores()
         best = scores.max()
         # the first plan (menu order) within 2 pixels of the best: run unless something is better
         i = int(np.flatnonzero(scores >= best - 2.0)[0])
-        label = PLANS[i][0]
-        first = np.array([p[0] for p in PLANS])
+        label = self.plans[i][0]
+        first = np.array([p[0] for p in self.plans])
         other = scores[first != label]
         alt = other.max() if len(other) else best
         return label, (CRITICAL_WEIGHT if best - alt > CRITICAL_PX else 1.0)

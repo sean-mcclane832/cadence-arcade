@@ -1,0 +1,2 @@
+12:09:37 new job: cadence 0.91.1, brain from runs/main/brain_e10.npz, menu lean
+12:09:42 === 1-1 FIRST SIGHT x=[594, 899, 434] flags=0/3

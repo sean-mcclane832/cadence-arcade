@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cadence Plays Mario In Order</title>
+<meta name="description" content="One Cadence brain plays Super Mario Bros. levels in order, like a person. How far does it get on each new level at first sight?">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root { --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; --bad: #ff6b6b; --good: #7bd88f; --panel: #12151a; }
+  * { box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 28px 16px 40px; }
+  main { max-width: 640px; margin: 0 auto; }
+  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 22px; letter-spacing: .05em; margin: 0 0 6px; }
+  h2 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 15px; letter-spacing: .05em; margin: 30px 0 8px; }
+  .sub, .dim { color: var(--dim); font-size: 12.5px; }
+  .sub { margin: 0 0 16px; }
+  a { color: var(--accent); }
+  svg { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+  svg .grid { stroke: var(--line); } svg .ax { fill: var(--dim); font: 9px "JetBrains Mono", monospace; }
+  svg .bar { fill: var(--accent); } svg .tick { stroke: var(--fg); stroke-width: 2; }
+  .tw { width: 100%; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--dim); font-weight: 400; }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  .ok { color: var(--good); } .no { color: var(--bad); }
+  ul { padding-left: 18px; margin: 10px 0; } li { margin: 7px 0; }
+  figure { margin: 0 0 18px; }
+  video { display: block; width: 100%; aspect-ratio: 256 / 240; background: #000; border: 1px solid var(--line); border-radius: 6px; image-rendering: pixelated; }
+  figcaption { color: var(--dim); font-size: 12.5px; margin-top: 6px; }
+  footer { color: var(--dim); font-size: 12px; margin-top: 32px; } footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+<main>
+  <p class="sub"><a href="../../">cadence arcade</a> / <a href="../">mario</a> / levels in order</p>
+  <h1>MARIO, LEVEL BY LEVEL</h1>
+  <p class="sub">One Cadence brain (cadence-net 0.91.1) plays the levels in order, learning the whole time. Updated 2026-10-29 12:10.</p>
+
+  <h2>First sight</h2>
+  <p class="dim">How far it gets on a level it has never trained on: median x of 3 solo attempts (bar), best of the 3 (white line). 1-1 is marked "pre": the brain started from last night's 1-1 training.</p>
+  <svg viewBox="0 0 360 200" role="img" aria-label="First-sight distance per level, in play order"><line x1="40" x2="356" y1="166.0" y2="166.0" class="grid"/><text x="36" y="169.0" class="ax" text-anchor="end">0</text><line x1="40" x2="356" y1="88.0" y2="88.0" class="grid"/><text x="36" y="91.0" class="ax" text-anchor="end">500</text><line x1="40" x2="356" y1="10.0" y2="10.0" class="grid"/><text x="36" y="13.0" class="ax" text-anchor="end">1000</text><rect x="46.6" y="73.3" width="30.8" height="92.7" class="bar"><title>1-1 first sight median x 594 (attempts [594, 899, 434])</title></rect><line x1="46.6" x2="77.4" y1="25.8" y2="25.8" class="tick"/><text x="62.0" y="179" class="ax" text-anchor="middle">1-1</text><text x="62.0" y="191" class="ax" text-anchor="middle">pre</text></svg>
+
+  <h2>What's happening</h2>
+  <ul><li>One Cadence brain plays Super Mario Bros. in order, 1-1, 1-2, 1-3, 1-4, 2-1 ..., the way a person works through the game. It keeps learning the whole time; it is never reset between levels.</li><li>First sight is the test that matters: 3 solo attempts on a level before any practice on it. If it is learning to play Mario rather than memorizing levels, first-sight distance should rise as it goes.</li><li>Practice on a level: it plays on its own and learns from the reward (going right, not dying), copies its own good stretches, and gets a few coached tries where a look-ahead planner writes down what it would have pressed. The planner never takes the controls.</li><li>About a tenth of its play is an earlier level again, so old levels are revisited but not drilled. It moves on after clearing a level solo (flag in 2 of 3) or after about 38 minutes of practice.</li><li>Started from last night&#x27;s 1-1 brain (round 10, the best saved checkpoint; round 8&#x27;s was never saved), so 1-1 is not a real first sight.</li></ul>
+
+  <h2>Each level</h2>
+  <div class="tw"><table><thead><tr><th>level</th><th class="n">first sight</th><th class="n">best solo</th><th>cleared solo</th><th class="n">min</th></tr></thead>
+  <tbody><tr><td>1-1</td><td class="n">594</td><td class="n">594<span class="dim"> r0</span></td><td><span class="dim">practising</span></td><td class="n">0</td></tr></tbody></table></div>
+  <p class="dim">Distances are Mario's x in pixels, median of 3 solo attempts. "Cleared" = flag in 2 of 3 solo attempts. "min" = practice minutes.</p>
+
+  <h2>Videos</h2>
+  <p class="dim">No clip yet.</p>
+
+  <h2>Coaching used</h2>
+  <div class="tw"><table><thead><tr><th>level</th><th class="n">coached</th><th class="n">labels</th><th class="n">own</th><th class="n">old play</th></tr></thead>
+  <tbody><tr><td>1-1</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0%</td></tr></tbody></table></div>
+  <p class="dim">Coached: tries where the brain plays and a look-ahead planner writes down the button it would have pressed on each screen; the brain never gets driven by it. Labels: coach labels written. Own: screens from the brain's own attempts that made progress. Old-level play: share of its self-play spent on an earlier level.</p>
+
+  <h2>Retention</h2>
+  <p class="dim">Measured at the first level change.</p>
+
+  <footer>Independent experiment by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">cadence-arcade/mario</a> (levels.py).</footer>
+</main>
+</body>
+</html>

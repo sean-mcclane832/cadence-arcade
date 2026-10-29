@@ -6,3 +6,4 @@ runs/tmp/
 mario/runs/**/*.npz
 mario/runs/*_stdout.txt
 *.nes
+mario/runs/**/stdout.txt
