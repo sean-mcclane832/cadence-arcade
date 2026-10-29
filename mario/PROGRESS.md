@@ -118,3 +118,4 @@ the best baseline on no new level.
 - Speed: game step + obs 9 ms, lesson 0.12 s, brain.step 68 ms (blind ~27 ms). Same caps,
   same 10% old-level play.
 - 1-1 (senses, fresh): first sight [40x3]; 6 rounds, 40 min, capped; solo medians 295, 315, 434, 315, 315, 594. Blind continuing brain over its 40 min: 594 -> best 898 (but ~2.5 h of overnight 1-1 training first). 1-2 first sight [198, 196, 189].
+- 1-2 (senses): first sight [198, 196, 189]; 6 rounds capped, never beat round 0 (best state = the one it arrived with); retention 1-1 [594, 594, 596] kept.
