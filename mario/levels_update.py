@@ -22,16 +22,16 @@ def rec(args, name, caption):
 for name, l in st["levels"].items():
     c = l.get("cleared")
     if c:
-        rec(["--level", name, "--round", str(c["round"])], f"clear-{name}",
-            f"Solo clear: {name}, {'first sight' if c['round'] == 0 else 'practice round ' + str(c['round'])}, flag")
+        rec(["--level", name, "--round", str(c["round"])], f"senses-clear-{name}",
+            f"New senses, solo clear: {name}, {'first sight' if c['round'] == 0 else 'practice round ' + str(c['round'])}, flag")
 # best first sight on a level it had never practised (1-1 excluded: trained overnight)
 fs = [(l["first_sight"]["score"][2], max(e["max_x"] for e in l["first_sight"]["eval"]), n)
-      for n, l in st["levels"].items() if "first_sight" in l and n != "1-1"]
+      for n, l in st["levels"].items() if "first_sight" in l and True]
 if fs:
     _, bx, bn = max(fs, key=lambda t: t[1])
-    tag = f"firstsight-{bn}"
-    for old in OUT.glob("firstsight-*"):
+    tag = f"senses-firstsight-{bn}"
+    for old in OUT.glob("senses-firstsight-*"):
         if not old.name.startswith(tag):
             old.unlink()
-    rec(["--level", bn, "--round", "0"], tag, f"Best first sight so far: {bn} before any practice on it, x {bx:,}")
-subprocess.run([PY, str(HERE / "build_levels_page.py"), "--state", "runs/inorder/state.json", "--out", str(OUT)], cwd=HERE)
+    rec(["--level", bn, "--round", "0"], tag, f"New senses, best first sight so far: {bn} before any practice on it, x {bx:,}")
+subprocess.run([PY, str(HERE / "build_levels_page.py"), "--before", "runs/inorder_blind/state.json", "--after", "runs/inorder/state.json", "--out", str(OUT)], cwd=HERE)

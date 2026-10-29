@@ -36,7 +36,13 @@ N_ACTIONS = len(ACTIONS)
 TOP, ROWS, COLS, BLOCK = 32, 26, 32, 8
 N_FRAME = ROWS * COLS
 SKY = (0.299 * 92 + 0.587 * 148 + 0.114 * 252) / 255.0  # grey level of the 1-1 sky
-N_IN = 2 * N_FRAME
+SENSES = __import__("os").environ.get("MARIO_SENSES", "blind")
+# "senses" input (MARIO_SENSES=senses): eyes at 4 x 4 px blocks for the present frame, 3 signed
+# frame differences at 8 x 8, all per-frame normalized; plus proprioception of Mario's own body.
+FINE = 4
+N_FINE = (ROWS * BLOCK // FINE) * (COLS * BLOCK // FINE)  # 52 x 64 = 3,328
+N_PROPRIO_ONE, PROPRIO_COPIES = 38, 8
+N_IN = 2 * N_FRAME if SENSES == "blind" else N_FINE + 3 * N_FRAME + N_PROPRIO_ONE * PROPRIO_COPIES
 LEVEL_END = 3161  # x of the flagpole in 1-1 (approx; the flag flag is what counts)
 
 NOOP, RIGHT, RJUMP, RUN, RUNJUMP, JUMP, LEFT = range(7)
@@ -115,6 +121,35 @@ def frame_features(screen: np.ndarray, bg: float | None = SKY) -> np.ndarray:
     return np.abs(blocks - bg).reshape(-1)
 
 
+def _norm_blocks(grey: np.ndarray, block: int) -> np.ndarray:
+    """Level-agnostic: distance from this frame's background grey, scaled by the frame's own
+    contrast (95th percentile), so overground, underground and castles read alike."""
+    bg = background_grey(grey)
+    r, c = grey.shape[0] // block, grey.shape[1] // block
+    b = np.abs(grey.reshape(r, block, c, block).mean(axis=(1, 3)) - bg)
+    return np.clip(b / max(float(np.percentile(b, 95)), 0.08), 0, 1).reshape(-1)
+
+
+def _pop(v: float, lo: float, hi: float, n: int) -> np.ndarray:
+    """Population code: n bins over [lo, hi], a soft bump around v."""
+    centres = np.linspace(lo, hi, n); w = (hi - lo) / (n - 1)
+    return np.exp(-0.5 * ((np.clip(v, lo, hi) - centres) / (0.6 * w)) ** 2)
+
+
+def proprio(env) -> np.ndarray:
+    """Mario's own body only, from RAM: x speed, y speed, float state (ground / jumping / falling /
+    pole), jump still rising, facing, power state, hurt and star timers, time left. No enemies, tiles
+    or pits: the world comes from the eyes."""
+    ram = env.ram
+    xs = float(np.int8(np.uint8(ram[0x0057]))); ys = float(np.int8(np.uint8(ram[0x009F])))
+    fl = int(ram[0x001D]); face = int(ram[0x0033]); pw = int(ram[0x0756])
+    v = [_pop(xs, -40, 40, 9), _pop(ys, -5, 5, 9), np.eye(4)[min(fl, 3)], [1.0 if ys < 0 else 0.0],
+         [1.0 if face == 1 else 0.0, 1.0 if face == 2 else 0.0], np.eye(3)[min(pw, 2)],
+         [1.0 if ram[0x079E] > 0 else 0.0, 1.0 if ram[0x079F] > 0 else 0.0],
+         _pop(float(env._time) / 400.0, 0, 1, 8)]
+    return np.concatenate([np.asarray(a, dtype=np.float32) for a in v])
+
+
 class Game:
     """One life in World 1-1. A new Game is a new attempt from the start."""
 
@@ -131,6 +166,8 @@ class Game:
             screen, _, _, _ = self.env.step(0)
         self.cur = frame_features(screen, self.bg)
         self.prev = self.cur.copy()
+        if SENSES != "blind":
+            self._sense(screen, first=True)
         self.screen = screen.copy()
         self.done = False
         self.flag = False
@@ -142,8 +179,19 @@ class Game:
         self.stuck = 0
 
     # -- the brain's view -------------------------------------------------------------------
+    def _sense(self, screen, first=False):
+        s = screen[TOP:TOP + ROWS * BLOCK].astype(np.float32)
+        grey = (s[..., 0] * 0.299 + s[..., 1] * 0.587 + s[..., 2] * 0.114) / 255.0
+        self.fine = _norm_blocks(grey, FINE)
+        coarse = _norm_blocks(grey, BLOCK)
+        self.hist = [coarse] * 4 if first else [coarse] + self.hist[:3]
+
     def observation(self) -> np.ndarray:
-        return np.concatenate([self.cur, self.prev])
+        if SENSES == "blind":
+            return np.concatenate([self.cur, self.prev])
+        h = self.hist
+        diffs = [0.5 + 0.5 * (h[0] - h[k]) for k in (1, 2, 3)]
+        return np.concatenate([self.fine, *diffs, np.tile(proprio(self.env), PROPRIO_COPIES)]).astype(np.float64)
 
     # -- the body ---------------------------------------------------------------------------
     def step(self, action: int, keep_frames: list | None = None) -> float:
@@ -160,6 +208,8 @@ class Game:
                 break
         self.screen = screen.copy()
         self.prev, self.cur = self.cur, frame_features(screen, self.bg)
+        if SENSES != "blind":
+            self._sense(screen)
         raw = int(self.env._x_position)
         if raw < self.raw_x - 600 and not self.done:  # new area (pipe), not a step back
             self.off += self.raw_x + 16 - raw

@@ -92,3 +92,28 @@ headline. Page: docs/mario/levels/ (built by build_levels_page.py, clips by leve
 - 1-3: first sight [311, 311, 311]; 14 rounds, capped; best solo r14 [626, 746, 776] (median 746). Retention after 1-3: 1-1 [2020, 594, 594] (2,020 = furthest solo 1-1 yet), 1-2 [198, 196, 184].
 - 1-4: first sight [234, 234, 234]; capped; best solo r11 [551, 551, 551]. Retention after 1-4: 1-1 [695, 723, 696], 1-2 [198, 196, 189], 1-3 [420, 420, 420]. 2-1 first sight [322, 322, 322].
 - 2-1: first sight [322, 322, 322]; capped; best solo r7 [457x3]. Retention after 2-1: 1-1 [700x3], 1-2 [322, 354, 291], 1-3 [419x3], 1-4 [437x3]. 2-2 (water) first sight [514, 514, 514], best first sight so far, but a swim level with no pits at the start.
+- 2-2 (blind): first sight [514x3]; best solo r2 [2225, 1496, 1194] (median 1,496); stopped 16:01 after r6 for
+  the senses change (no retention after 2-2). Blind run saved in runs/inorder_blind/.
+- Bug found 16:01: set_rates' late teaching-rate retune (round 3+) always failed (cadence 0.91.1
+  refuses learning_eta under teaching="normalized"). Effect: teaching rates were never lowered late;
+  actor rates set at rounds 1-2 persisted. Kept the same behaviour in run 2, minus the failing call.
+
+### Per-level first-sight baselines (baselines_levels.py, median x, starts 0/6/12; random 10 seeds)
+| level | blind first sight | run | run+jump | random | fresh blind | fresh senses | beats best? |
+|---|---|---|---|---|---|---|---|
+| 1-1 | 594 (pre-trained) | 315 | 314 | 450 | 309 | see json | yes, but trained overnight |
+| 1-2 | 183 | 196 | 196 | 338 | 40 | | no |
+| 1-3 | 311 | 321 | 317 | 300 | 705 | | no |
+| 1-4 | 234 | 234 | 229 | 331 | 551 | | no |
+| 2-1 | 322 | 308 | 306 | 384 | 120 | | no |
+| 2-2 | 514 | 162 | 514 | 1,234 | 1,199 | | no |
+Also measured for 2-3 to 3-2 (runs/baselines_levels.json, *_senses.json). Blind first sight beats
+the best baseline on no new level.
+
+### Run 2: new senses (fresh brain, runs/inorder, launched 16:03, until 19:25)
+- Input 6,128: eyes 4x4 px blocks of the present frame (3,328) + 3 signed frame differences at
+  8x8 (3 x 832), each frame normalized to its own background grey and 95th-percentile contrast;
+  proprioception from RAM about Mario only (x speed, y speed, float state, rising, facing, power,
+  hurt/star timers, time left; 38 population-coded values x 8 copies = 304). No enemy/tile/pit RAM.
+- Speed: game step + obs 9 ms, lesson 0.12 s, brain.step 68 ms (blind ~27 ms). Same caps,
+  same 10% old-level play.

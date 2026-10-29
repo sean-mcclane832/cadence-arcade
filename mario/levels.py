@@ -228,11 +228,11 @@ def teach(brain, cur, old, lessons, rnd, rng, log):
 
 
 def set_rates(brain, late, log):
+    # Lower late teaching rates were planned (LATE_ETA) but cadence 0.91.1 refuses learning_eta under
+    # teaching="normalized", so that retune always failed in the blind run (from round 3 of each
+    # level). The actor rates had already been set at rounds 1-2 and persist. Same behaviour here,
+    # without the failing call: teaching stays "normalized", actor rates set every round.
     try:
-        if late:
-            brain.retune(learning_eta=LATE_ETA[0], learning_eta_bias=LATE_ETA[1])
-        else:
-            brain.retune(teaching="normalized")
         brain.retune(actor_eta=ACTOR[0], actor_eta_bias=ACTOR[1])
     except Exception as e:  # noqa: BLE001
         log(f"  retune failed: {e!r}")
@@ -292,6 +292,7 @@ def main() -> None:
     ap.add_argument("--out", default="runs/levels")
     ap.add_argument("--start-brain", default="runs/main/brain_e10.npz")
     ap.add_argument("--until", default="20:00")
+    ap.add_argument("--only", default=None, help="stop after this level (e.g. 1-1 for a quick check)")
     ap.add_argument("--workers", type=int, default=5)
     args = ap.parse_args()
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
@@ -326,9 +327,14 @@ def main() -> None:
         state = json.loads(state_p.read_text())
         log(f"resumed at level {state['level']} round {state['round']}")
     else:
-        shutil.copyfile(HERE / args.start_brain, brain_p)
+        if args.start_brain == "fresh":
+            from game import N_IN as _n
+            Brain.compose(_n, 7, modules=(256,), seed=0, teaching="normalized", learning_surprise=True).save(brain_p)
+        else:
+            shutil.copyfile(HERE / args.start_brain, brain_p)
         state = dict(level=0, round=-1, start_brain=args.start_brain, menu=MENU, levels={}, history=[],
-                     retention=[], rollbacks=[], cadence=cadence.__version__)
+                     retention=[], rollbacks=[], cadence=cadence.__version__,
+                     senses=os.environ.get("MARIO_SENSES", "blind"))
         log(f"new job: cadence {cadence.__version__}, brain from {args.start_brain}, menu {MENU}")
     state["no_coach"] = sorted(set(state.get("no_coach", [])) | NO_COACH)
     brain = Brain.load(brain_p)
@@ -347,7 +353,8 @@ def main() -> None:
         parts = [p for p in parts if p is not None]
         return None if not parts else {k: np.concatenate([p[k] for p in parts]) for k in ("X", "y", "W", "R")}
 
-    while state["level"] < len(LEVELS) and time.time() < deadline:
+    stop_after = LEVELS.index(tuple(int(v) for v in args.only.split("-"))) if args.only else len(LEVELS) - 1
+    while state["level"] <= stop_after and time.time() < deadline:
         li = state["level"]; lv = LEVELS[li]; name = level_name(lv)
         rec = state["levels"].setdefault(name, dict(index=li, coached_attempts=0, coach_labels=0, self_rows=0,
                                                     self_decisions=0, practice_s=0.0, rounds=0, cleared=None))
