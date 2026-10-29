@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cadence Chat</title>
+<meta name="description" content="Chat with one Cadence brain (cadence-net 0.91.1) on a toy grammar. Every reply is one the brain really produced, precomputed on a PC.">
+<meta name="color-scheme" content="dark light">
+<style>
+  :root {
+    --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; --panel: #12151a;
+    --me: #ffb347; --me-fg: #1a1205; --bot: #1b1f26; --bot-fg: #e8e6e1; --good: #7bd88f; --bad: #ff8a80; --note: #8a8f98;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f6f5f2; --fg: #1d1f23; --dim: #5d636c; --accent: #b86a00; --line: #dcd9d2; --panel: #ffffff;
+      --me: #ffb347; --me-fg: #1a1205; --bot: #e9e7e2; --bot-fg: #1d1f23; --good: #1f7a3a; --bad: #b3261e; --note: #5d636c;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 16px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         display: flex; flex-direction: column; min-height: 100dvh; }
+  a { color: var(--accent); }
+  header { padding: 14px 16px 10px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .crumb { font-size: 13px; color: var(--dim); margin: 0 0 4px; }
+  .top { display: flex; align-items: center; gap: 10px; }
+  .avatar { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #1a1205;
+            display: grid; place-items: center; font-weight: 700; }
+  h1 { font-size: 17px; margin: 0; }
+  .status { font-size: 12px; color: var(--dim); }
+  details { margin-top: 8px; font-size: 14px; color: var(--dim); }
+  details summary { cursor: pointer; color: var(--fg); padding: 4px 0; }
+  details p { margin: 6px 0; }
+  #thread { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; max-width: 720px; width: 100%; margin: 0 auto; }
+  .msg { max-width: 82%; padding: 8px 12px; border-radius: 18px; overflow-wrap: anywhere; }
+  .me { align-self: flex-end; background: var(--me); color: var(--me-fg); border-bottom-right-radius: 6px; }
+  .bot { align-self: flex-start; background: var(--bot); color: var(--bot-fg); border-bottom-left-radius: 6px; }
+  .meta { align-self: flex-start; font-size: 12.5px; color: var(--note); max-width: 90%; margin: -2px 0 2px 6px; }
+  .meta.right { align-self: flex-end; text-align: right; margin: -2px 6px 2px 0; }
+  .meta .ok { color: var(--good); } .meta .no { color: var(--bad); }
+  .meta q { color: var(--fg); quotes: "\201C" "\201D"; }
+  .sys { align-self: center; text-align: center; font-size: 13px; color: var(--dim); max-width: 92%; }
+  .dock { border-top: 1px solid var(--line); background: var(--panel); padding: 8px 16px calc(10px + env(safe-area-inset-bottom)); }
+  .dock-in { max-width: 720px; margin: 0 auto; }
+  #chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 8px; scrollbar-width: none; }
+  #chips::-webkit-scrollbar { display: none; }
+  .chip { flex: none; font: inherit; font-size: 14px; color: var(--fg); background: var(--bot); border: 1px solid var(--line);
+          border-radius: 999px; padding: 8px 14px; min-height: 40px; cursor: pointer; white-space: nowrap; }
+  .chip:active { border-color: var(--accent); }
+  form { display: flex; gap: 8px; }
+  #box { flex: 1; min-width: 0; font: inherit; font-size: 16px; color: var(--fg); background: var(--bg); border: 1px solid var(--line);
+         border-radius: 999px; padding: 10px 16px; min-height: 44px; }
+  #box:focus { outline: none; border-color: var(--accent); }
+  #send { flex: none; font: inherit; font-weight: 600; font-size: 15px; color: #1a1205; background: var(--accent); border: 0;
+          border-radius: 999px; padding: 0 18px; min-height: 44px; cursor: pointer; }
+  #send:disabled { opacity: .5; }
+</style>
+</head>
+<body>
+<header>
+  <p class="crumb"><a href="../">cadence arcade</a> / chat</p>
+  <div class="top">
+    <div class="avatar" aria-hidden="true">C</div>
+    <div>
+      <h1>Cadence</h1>
+      <div class="status">one brain, cadence-net 0.91.1, toy grammar</div>
+    </div>
+  </div>
+  <details id="about">
+    <summary>What this is (read me)</summary>
+    <p>One Cadence brain (cadence-net 0.91.1, 3.6M parameters) trained once on a small self-written chat grammar: 16 kinds of line, 188 words. It is not a general chatbot and knows nothing outside that grammar.</p>
+    <p>On held-out prompts it gives a valid reply 83% of the time. A plain MLP on the same input gets 95%.</p>
+    <p>The brain runs in Python, so it can't run on a phone. Every reply here was produced by the real brain on Sean's PC and saved: <span id="counts">all prompts the grammar can make</span>. Each prompt was answered after the same two warm-up exchanges, because with an empty memory window it mostly babbles. Nothing here is generated in your browser: if your line isn't one it knows, you see the closest prompt it does know, and that reply.</p>
+    <p>Code: <a href="https://github.com/sean-mcclane832/cadence-lab/tree/main/chat">cadence-lab/chat</a> (replies made by <code>export_web.py</code>).</p>
+  </details>
+</header>
+
+<div id="thread" aria-live="polite"></div>
+
+<div class="dock">
+  <div class="dock-in">
+    <div id="chips" aria-label="suggested prompts"></div>
+    <form id="form" autocomplete="off">
+      <input id="box" type="text" inputmode="text" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Type a line, like: do you like chess?" aria-label="message">
+      <button id="send" type="submit" disabled>Send</button>
+    </form>
+  </div>
+</div>
+
+<script>
+// Mirrors chat.py: clean() keeps lowercase letters, space and . , ? ! ' (":" and newlines
+// become spaces), then words.tokenize splits words and punctuation, unknown tokens are dropped
+// and detok() joins the rest. Replies are only ever looked up, never generated.
+const ALLOWED = new Set("abcdefghijklmnopqrstuvwxyz ?!.,'");
+const PUNCT = new Set(["?", "!", ".", ","]);
+let DATA = null, BYP = new Map(), VOCAB = new Set(), PROMPTS = [];
+
+function clean(line) {
+  line = line.toLowerCase().replace(/\n/g, " ").replace(/:/g, " ");
+  return [...line].filter(c => ALLOWED.has(c)).join("").split(/\s+/).filter(Boolean).join(" ");
+}
+function tokenize(s) { return s.match(/you:|bot:|[a-z']+|[?!.,]/g) || []; }
+function detok(toks) {
+  let s = "";
+  for (const t of toks) s += (PUNCT.has(t) || !s) ? t : " " + t;
+  return s;
+}
+const words = toks => toks.filter(t => !PUNCT.has(t));
+
+function closest(known) {
+  const a = new Set(words(known));
+  let best = null, bestScore = -1;
+  for (const row of PROMPTS) {
+    const b = row._w;
+    let inter = 0; for (const w of b) if (a.has(w)) inter++;
+    if (!inter) continue;
+    const score = inter / (a.size + b.size - inter);  // Jaccard word overlap
+    if (score > bestScore || (score === bestScore && row.p.length < best.p.length)) { best = row; bestScore = score; }
+  }
+  return best;
+}
+
+const thread = document.getElementById("thread");
+function add(cls, html, isText) {
+  const d = document.createElement("div"); d.className = cls;
+  if (isText) d.textContent = html; else d.innerHTML = html;
+  thread.appendChild(d); thread.scrollTop = thread.scrollHeight; return d;
+}
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function botReply(row) {
+  if (row.r === null) add("msg bot", "(no answer: the brain did not settle)", true);
+  else add("msg bot", row.r === "" ? "(empty reply)" : row.r, true);
+  const grade = row.valid ? '<span class="ok">valid reply</span>' : '<span class="no">not a valid reply for this prompt</span>';
+  add("meta", grade + (row.test ? " &middot; held-out test prompt" : "") + (row.novel ? " &middot; word never seen in training" : ""));
+}
+
+function send(text) {
+  const raw = text.trim(); if (!raw) return;
+  add("msg me", raw, true);
+  const toks = tokenize(clean(raw));
+  const unknown = toks.filter(t => !VOCAB.has(t) && !PUNCT.has(t));
+  const known = toks.filter(t => VOCAB.has(t) || PUNCT.has(t));
+  const heard = detok(known);
+  if (unknown.length) {
+    add("meta right", `The brain doesn't know ${unknown.length === 1 ? "this word" : "these words"}: <q>${esc([...new Set(unknown)].join(" "))}</q>. It only has 188 words, and drops the rest.`);
+  }
+  if (!words(known).length) {
+    add("sys", "Nothing left that it knows, so it has nothing to answer. Try a suggestion below.");
+    return;
+  }
+  const exact = BYP.get(heard);
+  if (exact) {
+    if (heard !== clean(raw)) add("meta right", `It hears: <q>${esc(heard)}</q>`);
+    botReply(exact);
+    return;
+  }
+  const near = closest(known);
+  if (!near) { add("sys", "No prompt it knows shares a word with that."); return; }
+  add("meta right", `Not a line it was built for. Closest prompt it knows: <q>${esc(near.p)}</q>`);
+  botReply(near);
+}
+
+function chips() {
+  const box = document.getElementById("chips"); box.innerHTML = "";
+  const by = new Map();
+  for (const r of PROMPTS) { if (!by.has(r.intent)) by.set(r.intent, []); by.get(r.intent).push(r); }
+  const pick = [...by.values()].map(rs => rs[Math.floor(Math.random() * rs.length)].p);
+  for (let i = pick.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pick[i], pick[j]] = [pick[j], pick[i]]; }
+  for (const p of pick) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = p;
+    b.addEventListener("click", () => { send(p); chips(); box.scrollLeft = 0; });
+    box.appendChild(b);
+  }
+}
+
+const boxEl = document.getElementById("box"), sendEl = document.getElementById("send");
+boxEl.addEventListener("input", () => { sendEl.disabled = !DATA || !boxEl.value.trim(); });
+document.getElementById("form").addEventListener("submit", e => {
+  e.preventDefault(); if (!DATA) return;
+  send(boxEl.value); boxEl.value = ""; sendEl.disabled = true;
+});
+
+fetch("replies.json").then(r => r.json()).then(d => {
+  DATA = d; VOCAB = new Set(d.vocab);
+  PROMPTS = d.prompts.map(r => ({ ...r, _w: new Set(words(tokenize(r.p))) }));
+  for (const r of PROMPTS) BYP.set(r.p, r);
+  const c = d.counts;
+  document.getElementById("counts").textContent =
+    `${c.prompts} prompts (every one the grammar can make, plus ${PROMPTS.filter(r => r.novel).length} with words it never saw in training), made ${d.made}. Answered this way, ${c.test_valid} of the ${c.test_prompts} distinct held-out test prompts (${Math.round(100 * c.test_valid / c.test_prompts)}%) get a valid reply`;
+  add("sys", `Replies are the real brain's, saved from ${d.brain} on Sean's PC. Tap a suggestion or type a line.`);
+  chips();
+}).catch(() => add("sys", "Couldn't load the saved replies."));
+</script>
+</body>
+</html>

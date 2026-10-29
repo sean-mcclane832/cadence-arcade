@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watch Cadence Play Mario</title>
+<meta name="description" content="Video of one Cadence brain (cadence-net 0.91.1) playing Super Mario Bros. World 1-1 on its own, from the real NES frames.">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root { --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; --bad: #ff6b6b; --panel: #12151a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 32px 16px 40px; }
+  main { max-width: 640px; margin: 0 auto; }
+  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 24px; letter-spacing: .06em; margin: 0 0 6px; }
+  h2 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 15px; letter-spacing: .05em; margin: 30px 0 8px; }
+  .sub { color: var(--dim); font-size: 13px; margin: 0 0 18px; }
+  a { color: var(--accent); }
+  video { display: block; width: 100%; aspect-ratio: 256 / 240; background: #000; border: 1px solid var(--line); border-radius: 6px; image-rendering: pixelated; }
+  .cap { color: var(--dim); font-size: 13px; margin: 8px 0 0; }
+  ul { padding-left: 20px; margin: 10px 0; } li { margin: 8px 0; }
+  .more { display: inline-block; margin-top: 8px; padding: 10px 14px; border: 1px solid var(--accent); border-radius: 6px; text-decoration: none; }
+  footer { color: var(--dim); font-size: 12px; margin-top: 32px; } footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+<main>
+  <p class="sub"><a href="../../">cadence arcade</a> / <a href="../">mario 1-1</a> / watch</p>
+  <h1>CADENCE PLAYS MARIO</h1>
+  <p class="sub">One Cadence brain (cadence-net 0.91.1), World 1-1, on its own. Real NES frames.</p>
+
+  <video id="solo" controls playsinline muted autoplay loop preload="auto" poster="solo_poster.png" aria-label="The Cadence brain playing World 1-1 alone">
+    <source src="solo.mp4" type="video/mp4">
+    <source src="solo.webm" type="video/webm">
+  </video>
+  <p class="cap">Brain alone, round 8, start 0. Every button is the brain's. 13 s, muted.</p>
+
+  <h2>What's happening</h2>
+  <ul>
+    <li>The brain doesn't see the game like you do. It gets the screen shrunk to a 26 x 32 grid of grey blocks (each block averages 8 x 8 pixels), sky removed, for this moment and the one before. No positions, nothing from the game's memory.</li>
+    <li>It learned by copying a look-ahead coach that tries button plans in saved copies of the game. It never saw the score. No backprop: Cadence's own local learning rule.</li>
+    <li>This run gets past the first Goombas, the pipes and the first pit, then dies at x 1,783 of 3,161, about 56% of the level. It does not reach the flag alone.</li>
+    <li>This is its best round. More training rounds after it did worse: later brains stall around x 300 to 725.</li>
+  </ul>
+
+  <h2>With a coach</h2>
+  <video id="assisted" controls playsinline muted preload="metadata" poster="assisted_poster.png" aria-label="The Cadence brain playing all of World 1-1 with coach rescues">
+    <source src="assisted.mp4" type="video/mp4">
+    <source src="assisted.webm" type="video/webm">
+  </video>
+  <p class="cap">Round 10 brain, start 11, all of 1-1. After each death or stall the game rewinds about a second and the coach drives briefly: the red <b style="color:var(--bad)">COACH DRIVING</b> bar. The brain pressed 69% of the buttons; the coach stepped in 7 times.</p>
+
+  <a class="more" href="../">Full page: numbers, chart, how it was trained</a>
+
+  <footer>Independent experiment by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">cadence-arcade/mario</a>.</footer>
+</main>
+</body>
+</html>

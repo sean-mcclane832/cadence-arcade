@@ -1,0 +1,2596 @@
+{
+"cadence": "0.91.1",
+"brain": "copy/brain.npz",
+"brain_cfg": "copy8",
+"parameters": 3569598,
+"made": "2026-10-29",
+"mode": "greedy, cold settles, reset + fixed warm-up per prompt, no learning",
+"warmup": "you: do you like cat?\nbot: yes, i love cat!\nyou: i went to paris\nbot: paris sounds fun.\n",
+"vocab": [
+"!",
+",",
+".",
+"?",
+"a",
+"about",
+"alex",
+"alive",
+"am",
+"and",
+"angry",
+"any",
+"apples",
+"are",
+"art",
+"bad",
+"beach",
+"ben",
+"berlin",
+"bird",
+"birds",
+"bit",
+"black",
+"blue",
+"books",
+"bored",
+"bot",
+"brain",
+"bread",
+"bye",
+"cadence",
+"cake",
+"call",
+"called",
+"can",
+"care",
+"cat",
+"cats",
+"chess",
+"city",
+"color",
+"cool",
+"dan",
+"do",
+"dog",
+"dogs",
+"doing",
+"eat",
+"eggs",
+"emma",
+"favorite",
+"feel",
+"fine",
+"fish",
+"fishs",
+"food",
+"football",
+"frog",
+"frogs",
+"fun",
+"games",
+"glad",
+"go",
+"goats",
+"going",
+"good",
+"goodbye",
+"got",
+"great",
+"green",
+"happened",
+"happy",
+"have",
+"hear",
+"hello",
+"help",
+"hey",
+"hi",
+"home",
+"horse",
+"horses",
+"how",
+"hugo",
+"i",
+"in",
+"is",
+"it",
+"ivy",
+"jack",
+"kate",
+"kites",
+"later",
+"learning",
+"leo",
+"like",
+"little",
+"london",
+"lot",
+"love",
+"lucy",
+"made",
+"maria",
+"max",
+"me",
+"meet",
+"morning",
+"movies",
+"much",
+"music",
+"my",
+"name",
+"nice",
+"night",
+"nina",
+"no",
+"noodles",
+"not",
+"numbers",
+"of",
+"oh",
+"okay",
+"omar",
+"orange",
+"pablo",
+"paris",
+"park",
+"pasta",
+"pet",
+"pizza",
+"pretty",
+"problem",
+"purple",
+"rabbit",
+"rabbits",
+"real",
+"really",
+"red",
+"rice",
+"robot",
+"rome",
+"rosa",
+"running",
+"sad",
+"sam",
+"see",
+"sick",
+"small",
+"smart",
+"snake",
+"snakes",
+"so",
+"soon",
+"sorry",
+"sounds",
+"soup",
+"spain",
+"still",
+"tacos",
+"take",
+"talk",
+"thank",
+"thanks",
+"that",
+"the",
+"there",
+"time",
+"tired",
+"to",
+"tom",
+"too",
+"try",
+"want",
+"welcome",
+"wendy",
+"went",
+"what",
+"white",
+"who",
+"why",
+"will",
+"yellow",
+"yes",
+"you",
+"your",
+"zoe"
+],
+"counts": {
+"prompts": 299,
+"valid": 202,
+"test_prompts": 121,
+"test_valid": 95
+},
+"prompts": [
+{
+"p": "are you a robot?",
+"r": "not really, i am still learning.",
+"intent": "robot",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "are you alive?",
+"r": "not really, i am still learning.",
+"intent": "robot",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "are you okay?",
+"r": "i am fine, thank you.",
+"intent": "howareyou",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "are you real?",
+"r": "not really, i am still learning.",
+"intent": "robot",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "are you smart?",
+"r": "not really, i am still learning.",
+"intent": "robot",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "bye",
+"r": "goodbye, how care you.",
+"intent": "bye",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "call me alex",
+"r": "hi alex!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me ben",
+"r": "hi ben!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me dan",
+"r": "hi dan!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "call me emma",
+"r": "hi emma!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me hugo",
+"r": "hi emma!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "call me ivy",
+"r": "hi ivy!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "call me jack",
+"r": "hi jack!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "call me kate",
+"r": "hi kate!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "call me leo",
+"r": "hi leo!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "call me lucy",
+"r": "hi lucy!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me maria",
+"r": "hi maria!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me max",
+"r": "hi max!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me nina",
+"r": "hi nina!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "call me omar",
+"r": "hi omar!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me pablo",
+"r": "hi emma!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "call me rosa",
+"r": "hi rosa!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "call me sam",
+"r": "hi sam!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me tom",
+"r": "hi tom!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "call me wendy",
+"r": "hi sam!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "call me zoe",
+"r": "hi emma!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "can you help me?",
+"r": "not much, i am great",
+"intent": "cando",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like apples?",
+"r": "no, not eggs.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like art?",
+"r": "yes, a love blue!",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like bird?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like black?",
+"r": "no, not eggs.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like blue?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like books?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like bread?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like cake?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like cat?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like chess?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like dog?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like eggs?",
+"r": "no, not eggs.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like fish?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like football?",
+"r": "no, not football.",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like frog?",
+"r": "no, not frog.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like games?",
+"r": "no, not games.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like green?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like home?",
+"r": "no, not eggs.",
+"intent": "doyoulike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like horse?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like london?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like movies?",
+"r": "no, not movies.",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like music?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like orange?",
+"r": "no, not eggs.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like paris?",
+"r": "no, not eggs.",
+"intent": "doyoulike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like pasta?",
+"r": "no, not eggs.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like pizza?",
+"r": "yes, i love pizza!",
+"intent": "doyoulike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like purple?",
+"r": "no, not purple.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like rabbit?",
+"r": "no, not rabbit.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like red?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like rice?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like rome?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like running?",
+"r": "no, not running.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like snake?",
+"r": "no, not snake.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like soup?",
+"r": "yes, a lot.",
+"intent": "doyoulike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like spain?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like tacos?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like the beach?",
+"r": "yes, i love the beach.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like the city?",
+"r": "no, i do not like fish.",
+"intent": "doyoulike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "do you like the park?",
+"r": "no, i like blue.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like white?",
+"r": "no, i like pizza.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "do you like yellow?",
+"r": "no, i like art.",
+"intent": "doyoulike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "good morning",
+"r": "hey am a bit see",
+"intent": "greet",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "good night",
+"r": "goodbye, take care.",
+"intent": "bye",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "goodbye",
+"r": "goodbye, take care.",
+"intent": "bye",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "hello",
+"r": "hi! how are you?",
+"intent": "greet",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "hello there",
+"r": "hi, how are you?",
+"intent": "greet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "hey",
+"r": "hi! how is are you real?",
+"intent": "greet",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "hi",
+"r": "hi!",
+"intent": "greet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "hi there",
+"r": "hi, how are you?",
+"intent": "greet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "how are you doing?",
+"r": "i am fine, thank you.",
+"intent": "howareyou",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "how are you?",
+"r": "i am fine, thank you.",
+"intent": "howareyou",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "how is it going?",
+"r": "i am fine, thank you.",
+"intent": "howareyou",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am a bit angry",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am a bit bored",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am a bit sad",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am a bit sick",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am a bit tired",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am alex",
+"r": "hi alex!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am angry",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am ben",
+"r": "hi ben!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am bored",
+"r": "that is sorry to hear.",
+"intent": "mood_bad",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i am dan",
+"r": "hi tom!",
+"intent": "name",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i am emma",
+"r": "hi emma!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am fine",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am fine, thanks",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am going to home",
+"r": "have fun in home!",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am going to london",
+"r": "london sounds fun london.",
+"intent": "place",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i am going to paris",
+"r": "have fun in paris!",
+"intent": "place",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am going to rome",
+"r": "have fun in rome!",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am going to spain",
+"r": "have fun in spain!",
+"intent": "place",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am going to the beach",
+"r": "what will you do in paris?",
+"intent": "place",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am going to the city",
+"r": "what will you do in paris?",
+"intent": "place",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am going to the park",
+"r": "what will you do in paris?",
+"intent": "place",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i am good",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am good, thanks",
+"r": "that is good to.",
+"intent": "mood_good",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am great",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am great, thanks",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am happy",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am happy, thanks",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am hugo",
+"r": "that is good to hear.",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i am ivy",
+"r": "hi tom!",
+"intent": "name",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am jack",
+"r": "hi tom!",
+"intent": "name",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am kate",
+"r": "hi kate!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am leo",
+"r": "hi leo!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am lucy",
+"r": "hi tom!",
+"intent": "name",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am maria",
+"r": "hi tom!",
+"intent": "name",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am max",
+"r": "hi max!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am nina",
+"r": "hi tom!",
+"intent": "name",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am okay",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am okay, thanks",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am omar",
+"r": "hi tom!",
+"intent": "name",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i am pablo",
+"r": "that is good to hear.",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i am rosa",
+"r": "hi rosa!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am sad",
+"r": "that am sorry to hear.",
+"intent": "mood_bad",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i am sam",
+"r": "hi sam!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am sick",
+"r": "that is sorry to hear.",
+"intent": "mood_bad",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i am tired",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i am tom",
+"r": "hi tom!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i am wendy",
+"r": "that is good to hear.",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i am zoe",
+"r": "that is good to hear.",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i feel angry",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i feel bored",
+"r": "i am sorry to hear that.",
+"intent": "mood_bad",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i feel fine",
+"r": "that is good to.",
+"intent": "mood_good",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i feel good",
+"r": "that is good to.",
+"intent": "mood_good",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i feel great",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i feel happy",
+"r": "that is good to.",
+"intent": "mood_good",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i feel okay",
+"r": "that is good to hear.",
+"intent": "mood_good",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i feel sad",
+"r": "i am sorry to hear that.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i feel sick",
+"r": "oh no, what happened?",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i feel tired",
+"r": "that is too bad.",
+"intent": "mood_bad",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i got a bird",
+"r": "what is your bird called?",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i got a cat",
+"r": "a cat? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i got a dog",
+"r": "a dog? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i got a fish",
+"r": "what is your fish called?",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i got a frog",
+"r": "what is your frog called?",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i got a horse",
+"r": "what is your horse called?",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i got a rabbit",
+"r": "what is your rabbit called?",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i got a snake",
+"r": "a snake? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i have a bird",
+"r": "what is your bird called?",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i have a cat",
+"r": "what is your cat called?",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i have a dog",
+"r": "a dog? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i have a fish",
+"r": "what is your fish called?",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i have a frog",
+"r": "what is your frog called?",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i have a horse",
+"r": "what is your horse called?",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i have a rabbit",
+"r": "what is your rabbit called?",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i have a snake",
+"r": "what is your snake called?",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like apples",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i like art",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like berlin",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i like bird",
+"r": "cool, i like bird too.",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like books",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like bread",
+"r": "why do you like games?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i like cake",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i like cat",
+"r": "why do you like cat?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like chess",
+"r": "why do you like chess?",
+"intent": "ilike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i like dog",
+"r": "why do you like dog?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like eggs",
+"r": "why do you like eggs?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like fish",
+"r": "why do you like fish?",
+"intent": "ilike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i like football",
+"r": "why do you like football?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like frog",
+"r": "why do you like frog?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like games",
+"r": "why do you like games?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like goats",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i like horse",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i like kites",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i like movies",
+"r": "why do you like movies?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like music",
+"r": "why do you like soup?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i like noodles",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i like pasta",
+"r": "why do you like pasta?",
+"intent": "ilike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i like pizza",
+"r": "cool, i like pizza too.",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like rabbit",
+"r": "why do you like rabbit?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like rice",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i like running",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i like snake",
+"r": "why do you like snake?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i like soup",
+"r": "cool is nice. pizza. i am going",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i like tacos",
+"r": "why do you like tacos?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love apples",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i love art",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i love berlin",
+"r": "why do you like art?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i love bird",
+"r": "why do you like bird?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love books",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love bread",
+"r": "why do you like bread?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love cake",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i love cat",
+"r": "why do you like cat?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love chess",
+"r": "why do you like chess?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love dog",
+"r": "why do you like dog?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love eggs",
+"r": "why do you like eggs?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love fish",
+"r": "why do you like fish?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love football",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i love frog",
+"r": "why do you like frog?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love games",
+"r": "why do you like games?",
+"intent": "ilike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i love goats",
+"r": "why do you like art.",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i love horse",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i love kites",
+"r": "why do you like art.",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i love movies",
+"r": "why do you like movies?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love music",
+"r": "why do you like books?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i love noodles",
+"r": "why do you like art?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i love pasta",
+"r": "why do you like pasta?",
+"intent": "ilike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i love pizza",
+"r": "why do you like pizza?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love rabbit",
+"r": "why do you like rabbit?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love rice",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i love running",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i love snake",
+"r": "why do you like art?",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i love soup",
+"r": "why do you like soup?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i love tacos",
+"r": "why do you like tacos?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like apples",
+"r": "why do you like apples?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like art",
+"r": "cool is i like art.",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like berlin",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i really like bird",
+"r": "bird is you. bird. i am going",
+"intent": "ilike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i really like books",
+"r": "cool, i like books too. you: what do you like to eat bot: i bot: pizza, pizza",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like bread",
+"r": "cool is i like bread too.",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like cake",
+"r": "cake is your. cake. i am going",
+"intent": "ilike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i really like cat",
+"r": "cool, i like cat too.",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like chess",
+"r": "why do you like chess?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like dog",
+"r": "dog is your. dog. i am going",
+"intent": "ilike",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i really like eggs",
+"r": "why do you like eggs?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like fish",
+"r": "fish is your. fish. i am going",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like football",
+"r": "why do you like football?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like frog",
+"r": "why do you like frog?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like games",
+"r": "why do you like games?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like goats",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i really like horse",
+"r": "why do you like horse?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like kites",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i really like movies",
+"r": "why do you like movies?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like music",
+"r": "cool is i like music.",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like noodles",
+"r": "why do you like games?",
+"intent": "novel_like",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "i really like pasta",
+"r": "why do you like pasta?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like pizza",
+"r": "pizza is i. pizza.",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like rabbit",
+"r": "why do you like rabbit?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like rice",
+"r": "oh, i do not like fish.",
+"intent": "ilike",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like running",
+"r": "why do you like running?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like snake",
+"r": "why do you like snake?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i really like soup",
+"r": "cool, i like soup too.",
+"intent": "ilike",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i really like tacos",
+"r": "why do you like tacos?",
+"intent": "ilike",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i want to go to home",
+"r": "what will you do in home?",
+"intent": "place",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i want to go to london",
+"r": "london sounds fun.",
+"intent": "place",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i want to go to paris",
+"r": "paris sounds fun.",
+"intent": "place",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i want to go to rome",
+"r": "what will you do in rome?",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i want to go to spain",
+"r": "what will you do in spain?",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i want to go to the beach",
+"r": "the park you",
+"intent": "place",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i want to go to the city",
+"r": "what will you do in the city?",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i want to go to the park",
+"r": "the park you",
+"intent": "place",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i went to home",
+"r": "what will you do in home?",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i went to london",
+"r": "what will you do in london?",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i went to paris",
+"r": "paris sounds fun.",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i went to rome",
+"r": "what will you do in rome?",
+"intent": "place",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "i went to spain",
+"r": "what will you do in spain?",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i went to the beach",
+"r": "have fun in the city!",
+"intent": "place",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "i went to the city",
+"r": "have fun in the city!",
+"intent": "place",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "i went to the park",
+"r": "have fun in the park!",
+"intent": "place",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is alex",
+"r": "hi alex!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is ben",
+"r": "hi ben!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is dan",
+"r": "hi dan!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is emma",
+"r": "hi emma!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is hugo",
+"r": "hi to!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "my name is ivy",
+"r": "hi ivy!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is jack",
+"r": "hi rosa!",
+"intent": "name",
+"valid": false,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is kate",
+"r": "hi kate!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is leo",
+"r": "hi leo!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is lucy",
+"r": "hi lucy!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is maria",
+"r": "hi maria!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is max",
+"r": "hi max!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is nina",
+"r": "hi nina!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is omar",
+"r": "hi omar!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is pablo",
+"r": "hi to!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "my name is rosa",
+"r": "hi rosa!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "my name is sam",
+"r": "hi sam!",
+"intent": "name",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "my name is tom",
+"r": "hi tom!",
+"intent": "name",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my name is wendy",
+"r": "hi to!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "my name is zoe",
+"r": "hi to!",
+"intent": "novel_name",
+"valid": false,
+"test": false,
+"novel": true
+},
+{
+"p": "my pet is a bird",
+"r": "a bird? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my pet is a cat",
+"r": "a cat? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "my pet is a dog",
+"r": "a dog? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "my pet is a fish",
+"r": "i like fishs.",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my pet is a frog",
+"r": "a frog? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "my pet is a horse",
+"r": "a horse? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": false,
+"novel": false
+},
+{
+"p": "my pet is a rabbit",
+"r": "a rabbit? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "my pet is a snake",
+"r": "a snake? that is cool.",
+"intent": "pet",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "see you",
+"r": "goodbye, take care.",
+"intent": "bye",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "see you later",
+"r": "goodbye, take care.",
+"intent": "bye",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "thank you",
+"r": "you are welcome.",
+"intent": "thanks",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "thank you so much",
+"r": "no problem.",
+"intent": "thanks",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "thanks",
+"r": "any are welcome a.",
+"intent": "thanks",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "thanks a lot",
+"r": "you are welcome.",
+"intent": "thanks",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "what are you?",
+"r": "my name is cadence.",
+"intent": "botname",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "what can you do?",
+"r": "i can talk a little.",
+"intent": "cando",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "what color do you like?",
+"r": "my favorite color is blue.",
+"intent": "color",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "what do you do?",
+"r": "not much, i am still learning.",
+"intent": "cando",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "what do you like to eat?",
+"r": "my favorite food is pizza.",
+"intent": "food",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "what is your favorite color?",
+"r": "my favorite color is blue.",
+"intent": "color",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "what is your favorite food?",
+"r": "pizza, a small.",
+"intent": "food",
+"valid": false,
+"test": true,
+"novel": false
+},
+{
+"p": "what is your name?",
+"r": "my name is cadence.",
+"intent": "botname",
+"valid": true,
+"test": true,
+"novel": false
+},
+{
+"p": "who are you?",
+"r": "my name is cadence.",
+"intent": "botname",
+"valid": true,
+"test": true,
+"novel": false
+}
+]
+}

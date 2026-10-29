@@ -50,6 +50,9 @@
   .callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; margin: 16px 0; }
   code { font-size: 13px; color: #d7c6a5; }
   footer { color: var(--dim); font-size: 12px; margin-top: 36px; } footer a { color: var(--dim); }
+  /* phones: the chart's 640-wide viewBox shrinks its labels, and buttons need a real tap target */
+  @media (max-width: 520px) { svg .tick { font-size: 17px; } }
+  @media (pointer: coarse) { button { min-height: 40px; padding: 6px 12px; } .controls { gap: 10px; } }
 </style>
 </head>
 <body>
@@ -59,6 +62,7 @@
   <p class="sub" id="lede-sub"></p>
   <p id="lede"></p>
 
+  <p class="sub"><a href="watch/">just the video, with a short explanation &rarr;</a></p>
   <div class="tabs" id="tabs"></div>
   <div class="player">
     <div class="badge" id="badge">BRAIN</div>
