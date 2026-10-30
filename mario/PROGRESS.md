@@ -127,3 +127,25 @@ the best baseline on no new level.
 ### Summary 2026-10-29
 First sight never beat the best baseline on a new level, blind or with new senses. No solo
 clears. Retention poor in both. The new senses did not help within 40 min per level from scratch.
+
+## 2026-10-29/30 night: the learning fix (details and every experiment: LEARNING_FIX.md)
+Root causes, each with its decisive evidence:
+1. **Interface aliasing.** SMB starts a jump only on a fresh A press. The brain saw only the screen,
+   so it could not tell whether its thumb was still on A: the coach's label for one screen flipped
+   between "let go" (critical) and "jump", and on a static screen (against a pipe) the greedy brain
+   repeated one button forever. 31 of the last 60 overnight solo runs ended that way; DAgger made
+   the answer at the pipe flip from round to round. A backprop MLP had the same problem.
+2. **Noise in the teaching pile.** In-order rounds added ~1,700 rows of the brain copying its own
+   *sampled* actions per ~130 coach labels; training agreement 0.15-0.4; the 2-1 "stand still"
+   collapse came back after a rollback, i.e. from the data.
+3. **learning_surprise drift.** With lessons only on wrong rows, Cadence's fit peaked (0.85) then
+   collapsed (0.66, critical 0.35 at 6k lessons); lessons on every row rise steadily to 0.92 / 0.90
+   held-out, the MLP's level.
+Recipe (dagger.py): eyes as before (8x8 grey blocks, 2 frames) + body sense (buttons held last
+decision + Mario's own proprioception, no world RAM), lean 4-button coach, coach labels only,
+DAgger where the brain plays alone and the attempt is then replayed for the coach's labels (last 60
+decisions + every 3rd), Cadence normalized teaching at eta 0.001 WITHOUT surprise, cold predict.
+Results: MLP control clears 1-1 solo at DAgger round 2. **Cadence clears 1-1 solo**: round-2 brain
+of runs/fix_cad_body3 flags on starts 0, 5, 11 (3/5 eval starts) and 8 of 10 unseen start jitters.
+First sight on 1-2..2-1 with that brain: better than always-run / run+jump / untrained, not better
+than random buttons on 1-2, 1-4, 2-1 (E7). Retention while practising 1-2 with 50% replay: E8.

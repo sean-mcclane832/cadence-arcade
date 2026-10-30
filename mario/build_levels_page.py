@@ -170,6 +170,8 @@ def main():
     notes = "".join(f"<li>{html.escape(l)}</li>" for l in (json.loads(tp.read_text()) if tp.exists() else []))
     now = time.strftime("%Y-%m-%d %H:%M")
     cad = html.escape((sa or sb or {}).get("cadence", ""))
+    fix_p = HERE / "levels_fix.html"  # the 2026-10-30 learning fix section (hand-written fragment)
+    fix_html = fix_p.read_text(encoding="utf-8") if fix_p.exists() else ""
     page = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -216,7 +218,7 @@ def main():
   <p class="sub"><a href="../../">cadence arcade</a> / <a href="../">mario</a> / levels in order</p>
   <h1>MARIO, LEVEL BY LEVEL</h1>
   <p class="sub">One Cadence brain (cadence-net {cad}) plays the levels in order, learning the whole time. Two runs: a nearly blind brain (before), then a fresh brain with better senses (after). Updated {now}.</p>
-
+{fix_html}
   <h2>First sight</h2>
   <p class="dim">How far it gets on a level before any practice on it: median x of 3 solo attempts.</p>
   {"".join(svg)}

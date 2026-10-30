@@ -1,0 +1,20 @@
+22:21:54 new run: learner cadence senses body (2000 inputs) menu lean arm e1_nosurp
+22:21:54 init data from runs/fix_mlp_body: 2838 rows, critical 713
+22:24:20   taught 3000 lessons on 2838 rows: agree 0.869 crit 0.986 145s
+22:24:27 round 0 SOLO x=[2930, 1127, 305, 676, 1127] ends=['s', 'd', 'd', 'd', 'd'] flags=0/5 median=1127  (3 min)
+22:28:12 round 1 dagger: +393 rows (3231) 226s; own-path agreement 0.695; reached [(0, 673, 'd'), (0, 1127, 'd'), (0, 305, 'd'), (86, 1788, 'd'), (193, 2755, 'd'), (230, 3161, 'f'), (40, 1129, 'd'), (27, 678, 'd')]
+22:30:47   taught 3000 lessons on 3231 rows: agree 0.893 crit 0.992 154s
+22:30:53 round 1 SOLO x=[1129, 1129, 1676, 1676, 2178] ends=['d', 'd', 'd', 'd', 's'] flags=0/5 median=1676  (9 min)
+22:38:44 round 2 dagger: +658 rows (3889) 471s; own-path agreement 0.714; reached [(0, 1676, 'd'), (0, 1129, 'd'), (0, 2474, 'd'), (208, 3161, 'f'), (97, 2020, 'd'), (25, 1673, 'd'), (118, 3161, 'f'), (131, 2226, 's')]
+22:40:59   taught 3000 lessons on 3889 rows: agree 0.912 crit 0.981 135s
+22:41:02 round 2 SOLO x=[315, 312, 312, 1788, 436] ends=['d', 'd', 'd', 'd', 's'] flags=0/5 median=315  (19 min)
+22:46:37 round 3 dagger: +438 rows (4327) 335s; own-path agreement 0.728; reached [(0, 315, 'd'), (0, 315, 'd'), (0, 315, 'd'), (203, 2850, 'd'), (154, 2471, 'd'), (32, 3161, 'f'), (230, 3161, 'f'), (203, 3161, 'f')]
+22:49:03   taught 3000 lessons on 4327 rows: agree 0.888 crit 0.984 145s
+22:49:08 round 3 SOLO x=[1791, 1788, 1788, 1413, 1413] ends=['d', 'd', 'd', 'd', 'd'] flags=0/5 median=1788  (27 min)
+22:55:24 round 4 dagger: +619 rows (4946) 375s; own-path agreement 0.832; reached [(0, 1788, 'd'), (0, 1413, 'd'), (0, 1788, 'd'), (239, 3161, 'f'), (138, 2024, 'd'), (21, 3161, 'f'), (148, 1959, 'd'), (5, 3161, 'f')]
+22:57:41   taught 3000 lessons on 4946 rows: agree 0.93 crit 0.989 138s
+22:57:48 round 4 SOLO x=[1778, 1781, 1781, 2046, 1960] ends=['d', 'd', 'd', 'd', 'd'] flags=0/5 median=1781  (36 min)
+23:05:08 round 5 dagger: +653 rows (5599) 440s; own-path agreement 0.822; reached [(0, 1799, 'd'), (0, 3161, 'f'), (0, 2226, 's'), (128, 1782, 'd'), (100, 1960, 'd'), (81, 1778, 'd'), (118, 2046, 'd'), (53, 1781, 'd')]
+23:07:34   taught 3000 lessons on 5599 rows: agree 0.91 crit 0.98 147s
+23:07:40 round 5 SOLO x=[2025, 2022, 898, 898, 898] ends=['d', 'd', 's', 's', 's'] flags=0/5 median=898  (46 min)
+23:16:20 round 6 dagger: +655 rows (6254) 520s; own-path agreement 0.718; reached [(0, 2025, 'd'), (0, 3161, 'f'), (0, 898, 's'), (122, 2020, 'd'), (126, 3161, 'f'), (9, 2025, 'd'), (221, 3161, 'f')]

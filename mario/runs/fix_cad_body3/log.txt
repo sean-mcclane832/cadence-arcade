@@ -1,0 +1,23 @@
+23:16:56 new run: learner cadence senses body (2000 inputs) menu lean arm e1_nosurp
+23:16:56 init data from runs/fix_cad_body2: 6254 rows, critical 1518
+23:16:57 continuing brain runs/fix_cad_body2/policy_r05.npz (eta 0.001, surprise False)
+23:19:28   taught 3000 lessons on 6254 rows: agree 0.907 crit 0.987 152s
+23:19:36 round 0 SOLO x=[3161, 1961, 1961, 2016, 2016] ends=['f', 'd', 'd', 'd', 'd'] flags=1/5 median=2016  (3 min)
+23:25:35 round 1 dagger: +516 rows (6770) 359s; own-path agreement 0.783; reached [(0, 3161, 'f'), (0, 3161, 'f'), (89, 2021, 'd'), (130, 3161, 'f'), (234, 2469, 'd'), (222, 3161, 'f'), (144, 2015, 'd')]
+23:28:01   taught 3000 lessons on 6770 rows: agree 0.919 crit 0.992 146s
+23:28:08 round 1 SOLO x=[2018, 2016, 2016, 2016, 2016] ends=['d', 'd', 'd', 'd', 'd'] flags=0/5 median=2016  (11 min)
+23:37:20 round 2 dagger: +734 rows (7504) 553s; own-path agreement 0.805; reached [(0, 3161, 'f'), (0, 3161, 'f'), (208, 3161, 'f'), (97, 2016, 'd'), (25, 3161, 'f'), (118, 2018, 'd'), (131, 2018, 'd'), (110, 3161, 'f')]
+23:39:48   taught 3000 lessons on 7504 rows: agree 0.919 crit 0.989 148s
+23:39:56 round 2 SOLO x=[3161, 3161, 3161, 1779, 1779] ends=['f', 'f', 'f', 'd', 'd'] flags=3/5 median=3161  (23 min)
+23:46:29 round 3 dagger: +553 rows (8057) 393s; own-path agreement 0.801; reached [(0, 2226, 's'), (0, 3161, 'f'), (119, 2016, 'd'), (239, 3161, 'f'), (202, 3161, 'f'), (200, 2226, 's'), (71, 2016, 'd'), (193, 2226, 's')]
+23:48:57   taught 3000 lessons on 8057 rows: agree 0.91 crit 0.992 147s
+23:49:06 round 3 SOLO x=[2763, 2471, 3161, 2751, 3161] ends=['d', 'd', 'f', 'd', 'f'] flags=2/5 median=2763  (32 min)
+00:01:45 round 4 dagger: +904 rows (8961) 759s; own-path agreement 0.831; reached [(0, 2754, 'd'), (0, 2754, 'd'), (138, 3161, 'f'), (21, 2751, 'd'), (148, 2759, 'd'), (5, 2751, 'd'), (78, 2754, 'd'), (19, 2754, 'd')]
+00:04:17   taught 3000 lessons on 8961 rows: agree 0.899 crit 0.986 152s
+00:04:25 round 4 SOLO x=[2474, 3161, 2471, 2471, 2471] ends=['d', 'f', 'd', 'd', 'd'] flags=1/5 median=2471  (47 min)
+00:12:58 round 5 dagger: +671 rows (9632) 513s; own-path agreement 0.791; reached [(0, 2471, 'd'), (0, 2473, 'd'), (98, 3161, 'f'), (142, 3161, 'f'), (77, 3161, 'f'), (223, 3161, 'f'), (47, 2471, 'd')]
+00:15:48   taught 3000 lessons on 9632 rows: agree 0.924 crit 0.976 170s
+00:15:57 round 5 SOLO x=[3161, 2020, 2020, 2023, 3161] ends=['f', 'd', 'd', 'd', 'f'] flags=2/5 median=2023  (59 min)
+00:25:23 round 6 dagger: +751 rows (10383) 566s; own-path agreement 0.881; reached [(0, 2027, 'd'), (0, 2027, 'd'), (126, 3161, 'f'), (9, 3161, 'f'), (221, 2471, 'd'), (51, 2471, 'd'), (158, 3161, 'f'), (14, 3161, 'f')]
+00:28:23   taught 3000 lessons on 10383 rows: agree 0.918 crit 0.988 180s
+00:28:31 round 6 SOLO x=[3161, 2020, 2018, 2018, 2018] ends=['f', 'd', 'd', 'd', 'd'] flags=1/5 median=2018  (72 min)

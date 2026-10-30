@@ -145,7 +145,7 @@ def _worker_init():
 
 def _play(task, pol, label_at=None, rng=None):
     """One attempt. label_at: None (no labels), "all", or a set of decision indices to label."""
-    b = Body(task["start"], task["senses"], task["menu"])
+    b = Body(task["start"], task["senses"], task["menu"], task.get("level", (1, 1)))
     for a in task.get("prefix", []):
         b.step(a)
         if b.g.done:
@@ -203,15 +203,23 @@ def episode(task: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------------- teaching
-def teach(learner, kind, X, y, W, lessons, rng, log, batch=32):
+def teach(learner, kind, X, y, W, lessons, rng, log, batch=32, old=None, share=0.0):
+    """Weighted 32-row lessons. old=(X, y, W) of earlier levels: round(share * 32) rows of every
+    lesson come from there (replay), drawn by the same weights."""
     p = W / W.sum(); t = time.time()
+    k_old = int(round(share * batch)) if old is not None else 0
+    po = None if not k_old else old[2] / old[2].sum()
     for i in range(lessons):
-        idx = rng.choice(len(y), batch, p=p)
-        x = X[idx].astype(np.float64) / 255.0
+        idx = rng.choice(len(y), batch - k_old, p=p)
+        x = X[idx]; yy = y[idx]
+        if k_old:
+            j = rng.choice(len(old[1]), k_old, p=po)
+            x = np.concatenate([x, old[0][j]]); yy = np.concatenate([yy, old[1][j]])
+        x = x.astype(np.float64) / 255.0
         if kind == "mlp":
-            learner.step(x, y[idx])
+            learner.step(x, yy)
         else:
-            learner.learner.step(learner.stimulus(x, memory=False), y[idx])
+            learner.learner.step(learner.stimulus(x, memory=False), yy)
     chk = rng.choice(len(y), min(len(y), 2000), replace=False)
     pr = np.concatenate([np.asarray(learner.predict(X[chk[i:i + 500]].astype(np.float64) / 255.0)).reshape(-1)
                          for i in range(0, len(chk), 500)])
@@ -244,6 +252,15 @@ def main():
     ap.add_argument("--arm", default="base")
     ap.add_argument("--max-rounds", type=int, default=99)
     ap.add_argument("--init-data", default=None, help="run dir whose data.npz + coach_paths.json start this run")
+    ap.add_argument("--level", default="1-1")
+    ap.add_argument("--episodes", type=int, default=8, help="DAgger attempts per round (1/3 from the start)")
+    ap.add_argument("--init-brain", default=None, help="a saved Cadence brain to continue (one life)")
+    ap.add_argument("--replay", default=None, help="comma list of run dirs: earlier levels' coach labels")
+    ap.add_argument("--replay-share", type=float, default=0.5)
+    ap.add_argument("--watch", default="", help="comma list of earlier levels to test solo every round")
+    ap.add_argument("--collect-only", action="store_true")
+    ap.add_argument("--eval-only", default="", help="comma list of levels: solo-test --init-brain, write first_sight.json, exit")
+    ap.add_argument("--eval-starts", default="0,5,11,17,23")
     args = ap.parse_args()
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     logf = open(out / "log.txt", "a", encoding="utf-8")
@@ -267,8 +284,24 @@ def main():
                 (out / "parts").mkdir(exist_ok=True)
                 np.savez(out / "parts" / f"{part}_{k:02d}.npz", X=r["obs"], y=r["labels"], W=r["weights"])
         return res
-    base = dict(senses=args.senses, menu=args.menu, kind=args.learner, menu_buttons=menu_buttons)
+    level = tuple(int(v) for v in args.level.split("-"))
+    starts = [int(v) for v in args.eval_starts.split(",")]
+    base = dict(senses=args.senses, menu=args.menu, kind=args.learner, menu_buttons=menu_buttons, level=level)
     pol_p = out / ("policy.npz")
+    if args.eval_only:
+        pol_p.write_bytes((HERE / args.init_brain).read_bytes())
+        res = {}
+        for lv in args.eval_only.split(","):
+            lt = tuple(int(v) for v in lv.split("-"))
+            ev = pmap([dict(base, level=lt, mode="eval", start=s_, policy=str(pol_p)) for s_ in starts])
+            res[lv] = [{k: r[k] for k in ("start", "max_x", "flag", "end", "actions")} for r in ev]
+            log(f"eval-only {lv}: x={[r['max_x'] for r in ev]} ends={[r['end'][0] for r in ev]} median={np.median([r['max_x'] for r in ev]):.0f}")
+        (out / "first_sight.json").write_text(json.dumps(res)); ex.shutdown(); return
+    old = None
+    if args.replay:
+        parts = [np.load((HERE / r_).resolve() / "data.npz") for r_ in args.replay.split(",")]
+        old = tuple(np.concatenate([d_[k] for d_ in parts]) for k in ("X", "y", "W"))
+        log(f"replay: {len(old[1])} rows from {args.replay}, share {args.replay_share}")
     log(f"new run: learner {args.learner} senses {args.senses} ({n_in} inputs) menu {args.menu} arm {args.arm}")
 
     if args.init_data:  # start from another run's coach labels (same senses), skip round 0
@@ -290,21 +323,35 @@ def main():
             f"labels {np.bincount(y, minlength=7).tolist()}, critical {int((W > 1).sum())}")
         np.savez(out / "data.npz", X=X, y=y, W=W)
         (out / "coach_paths.json").write_text(json.dumps(coach_paths))
+        if args.collect_only:
+            ex.shutdown(); log("collected; exit"); return
     if args.learner == "mlp":
         learner = MLP(n_in)
+    elif args.init_brain:
+        from cadence import Brain
+        learner = Brain.load(HERE / args.init_brain)
+        if "e1" in args.arm:
+            c = learner.learner.config
+            learner.learner.config = dataclasses.replace(c, eta=0.001, eta_bias=0.0001)
+        log(f"continuing brain {args.init_brain} (eta {learner.learner.config.eta}, surprise {learner.learner.config.surprise})")
     else:
         learner = compose_cadence(n_in, args.arm)
     history = []
     rnd = 0
     while True:
-        rep = teach(learner, args.learner, X, y, W, args.lessons, rng, log)
+        rep = teach(learner, args.learner, X, y, W, args.lessons, rng, log, old=old, share=args.replay_share)
         learner.save(pol_p)
-        ev = pmap([dict(base, mode="eval", start=s, policy=str(pol_p)) for s in EVAL_STARTS])
+        ev = pmap([dict(base, mode="eval", start=s, policy=str(pol_p)) for s in starts])
         xs = [r["max_x"] for r in ev]; flags = sum(r["flag"] for r in ev)
         log(f"round {rnd} SOLO x={xs} ends={[r['end'][0] for r in ev]} flags={flags}/5 median={np.median(xs):.0f}"
             f"  ({(time.time() - deadline + args.hours * 3600) / 60:.0f} min)")
         history.append(dict(round=rnd, rows=int(len(y)), teach=rep, eval=[{k: r[k] for k in ("start", "max_x", "flag", "end", "actions")} for r in ev],
                             minutes=(time.time() - deadline + args.hours * 3600) / 60))
+        for lv in [v for v in args.watch.split(",") if v]:
+            lt = tuple(int(v) for v in lv.split("-"))
+            ew = pmap([dict(base, level=lt, mode="eval", start=s_, policy=str(pol_p)) for s_ in starts])
+            history[-1].setdefault("watch", {})[lv] = [{k: r[k] for k in ("start", "max_x", "flag", "end")} for r in ew]
+            log(f"  retention {lv}: x={[r['max_x'] for r in ew]} flags={sum(r['flag'] for r in ew)}")
         (out / "history.json").write_text(json.dumps(history))
         (out / f"policy_r{rnd:02d}.npz").write_bytes(pol_p.read_bytes())
         if time.time() > deadline or rnd >= args.max_rounds:
@@ -313,8 +360,8 @@ def main():
             log("flag on 4+ of 5 two rounds running; stopping"); break
         rnd += 1
         tasks = [dict(base, mode="dagger", start=int(s), policy=str(pol_p), seed=rnd * 100 + i)
-                 for i, s in enumerate(rng.integers(0, 32, 3))]
-        for i in range(5):
+                 for i, s in enumerate(rng.integers(0, 32, args.episodes // 3))]
+        for i in range(args.episodes - args.episodes // 3):
             s0, path = coach_paths[int(rng.integers(len(coach_paths)))]
             k = int(rng.integers(0, max(1, len(path) - 20)))
             tasks.append(dict(base, mode="dagger", start=s0, prefix=path[:k], policy=str(pol_p),

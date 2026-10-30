@@ -132,3 +132,58 @@ on every row anchor it. The blind overnight fit (E1) showed the same: nosurp ste
 0.69 -> 0.53. (Upstream advises surprise under the normalized point; on this task it is the
 unstable choice. One seed per arm; it agrees across two datasets.)
 Without surprise Cadence matches the MLP's fit (0.92 / 0.90 vs 0.93-0.96 train).
+
+### E5 rerun without surprise (runs/fix_cad_body2, arm e1_nosurp, from the same 2,838 round-0 rows)
+| round | min | rows | training agreement (crit) | solo x (5 starts) | median |
+|---|---|---|---|---|---|
+| 0 | 3 | 2,838 | 0.87 (0.99) | 2930, 1127, 305, 676, 1127 | 1,127 |
+| 1 | 9 | 3,231 | 0.89 (0.99) | 1129, 1129, 1676, 1676, 2178 | 1,676 |
+| 2 | 19 | 3,889 | 0.91 (0.98) | 315, 312, 312, 1788, 436 | 315 |
+| 3 | 27 | 4,327 | 0.89 (0.98) | 1791, 1788, 1788, 1413, 1413 | 1,788 |
+| 4 | 36 | 4,946 | 0.93 (0.99) | 1778, 1781, 1781, 2046, 1960 | 1,781 |
+| 5 | 46 | 5,599 | 0.91 (0.98) | 2025, 2022, 898, 898, 898 | 898 |
+The fit now holds at 0.87-0.93 (the MLP's level) every round. Round 0 already went further than
+any blind brain ever did solo (2,930; the overnight best was 1,783 after 2.5 h). In round 6's DAgger
+the round-5 brain, playing alone from the very start (no coach prefix; random start jitter, not recorded), **reached
+the flag**: the first Cadence solo clear of 1-1 (not one of the 5 eval starts; logged in
+runs/fix_cad_body2/log.txt 23:16). Continued as the same brain in runs/fix_cad_body3 (HOI4 started
+23:18: 2 cores).
+
+### E5 continued (runs/fix_cad_body3: the same brain, from its round-5 state, all its rows)
+| round | min | rows | agree | solo x (starts 0/5/11/17/23) | flags |
+|---|---|---|---|---|---|
+| 0 | 3 | 6,254 | 0.91 | **3161**, 1961, 1961, 2016, 2016 | 1/5 |
+| 1 | 11 | 6,770 | 0.92 | 2018, 2016, 2016, 2016, 2016 | 0/5 |
+| 2 | 23 | 7,504 | 0.92 | **3161, 3161, 3161**, 1779, 1779 | **3/5** |
+| 3 | 32 | 8,057 | 0.91 | 2763, 2471, **3161**, 2751, **3161** | 2/5 |
+| 4 | 47 | 8,961 | 0.90 | 2474, **3161**, 2471, 2471, 2471 | 1/5 |
+| 5 | 59 | 9,664 | - | **3161**, 2020, 2020, 2023, **3161** | 2/5 |
+| 6 | 72 | 10,383 | 0.92 | **3161**, 2018, 2018, 2018, 2018 | 1/5 |
+Round 2 clears starts 0, 5 and 11, i.e. **flag in 3 of 3 on the original 3-start rule**. Rechecked
+on ten start jitters it never saw in an eval (1-4, 6-10, 12; runs/fix_eval_r02): **8 of 10 flags**
+(the other two stuck at x 2,226). Not luck. The round-6 brain on the same ten: 4/10. More rounds
+did not help after r2: the late deaths (diag/death_check.py) are single-decision timing slips in
+critical moments where the coach says w10: letting go of A one decision early at a jump's apex
+(x 1,951, dies at 2,020) and a jump pressed one decision early at the end staircase (dies at 2,471).
+Total for the r2 brain: 31 min of coach demonstrations + ~70 min of DAgger, mostly on 2 cores.
+Kept: runs/fix_cad_body3/policy_r02.npz = the "1-1 brain".
+
+## E7. First sight with the 1-1 brain (starts 0/6/12, the baselines' starts; runs/fs_*)
+| level | 1-1 brain (body) | untrained body brain | always run | run+jump | random (10 seeds) | fresh blind | old in-order blind |
+|---|---|---|---|---|---|---|---|
+| 1-2 | 260 | 60 | 196 | 196 | 338 | 40 | 183 |
+| 1-3 | **402** | 289 | 321 | 317 | 300 | 705 | 311 |
+| 1-4 | 229 | 40 | 234 | 229 | 331 | 551 | 234 |
+| 2-1 | 339 | 40 | 308 | 306 | 384 | 120 | 322 |
+It beats always-run, run+jump and the untrained body brain on 1-2, 1-3 and 2-1 and the old blind
+in-order brain on every level, but random buttons beat it on 1-2, 1-4 and 2-1, and the fresh
+blind brain's lucky 705 / 551 on 1-3 / 1-4 stand. Skill from one level does not transfer to unseen
+levels at first sight: what it learned is 1-1's timing, not a general "jump over things".
+
+## E8. Retention: practise 1-2, keep 1-1 (pre-registered 00:35)
+runs/fix_cad_1-2: the 1-1 brain practises 1-2 (coach round 0 from runs/fix_coach_1-2, 2,519 rows,
+then DAgger), each 32-row lesson = 16 rows of 1-2 + 16 replayed 1-1 coach rows (10,383), 1-1 solo
+tested every round (starts 0/5/11/17/23).
+- H8: with half of every lesson replaying old coach labels, 1-1 keeps >= 2/5 flags (the in-order
+  run fell from 898 to ~300 with 10% replay of a noisy pile). Falsified if 1-1 drops below median
+  2,000 or 0 flags for 2 rounds in a row.

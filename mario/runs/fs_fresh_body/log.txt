@@ -1,0 +1,4 @@
+00:31:15 eval-only 1-2: x=[77, 60, 40] ends=['s', 's', 's'] median=60
+00:31:17 eval-only 1-3: x=[289, 289, 289] ends=['d', 'd', 'd'] median=289
+00:31:18 eval-only 1-4: x=[40, 40, 40] ends=['s', 's', 's'] median=40
+00:31:19 eval-only 2-1: x=[40, 40, 40] ends=['s', 's', 's'] median=40
