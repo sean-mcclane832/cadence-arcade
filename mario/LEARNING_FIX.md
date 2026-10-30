@@ -404,3 +404,10 @@ new DAgger rows labelled tie-aware (no old DAgger rows); a DAgger round EVERY ch
   SEL 1-2 reaches >= 4/17 within 2 h. Falsified if fit falls below 0.86 like the old piles.
 Same recipe resumed on 1-3 (runs/st_13b, 2 cores): from st_13a ck_0021 (the 1-3 SEL/TEST 1/10 brain),
 1-3 rows = the 1,926 coach-demo rows + tie-aware DAgger only.
+
+## Milestone (19:31): one brain, 1-1 consistent on the strict bar, plus 1-3
+runs/st_13b ck_0008 (saved as brains/joint_11_13_ck8.npz), picked by the joint SEL rule (never on
+TEST or HELD): **1-1 SEL 12/17, TEST 10/10, HELD 44/50 (88%)**; **1-3 SEL 17/17, TEST 3/10, HELD 16/50**.
+So 1-1 now passes both bars, in a brain that also clears 1-3 from every practice start. Held-out 1-3 is
+weak: 7 of 10 TEST starts stop at x 1,371. Fit 1-1 0.88, 1-3 0.87. E17b recipe (coach-demo rows +
+tie-aware DAgger only), 9 chunks of 250 lessons and 4 DAgger rounds after st_13a.
