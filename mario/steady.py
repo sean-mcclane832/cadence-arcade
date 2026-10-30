@@ -35,9 +35,10 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import dagger as D  # noqa: E402
 
-SEL = tuple(range(0, 30, 3))
+SEL = tuple(s for s in range(0, 80, 4) if not 32 <= s <= 41)  # 18 starts, all inside the DAgger pool
 TEST = tuple(range(32, 42))
 WIDE = tuple(range(100, 140, 2))  # late jitters, reported on every new best (never selected on)
+HELD = TEST + tuple(range(80, 100)) + WIDE  # 50 held-out starts: never in training or selection
 POOL = np.array([s for s in range(80) if s not in TEST])  # DAgger jitters: never a TEST start
 GAMES = ("hoi4.exe", "javaw.exe")
 
@@ -95,7 +96,12 @@ def main():
     ap.add_argument("--avg", type=int, default=0, help="also test the mean of the last K checkpoints")
     ap.add_argument("--dagger-every", type=int, default=0, help="DAgger round every N chunks (0 = never)")
     ap.add_argument("--episodes", type=int, default=16)
+    ap.add_argument("--from-start", type=float, default=1 / 3, help="share of DAgger attempts from the level start")
+    ap.add_argument("--cost-weight", action="store_true", help="DAgger rows where the brain's own button loses get the critical weight")
+    ap.add_argument("--tie-own", action="store_true", help="DAgger rows where the brain's button ties the coach's best keep the brain's button")
     ap.add_argument("--last-all", type=int, default=60)
+    ap.add_argument("--ratchet", action="store_true", help="keep a chunk only if the practised level's SEL (flags, mean) did not get worse; else go back")
+    ap.add_argument("--keep-min", type=int, default=0, help="ratchet: other levels must keep >= this many SEL flags")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--eval-only", nargs="*", default=None, help="just test these brains on SEL+TEST")
     ap.add_argument("--extra", default="", help="eval-only: also play these starts, e.g. 80-99")
@@ -126,12 +132,14 @@ def main():
         for p in args.eval_only:
             for L in levels:
                 s, t = summ(solo((HERE / p).resolve(), L, SEL)), summ(solo((HERE / p).resolve(), L, TEST))
-                res[f"{p}|{L}"] = dict(sel=s, test=t)
+                hh = summ(solo((HERE / p).resolve(), L, HELD))
+                res[f"{p}|{L}"] = dict(sel=s, test=t, held=hh)
+                log(f"   HELD {hh['flags']}/50 mean {hh['mean']}")
                 if args.extra:
                     a_, b_ = (int(v) for v in args.extra.split("-"))
                     e = summ(solo((HERE / p).resolve(), L, range(a_, b_ + 1))); res[f"{p}|{L}"]["extra"] = e
                     log(f"   extra {args.extra}: {e['flags']}/{b_ - a_ + 1} mean {e['mean']}")
-                log(f"{p} {L}: SEL {s['flags']}/10 mean {s['mean']} | TEST {t['flags']}/10 mean {t['mean']} x={t['x']}")
+                log(f"{p} {L}: SEL {s['flags']}/{len(SEL)} mean {s['mean']} | TEST {t['flags']}/10 mean {t['mean']} x={t['x']}")
         (out / "eval_only.json").write_text(json.dumps(res)); return
 
     from cadence import Brain
@@ -159,6 +167,7 @@ def main():
     hist = []
     deadline = time.time() + args.hours * 3600
     ckpts = []
+    lineage = None
 
     def consider(path, tag, chunk_i):
         rec = {}
@@ -167,12 +176,13 @@ def main():
             cur = best.get(L)
             key = (s["flags"], s["mean"])
             if cur is None or key > (cur["sel_flags"], cur["sel_mean"]):
-                t = summ(solo(path, L, TEST)); w = summ(solo(path, L, WIDE))
+                t = summ(solo(path, L, TEST)); w = summ(solo(path, L, WIDE)); h80 = summ(solo(path, L, range(80, 100)))
+                held = t["flags"] + w["flags"] + h80["flags"]
                 dst = out / f"best_{L}.npz"; shutil.copyfile(path, dst)
                 best[L] = dict(ckpt=str(path.name), tag=tag, chunk=chunk_i, sel_flags=s["flags"], sel_mean=s["mean"],
-                               test_flags=t["flags"], test_mean=t["mean"], test_x=t["x"], wide_flags=w["flags"])
+                               test_flags=t["flags"], test_mean=t["mean"], test_x=t["x"], wide_flags=w["flags"], held_flags=held)
                 bestf.write_text(json.dumps(best, indent=1))
-                log(f"  NEW BEST {L} ({tag}): SEL {s['flags']}/10 mean {s['mean']} | TEST {t['flags']}/10 mean {t['mean']} | WIDE {w['flags']}/20")
+                log(f"  NEW BEST {L} ({tag}): SEL {s['flags']}/{len(SEL)} mean {s['mean']} | TEST {t['flags']}/10 mean {t['mean']} | WIDE {w['flags']}/20 | HELD {held}/50")
                 rec[L + "_test"] = t
         if len(levels) > 1:
             key = [min(rec[L]["flags"] for L in levels), sum(rec[L]["flags"] for L in levels), sum(rec[L]["mean"] for L in levels)]
@@ -208,15 +218,15 @@ def main():
         res_all = []
         for L in practice:
             d = data[L]; tasks = []
-            n3 = args.episodes // 3
+            n3 = int(round(args.episodes * args.from_start))
             for i, s in enumerate(rng.choice(POOL, n3)):
                 tasks.append(dict(base, level=lv(L), mode="dagger", start=int(s), policy=str(pol), seed=k * 100 + i,
-                                  last_all=args.last_all))
+                                  last_all=args.last_all, costw=args.cost_weight, tiew=args.tie_own))
             for i in range(args.episodes - n3):
                 s0, path = d["paths"][int(rng.integers(len(d["paths"])))]
                 j = int(rng.integers(0, max(1, len(path) - 20)))
                 tasks.append(dict(base, level=lv(L), mode="dagger", start=s0, prefix=path[:j], policy=str(pol),
-                                  seed=k * 100 + 50 + i, last_all=args.last_all))
+                                  seed=k * 100 + 50 + i, last_all=args.last_all, costw=args.cost_weight, tiew=args.tie_own))
             t = time.time(); res = [r for r in R.map(tasks) if len(r["labels"])]
             W = np.concatenate([r["weights"] for r in res]).astype(np.float64); W[W > 1] *= args.crit
             d["X"] = np.concatenate([d["X"]] + [r["obs"] for r in res]); d["y"] = np.concatenate([d["y"]] + [r["labels"] for r in res])
@@ -235,7 +245,10 @@ def main():
         f"crit x{args.crit}, avg {args.avg}, dagger every {args.dagger_every}, practice {practice}, mix {mix}")
     hist.append(dict(chunk=0, solo=consider(p0, "ck_0000", 0)))
     ckpts.append(p0)
-    log(f"chunk 0: " + " ".join(f"{L} {hist[-1]['solo'][L]['flags']}/10 m{hist[-1]['solo'][L]['mean']}" for L in levels))
+    if args.ratchet:
+        P0 = practice[0]; lineage = ((hist[-1]["solo"][P0]["flags"], hist[-1]["solo"][P0]["mean"]), p0,
+                   {L: hist[-1]["solo"][L]["flags"] for L in levels})
+    log(f"chunk 0: " + " ".join(f"{L} {hist[-1]['solo'][L]['flags']}/{len(SEL)} m{hist[-1]['solo'][L]['mean']}" for L in levels))
     for k in range(1, args.chunks + 1):
         g = gaming()
         if g != R.slow:
@@ -249,12 +262,24 @@ def main():
         p = out / f"ck_{k:04d}.npz"; b.save(p); ckpts.append(p)
         rec = dict(chunk=k, eta=b.learner.config.eta, teach_s=round(time.time() - t),
                    fit={L: fit(L) for L in data}, solo=consider(p, p.stem, k))
-        line = " ".join(f"{L} {rec['solo'][L]['flags']}/10 m{rec['solo'][L]['mean']}" for L in levels)
+        line = " ".join(f"{L} {rec['solo'][L]['flags']}/{len(SEL)} m{rec['solo'][L]['mean']}" for L in levels)
         if args.avg and len(ckpts) >= args.avg:
             pa = out / f"avg_{k:04d}.npz"; average(ckpts[-args.avg:], pa)
             rec["avg"] = consider(pa, pa.stem, k)
-            line += " | avg " + " ".join(f"{L} {rec['avg'][L]['flags']}/10 m{rec['avg'][L]['mean']}" for L in levels)
+            line += " | avg " + " ".join(f"{L} {rec['avg'][L]['flags']}/{len(SEL)} m{rec['avg'][L]['mean']}" for L in levels)
+        if args.ratchet:
+            P = practice[0]
+            kk = (rec["solo"][P]["flags"], rec["solo"][P]["mean"])
+            okk = all(rec["solo"][L]["flags"] >= min(args.keep_min, lineage[2].get(L, 0)) for L in levels if L != P)
+            if kk >= lineage[0] and okk:
+                lineage = (kk, p, {L: rec["solo"][L]["flags"] for L in levels})
+                line_tag = "kept"
+            else:
+                e_ = b.learner.config.eta; b = Brain.load(lineage[1]); set_eta(e_); line_tag = f"back to {lineage[1].stem}"
+            rec["ratchet"] = line_tag
         log(f"chunk {k} ({rec['teach_s']}s, fit {rec['fit']}): {line}")
+        if args.ratchet:
+            log(f"  ratchet: {rec['ratchet']}")
         hist.append(rec)
         with open(out / "history.jsonl", "a") as f:
             f.write(json.dumps(rec) + "\n")

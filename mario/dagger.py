@@ -51,9 +51,29 @@ COPIES = 8
 HELD_BITS = (0x01, 0x02, 0x80, 0x40)  # A, B, right, left
 
 
+FOV_W, FOV_H, FOV_B = 96, 96, 4   # fovea: 96 x 96 px around Mario in 4 x 4 px blocks (24 x 24)
+N_FOV = (FOV_W // FOV_B) * (FOV_H // FOV_B)
+
+
 def n_inputs(senses: str) -> int:
     from game import N_FRAME, N_PROPRIO_ONE
-    return 2 * N_FRAME + (0 if senses == "blind" else (N_PROPRIO_ONE + len(HELD_BITS)) * COPIES)
+    n = 2 * N_FRAME + (0 if senses == "blind" else (N_PROPRIO_ONE + len(HELD_BITS)) * COPIES)
+    return n + (2 * N_FOV if senses == "fovea" else 0)
+
+
+def fovea(screen, ram) -> np.ndarray:
+    """Fine view around Mario: from 24 px behind to 72 px ahead, 56 px above his sprite top to 40 below,
+    (40 px above his sprite top to 56 below), in 4 x 4 px blocks, as distance from the frame's background grey over its contrast (0..1)."""
+    from game import background_grey
+    g = (screen[..., 0] * 0.299 + screen[..., 1] * 0.587 + screen[..., 2] * 0.114) / 255.0
+    bg = background_grey(g[32:240])
+    mx, my = int(ram[0x03AD]), int(ram[0x00CE])
+    pad = np.full((240 + 2 * FOV_H, 256 + 2 * FOV_W), bg, np.float32)
+    pad[FOV_H:FOV_H + 240, FOV_W:FOV_W + 256] = g
+    y0, x0 = FOV_H + my - 40, FOV_W + mx - 24
+    win = pad[y0:y0 + FOV_H, x0:x0 + FOV_W]
+    b = np.abs(win.reshape(FOV_H // FOV_B, FOV_B, FOV_W // FOV_B, FOV_B).mean(axis=(1, 3)) - bg)
+    return np.clip(b / max(float(np.percentile(np.abs(g[32:240] - bg), 95)), 0.08), 0, 1).reshape(-1)
 
 
 class Body:
@@ -64,6 +84,7 @@ class Body:
         self.g = Game(noop_start=start, level=tuple(level), menu=menu, bg_per_frame=True)
         self.senses = senses
         self.held = 0x00
+        self.fprev = None
 
     def obs(self) -> np.ndarray:
         g = self.g
@@ -73,10 +94,18 @@ class Body:
         from game import proprio
         held = np.array([1.0 if self.held & b else 0.0 for b in HELD_BITS])
         body = np.concatenate([proprio(g.env), held])
-        return np.concatenate([eyes, np.tile(body, COPIES)])
+        o = np.concatenate([eyes, np.tile(body, COPIES)])
+        if self.senses == "fovea":
+            f = fovea(g.screen, g.env.ram)
+            if self.fprev is None:
+                self.fprev = f
+            o = np.concatenate([o, f, self.fprev])
+        return o
 
     def step(self, a: int):
         from game import ACTIONS
+        if self.senses == "fovea":
+            self.fprev = fovea(self.g.screen, self.g.env.ram)
         self.g.step(a)
         self.held = ACTIONS[a]
 
@@ -177,12 +206,23 @@ def _play(task, pol, label_at=None, rng=None):
         o = b.obs()
         want = label_at == "all" or (label_at is not None and i in label_at)
         lab, wt = g.coach_weighted() if want else (-1, 0.0)
+        if want and script is not None and (task.get("costw") or task.get("tiew")) and script[i] != lab:
+            # cost-sensitive weight: if the button the brain actually pressed loses the level (its best
+            # plan ends > CRITICAL_PX behind the coach's best), this row is critical FOR THIS BRAIN
+            from game import CRITICAL_PX, CRITICAL_WEIGHT
+            sc = g.coach_scores(); first = np.array([p_[0] for p_ in g.plans])
+            mine = sc[first == script[i]]
+            if task.get("costw") and (not len(mine) or sc.max() - mine.max() > CRITICAL_PX):
+                wt = max(wt, CRITICAL_WEIGHT)
+            elif task.get("tiew") and len(mine) and sc.max() - mine.max() <= 2.0:
+                lab, wt = int(script[i]), 1.0  # the brain's button is as good: a tie, not a mistake
         if script is not None:
             a = script[i]
         elif task["mode"] == "coach":
             a = lab if rng.random() >= task.get("eps", 0.0) else int(rng.choice(task["menu_buttons"]))
         else:
-            a = int(np.asarray(pol.predict(o[None])).reshape(-1)[0])
+            npol = task.get("pol_inputs")
+            a = int(np.asarray(pol.predict((o[:npol] if npol else o)[None])).reshape(-1)[0])
         if want:
             obs.append(np.round(o * 255).astype(np.uint8)); labels.append(lab); weights.append(wt)
         acts.append(a)

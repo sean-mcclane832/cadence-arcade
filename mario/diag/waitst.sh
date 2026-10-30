@@ -9,4 +9,4 @@ t0=$(date +%s); while [ $(( $(date +%s) - t0 )) -lt ${MAXW:-570} ]; do
   done
   [ $ok = 1 ] && break; sleep 30
 done
-for r in "${@:2}"; do echo "== $r"; grep -h "chunk [0-9]* (\|BEST\|dagger\|done\|Trace\|throttle" /p/projects/cadence-arcade/mario/runs/$r/log.txt /p/projects/cadence-arcade/mario/runs/$r.out 2>/dev/null | sed 's/fit {.1-1.: //' | cut -c7-200 | tail -${TAILN:-14}; done
+for r in "${@:2}"; do echo "== $r"; grep -h "chunk [0-9]* (\|ratchet\|BEST\|dagger\|done\|Trace\|throttle" /p/projects/cadence-arcade/mario/runs/$r/log.txt /p/projects/cadence-arcade/mario/runs/$r.out 2>/dev/null | sed 's/fit {.1-1.: //' | cut -c7-200 | tail -${TAILN:-14}; done

@@ -257,3 +257,150 @@ H10e result (runs/st_vote, 13:58): SEL+TEST flags of 20. Votes of 5: 4-8 **7**, 
 (mean 13.6). **Falsified**: voting is no better than one checkpoint. The vote of a bad stretch is bad.
 Side finding: after one more DAgger round on wider jitter, 5 of B's 12 single checkpoints pass TEST
 >= 8/10 on 1-1 (ck 5, 8, 10, 11, 14). Consistency on 1-1 is now common, but still not every checkpoint.
+
+## E11. Why 1-2 is slower (pre-registered 14:30)
+Facts: the coach alone clears 1-2 from TEST starts 32/35/38/41 (4/4, ~300 decisions; runs/coach12.jsonl),
+so the teacher is not the limit. But Cadence's fit to the 1-2 labels falls from 0.91 to 0.80-0.84 as
+DAgger adds rows (st_12b, st_12c), while its 1-1 fit stays 0.91.
+- H11: the 1-2 labels are less consistent for these senses (aliasing, as in ROOT CAUSE 1), not a
+  Cadence capacity limit. Prediction: 1-NN leave-one-out and MLP train fit on runs/d12 (1-2) are
+  >= 0.08 below the same on 1-1 (runs/fix_cad_body3). Falsified if the MLP fits 1-2 within 0.03 of 1-1
+  (then it is Cadence: capacity or the shared region).
+E11 result (14:45, diag/fit_torch.py, rand 80/20): 1-NN LOO 1-1 0.905 / 1-2 0.865; MLP256 60 epochs
+train **0.950 / 0.950**, held-out 0.895 / 0.864. **H11 falsified**: the MLP fits 1-2 as well as 1-1.
+The 1-2 labels are learnable from these senses; Cadence's 0.80-0.84 on them is a Cadence limit.
+
+## E12. Cadence capacity on 1-2 (offline fits, diag/fit12.py, pre-registered 14:46)
+- H12: one region of 256 shared with 1-1 is too small. Prediction after 8k lessons: a fresh 256 brain
+  on 1-2 only fits 1-2 >= 0.88 train; a fresh 512 brain on both levels fits both >= 0.88. Falsified
+  if fresh-256 on 1-2 alone also stays <= 0.85 (then it's not sharing, it's 1-2 itself or the teaching).
+E12 result (14:54, 8k lessons, train/held-out on 1-2): fresh 256 on 1-2 only **0.856 / 0.833**; fresh 512
+on both 0.79 at 5k (slow, still rising); the 1-2-practised r07 brain on 1-2 only 0.887 / 0.846 (its 1-1
+fit falls 0.91 -> 0.85). **H12 falsified**: a dedicated fresh 256 brain fits 1-2 no better than the shared
+one. Cadence tops out ~0.86-0.89 on 1-2 labels where the MLP reaches 0.95.
+How 1-2 solos end (diag/fails.py, st_12c best, SEL starts): 2 flags, 6 deaths, 2 stuck at x ~850; most
+end early (x 825-960) with the brain disagreeing with the coach on 7-10 of its last 12 decisions, mostly
+weight-1 rows (noop / left: the coach waits for enemies). It is lost there, not one slip from success.
+- H12b (pre-registered 14:55): DAgger focused on that early section (2/3 of attempts from the level
+  start, 24 per round, every 2 chunks) on the r07 1-2-only brain, 90% 1-2 lessons, reaches SEL >= 5/10
+  on 1-2 within 2 h. Falsified if best SEL <= 2/10 at 2 h.
+E12 extra: fresh 512 on both levels after 8k lessons fits 1-1 0.83 / 1-2 0.80: a wider region is slower, not better.
+
+## E13. 1-3 (pre-registered 15:26, run in parallel on 2 cores)
+runs/fix_coach_1-3: 11 coach demonstrations, 1,926 rows (381 critical), coach flags 6/11 (5 of them
+with 12-25% random buttons). runs/st_13a: brains/1-1_steady practises 1-3 (70% of lessons, 30% 1-1
+replay), DAgger every 2 chunks, 12 attempts, half from the start.
+- H13: 1-3 gets a first solo flag on SEL within 2 h while 1-1 keeps TEST >= 8/10 at its best
+  joint checkpoint. Falsified if 0 SEL flags on 1-3 at 2 h.
+H12b stopped at 1 h (15:47) to free cores for H14: best 1-2 SEL 2/10, **TEST 2/10** (ck_0009, the first
+held-out 1-2 flags; that checkpoint also holds 1-1 TEST 9/10). Solo SEL still swings 0-2 flags per chunk.
+
+## E14. A ratchet (pre-registered 15:50)
+Keep a 250-lesson chunk only if the practised level's SEL (flags, then mean x) is not worse than the
+kept line's; otherwise reload the last kept checkpoint (DAgger rows still accumulate, so the next
+chunk differs). Solo play becomes an accept/reject signal on top of the coach's labels.
+runs/st_12r: from st_12d ck_0009, its 19,581 1-2 rows (runs/d12b), 90% 1-2, 1-1 must keep SEL >= min(6, the kept line's 1-1 flags) (first launch had a fixed floor of 6 that rejected every chunk; restarted 15:59).
+- H14: the ratchet climbs: SEL >= 6/10 and TEST >= 4/10 on 1-2 within 2 h. Falsified if TEST stays
+  <= 2/10 (then it only overfits the 10 SEL starts) or SEL never passes 3/10.
+H14 result (16:17, stopped after 8 chunks): every chunk was rejected (8/8 "back to ck_0000"). The line
+started from a selected peak (SEL 2/10, mean 1,572) and no single 250-lesson step beat it; the best
+tries reached 1/10. **Falsified** as run: a strict ratchet from a peak just freezes.
+
+## E15. Under-teaching? (pre-registered 16:17)
+Exposure check: the MLP needed ~60 passes over the 1-2 rows to fit 0.95; at 20 passes it fit 0.86.
+Cadence fresh-256 at 6k lessons (~21 passes of 9k rows) fit 0.86: the same curve. The DAgger runs
+teach only ~750 lessons (~1 pass of 20k rows) per round, so their 0.82-0.86 fit may be simple
+under-teaching, not a Cadence ceiling.
+runs/st_12L: st_12d ck_0009, 22,273 1-2 rows (runs/d12c), 90% 1-2 / 10% 1-1, NO DAgger, chunks of
+1,000 lessons, 30 chunks (~3 passes per 3 chunks), solo test every chunk.
+- H15: 1-2 label fit climbs to >= 0.92 train, and with it solo 1-2 rises to SEL >= 5/10 with smaller
+  chunk-to-chunk swings. Falsified if fit plateaus <= 0.88, or fit reaches 0.92 but SEL stays <= 2/10.
+- H15b (added 16:27, 8k lessons into st_12L: 1-2 fit flat at 0.84-0.86, SEL 0/10): the plateau is the
+  step size. Normalized steps do not shrink near a minimum, so eta 0.001 holds the fit at a noise
+  floor. runs/st_12L2: same start and rows, eta 0.0003 -> 0.00005 over 20 chunks of 1,000. Prediction:
+  fit >= 0.90 by 10k lessons. Falsified if it stays <= 0.87.
+H15 result (16:38, st_12L stopped at 18k lessons): 1-2 fit 0.843, 0.861, 0.858, 0.861, 0.847, 0.855,
+..., 0.866, 0.853, 0.869, 0.856, 0.858; SEL 1-2 0/10 in 17 of 18 chunks. **Falsified**: the fit
+plateaus at ~0.86 from 4k lessons on while the MLP keeps rising on the same rows. More teaching
+alone does not do it. (st_12L2, the low-eta arm, keeps running for H15b.)
+
+## E16. Cost-sensitive DAgger (pre-registered 16:39)
+Look at the deaths (diag/endshots.py, runs/end12_s0.png): at x ~850 in 1-2 Mario runs into a Koopa
+beside two Goombas under the brick columns. The coach says noop / left there with weight 1, because
+another first button also survives its short look-ahead. But the button the BRAIN pressed dies. The
+weight says how much a row matters to the coach, not to this brain.
+Change (dagger.py, task costw): when the coach labels a DAgger row where the brain pressed a different
+button, it also scores the brain's button; if that button's best plan ends > 50 px behind, the row
+gets the critical weight. runs/st_12cw: from st_12d ck_0009, rows of runs/d12c, DAgger every 2
+chunks, 18 attempts (2/3 from the start), 90% 1-2.
+- H16: 1-2 TEST >= 4/10 at some checkpoint within 2 h. Falsified if best TEST <= 2/10.
+H15b result (17:00, st_12L2 at 14k lessons, eta now ~0.0001): 1-2 fit 0.847-0.871, best SEL 3/10
+(ck_0008) but TEST 0/10. **Falsified**: a smaller step does not lift the plateau either.
+E13 paused (17:18, 1 h 52 min, 25 chunks, 10,774 1-3 rows): **H13 holds** (first SEL flag on 1-3 at
+chunk 8, 29 min). Best 1-3: SEL 1/10, TEST 1/10 (ck_0021, which also holds 1-1 SEL 8/10, TEST 3/10).
+1-3 fit 0.82-0.89. Many DAgger attempts end "stuck" (10 of 12 in one round): 1-3's lifts and gaps
+need waiting, and the 40-decision stuck limit may cut those off. Paused to give 1-2 the cores.
+
+## E17. Tie-aware labels (pre-registered 17:18)
+The 1-2 labels: MLP held-out fit 0.864 = 1-NN consistency 0.865 = Cadence's train fit ~0.86. The coach
+picks "the first plan within 2 px of the best", so where run and run+jump both survive, the label is a
+coin flip of tiny differences, and the brain is taught to reproduce it. Change (dagger.py, tiew): on a
+DAgger row where the brain pressed another button, if that button's best plan is within 2 px of the
+coach's best, the label becomes the brain's own button (a tie, not a mistake). Combined with E16's
+cost weights. runs/st_12t: from st_12d ck_0009, rows of runs/d12c.
+- H17: new rows stop fighting the brain, fit rises to >= 0.90 on 1-2 and TEST >= 4/10 within 2 h.
+  Falsified if fit stays <= 0.87 and TEST <= 2/10.
+
+## E18. A broader held-out score (17:42)
+TEST 32-41 turned out to be a narrow band: neighbouring jitters behave alike (results alternate with
+odd/even idle frames). st_12cw ck_0011 is 1-2 TEST **6/10** but starts 80-99 **1/20** (1-1: TEST 8/10,
+80-99 8/20). So from now on every best is also scored on HELD = TEST + 80-99 + 100-138 (even) = 50
+starts, none of them in DAgger (pool 0-31, 42-79) or in selection. SEL is now 17 starts (0-76 step 4,
+minus 32-40). Honest bar for "consistent": HELD >= 40/50 (80%), on top of the pre-registered TEST >= 8/10.
+- brains/1-1_steady: SEL 17/17, TEST 10/10, **HELD 38/50** (76%). It passes the pre-registered gate
+  and falls just short of the broader bar. The text to Sean said "10/10 held-out" with the late-start caveat.
+H16 so far: 1-2 TEST 6/10 at ck_0011 meets the letter of the prediction, but 80-99 is 1/20: not real
+progress. Verdict at 2 h.
+
+## E19. A fovea (pre-registered 17:52)
+E12 extra: a two-module brain (256, 256) fits 1-2 worse (0.80 at 6k lessons vs 0.86 for one region).
+On 1-2 the MLP's held-out fit (0.864) equals 1-NN consistency (0.865): with these senses, ~14% of
+held-out screens get a label their nearest neighbours disagree with. The coarse eyes are 8 x 8 px
+blocks of the whole screen; the Koopa-vs-Goomba timing at x ~850 lives in a few blocks.
+New sense (dagger.py senses "fovea"): 96 x 96 px around Mario in 4 x 4 px blocks, contrast-normalized,
+present and previous decision (1,152 more inputs, 3,152 total). Data: runs/fov12, 1-2 rows labelled
+by the coach on attempts of st_12cw ck_0011 (old senses drive the brain, both senses are stored).
+- H19: the fovea makes labels more predictable. Prediction: 1-NN held-out and MLP held-out on
+  old+fovea are each >= 0.03 above old. Falsified if both gain < 0.015 (then senses are not the limit).
+E19 result (18:17, runs/fov12: 2,781 rows, 6 coach + 24 DAgger attempts, rand 80/20, diag/fit_fov.py):
+| senses | 1-NN held-out | MLP train | MLP held-out | MLP crit held-out |
+|---|---|---|---|---|
+| old (eyes + body) | 0.848 | 0.974 | 0.832 | 0.828 |
+| old + fovea | 0.834 | 0.993 | 0.839 | 0.852 |
+| body + fovea (no coarse eyes) | 0.848 | 0.974 | 0.827 | 0.875 |
+| fovea only | 0.821 | 0.969 | 0.834 | 0.859 |
+**H19 falsified**: 1-NN -0.014, MLP +0.007. The ~15% held-out disagreement is not about what the eyes
+can see. (Critical rows may gain a little, 0.83 -> 0.85-0.88, but on ~100 rows that is within noise.)
+That points at the labels themselves (E17's ties) rather than at the senses. Fovea not adopted.
+H16 result (18:25, st_12cw stopped at 19 chunks, 1 h 45 min): best 1-2 TEST 6/10 (ck_0011) but 80-99
+1/20; SEL 1-2 0-2/10 every chunk; 1-2 fit fell 0.82 -> 0.81, critical 0.95 -> 0.90 (the new
+cost-weighted rows are the hard ones). **Falsified** in substance.
+H17 at 1 h (st_12t, 9 chunks, stopped 18:25): fit 0.81-0.83, SEL 0-1/10. The tie-relabelled rows are a
+small minority in a 27k-row pile labelled the old way, so this was not a clean test. See E17b.
+
+### 1-2 status at the 3-hour rule (18:25)
+No real progress since 15:31 (first TEST 2/10). Best 1-2 checkpoints: st_12d ck_0009 (SEL 2/10, TEST
+2/10), st_12cw ck_0011 (TEST 6/10, 80-99 1/20). Why it is stuck, as far as the probes go: Cadence fits
+the 1-2 labels to ~0.82-0.86 (E12, E15) while 1-1 sits at ~0.90; the labels themselves are only ~85%
+predictable from the screen even for an MLP or 1-NN on held-out screens (E11, E19), and critical rows
+too (MLP 0.83 held-out). Not the teacher (coach clears 4/4), not the eyes (E19), not the step size
+(E15b), not more teaching (E15), not capacity by width or depth (E12). A level needs dozens of critical
+calls in a row; at ~5-9% critical error the chain breaks.
+
+## E17b. A clean tie-aware pile for 1-2 (pre-registered 18:29)
+runs/st_12tc: from st_12d ck_0009; 1-2 rows = only the 2,519 coach-demo rows (runs/fix_coach_1-2) plus
+new DAgger rows labelled tie-aware (no old DAgger rows); a DAgger round EVERY chunk of 500 lessons.
+- H17b: without the old coin-flip labels, 1-2 fit stays >= 0.90 as the pile grows past 10k rows, and
+  SEL 1-2 reaches >= 4/17 within 2 h. Falsified if fit falls below 0.86 like the old piles.
+Same recipe resumed on 1-3 (runs/st_13b, 2 cores): from st_13a ck_0021 (the 1-3 SEL/TEST 1/10 brain),
+1-3 rows = the 1,926 coach-demo rows + tie-aware DAgger only.
