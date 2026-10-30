@@ -1,0 +1,7 @@
+{"arm": "e03", "lesson": 0, "s": 0, "train": [0.367, 0.227], "test": [0.36, 0.213], "unsettled": null}
+{"arm": "e03", "lesson": 1000, "s": 42, "train": [0.839, 0.93], "test": [0.828, 0.911], "unsettled": 0.0}
+{"arm": "e03", "lesson": 2000, "s": 83, "train": [0.883, 0.964], "test": [0.848, 0.895], "unsettled": 0.0}
+{"arm": "e03", "lesson": 3000, "s": 124, "train": [0.821, 0.813], "test": [0.771, 0.729], "unsettled": 0.0}
+{"arm": "e03", "lesson": 4000, "s": 166, "train": [0.852, 0.929], "test": [0.808, 0.864], "unsettled": 0.0}
+{"arm": "e03", "lesson": 5000, "s": 206, "train": [0.89, 0.945], "test": [0.857, 0.88], "unsettled": 0.0}
+{"arm": "e03", "lesson": 6000, "s": 252, "train": [0.904, 0.957], "test": [0.86, 0.903], "unsettled": 0.0}

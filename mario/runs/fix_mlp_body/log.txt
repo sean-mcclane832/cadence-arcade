@@ -1,0 +1,4 @@
+20:21:28 new run: learner mlp senses body (2000 inputs) menu lean arm base
+20:52:22 round 0 coach: 2838 rows in 1855s, flags 8/11, labels [154, 0, 0, 1842, 827, 0, 15], critical 713
+20:53:23   taught 3000 lessons on 2838 rows: agree 0.934 crit 0.998 61s
+20:53:26 round 0 SOLO x=[898, 898, 898, 898, 898] ends=['s', 's', 's', 's', 's'] flags=0/5 median=898  (32 min)

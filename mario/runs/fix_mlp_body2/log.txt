@@ -1,0 +1,16 @@
+21:02:24 new run: learner mlp senses body (2000 inputs) menu lean arm base
+21:02:24 init data from runs/fix_mlp_body: 2838 rows, critical 713
+21:03:30   taught 3000 lessons on 2838 rows: agree 0.934 crit 0.998 66s
+21:03:34 round 0 SOLO x=[898, 898, 898, 898, 898] ends=['s', 's', 's', 's', 's'] flags=0/5 median=898  (1 min)
+21:11:59 round 1 dagger: +582 rows (3420) 505s; own-path agreement 0.691; reached [(0, 898, 's'), (0, 898, 's'), (0, 898, 's'), (86, 2146, 's'), (193, 3161, 'f'), (230, 2947, 's'), (40, 898, 's'), (27, 898, 's')]
+21:13:01   taught 3000 lessons on 3420 rows: agree 0.964 crit 0.998 62s
+21:13:02 round 1 SOLO x=[315, 312, 312, 312, 312] ends=['d', 'd', 'd', 'd', 'd'] flags=0/5 median=312  (11 min)
+21:17:08 round 2 dagger: +368 rows (3788) 246s; own-path agreement 0.707; reached [(0, 312, 'd'), (0, 315, 'd'), (0, 315, 'd'), (208, 3161, 'f'), (97, 2471, 'd'), (25, 436, 's'), (118, 2017, 'd'), (131, 2017, 'd')]
+21:18:32   taught 3000 lessons on 3788 rows: agree 0.979 crit 1.0 84s
+21:18:36 round 2 SOLO x=[3161, 1674, 1674, 1674, 1415] ends=['f', 'd', 'd', 'd', 'd'] flags=1/5 median=1674  (16 min)
+21:24:31 round 3 dagger: +575 rows (4363) 355s; own-path agreement 0.927; reached [(0, 1671, 'd'), (0, 1671, 'd'), (0, 1671, 'd'), (203, 3161, 'f'), (154, 3161, 'f'), (32, 1786, 'd'), (230, 3161, 'f'), (203, 3161, 'f')]
+21:25:59   taught 3000 lessons on 4363 rows: agree 0.983 crit 0.998 88s
+21:26:03 round 3 SOLO x=[2021, 2018, 2018, 1415, 1415] ends=['d', 'd', 'd', 'd', 'd'] flags=0/5 median=2018  (24 min)
+21:32:21 round 4 dagger: +648 rows (5011) 378s; own-path agreement 0.841; reached [(0, 2018, 'd'), (0, 1415, 'd'), (0, 2018, 'd'), (239, 3161, 'f'), (138, 3154, 's'), (21, 1415, 'd'), (148, 3161, 'f'), (5, 1415, 'd')]
+21:33:45   taught 3000 lessons on 5011 rows: agree 0.978 crit 0.996 84s
+21:33:50 round 4 SOLO x=[2472, 2472, 3161, 2469, 2040] ends=['d', 'd', 'f', 'd', 'd'] flags=1/5 median=2472  (31 min)
