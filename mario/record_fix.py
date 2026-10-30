@@ -21,15 +21,24 @@ from game import Game  # noqa: E402
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", required=True); ap.add_argument("--round", type=int, required=True)
+    ap.add_argument("--run", default=None); ap.add_argument("--round", type=int, default=0)
+    ap.add_argument("--brain", default=None, help="play this saved brain live (dagger.py's eval) instead of a stored attempt")
     ap.add_argument("--start", type=int, required=True); ap.add_argument("--level", default="1-1")
     ap.add_argument("--file", default="history.json", help="history.json, or first_sight.json (eval-only)")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    data = json.loads((HERE / a.run / a.file).read_text())
-    evs = data[a.level] if a.file != "history.json" else next(h for h in data if h["round"] == a.round)["eval"]
-    pick = next(e for e in evs if e["start"] == a.start)
     lv = tuple(int(v) for v in a.level.split("-"))
+    if a.brain:  # play it once the way the eval does, keep the buttons, then replay them for frames
+        import dagger as D
+        from game import MENUS
+        mb = sorted({x for p_ in MENUS["lean"] for x in p_})
+        pick = D.episode(dict(senses="body", menu="lean", kind="cadence", menu_buttons=mb, level=lv, mode="eval",
+                              start=a.start, policy=str((HERE / a.brain).resolve())))
+        a.run = a.brain
+    else:
+        data = json.loads((HERE / a.run / a.file).read_text())
+        evs = data[a.level] if a.file != "history.json" else next(h for h in data if h["round"] == a.round)["eval"]
+        pick = next(e for e in evs if e["start"] == a.start)
     g = Game(noop_start=pick["start"], level=lv, menu="lean", bg_per_frame=True)
     frames = [g.screen.copy()]
     for act in pick["actions"]:

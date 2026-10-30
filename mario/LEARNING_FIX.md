@@ -187,3 +187,73 @@ tested every round (starts 0/5/11/17/23).
 - H8: with half of every lesson replaying old coach labels, 1-1 keeps >= 2/5 flags (the in-order
   run fell from 898 to ~300 with 10% replay of a noisy pile). Falsified if 1-1 drops below median
   2,000 or 0 flags for 2 rounds in a row.
+
+### E8 result: H8 falsified as stated, but read E9
+1-2 practice (runs/fix_cad_1-2, 8 rounds, 66 min): 1-2 solo medians 758, 883, 758, 1189, 879, 874,
+747, 878 (best single 1,742; the old blind in-order best on 1-2 was 482; the coach itself flags only
+6 of 11 round-0 attempts). 1-1 solo during it: flags 3, 1, 0, 1, 3, 1, 0, 0; medians 3161, 2020,
+1435, 1504, 3161, 2021, 2033, 1786. Two rounds at 0 flags: falsified. Still far from the old
+collapse (898 -> ~300).
+
+## E9. Forgetting or fragility? (diag/consolidate.py, pre-registered 01:45)
+H9: the 1-1 losses are not forgotten labels. Prediction: on the 1-2 round-7 brain, agreement with
+the 1-1 coach labels is still ~0.9 (critical ~0.98) while 1-1 solo has 0 flags; and teaching on both
+levels (50/50) moves solo results a lot while label agreement barely moves. Falsified if 1-1 label
+agreement has dropped below 0.85.
+| lessons (50/50 both levels, eta 0.001) | 1-1 labels (crit) | 1-2 labels (crit) | 1-1 solo x | 1-2 solo x |
+|---|---|---|---|---|
+| 0 (1-2 r7 brain) | 0.907 (0.976) | 0.906 (0.973) | 1784, 1786, 1786, 1129, 1416 | 1742, 185, 878, 871, 983 |
+| 2,000 | 0.922 (0.989) | 0.895 (0.985) | 2473, 2020, 2020, **3161**, 2471 | 851, 884, **3161, 3161**, 171 |
+| 4,000 | 0.917 (0.976) | 0.904 (0.973) | 898, 1792, 898, 898, 898 | 1186, 860, 851, 1646, 171 |
+| 6,000 | 0.918 (0.989) | 0.906 (0.968) | 303, 306, 2226, 2020, 2020 | 874, 186, 191, 183, 172 |
+H9 holds. **ROOT CAUSE 4: fragility, not forgetting.** Label agreement on 1-1 never left 0.91-0.92
+(critical 0.98-0.99) through 1-2 practice and joint teaching, while 1-1 solo swung between a flag
+and x 303. A level is a chain of ~30-60 critical decisions; at ~1-2% critical error each, a few
+weight steps that move which few rows are wrong decide whether the chain breaks. The 2,000-lesson
+point was the first Cadence solo clear of 1-2 (2 of 5 starts), and 4,000 lessons later it was gone.
+(Those checkpoints were not saved; the next run saves every one.)
+
+## E10. Held-out starts, and attacking fragility (2026-10-30, pre-registered 12:46, as arm A started)
+New driver steady.py: teach in chunks of 250 lessons, save EVERY checkpoint, solo-test after every
+chunk on SEL starts (idle frames 0,3,...,27) and keep the best per level (SEL flags, then mean x);
+every new best is also played on TEST starts 32-41, which no training, DAgger or selection uses.
+"Consistent" = TEST flags >= 8/10. DAgger jitters now come from 0-79 minus 32-41.
+
+Correction first (measured 12:45, runs/st_eval0): the r02 "1-1 brain" scores SEL 6/10 but **TEST
+1/10** (mean x 1,824; nine stop at ~1,676). The 8/10 on starts 1-12 (E6) does not carry to a few
+more idle frames. r03: TEST 2/10, r06: 4/10, consol2 ck_00500: 2/10. 1-2: 0 flags anywhere.
+So 1-1 is not yet consistent, and the start jitter (enemy phase) is a real part of the problem.
+
+- H10a (selection + every-chunk checkpoints): with DAgger every 4 chunks on wider jitter, some
+  checkpoint reaches SEL >= 8/10 within 24 chunks. Falsified if the best SEL stays <= 6/10.
+- H10b (selection overfits): that best checkpoint's TEST is >= 2 flags below its SEL. Falsified if
+  TEST >= SEL - 1.
+- H10c (critical rows x3 + eta 0.001 -> 0.0001): fewer swings: the SD of SEL mean x over the last
+  12 chunks is lower than the plain arm's, and best TEST flags >= plain's. Falsified if both worse.
+- H10d (weight averaging, mean of the last 5 checkpoints): averaged brains swing less and reach
+  best TEST >= the single checkpoints' best. Falsified if the average is worse than single in both arms.
+
+### E10 first result (13:05): a consistent 1-1 brain, from checkpoint selection
+Arm B (crit x3, eta 0.001 -> 0.0001), chunk 1 (250 lessons on the r02 brain's 10,383 rows, before
+any new DAgger): **SEL 10/10, TEST 10/10**. Replayed fresh (runs/st_eval1, deterministic): SEL 10/10,
+TEST 10/10, starts 80-99 **20/20**, but late starts 100-139 only **16/40** (mean x 2,687). Arm A's
+chunk 1 (same plan, crit x1) is also SEL 10/10 but TEST 1/10 and 80-99 7/20. Saved as
+brains/1-1_steady.npz. It meets the pre-registered gate (8/10 TEST); it is not robust to every
+jitter. Both arms swing again right after (B chunk 2: SEL 2/10), so fragility is still there:
+the gain came from saving and testing every 250 lessons, not from a steadier brain.
+H10a holds (SEL 10/10 in one chunk). H10b: mixed (A: TEST 9 below SEL; B: TEST = SEL).
+H10c/H10d results (13:40; A 7 chunks, B 15, killed to free cores for 1-2): SEL flags per chunk,
+B single [10,2,4,7,8,5,7,7,9,9,8,6,4,10,5], B mean-of-last-5 [1,0,9,8,8,7,9,10,9,5,5,5]; SD of
+SEL mean x: B single 227, B avg 214, A single 220, A avg 228. Over B's chunks 4-15, single
+averages 7.1 flags and the weight average 7.0. **H10d falsified** (averaging weights does not
+steady it). **H10c falsified** for swings: crit x3 with eta falling to ~0.0005 swings as much as plain.
+What works is checkpoint selection, not a steadier learner.
+
+- H10e (pre-registered 13:42): a majority VOTE of 5 consecutive checkpoints (ties go to the newest)
+  beats single checkpoints: on B's windows, mean SEL+TEST flags >= the singles' mean + 2 (of 20),
+  and fewer windows below 10/20. Falsified if the vote's mean is within 1 of the singles' mean.
+H10e result (runs/st_vote, 13:58): SEL+TEST flags of 20. Votes of 5: 4-8 **7**, 6-10 **18**, 8-12 **19**,
+10-14 **14**, 11-15 **6** (mean 12.8). Single checkpoints 4-15: 11, 18, 11, 10, 15, 16, 19, 18, 9, 8, 19, 9
+(mean 13.6). **Falsified**: voting is no better than one checkpoint. The vote of a bad stretch is bad.
+Side finding: after one more DAgger round on wider jitter, 5 of B's 12 single checkpoints pass TEST
+>= 8/10 on 1-1 (ck 5, 8, 10, 11, 14). Consistency on 1-1 is now common, but still not every checkpoint.

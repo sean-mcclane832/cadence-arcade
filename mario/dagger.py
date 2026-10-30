@@ -122,6 +122,22 @@ class MLP:
         return m
 
 
+class Vote:
+    """Majority vote of several saved brains (ties go to the last listed, the newest)."""
+
+    def __init__(self, paths):
+        from cadence import Brain
+        self.bs = [Brain.load(p) for p in paths]
+
+    def predict(self, x):
+        votes = np.stack([np.asarray(b.predict(x)).reshape(-1) for b in self.bs])  # (k, n)
+        out = []
+        for col in votes.T:
+            c = np.bincount(col, minlength=7); top = np.flatnonzero(c == c.max())
+            out.append(next(v for v in col[::-1] if v in top))
+        return np.array(out)
+
+
 _POLICY, _KEY = None, None
 
 
@@ -129,7 +145,9 @@ def _policy(path, kind):
     global _POLICY, _KEY
     st = os.stat(path); key = (path, st.st_mtime_ns, st.st_size)
     if key != _KEY:
-        if kind == "mlp":
+        if str(path).endswith(".ens.json"):
+            _POLICY = Vote(json.loads(Path(path).read_text()))
+        elif kind == "mlp":
             _POLICY = MLP.load(path)
         else:
             from cadence import Brain
