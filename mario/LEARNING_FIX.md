@@ -8,8 +8,8 @@ Best brains (all in mario/brains/, committed):
 - U3ck28.npz (st_U3 ck_0028): 1-4 HELD 50/50 (TEST 10/10), 1-1 HELD 30/50 (TEST 8/10), 1-3 11/50.
 - 1-4_U3ck9.npz (st_U3 ck_0009): 1-4 HELD 42/50 (TEST 9/10); 1-1 and 1-3 0/50.
 - joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
-- 1-2: best st_12cw ck_0011, HELD 8/50 (stuck, see "1-2 status").
-Running: runs/st_U3 (one brain for 1-1 + 1-3 + 1-4, from one_11_13, rows runs/dU_*). Continue (new run dir, --init-brain runs/st_U3/best_joint.npz, --data snapshots of runs/st_U3/data_<level>.npz) with:
+- 1-2_12m48.npz (st_12m ck_0048): 1-2 HELD 23/50 (TEST 6/10). Best 1-2.
+Running: runs/st_U4 (1-1 + 1-3 + 1-4 from brains/U3ck83, rows runs/dV_*, shares 0.45/0.25/0.30) and runs/st_12m (1-2). Continue U4 (new run dir, --init-brain runs/st_U4/best_joint.npz, --data snapshots of runs/st_U4/data_<level>.npz) like:
   cd mario && NUMBA_NUM_THREADS=3 ../.venv-mario/Scripts/python.exe steady.py --out runs/st_U3 --init-brain runs/st_U2/best_joint.npz --data 1-1=runs/fix_cad_body3,1-3=runs/d13d,1-4=runs/d14b --practice 1-1,1-3,1-4 --levels 1-1,1-3,1-4 --chunk 250 --chunks 150 --eta 0.001 --crit 3 --dagger-every 3 --episodes 12 --from-start 0.5 --tie-own --workers 7 --hours 3
   (swap the --data dirs for snapshots of runs/st_U2/data_<level>.npz + that level's coach_paths.json to keep its DAgger rows)
 Showcase page docs/mario/index.html (live /mario/): update its scoreboard, Latest log, "Last updated" and clips in the SAME commit as any result that changes the picture; push; curl-check live. Old 1-1 page: docs/mario/first-1-1.html.
@@ -530,3 +530,14 @@ cannot see past. A fix would be a deeper search (re-plan from the end of the top
 st_U3 ck_0066 (01:40): 1-4 HELD 50/50 again, but 1-1 17/50, 1-3 0/50 (ck_0028 stays the better 1-4 brain).
 st_U3 ck_0083 (joint SEL [17, 23, 20], 02:26): HELD 1-1 15/50, **1-3 45/50** (TEST 9/10, best 1-3 so far),
 1-4 33/50. Three-level total 93/150 (ck_0044: 77).
+
+## E25. Three levels, weighted to the weak one (pre-registered 02:52)
+st_U3 ran its 4 h (100 chunks). Best three-level checkpoint ck_0083: HELD 15 / 45 / 33 (1-1 / 1-3 / 1-4).
+1-1 is now the weak level, so runs/st_U4 starts from ck_0083 with U3's piles (runs/dV_*) and lesson
+shares 1-1 0.45, 1-3 0.25, 1-4 0.30; everything else as st_U3.
+- H25: some checkpoint reaches HELD >= 30/50 on all three levels by 06:30. Falsified if none has all
+  three >= 30 (checked on HELD for every new joint best).
+
+H24 result (02:26, st_12m): **holds**. ck_0048: 1-2 SEL 7/24, TEST 6/10, **HELD 23/50** (from 8/50).
+ck_0040: TEST 9/10 but HELD 15/50 (the narrow-band effect again, so not called consistent). The lever
+was the same as on 1-4: ~10 checkpoints tested per DAgger round instead of 2-3.
