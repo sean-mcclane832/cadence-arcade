@@ -1,0 +1,3 @@
+19:44:37 new run: learner cadence senses body (2000 inputs) menu lean arm base
+19:52:39 round 0 coach: 1619 rows in 482s, flags 6/11, labels [31, 0, 0, 1337, 230, 0, 21], critical 325
+19:52:39 collected; exit

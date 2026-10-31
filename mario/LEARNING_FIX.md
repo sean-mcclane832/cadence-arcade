@@ -444,3 +444,11 @@ phase-0 skill. 1-1 is unaffected in substance (the joint brain's 1-1 TEST is 10/
 phases). Fix: SEL = 0, 3, ..., 78 minus 32-41 (24 starts, all four phases). Runs st_13b/13c/14a stopped
 and restarted with it: st_13d (1-3, from the joint brain, rows runs/d13b = 6,821) and st_14b (1-4,
 from the joint brain, rows runs/d14). H20 and H21 carry over unchanged to these runs.
+
+## Milestone (20:46): 1-4 on the pre-registered bar
+runs/st_14b ck_0010 (brains/joint_11_14_ck10.npz), picked by joint SEL: **1-4 SEL 17/24, TEST 8/10, HELD
+38/50** (76%), about 50 min and 5 DAgger rounds after the 1-4 coach demos. It beats Bowser (clip from
+TEST start 32). **H21 holds** (first SEL flag at chunk 5, 26 min). But the same checkpoint is 1-1 TEST
+2/10, HELD 23/50 and 1-3 0/50: the joint pick traded 1-1 for 1-4. Earlier in the same run ck_0008 had
+1-1 HELD 45/50 with 1-4 at 0. One brain per level so far; no checkpoint yet holds two levels at once
+on the strict bar.
