@@ -1,0 +1,71 @@
+{
+ "name": "A_body ck16",
+ "label": "one brain",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\concepts\\runs\\gauntlet\\g05_brain.npz"
+ },
+ "lives": 5,
+ "cleared": [],
+ "furthest": "1-1",
+ "deaths": {
+  "1-1": [
+   1126,
+   1126,
+   1126,
+   1126,
+   1126
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "A_body ck16",
+   "start": 0,
+   "end": "died",
+   "x": 1126,
+   "decisions": 110,
+   "lives_before": 5
+  },
+  {
+   "level": "1-1",
+   "brain": "A_body ck16",
+   "start": 37,
+   "end": "died",
+   "x": 1126,
+   "decisions": 110,
+   "lives_before": 4
+  },
+  {
+   "level": "1-1",
+   "brain": "A_body ck16",
+   "start": 83,
+   "end": "died",
+   "x": 1126,
+   "decisions": 110,
+   "lives_before": 3
+  },
+  {
+   "level": "1-1",
+   "brain": "A_body ck16",
+   "start": 110,
+   "end": "died",
+   "x": 1126,
+   "decisions": 110,
+   "lives_before": 2
+  },
+  {
+   "level": "1-1",
+   "brain": "A_body ck16",
+   "start": 131,
+   "end": "died",
+   "x": 1126,
+   "decisions": 110,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 12,
+ "when": "2026-10-31 19:20",
+ "clip": "g05_Abody.mp4",
+ "clip_seconds": 36.7
+}

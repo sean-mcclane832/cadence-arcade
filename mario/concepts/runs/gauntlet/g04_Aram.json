@@ -1,0 +1,71 @@
+{
+ "name": "A_ram ck13 (RAM CHEAT)",
+ "label": "one brain, RAM CHEAT",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\concepts\\runs\\gauntlet\\g04_brain.npz"
+ },
+ "lives": 5,
+ "cleared": [],
+ "furthest": "1-1",
+ "deaths": {
+  "1-1": [
+   2850,
+   1820,
+   1820,
+   2850,
+   1820
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "A_ram ck13 (RAM CHEAT)",
+   "start": 0,
+   "end": "stuck",
+   "x": 2850,
+   "decisions": 332,
+   "lives_before": 5
+  },
+  {
+   "level": "1-1",
+   "brain": "A_ram ck13 (RAM CHEAT)",
+   "start": 37,
+   "end": "died",
+   "x": 1820,
+   "decisions": 182,
+   "lives_before": 4
+  },
+  {
+   "level": "1-1",
+   "brain": "A_ram ck13 (RAM CHEAT)",
+   "start": 83,
+   "end": "died",
+   "x": 1820,
+   "decisions": 182,
+   "lives_before": 3
+  },
+  {
+   "level": "1-1",
+   "brain": "A_ram ck13 (RAM CHEAT)",
+   "start": 110,
+   "end": "stuck",
+   "x": 2850,
+   "decisions": 332,
+   "lives_before": 2
+  },
+  {
+   "level": "1-1",
+   "brain": "A_ram ck13 (RAM CHEAT)",
+   "start": 131,
+   "end": "died",
+   "x": 1820,
+   "decisions": 182,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 28,
+ "when": "2026-10-31 19:20",
+ "clip": "g04_Aram.mp4",
+ "clip_seconds": 81.6
+}

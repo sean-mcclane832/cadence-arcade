@@ -13,7 +13,22 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE.parent))
 import cplay as C  # noqa: E402
 
-STARTS = (32, 35, 38, 41, 80, 85, 90, 95, 104, 116, 128, 136)
+STARTS = (32, 35, 38, 41, 85, 90, 116, 128)
+
+
+def weighted(g):
+    """game.Game.coach_weighted with ONE plan search (same label and weight; the fast path is kept)."""
+    from game import CRITICAL_PX, CRITICAL_WEIGHT, FAST_GAIN
+    env = g.env; saved = (env._time_last, env._x_position_last, env.done); x0 = env._x_position
+    env._backup(); run = g._simulate(g.plans[0]); env._restore()
+    env._time_last, env._x_position_last, env.done = saved
+    sc = g.coach_scores()
+    if run >= 1e6 or (run > 0 and run - x0 >= FAST_GAIN):
+        return g.plans[0][0], 1.0, sc
+    best = sc.max(); i = int(np.flatnonzero(sc >= best - 2.0)[0]); label = g.plans[i][0]
+    first = np.array([p[0] for p in g.plans]); other = sc[first != label]
+    alt = other.max() if len(other) else best
+    return label, (CRITICAL_WEIGHT if best - alt > CRITICAL_PX else 1.0), sc
 
 
 def one(t):
@@ -23,8 +38,7 @@ def one(t):
     tot = dict(start=t["start"], end=r["end"], max_x=r["max_x"], rows=0, agree=0, tie=0, small=0, lose=0, crit_rows=0, crit_wrong=0,
                crit_wrong_x=[])
     for a in r["actions"]:
-        sc = g.coach_scores(); first = np.array([p[0] for p in g.plans]); best = sc.max()
-        lab, w = g.coach_weighted(); tot["rows"] += 1
+        lab, w, sc = weighted(g); first = np.array([p[0] for p in g.plans]); best = sc.max(); tot["rows"] += 1
         mine = sc[first == a]; gap = best - (mine.max() if len(mine) else -1e9)
         if w > 1:
             tot["crit_rows"] += 1

@@ -85,6 +85,8 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g01 | 17:11 | U3ck83 | one brain | 1-1 | 1-2: 322 (stuck), 470, 322 (stuck), 893, 354 (stuck) | 0 | runs/gauntlet/g01_U3ck83.mp4 |
 | g02 | 17:48 | U3ck44 | one brain | 1-1 | 1-1: 2762, 1784; 1-2: 323, 354, 354 (all stuck) | 0 | runs/gauntlet/g02_U3ck44.mp4 |
 | g03 | 17:48 | 1-1_U3ck3 / 1-2_12n59 / U3ck83 / U3ck28, U3ck83 after | **relay of specialists** | **1-1, 1-2, 1-3, 1-4** | 1-2: 1595, 852, 1336; 2-1: 531, 723 (stuck) | 0 | runs/gauntlet/g03_relay.mp4 |
+| g04 | 19:20 | A_ram ck_0013 (phase 1 joint best, 1.5 h) | one brain, **RAM CHEAT** | none | 1-1: 2850 (stuck), 1820, 1820, 2850 (stuck), 1820 | 0 | runs/gauntlet/g04_Aram.mp4 |
+| g05 | 19:20 | A_body ck_0016 (phase 1 control joint best) | one brain | none | 1-1: 1126 x5 | 0 | runs/gauntlet/g05_Abody.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
@@ -95,3 +97,11 @@ Phase 3 API check (done early): Cadence's `Brain.compose(..., slots=(7, 2, 2, ..
 motor groups, "each read as its own softmax", in the same settle. So a second readout of the SAME brain
 exists: slot 0 = buttons, further slots = concept questions (enemy close ahead? gap ahead? on the ground?).
 No separate module needed. Only used if phase 1 wins.
+(U3ck83 is not re-run every 90 min: the gauntlet is deterministic for a fixed brain, so g01 IS its result
+until the brain changes. Same for the relay.)
+
+Phase 1 at 1.5 h (19:20): both fresh brains 0 HELD flags anywhere. Body arm: first 1-2 SEL flag (ck_0016,
+HELD 0), 1-1 HELD 2/50 at ck_0015. RAM arm: 0 SEL flags but goes further on 1-1 in the gauntlet (x 2,850 vs
+1,126). DAgger rounds are the slow part (~35-40 min for four levels on 4 workers vs ~1 min per chunk).
+Side fix: critpath.py did two plan searches per decision and would have taken ~3 h on 2 workers; now one
+search per decision (same label and weight), 8 held-out starts, to be run on the full PC after phase 1.
