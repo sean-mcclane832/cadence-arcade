@@ -4,6 +4,7 @@ Best brains (all in mario/brains/, committed):
 - one_11_13.npz (st_13d ck_0013): 1-1 HELD 40/50 (TEST 8/10), 1-3 HELD 42/50 (TEST 6/10). Best single brain.
 - 1-1_U3ck3.npz (st_U3 ck_0003): 1-1 HELD 46/50 (TEST 10/10), best on 1-1 alone; 1-3 0/24 SEL.
 - joint_11_13_ck8.npz: 1-1 HELD 44/50 (TEST 10/10); 1-3 only one frame phase.
+- U3ck83.npz (st_U3 ck_0083): 1-3 HELD 45/50 (TEST 9/10), 1-4 33/50, 1-1 15/50: best 1-3, best three-level total.
 - U3ck28.npz (st_U3 ck_0028): 1-4 HELD 50/50 (TEST 10/10), 1-1 HELD 30/50 (TEST 8/10), 1-3 11/50.
 - 1-4_U3ck9.npz (st_U3 ck_0009): 1-4 HELD 42/50 (TEST 9/10); 1-1 and 1-3 0/50.
 - joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
@@ -519,3 +520,13 @@ HELD 36/50: it passes the pre-registered 10-start bar on both levels, one_11_13 
 bar on both. Neither holds 1-4.
 st_U3 ck_0044 (joint SEL [13, 15, 14], 00:43): HELD 1-1 25/50, 1-3 15/50, 1-4 37/50. The first checkpoint
 that clears all three practised levels at least sometimes; not consistent on any but 1-4 is close.
+H23 verdict at its deadline (01:15): **falsified as stated**. No st_U3 joint-best checkpoint reached TEST
+>= 6/10 on all three (best tries [8, 2, 10] at ck_0028 and [0, 1, 8] at ck_0044). On HELD, ck_0044 clears
+all three sometimes (25/15/37 of 50). st_U3 keeps running (its 4 h budget ends ~02:50).
+Why the coach dies on 2-1 (diag/coachshots.py, runs/coach21_s0.png): at x 1,651 Mario is in the air over
+the Piranha-plant pipes; 24 of the 25 look-ahead plans die and the one that survives its 64 frames still
+lands in a doomed spot (at x 1,708 all 25 die). A one-step 16-decision look-ahead walks into traps it
+cannot see past. A fix would be a deeper search (re-plan from the end of the top few plans).
+st_U3 ck_0066 (01:40): 1-4 HELD 50/50 again, but 1-1 17/50, 1-3 0/50 (ck_0028 stays the better 1-4 brain).
+st_U3 ck_0083 (joint SEL [17, 23, 20], 02:26): HELD 1-1 15/50, **1-3 45/50** (TEST 9/10, best 1-3 so far),
+1-4 33/50. Three-level total 93/150 (ck_0044: 77).
