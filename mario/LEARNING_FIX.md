@@ -1,20 +1,20 @@
 <!-- RESUME -->
-## RESUME (kept current during the 10/30-31 overnight run)
-Best brains (all in mario/brains/, committed):
-- one_11_13.npz (st_13d ck_0013): 1-1 HELD 40/50 (TEST 8/10), 1-3 HELD 42/50 (TEST 6/10). Best single brain.
-- 1-1_U3ck3.npz (st_U3 ck_0003): 1-1 HELD 46/50 (TEST 10/10), best on 1-1 alone; 1-3 0/24 SEL.
-- joint_11_13_ck8.npz: 1-1 HELD 44/50 (TEST 10/10); 1-3 only one frame phase.
-- U3ck83.npz (st_U3 ck_0083): 1-3 HELD 45/50 (TEST 9/10), 1-4 33/50, 1-1 15/50: best 1-3, best three-level total.
-- U3ck28.npz (st_U3 ck_0028): 1-4 HELD 50/50 (TEST 10/10), 1-1 HELD 30/50 (TEST 8/10), 1-3 11/50.
-- 1-4_U3ck9.npz (st_U3 ck_0009): 1-4 HELD 42/50 (TEST 9/10); 1-1 and 1-3 0/50.
-- joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
-- 1-2_12n59.npz (st_12n ck_0059): 1-2 HELD 29/50 (TEST 3/10, WIDE 11/20). Best 1-2.
-- 1-2_12m48.npz (st_12m ck_0048): 1-2 HELD 23/50 (TEST 6/10).
-Running: runs/st_U4 (1-1 + 1-3 + 1-4 from brains/U3ck83, rows runs/dV_*, shares 0.45/0.25/0.30) and runs/st_12m (1-2). Continue U4 (new run dir, --init-brain runs/st_U4/best_joint.npz, --data snapshots of runs/st_U4/data_<level>.npz) like:
-  cd mario && NUMBA_NUM_THREADS=3 ../.venv-mario/Scripts/python.exe steady.py --out runs/st_U3 --init-brain runs/st_U2/best_joint.npz --data 1-1=runs/fix_cad_body3,1-3=runs/d13d,1-4=runs/d14b --practice 1-1,1-3,1-4 --levels 1-1,1-3,1-4 --chunk 250 --chunks 150 --eta 0.001 --crit 3 --dagger-every 3 --episodes 12 --from-start 0.5 --tie-own --workers 7 --hours 3
-  (swap the --data dirs for snapshots of runs/st_U2/data_<level>.npz + that level's coach_paths.json to keep its DAgger rows)
-Showcase page docs/mario/index.html (live /mario/): update its scoreboard, Latest log, "Last updated" and clips in the SAME commit as any result that changes the picture; push; curl-check live. Old 1-1 page: docs/mario/first-1-1.html.
+## RESUME (state at the end of the 10/30-31 overnight run)
+Best brains (mario/brains/, committed). HELD = solo clears on 50 held-out starts:
+- one_11_13.npz (st_13d ck_0013): 1-1 40/50 + 1-3 42/50, same weights. Best multi-level brain.
+- U3ck83.npz (st_U3 ck_0083): 1-3 45/50 (best 1-3), 1-4 33/50, 1-1 15/50. Best three-level total.
+- 1-1_U3ck3.npz (st_U3 ck_0003): 1-1 46/50 (best 1-1).
+- U3ck28.npz (st_U3 ck_0028): 1-4 50/50 (best 1-4), 1-1 30/50.
+- 1-2_12n59.npz (st_12n ck_0059): 1-2 29/50 (best 1-2).
+- older: joint_11_13_ck8 (1-1 44/50), 1-4_U3ck9 (1-4 42/50), joint_11_14_ck10, 1-2_12m48, 1-1_steady.
+Not taught: 2-1 (the coach itself cannot clear it; needs a deeper-search coach), 2-2.
+What works: steady.py with --dagger-every 10 (many checkpoints tested per DAgger round), all-phase SEL,
+tie-aware DAgger, joint pick. Open: one brain for 1-1 + 1-3 + 1-4 (H23, H25 falsified so far).
+Continue 1-2 (data pile = runs/st_12n/data_1-2.npz -> copy to a dir with fix_cad_1-2/coach_paths.json):
+  cd mario && NUMBA_NUM_THREADS=2 ../.venv-mario/Scripts/python.exe steady.py --out runs/st_12o --init-brain brains/1-2_12n59.npz --data 1-1=runs/fix_cad_body3,1-2=runs/<pile dir> --practice 1-2 --mix 0.1,0.9 --levels 1-1,1-2 --chunk 250 --chunks 300 --eta 0.001 --crit 3 --dagger-every 10 --episodes 15 --from-start 0.67 --tie-own --workers 3 --hours 3
+Three-level: same with --init-brain brains/U3ck83.npz --data 1-1=runs/dV_1-1,1-3=runs/dV_1-3,1-4=runs/dV_1-4 (or st_U4's data_<level>.npz) --practice 1-1,1-3,1-4 --levels 1-1,1-3,1-4.
 Score any brain: steady.py --out runs/st_evalX --init-brain x --data x --levels 1-1,1-3 --eval-only <brain.npz>
+Showcase page docs/mario/index.html (live /mario/): update scoreboard, Latest log, "Last updated" and clips in the SAME commit as any result that changes the picture; push; curl-check live. Old 1-1 page: docs/mario/first-1-1.html.
 <!-- /RESUME -->
 
 # Why the Cadence brain doesn't learn Mario, and a fix (2026-10-29 night)
@@ -545,3 +545,6 @@ was the same as on 1-4: ~10 checkpoints tested per DAgger round instead of 2-3.
 st_12m ended (03:58, 3.5 h). Best 1-2 stays ck_0048 (HELD 23/50). Continued as runs/st_12n from ck_0048 with
 its pile (runs/d12f), same recipe, until the 08:00 stop.
 st_12n ck_0059 (06:15): **1-2 HELD 29/50** (SEL 13/24, TEST 3/10, WIDE 11/20), the best 1-2 so far.
+H25 result (06:48, st_U4 stopped at 69 chunks, past its 3.7 h): **falsified**. No new joint best after
+ck_0000 (= U3 ck_0083, HELD 15 / 45 / 33). Single-level bests inside it: 1-1 HELD 44/50 (ck_0023), 1-4
+45/50 (ck_0018). Weighting lessons toward 1-1 did not produce a three-level brain.
