@@ -1,3 +1,16 @@
+<!-- RESUME -->
+## RESUME (kept current during the 10/30-31 overnight run)
+Best brains (all in mario/brains/, committed):
+- one_11_13.npz (st_13d ck_0013): 1-1 HELD 40/50 (TEST 8/10), 1-3 HELD 42/50 (TEST 6/10). Best single brain.
+- joint_11_13_ck8.npz: 1-1 HELD 44/50 (TEST 10/10); 1-3 only one frame phase.
+- joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
+- 1-2: best st_12cw ck_0011, HELD 8/50 (stuck, see "1-2 status").
+Running: runs/st_U2 (one brain for 1-1 + 1-3 + 1-4, from one_11_13). Continue it with:
+  cd mario && NUMBA_NUM_THREADS=3 ../.venv-mario/Scripts/python.exe steady.py --out runs/st_U3 --init-brain runs/st_U2/best_joint.npz --data 1-1=runs/fix_cad_body3,1-3=runs/d13d,1-4=runs/d14b --practice 1-1,1-3,1-4 --levels 1-1,1-3,1-4 --chunk 250 --chunks 150 --eta 0.001 --crit 3 --dagger-every 3 --episodes 12 --from-start 0.5 --tie-own --workers 7 --hours 3
+  (swap the --data dirs for snapshots of runs/st_U2/data_<level>.npz + that level's coach_paths.json to keep its DAgger rows)
+Score any brain: steady.py --out runs/st_evalX --init-brain x --data x --levels 1-1,1-3 --eval-only <brain.npz>
+<!-- /RESUME -->
+
 # Why the Cadence brain doesn't learn Mario, and a fix (2026-10-29 night)
 
 Lab notebook. Every experiment is written down BEFORE it runs (hypothesis, prediction, what would
@@ -466,3 +479,7 @@ TEST or HELD: **1-1 TEST 8/10, HELD 40/50; 1-3 TEST 6/10, HELD 42/50.** The same
 levels on >= 80% of held-out starts. On the pre-registered 10-start TEST bar, 1-3 misses (6/10).
 The best 1-3-only checkpoint (ck_0012: 1-3 TEST 9/10, HELD 28/50) has 1-1 at 0/50, so the joint pick
 mattered. **H20 holds** (1-3 TEST >= 6/10 with 1-1 HELD >= 40/50 at the same checkpoint).
+E23 restarted (21:15): st_U (from the 1-4 brain) stopped after 2 chunks, before its first 3-level DAgger
+round finished; the better start is one_11_13. runs/st_U2: from brains/one_11_13, rows 1-1
+(fix_cad_body3), 1-3 (runs/d13d = st_13d's final pile, 15,171 rows), 1-4 (runs/d14b), 1/3 each, tie-aware
+DAgger on all three every 3 chunks, joint pick. H23 unchanged (TEST >= 6/10 on all three within 2.5 h).

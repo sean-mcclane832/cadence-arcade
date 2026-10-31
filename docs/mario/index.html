@@ -3,8 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mario 1-1</title>
-<meta name="description" content="One Cadence brain plays Super Mario Bros. World 1-1 from the screen. Real NES frames of its run, its learning curve, and the honest caveats.">
+<title>Cadence Mario Clears</title>
+<meta name="description" content="A Cadence brain plays Super Mario Bros. alone from the screen. One brain clears 1-1 and 1-3 on 80%+ of starts it never trained on; a second checkpoint beats 1-4 (Bowser). 1-2 not yet. Clips and honest numbers.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cadence brain clears Mario 1-1, 1-3 and 1-4 solo">
+<meta property="og:description" content="One brain clears 1-1 (40/50) and 1-3 (42/50) on held-out starts. Another checkpoint beats Bowser in 1-4 (38/50). 1-2 not cleared yet. Every button is the brain's.">
+<meta property="og:image" content="https://sean-mcclane832.github.io/cadence-arcade/mario/levels/one-1-3_poster.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="480">
+<meta property="og:url" content="https://sean-mcclane832.github.io/cadence-arcade/mario/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cadence brain clears Mario 1-1, 1-3 and 1-4 solo">
+<meta name="twitter:description" content="One brain clears 1-1 (40/50) and 1-3 (42/50) on held-out starts. Another checkpoint beats Bowser in 1-4. 1-2 not yet.">
+<meta name="twitter:image" content="https://sean-mcclane832.github.io/cadence-arcade/mario/levels/one-1-3_poster.png">
 <meta name="color-scheme" content="dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,209 +23,90 @@
 <style>
   :root { --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; --good: #7bd88f; --bad: #ff6b6b; --panel: #12151a; }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 40px 16px; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 32px 16px; }
   main { max-width: 720px; margin: 0 auto; }
-  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 26px; letter-spacing: .06em; margin: 0 0 6px; }
+  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 24px; letter-spacing: .05em; line-height: 1.3; margin: 0 0 8px; }
   h2 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 16px; letter-spacing: .05em; margin: 34px 0 10px; }
   .sub, .dim { color: var(--dim); }
-  .sub { font-size: 13px; margin: 0 0 22px; }
+  .sub { font-size: 13px; margin: 0 0 18px; }
+  .lede { font-size: 15px; margin: 0 0 10px; }
   a { color: var(--accent); }
-  .player { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
-  canvas#screen { width: 100%; max-width: 512px; aspect-ratio: 256 / 240; display: block; margin: 0 auto; image-rendering: pixelated; background: #000; border-radius: 4px; }
-  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 10px auto 0; max-width: 512px; font-size: 13px; }
-  button { font: inherit; font-size: 13px; color: var(--fg); background: #1b1f26; border: 1px solid var(--line); border-radius: 5px; padding: 4px 10px; cursor: pointer; }
-  button:hover { border-color: var(--accent); } button.on { border-color: var(--accent); color: var(--accent); }
-  input[type=range] { flex: 1 1 160px; accent-color: var(--accent); }
-  .pad { display: flex; gap: 6px; align-items: center; justify-content: center; margin: 10px auto 0; font-size: 12px; }
-  .key { min-width: 34px; text-align: center; padding: 3px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--dim); }
-  .key.lit { color: #111; background: var(--accent); border-color: var(--accent); }
-  .prog { position: relative; height: 10px; background: #1b1f26; border-radius: 5px; margin: 12px auto 0; max-width: 512px; }
-  .prog .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 5px; }
-  .prog .flag { position: absolute; right: 0; top: -5px; font-size: 11px; color: var(--good); }
-  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
-  .player { position: relative; }
-  .badge { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); z-index: 2; font-family: "Silkscreen", monospace; font-size: 13px; letter-spacing: .08em; padding: 2px 10px; border-radius: 4px; background: var(--good); color: #0b0d10; }
-  .badge.coach { background: var(--bad); color: #fff; }
-  .tabnote { font-size: 13px; color: var(--dim); margin: 8px 0 0; }
-  .readout { text-align: center; font-size: 12px; color: var(--dim); margin-top: 6px; }
-  svg { width: 100%; height: auto; display: block; }
-  svg .grid { stroke: var(--line); } svg .tick { fill: var(--dim); font: 11px "JetBrains Mono", monospace; }
-  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--dim); margin: 8px 0 0; }
-  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
-  .scroll { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; font-size: 13px; }
-  th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tw { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
   th { color: var(--dim); font-weight: 400; }
-  tr.me td { color: var(--accent); }
-  ul, ol { padding-left: 20px; } li { margin: 6px 0; }
-  .callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; margin: 16px 0; }
-  code { font-size: 13px; color: #d7c6a5; }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  .big { font-size: 16px; font-weight: 600; }
+  .ok { color: var(--good); } .no { color: var(--bad); } .mid { color: var(--accent); }
+  ul { padding-left: 18px; margin: 10px 0; } li { margin: 7px 0; }
+  .log { font-size: 13px; padding-left: 0; list-style: none; } .log li { margin: 4px 0; } .log b { color: var(--dim); font-weight: 400; }
+  figure { margin: 0 0 22px; }
+  video { display: block; width: 100%; aspect-ratio: 256 / 240; background: #000; border: 1px solid var(--line); border-radius: 6px; image-rendering: pixelated; }
+  figcaption { color: var(--dim); font-size: 12.5px; margin-top: 6px; }
+  .tag { display: inline-block; font-size: 11px; padding: 0 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--dim); margin-left: 4px; }
   footer { color: var(--dim); font-size: 12px; margin-top: 36px; } footer a { color: var(--dim); }
-  /* phones: the chart's 640-wide viewBox shrinks its labels, and buttons need a real tap target */
-  @media (max-width: 520px) { svg .tick { font-size: 17px; } }
-  @media (pointer: coarse) { button { min-height: 40px; padding: 6px 12px; } .controls { gap: 10px; } }
 </style>
 </head>
 <body>
 <main>
-  <p class="sub"><a href="../">cadence arcade</a> / mario 1-1</p>
-  <h1>MARIO 1-1</h1>
-  <p class="sub" id="lede-sub"></p>
-  <p id="lede"></p>
+  <p class="sub"><a href="../">cadence arcade</a> / mario</p>
+  <h1>A CADENCE BRAIN CLEARS MARIO LEVELS, SOLO</h1>
+  <p class="lede">One brain clears <b>1-1</b> and <b>1-3</b> alone on most starts it never trained on. A second checkpoint beats <b>1-4</b>, Bowser included. <b>1-2</b> is not cleared reliably yet. Every button in every clip is the brain's.</p>
+  <p class="sub">Last updated 2026-10-30 21:41 ET. Cadence (cadence-net 0.91.1) is by Pragma Research; this experiment is independent.</p>
 
-  <p class="sub"><a href="watch/">just the video, with a short explanation &rarr;</a></p>
-  <p class="sub"><a href="levels/">new: one brain plays the levels in order &rarr;</a></p>
-  <div class="tabs" id="tabs"></div>
-  <div class="player">
-    <div class="badge" id="badge">BRAIN</div>
-    <canvas id="screen" width="256" height="240" aria-label="Replay of the Cadence brain playing World 1-1"></canvas>
-    <div class="pad" aria-label="buttons the brain is holding">
-      <span class="key" data-k="left">&larr;</span><span class="key" data-k="right">&rarr;</span>
-      <span class="key" data-k="B">B run</span><span class="key" data-k="A">A jump</span>
-    </div>
-    <div class="prog"><div class="fill" id="fill"></div><span class="flag">&#9873;</span></div>
-    <div class="readout" id="readout">loading frames...</div>
-    <div class="tabnote" id="tabnote"></div>
-    <div class="controls">
-      <button id="play">pause</button>
-      <button data-speed="0.5">0.5x</button><button data-speed="1" class="on">1x</button><button data-speed="2">2x</button>
-      <input type="range" id="scrub" min="0" max="0" value="0" aria-label="scrub">
-    </div>
-  </div>
+  <h2>Scoreboard</h2>
+  <div class="tw"><table><thead><tr><th>level</th><th class="n">solo clears</th><th>brain</th><th>status</th></tr></thead><tbody>
+  <tr><td>1-1</td><td class="n big ok">40/50</td><td>A</td><td><span class="ok">consistent</span> (another checkpoint: 44/50)</td></tr>
+  <tr><td>1-2</td><td class="n big no">8/50</td><td>own checkpoint</td><td><span class="no">not yet</span>: peaked here after about 5 hours of fixes</td></tr>
+  <tr><td>1-3</td><td class="n big ok">42/50</td><td>A</td><td><span class="ok">consistent</span>, same weights as 1-1</td></tr>
+  <tr><td>1-4 <span class="tag">Bowser</span></td><td class="n big mid">38/50</td><td>B</td><td><span class="mid">nearly</span>: beats Bowser, but this checkpoint is only 23/50 on 1-1</td></tr>
+  <tr><td>2-1</td><td class="n big no">0/50</td><td>A, first sight</td><td>never practised: reaches x ~330 (random buttons ~380)</td></tr>
+  <tr><td>2-2</td><td class="n big no">0/50</td><td>A, first sight</td><td>never practised: reaches x ~210 (random buttons ~1,230)</td></tr>
+  </tbody></table></div>
+  <p class="dim">Solo clears out of 50 held-out starts. A start waits a different number of frames before the first button, which moves the enemies and lifts; none of these 50 were used to train the brain or to pick the checkpoint. "Consistent" = at least 40 of 50. A = one brain, the same weights for 1-1 and 1-3. B = a different checkpoint of the same line.</p>
 
-  <h2>What you're seeing</h2>
-  <div id="seeing"></div>
+  <h2>Latest</h2>
+  <ul class="log">
+    <li><b>10/30 20:55</b> One brain (A) holds two levels: 1-1 40/50 and 1-3 42/50.</li>
+    <li><b>10/30 20:46</b> 1-4 beaten solo, Bowser included, on 38/50 held-out starts (checkpoint B).</li>
+    <li><b>10/30 20:00</b> Correction: a 19:31 claim that a brain cleared 1-3 on all 17 practice starts rested on starts of one frame phase. Fixed the test; brain A is measured the fixed way.</li>
+    <li><b>10/30 19:31</b> 1-1 on 44/50 held-out starts.</li>
+    <li><b>10/30 18:25</b> 1-2 parked after ~5 hours: best 8/50.</li>
+    <li><b>10/30 13:05</b> First 1-1 brain to clear 10 of 10 test starts (38/50 on the wider test).</li>
+    <li><b>10/29 23:28</b> First ever solo clear of 1-1 by a Cadence brain.</li>
+  </ul>
 
-  <h2>How far it gets, round by round</h2>
-  <div id="chart"></div>
-  <div class="legend"><span><i style="background:var(--accent)"></i>median of 5 starts</span><span><i style="background:#8a8f98"></i>each start</span><span><i style="background:var(--good)"></i>flagpole</span></div>
-  <p class="dim" style="font-size:13px" id="chart-note"></p>
-
-  <h2>Against simple players</h2>
-  <div class="scroll"><table id="table"><thead><tr><th>player</th><th>median x</th><th>best x</th><th>flags</th><th>note</th></tr></thead><tbody></tbody></table></div>
-  <p class="dim" style="font-size:13px">x is Mario's position in the level in pixels; the flagpole is at about <span id="flagx"></span>. Each player plays the same 5 starts (0, 5, 11, 17, 23 idle frames before the first button).</p>
-
-  <h2>The whole level, with rescues</h2>
-  <p id="assist-intro"></p>
-  <div class="scroll"><table id="atable"><thead><tr><th>start</th><th>reached flag</th><th>buttons pressed by the brain</th><th>coach rescues</th></tr></thead><tbody></tbody></table></div>
+  <h2>Clips</h2>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/one-1-1_poster.png"><source src="levels/one-1-1.mp4" type="video/mp4"></video><figcaption>Brain A clears 1-1 from a held-out start. 22 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/one-1-3_poster.png"><source src="levels/one-1-3.mp4" type="video/mp4"></video><figcaption>The same brain, same weights, clears 1-3 (tree tops and moving lifts) from a held-out start. 16 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/joint-1-4_poster.png"><source src="levels/joint-1-4.mp4" type="video/mp4"></video><figcaption>Brain B beats 1-4 from a held-out start: firebars, then a jump over Bowser to the axe. 14 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/joint-1-1_poster.png"><source src="levels/joint-1-1.mp4" type="video/mp4"></video><figcaption>The 44/50 1-1 checkpoint on a held-out start. 20 s.</figcaption></figure>
 
   <h2>How it learned</h2>
-  <div id="how"></div>
+  <ul>
+    <li><b>It sees the screen and feels its body.</b> Input: the screen as coarse grey blocks (this frame and the last), plus what Mario's body knows: speed, on the ground or in the air, and which buttons the thumb is holding. No enemy positions from the game's memory.</li>
+    <li><b>First it was blind to its own thumb.</b> In Mario a jump starts on the <i>press</i> of A. Holding A does nothing. The early brain couldn't feel held buttons, so the coach's advice for the same screen flipped between "let go" and "press", and it froze against pipes. Feeling the held buttons fixed that, and the first solo clear of 1-1 came the same night.</li>
+    <li><b>Coach labels, then its own mistakes (DAgger).</b> A look-ahead coach tries the next second of buttons on a copy of the game and writes down the best button for each screen. The brain plays alone; the coach labels the screens the brain actually reached, especially just before it died. The coach never takes the controls in any test.</li>
+    <li><b>Fragility, and the fix that worked.</b> Its fit to the coach's labels barely moves, but its solo results swing from 10/10 to 2/10 between small training steps: a level is a chain of dozens of must-get-right moments. Weight averaging, voting, smaller steps and longer training didn't steady it. What worked: save a checkpoint every few minutes, test each one alone on fixed practice starts, keep the best, and check it on starts it never saw.</li>
+  </ul>
 
   <h2>Honest caveats</h2>
-  <div id="caveats"></div>
+  <ul>
+    <li><b>Not one brain for everything yet.</b> Brain A holds 1-1 and 1-3. The 1-4 checkpoint loses 1-1. A run that teaches all three together is going now.</li>
+    <li><b>1-2 is not cleared reliably.</b> Best 8/50. On 1-2 the brain fits only about 85% of the coach's labels, and even a standard neural net predicts only about 85% of them on screens it hasn't seen. Ruled out: the coach, sharper eyes, step size, more training, a bigger brain.</li>
+    <li><b>Held-out means held-out starts, not new levels.</b> Levels it never practised (2-1, 2-2) go nowhere: the skill doesn't transfer yet.</li>
+    <li><b>This is not "Cadence beats Super Mario Bros."</b> It's four levels of World 1, with a coach's labels as the teacher.</li>
+    <li>Numbers on this page are from the run logs, and earlier claims that didn't hold are corrected in the Latest log. Full notebook, dead ends included: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/LEARNING_FIX.md">LEARNING_FIX.md</a>.</li>
+  </ul>
 
-  <h2>About Doom</h2>
-  <div id="doom"></div>
+  <h2>More</h2>
+  <ul>
+    <li><a href="levels/">Level by level</a>: the in-order run, first-sight tests, per-level tables and more clips.</li>
+    <li><a href="first-1-1.html">The first 1-1 run</a> (10/28-29): the older brain's replay, learning curve and rescued runs.</li>
+    <li><a href="watch/">Watch</a>: the older run as plain video.</li>
+  </ul>
 
-  <footer>
-    <p id="ver"></p>
-    <p>Independent demo, not affiliated with Pragma Research. Super Mario Bros. is Nintendo's; the game runs in <a href="https://github.com/Kautenja/nes-py">nes-py</a> via <a href="https://github.com/Kautenja/gym-super-mario-bros">gym-super-mario-bros</a>. No ROM is in the repo. Frames shown are recorded from the emulator.
-    Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">cadence-arcade/mario</a>.</p>
-  </footer>
+  <footer>Independent experiment by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">cadence-arcade/mario</a>.</footer>
 </main>
-<script>
-const D = {"final_summary": {"showcase_round": 10, "rounds": [{"round": 9, "median": 596.0, "xs": [315, 298, 704, 596, 596]}, {"round": 10, "median": 725.0, "xs": [898, 723, 898, 725, 722]}, {"round": 11, "median": 722.0, "xs": [722, 722, 722, 724, 594]}, {"round": 12, "median": 594.0, "xs": [596, 596, 434, 306, 594]}, {"round": 13, "median": 306.0, "xs": [434, 434, 306, 306, 306]}, {"round": 14, "median": 679.0, "xs": [679, 722, 306, 306, 702]}, {"round": 15, "median": 434.0, "xs": [434, 434, 434, 306, 306]}, {"round": 16, "median": 306.0, "xs": [303, 306, 306, 306, 306]}, {"round": 17, "median": 722.0, "xs": [303, 722, 722, 722, 722]}, {"round": 18, "median": 434.0, "xs": [434, 434, 434, 434, 434]}, {"round": 19, "median": 596.0, "xs": [596, 596, 596, 596, 594]}, {"round": 20, "median": 596.0, "xs": [596, 434, 596, 698, 306]}, {"round": 21, "median": 594.0, "xs": [315, 312, 594, 722, 722]}], "assist": [{"start": 0, "flag": true, "brain_share": 0.5943661971830986, "rescues": 11, "decisions": 355}, {"start": 5, "flag": true, "brain_share": 0.6603174603174603, "rescues": 8, "decisions": 315}, {"start": 11, "flag": true, "brain_share": 0.6866666666666666, "rescues": 7, "decisions": 300}, {"start": 23, "flag": true, "brain_share": 0.5957446808510638, "rescues": 11, "decisions": 329}]}, "curve": [{"round": 3, "xs": [303, 312, 312, 595, 594], "flags": 0, "src": "checkpoint"}, {"round": 6, "xs": [594, 898, 594, 722, 898], "flags": 0, "src": "checkpoint"}, {"round": 8, "samples": 8611, "xs": [1783, 1417, 1416, 1417, 1417], "flags": 0, "own": 0.609128516429611, "src": "live"}, {"round": 9, "samples": 9962, "xs": [315, 298, 704, 596, 596], "flags": 0, "own": 0.6247718165442848, "src": "live"}, {"round": 10, "samples": 11042, "xs": [898, 723, 898, 725, 722], "flags": 0, "own": 0.4453667098358929, "src": "live"}, {"round": 11, "samples": 12045, "xs": [722, 722, 722, 724, 594], "flags": 0, "own": 0.4635734329174353, "src": "live"}, {"round": 12, "samples": 12955, "xs": [596, 596, 434, 306, 594], "flags": 0, "own": 0.5108114023483247, "src": "live"}, {"round": 13, "samples": 13856, "xs": [434, 434, 306, 306, 306], "flags": 0, "own": 0.5291626808194813, "src": "live"}, {"round": 14, "samples": 14364, "xs": [679, 722, 306, 306, 702], "flags": 0, "own": 0.6095896291128191, "src": "live"}, {"round": 15, "samples": 15035, "xs": [434, 434, 434, 306, 306], "flags": 0, "own": 0.6200677416045676, "src": "live"}, {"round": 16, "samples": 15647, "xs": [303, 306, 306, 306, 306], "flags": 0, "own": 0.4269622131198486, "src": "live"}, {"round": 17, "samples": 16031, "xs": [303, 722, 722, 722, 722], "flags": 0, "own": 0.640918992780035, "src": "live"}, {"round": 18, "samples": 16839, "xs": [434, 434, 434, 434, 434], "flags": 0, "own": 0.5161190557430981, "src": "live"}, {"round": 19, "samples": 17781, "xs": [596, 596, 596, 596, 594], "flags": 0, "own": 0.33514380875463673, "src": "live"}, {"round": 20, "samples": 18709, "xs": [596, 434, 596, 698, 306], "flags": 0, "own": 0.37685092685092675, "src": "live"}, {"round": 21, "samples": 19618, "xs": [315, 312, 594, 722, 722], "flags": 0, "own": 0.4524848332482252, "src": "live"}], "rows": [{"name": "Cadence brain, best round (8)", "median": 1417.0, "best": 1783, "flags": "0/5", "note": "the brain-alone replay is from this round"}, {"name": "Cadence brain, final (round 21)", "median": 594.0, "best": 722, "flags": "0/5", "note": "same brain at the end of training"}, {"name": "plain MLP, same screens", "median": 596.0, "best": 1561, "flags": "0/5", "note": "backprop + Adam on the brain's final data set"}, {"name": "random buttons", "median": 594.0, "best": 898, "flags": "0/25", "note": "5 random streams per start"}, {"name": "always run", "median": 312.0, "best": 315, "flags": "0/5", "note": "hold right + B"}, {"name": "run + jump rhythm", "median": 311.0, "best": 314, "flags": "0/5", "note": "jump 8, run 4, repeat"}], "replays": [{"start": 0, "round": 8, "flag": false, "max_x": 1783, "decisions": 170, "fps": 30, "w": 256, "h": 240, "sheet": 8, "sheets": ["replay_00.png", "replay_01.png", "replay_02.png", "replay_03.png", "replay_04.png", "replay_05.png", "replay_06.png"], "frames": 386, "hold": 45, "button": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], "x": [40, 40, 43, 43, 47, 47, 53, 53, 60, 60, 70, 70, 81, 81, 93, 93, 105, 105, 117, 117, 129, 129, 141, 141, 153, 153, 165, 165, 177, 177, 189, 189, 201, 201, 213, 213, 225, 225, 237, 237, 249, 249, 261, 261, 273, 273, 285, 285, 297, 297, 309, 309, 321, 321, 333, 333, 345, 345, 357, 357, 369, 369, 381, 381, 393, 393, 405, 405, 417, 417, 429, 429, 441, 441, 453, 453, 465, 465, 477, 477, 489, 489, 501, 501, 513, 513, 525, 525, 537, 537, 549, 549, 561, 561, 573, 573, 585, 585, 596, 596, 594, 594, 594, 594, 595, 595, 597, 597, 601, 601, 607, 607, 614, 614, 622, 622, 633, 633, 645, 645, 657, 657, 669, 669, 681, 681, 693, 693, 705, 705, 717, 717, 729, 729, 741, 741, 753, 753, 765, 765, 777, 777, 789, 789, 801, 801, 813, 813, 825, 825, 837, 837, 849, 849, 861, 861, 873, 873, 885, 885, 897, 897, 909, 909, 921, 921, 933, 933, 945, 945, 957, 957, 969, 969, 981, 981, 993, 993, 1005, 1005, 1017, 1017, 1029, 1029, 1041, 1041, 1053, 1053, 1065, 1065, 1077, 1077, 1089, 1089, 1101, 1101, 1113, 1113, 1125, 1125, 1137, 1137, 1149, 1149, 1161, 1161, 1173, 1173, 1185, 1185, 1197, 1197, 1209, 1209, 1220, 1220, 1220, 1220, 1222, 1222, 1226, 1226, 1231, 1231, 1238, 1238, 1247, 1247, 1258, 1258, 1270, 1270, 1282, 1282, 1294, 1294, 1306, 1306, 1318, 1318, 1330, 1330, 1342, 1342, 1354, 1354, 1366, 1366, 1378, 1378, 1390, 1390, 1402, 1402, 1414, 1414, 1426, 1426, 1438, 1438, 1450, 1450, 1462, 1462, 1474, 1474, 1486, 1486, 1498, 1498, 1510, 1510, 1522, 1522, 1534, 1534, 1546, 1546, 1558, 1558, 1570, 1570, 1582, 1582, 1594, 1594, 1606, 1606, 1618, 1618, 1630, 1630, 1642, 1642, 1654, 1654, 1666, 1666, 1678, 1678, 1682, 1682, 1683, 1683, 1685, 1685, 1689, 1689, 1695, 1695, 1701, 1701, 1710, 1710, 1720, 1720, 1731, 1731, 1730, 1730, 1731, 1731, 1733, 1733, 1737, 1737, 1742, 1742, 1748, 1748, 1755, 1755, 1762, 1762, 1769, 1769, 1776, 1776, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783, 1783], "button_names": ["noop", "right", "right+jump", "run", "run+jump", "jump", "left"], "who": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "assisted": false, "rescues": [], "brain_share": 1.0, "label": "brain alone", "note": "Round 8 brain, start 0, no help. It gets past the first Goombas, the pipes and the first pit, and dies at x 1,783 of 3,161."}, {"start": 11, "round": 21, "flag": true, "max_x": 3161, "decisions": 300, "fps": 30, "w": 256, "h": 240, "sheet": 8, "sheets": ["assist_00.png", "assist_01.png", "assist_02.png", "assist_03.png", "assist_04.png", "assist_05.png", "assist_06.png", "assist_07.png", "assist_08.png", "assist_09.png", "assist_10.png"], "frames": 645, "hold": 45, "button": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 6, 6, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 5, 5, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], "x": [40, 40, 43, 43, 47, 47, 53, 53, 60, 60, 70, 70, 81, 81, 93, 93, 105, 105, 117, 117, 129, 129, 141, 141, 153, 153, 165, 165, 177, 177, 189, 189, 201, 201, 213, 213, 225, 225, 237, 237, 249, 249, 261, 261, 273, 273, 285, 285, 297, 297, 309, 309, 321, 321, 333, 333, 345, 345, 357, 357, 369, 369, 381, 381, 393, 393, 405, 405, 417, 417, 429, 429, 441, 441, 453, 453, 465, 465, 477, 477, 489, 489, 501, 501, 513, 513, 525, 525, 537, 537, 549, 549, 561, 561, 573, 573, 585, 585, 596, 596, 594, 594, 594, 594, 595, 595, 597, 597, 601, 601, 607, 607, 615, 615, 624, 624, 636, 636, 648, 648, 660, 660, 672, 672, 684, 684, 696, 696, 708, 708, 720, 720, 723, 723, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 722, 723, 723, 725, 725, 729, 729, 735, 735, 742, 742, 751, 751, 762, 762, 774, 774, 786, 786, 798, 798, 810, 810, 822, 822, 834, 834, 846, 846, 858, 858, 870, 870, 882, 882, 894, 894, 906, 906, 918, 918, 930, 930, 942, 942, 954, 954, 966, 966, 978, 978, 990, 990, 1002, 1002, 1014, 1014, 1026, 1026, 1038, 1038, 1050, 1050, 1062, 1062, 1074, 1074, 1086, 1086, 1098, 1098, 1110, 1110, 1122, 1122, 1134, 1134, 1146, 1146, 1158, 1158, 1170, 1170, 1182, 1182, 1194, 1194, 1206, 1206, 1218, 1218, 1230, 1230, 1242, 1242, 1254, 1254, 1266, 1266, 1278, 1278, 1290, 1290, 1302, 1302, 1314, 1314, 1326, 1326, 1338, 1338, 1350, 1350, 1362, 1362, 1374, 1374, 1386, 1386, 1397, 1397, 1408, 1408, 1420, 1420, 1432, 1432, 1444, 1444, 1456, 1456, 1468, 1468, 1480, 1480, 1492, 1492, 1503, 1503, 1514, 1514, 1526, 1526, 1538, 1538, 1550, 1550, 1562, 1562, 1574, 1574, 1586, 1586, 1598, 1598, 1610, 1610, 1622, 1622, 1634, 1634, 1646, 1646, 1658, 1658, 1670, 1670, 1682, 1682, 1694, 1694, 1706, 1706, 1718, 1718, 1730, 1730, 1742, 1742, 1754, 1754, 1766, 1766, 1778, 1778, 1790, 1790, 1802, 1802, 1814, 1814, 1826, 1826, 1838, 1838, 1850, 1850, 1862, 1862, 1874, 1874, 1875, 1875, 1877, 1877, 1879, 1879, 1884, 1884, 1890, 1890, 1898, 1898, 1908, 1908, 1919, 1919, 1931, 1931, 1943, 1943, 1955, 1955, 1967, 1967, 1979, 1979, 1991, 1991, 2003, 2003, 2015, 2015, 2027, 2027, 2039, 2039, 2051, 2051, 2063, 2063, 2075, 2075, 2087, 2087, 2099, 2099, 2111, 2111, 2123, 2123, 2135, 2135, 2147, 2147, 2159, 2159, 2171, 2171, 2183, 2183, 2195, 2195, 2207, 2207, 2219, 2219, 2231, 2231, 2243, 2243, 2255, 2255, 2267, 2267, 2279, 2279, 2291, 2291, 2303, 2303, 2315, 2315, 2327, 2327, 2339, 2339, 2351, 2351, 2363, 2363, 2375, 2375, 2387, 2387, 2399, 2399, 2411, 2411, 2423, 2423, 2435, 2435, 2447, 2447, 2459, 2459, 2471, 2471, 2483, 2483, 2495, 2495, 2507, 2507, 2519, 2519, 2531, 2531, 2543, 2543, 2555, 2555, 2567, 2567, 2579, 2579, 2591, 2591, 2603, 2603, 2615, 2615, 2627, 2627, 2639, 2639, 2651, 2651, 2663, 2663, 2675, 2675, 2687, 2687, 2699, 2699, 2711, 2711, 2723, 2723, 2735, 2735, 2747, 2747, 2759, 2759, 2771, 2771, 2783, 2783, 2795, 2795, 2807, 2807, 2819, 2819, 2831, 2831, 2843, 2843, 2855, 2855, 2867, 2867, 2879, 2879, 2891, 2891, 2903, 2903, 2915, 2915, 2927, 2927, 2939, 2939, 2951, 2951, 2962, 2962, 2963, 2963, 2965, 2965, 2968, 2968, 2973, 2973, 2980, 2980, 2987, 2987, 2997, 2997, 3008, 3008, 3020, 3020, 3032, 3032, 3044, 3044, 3056, 3056, 3068, 3068, 3080, 3080, 3092, 3092, 3104, 3104, 3116, 3116, 3128, 3128, 3140, 3140, 3152, 3152, 3154, 3154, 3154, 3154, 3155, 3155, 3157, 3157, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161, 3161], "button_names": ["noop", "right", "right+jump", "run", "run+jump", "jump", "left"], "who": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "assisted": true, "rescues": [{"at_decision": 101, "x": 898, "why": "stuck", "coach_passed": true, "coach_decisions": 14}, {"at_decision": 153, "x": 1521, "why": "died", "coach_passed": true, "coach_decisions": 14}, {"at_decision": 199, "x": 2024, "why": "died", "coach_passed": true, "coach_decisions": 14}, {"at_decision": 211, "x": 2162, "why": "stuck", "coach_passed": true, "coach_decisions": 14}, {"at_decision": 227, "x": 2354, "why": "stuck", "coach_passed": true, "coach_decisions": 14}, {"at_decision": 260, "x": 2756, "why": "died", "coach_passed": true, "coach_decisions": 14}, {"at_decision": 281, "x": 2962, "why": "stuck", "coach_passed": true, "coach_decisions": 12}], "brain_share": 0.6866666666666666, "label": "full level, assisted", "note": "Round 10 brain, start 11. The brain pressed 69% of the buttons; the coach stepped in 7 times. Red badge = coach driving."}], "flag_x": 3161, "version": "0.91.1", "samples": 19618, "rounds": 21, "text": {"sub": "One Cadence brain (cadence-net 0.91.1) playing Super Mario Bros. World 1-1 from the screen. One brain, trained once and kept learning, not a seed average.", "lede": "A Cadence brain learned to play the first level of Super Mario Bros. from the screen alone, overnight, on one desktop PC. <b>On its own</b> its best round runs, jumps Goombas and clears pipes to x 1,783, more than half of World 1-1 (random buttons die around x 594). <b>With a coach that steps in only after a death</b> it reaches the flag on every start that finished, pressing 59-69% of the buttons itself. Six rounds earlier it managed 41%. It does not yet clear 1-1 unaided, and its solo distance swings a lot from round to round. Both replays below are real NES frames.", "seeing": "<p>The real NES game, recorded frame by frame from the emulator. Two clips: <b>brain alone</b> (every button pressed by the Cadence brain, no help at all, ending where it dies) and <b>full level, assisted</b> (the brain plays, and after each death or stall the game rewinds about a second and the coach drives briefly; the badge turns red while the coach drives). The lit keys are what was held for each 4-frame decision. The bar is how far into the level Mario is.</p><p>The brain does not see the game the way you do. It gets a 26 x 32 grid of grey blocks (each block averages 8 x 8 pixels) for the present moment and for one decision ago, with the sky subtracted so only things light up. That is 1,664 numbers. It does not get Mario's position, the enemies' positions, or anything from the game's memory.</p>", "how": "<ol><li><b>Watch a coach.</b> The coach is not a learner: at every moment it saves the emulator, tries 17 short button plans (run, run-jumps of different heights, wait, back off), and keeps the first button of whichever plan ends furthest right without dying. It clears 1-1 from every start we tried. The brain watched it play 20 times, some of them with deliberately wrong buttons mixed in so it also saw how to recover.</li><li><b>Learn the screens.</b> Each watched moment is one labelled screen. The brain learns them in shuffled lessons of 32 screens through Cadence's own local learning rule (equilibrium settling plus a nudge toward the shown button), at the library's <code>teaching=\"normalized\"</code> point for imitation, with <code>learning_surprise=True</code> so it only studies the screens it still gets wrong. No backprop.</li><li><b>Play, get corrected, repeat (DAgger).</b> The brain plays on its own. Its own buttons are executed, so it reaches places the coach never went (like standing in front of a Goomba it should have jumped). The coach labels every screen the brain reached, the labels join the pile, and the same brain keeps learning. Some attempts start from a random point along the coach's path, so the brain also practises the later parts of the level. This is the recipe in Cadence's own <a href=\"https://github.com/muellerberndt/cadence/blob/main/docs/teach.md#teach-on-the-brains-own-path\">teach guide</a>.</li><li><b>Test.</b> After every round the brain plays alone from 5 fixed starts (0 to 23 idle frames before the first button, which shifts every Goomba's timing). That is the curve above.</li></ol>", "caveats": "<ul>\n<li><b>It learned from a coach, not from the score.</b> Every label came from the look-ahead coach, and the coach cheats in ways the brain cannot: it reads Mario's position and the death flag from the game's memory and tries plans in saved copies of the emulator. The brain only ever sees the grey blocks. This is imitation (DAgger), not reinforcement learning.</li>\n<li><b>One level, one brain.</b> It was trained and tested on World 1-1 only. The level is the same every time; the only variation is the 0-23 idle frames at the start, which shift when the Goombas arrive. So some of what it knows is surely \"this screen means jump\" for this level, not Mario in general. It has never seen 1-2.</li>\n<li><b>Hand-made input.</b> I chose the view: 8 x 8 grey blocks with the sky subtracted. With raw pixels on the bright sky, every Cadence setting I tried gave the same button for every screen (sweep in <code>mario/sweep.py</code>). That preprocessing is my design, not something the brain learned.</li>\n<li><b>Not the full Cadence recipe.</b> The brain plays with <code>predict</code>: its settled network answers each moment on its own, without the working trace or episodic memory the library also offers. Cadence's own roadmap (#118) calls this kind of frame-to-button imitation a component, not the continuing world-model brain it is aiming for.</li>\n<li><b>The assisted run is assisted.</b> In the full-level replay the coach takes over after every death or stall (marked COACH DRIVING in red, with the game rewound a few seconds first). The share of buttons the brain pressed is printed under it. The \"brain alone\" replay has no help at all, and it ends where the brain died or got stuck.</li>\n<li><b>It went wrong three times before this.</b> Raw grey pixels with 7 buttons: the brain just held run. Colour blocks: its answer swung between \"always run\" and \"always jump\". And for the first 7 rounds of this run, a bug made the test attempts use an old copy of the brain, so those measurements were thrown out and re-measured from saved checkpoints (the curve shows only re-measured or post-fix points). Details in <code>mario/PROGRESS.md</code>.</li>\n<li><b>The MLP row is a cheap reference.</b> It is trained on the brain's final pile of labelled screens with backprop, so it gets the benefit of all the brain's DAgger rounds for free. It is not a matched rival.</li>\n</ul>", "doom": "<p>Sean heard someone made Cadence play Doom. What we found: Doom is on Cadence's official roadmap as <a href=\"https://github.com/muellerberndt/cadence/issues/118\">issue #118, \"Build and qualify the full native Doom expert\"</a>, an open epic whose first skill is ViZDoom's Basic combat room, with only rendered screen information allowed into the player. We found no posted Cadence Doom results or public demo. The issue also says that a frame-to-action classifier taught by a host planner is a component control, not the full expert it is after. That is a fair description of this Mario demo too: it shows how far that component gets, nothing more.</p>", "chart_note": "Each grey dot is one start, the orange line the median. Rounds 3 and 6 are re-measured from saved checkpoints; rounds 7 on are live. Round 8 is the peak (median 1,417). After it the brain wobbles between about 300 and 725: more DAgger rounds kept adding labels without making it steadier. That plateau is the main open problem.", "note_replay": "Round 8 brain, start 0, no help. It gets past the first Goombas, the pipes and the first pit, and dies at x 1,783 of 3,161.", "note_assist": "Round 10 brain, start 11. The brain pressed 69% of the buttons; the coach stepped in 7 times. Red badge = coach driving.", "assist_intro": "The same brain (round 10, the best saved checkpoint by median) playing all of 1-1 from each start, rescued by the coach after every death or stall. For comparison, the round-4 brain needed 13 rescues on start 0 and pressed only 41% of the buttons. Start 17's assisted run did not finish (it kept needing rescues at one spot) and was stopped."}, "mlp_info": {"samples": 19618, "passes": 6.0, "train_agree": 0.773}};
-const $ = (s) => document.querySelector(s);
-const T = D.text;
-$("#lede-sub").innerHTML = T.sub;
-$("#lede").innerHTML = T.lede;
-$("#seeing").innerHTML = T.seeing;
-$("#how").innerHTML = T.how;
-$("#caveats").innerHTML = T.caveats;
-$("#doom").innerHTML = T.doom;
-$("#chart-note").innerHTML = T.chart_note || "";
-$("#flagx").textContent = D.flag_x;
-$("#ver").textContent = `cadence-net ${D.version}. One brain (founder seed 0), ${D.rounds} DAgger rounds, ${D.samples.toLocaleString()} labelled screens.`;
-
-// ---- table
-const tb = $("#table tbody");
-for (const r of D.rows) {
-  const tr = document.createElement("tr"); if (r.name.startsWith("Cadence")) tr.className = "me";
-  tr.innerHTML = `<td>${r.name}</td><td>${Math.round(r.median)}</td><td>${r.best}</td><td>${r.flags}</td><td class="dim">${r.note}</td>`;
-  tb.appendChild(tr);
-}
-
-// ---- assisted table
-(function () {
-  const F = D.final_summary; if (!F) return;
-  $("#assist-intro").innerHTML = T.assist_intro || "";
-  const tb = $("#atable tbody");
-  for (const r of F.assist) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${r.start}</td><td>${r.flag ? "yes" : "no"}</td><td>${(100 * r.brain_share).toFixed(0)}%</td><td>${r.rescues}</td>`;
-    tb.appendChild(tr);
-  }
-})();
-
-// ---- chart
-(function () {
-  const W = 640, H = 300, L = 48, R = 12, Tp = 12, B = 40;
-  const c = D.curve, n = Math.max(1, c.length - 1), ymax = 3300;
-  const r0 = c[0].round, r1 = c[c.length - 1].round;
-  const X = (i) => L + (W - L - R) * (r1 === r0 ? 0.5 : (c[i].round - r0) / (r1 - r0));
-  const Y = (v) => Tp + (H - Tp - B) * (1 - v / ymax);
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="farthest x per round">`;
-  for (const v of [0, 500, 1000, 1500, 2000, 2500, 3000]) s += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${L - 6}" y="${Y(v) + 4}" class="tick" text-anchor="end">${v}</text>`;
-  s += `<line x1="${L}" x2="${W - R}" y1="${Y(D.flag_x)}" y2="${Y(D.flag_x)}" stroke="var(--good)" stroke-dasharray="4 4"/>`;
-  const step = Math.max(1, Math.ceil(c.length / 12));
-  c.forEach((p, i) => { if (i % step === 0 || i === c.length - 1) s += `<text x="${X(i)}" y="${H - B + 16}" class="tick" text-anchor="middle">${p.round}</text>`; });
-  s += `<text x="${(L + W - R) / 2}" y="${H - 6}" class="tick" text-anchor="middle">DAgger round (one brain, measured after each round)</text>`;
-  c.forEach((p, i) => p.xs.forEach((v, j) => { s += `<circle cx="${X(i) + (j - 2) * 2.2}" cy="${Y(v)}" r="2.6" fill="#8a8f98" opacity=".75"/>`; }));
-  const med = c.map((p, i) => [X(i), Y([...p.xs].sort((a, b) => a - b)[2])]);
-  s += `<polyline fill="none" stroke="var(--accent)" stroke-width="2.4" points="${med.map(q => q.join(",")).join(" ")}"/>`;
-  med.forEach((q) => { s += `<circle cx="${q[0]}" cy="${q[1]}" r="3.4" fill="var(--accent)"/>`; });
-  $("#chart").innerHTML = s + "</svg>";
-})();
-
-// ---- replay
-(function () {
-  const cv = $("#screen"), ctx = cv.getContext("2d");
-  let R = null, imgs = [], loaded = 0, i = 0, playing = true, speed = 1, acc = 0, last = null;
-  const scrub = $("#scrub");
-  const bits = { 0: [], 1: ["right"], 2: ["right", "A"], 3: ["right", "B"], 4: ["right", "A", "B"], 5: ["A"], 6: ["left"] };
-  const keys = [...document.querySelectorAll(".key")];
-  function load(k) {
-    R = D.replays[k]; loaded = 0; i = 0; acc = 0;
-    scrub.max = R.frames - 1;
-    imgs = R.sheets.map((n) => { const im = new Image(); im.onload = () => { loaded++; if (loaded === imgs.length) draw(); else $("#readout").textContent = `loading frames ${loaded}/${imgs.length}`; }; im.src = n; return im; });
-    document.querySelectorAll("#tabs button").forEach((b, j) => b.classList.toggle("on", j === k));
-    $("#tabnote").innerHTML = R.note;
-  }
-  function draw() {
-    const per = R.sheet * R.sheet, s = Math.floor(i / per), j = i % per, r = Math.floor(j / R.sheet), c = j % R.sheet;
-    ctx.drawImage(imgs[s], c * R.w, r * R.h, R.w, R.h, 0, 0, R.w, R.h);
-    const b = bits[R.button[i]] || [];
-    keys.forEach((k) => k.classList.toggle("lit", b.includes(k.dataset.k)));
-    const coach = R.who && R.who[i];
-    const bd = $("#badge"); bd.textContent = coach ? "COACH DRIVING" : "BRAIN DRIVING"; bd.classList.toggle("coach", !!coach);
-    const x = R.x[i];
-    $("#fill").style.width = Math.min(100, 100 * x / D.flag_x) + "%";
-    $("#fill").style.background = coach ? "var(--bad)" : "var(--accent)";
-    const t = (Math.min(i, R.frames - 1 - R.hold) / R.fps).toFixed(1);
-    const end = i >= R.frames - R.hold ? (R.flag ? "  FLAG!" : "  (attempt ends)") : "";
-    $("#readout").textContent = `x ${x} / ${D.flag_x}   t ${t}s   button: ${R.button_names[R.button[i]]}${end}`;
-    scrub.value = i;
-  }
-  function tick(ts) {
-    if (last === null) last = ts;
-    const dt = Math.min(0.1, (ts - last) / 1000); last = ts;
-    if (playing && R && loaded === imgs.length) {
-      acc += dt * R.fps * speed;
-      while (acc >= 1) { acc -= 1; i = (i + 1) % R.frames; }
-      draw();
-    }
-    requestAnimationFrame(tick);
-  }
-  D.replays.forEach((r, k) => { const b = document.createElement("button"); b.textContent = r.label; b.onclick = () => load(k); $("#tabs").appendChild(b); });
-  $("#play").onclick = () => { playing = !playing; $("#play").textContent = playing ? "pause" : "play"; };
-  document.querySelectorAll("[data-speed]").forEach((b) => b.onclick = () => {
-    speed = +b.dataset.speed; document.querySelectorAll("[data-speed]").forEach((o) => o.classList.toggle("on", o === b));
-  });
-  scrub.oninput = () => { i = +scrub.value; if (R && loaded === imgs.length) draw(); };
-  load(0);
-  requestAnimationFrame(tick);
-})();
-</script>
 </body>
 </html>

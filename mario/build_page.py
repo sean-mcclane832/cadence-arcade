@@ -77,8 +77,9 @@ def main():
                 mlp_info=base.get("mlp_info"))
     tpl = (HERE / "page_template.html").read_text(encoding="utf-8")
     html = tpl.replace("/*DATA*/null", json.dumps(data))
-    (out / "index.html").write_text(html, encoding="utf-8", newline="\n")
-    print("wrote", out / "index.html", len(html))
+    (out / "first-1-1.html").write_text(  # index.html is the showcase now
+        html, encoding="utf-8", newline="\n")
+    print("wrote", out / "first-1-1.html", len(html))
 
 
 if __name__ == "__main__":
