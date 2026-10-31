@@ -1,0 +1,76 @@
+{
+ "name": "U3ck83",
+ "label": "one brain",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\brains\\U3ck83.npz"
+ },
+ "lives": 5,
+ "cleared": [
+  "1-1"
+ ],
+ "furthest": "1-2",
+ "deaths": {
+  "1-2": [
+   322,
+   322,
+   322,
+   322,
+   322
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "U3ck83",
+   "end": "flag",
+   "x": 3161,
+   "decisions": 317,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "U3ck83",
+   "end": "stuck",
+   "x": 322,
+   "decisions": 77,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "U3ck83",
+   "end": "stuck",
+   "x": 322,
+   "decisions": 77,
+   "lives_before": 4
+  },
+  {
+   "level": "1-2",
+   "brain": "U3ck83",
+   "end": "stuck",
+   "x": 322,
+   "decisions": 77,
+   "lives_before": 3
+  },
+  {
+   "level": "1-2",
+   "brain": "U3ck83",
+   "end": "stuck",
+   "x": 322,
+   "decisions": 77,
+   "lives_before": 2
+  },
+  {
+   "level": "1-2",
+   "brain": "U3ck83",
+   "end": "stuck",
+   "x": 322,
+   "decisions": 77,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 18,
+ "when": "2026-10-31 17:10",
+ "clip": "g01_U3ck83.mp4",
+ "clip_seconds": 49.3
+}

@@ -51,22 +51,47 @@
 <main>
   <p class="sub"><a href="../">cadence arcade</a> / mario</p>
   <h1>A CADENCE BRAIN CLEARS MARIO LEVELS, SOLO</h1>
-  <p class="lede">One brain clears <b>1-1</b> and <b>1-3</b> alone on most starts it never trained on. Another checkpoint beats <b>1-4</b>, Bowser included, on all 50. <b>1-2</b> is not cleared reliably yet. Every button in every clip is the brain's.</p>
-  <p class="sub">Last updated 2026-10-31 17:05 ET. Cadence (cadence-net 0.91.1) is by Pragma Research; this experiment is independent.</p>
+  <p class="lede"><b>One brain clears 1-1, 1-3 and 1-4 with the same weights.</b> Brain U3ck83 ("the three-level champion") clears 1-1 on 15, 1-3 on 45 and 1-4 (Bowser) on 33 of 50 starts it never trained on. Specialists do better on single levels (1-4: 50/50). <b>1-2</b> is the hard one: best 29/50, and no brain has cleared all four World 1 levels yet. Every button in every clip is the brain's.</p>
+  <p class="sub">Last updated 2026-10-31 17:30 ET. Brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. Cadence is by Pragma Research; this experiment is independent.</p>
 
-  <h2>Scoreboard</h2>
+  <h2>One brain, three levels</h2>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/champ-1-1_poster.png"><source src="levels/champ-1-1.mp4" type="video/mp4"></video><figcaption>U3ck83 clears 1-1 from held-out start 33. 22 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/champ-1-3_poster.png"><source src="levels/champ-1-3.mp4" type="video/mp4"></video><figcaption>Same brain, same weights: 1-3 (tree tops, moving lifts) from held-out start 33. 15 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/champ-1-4_poster.png"><source src="levels/champ-1-4.mp4" type="video/mp4"></video><figcaption>Same brain again: 1-4, firebars and Bowser, from held-out start 33. 13 s.</figcaption></figure>
+  <p class="dim">Its sibling U3ck44 ("the balanced one") also clears all three: 25 / 15 / 37 of 50. Both were tested on 1-2 tonight (74 starts each): 0 clears, both stop around x 900.</p>
+
+<h2>Scoreboard</h2>
   <div class="tw"><table><thead><tr><th>level</th><th class="n">solo clears</th><th>brain</th><th>status</th></tr></thead><tbody>
-  <tr><td>1-1</td><td class="n big ok">40/50</td><td>A</td><td><span class="ok">consistent</span> (best 1-1-only checkpoint: 46/50)</td></tr>
-  <tr><td>1-2</td><td class="n big mid">29/50</td><td>own checkpoint</td><td><span class="no">not yet</span>: up from 8/50 overnight; clears more than half the time</td></tr>
-  <tr><td>1-3</td><td class="n big ok">42/50</td><td>A</td><td><span class="ok">consistent</span>, same weights as 1-1 (best 1-3 checkpoint: 45/50)</td></tr>
-  <tr><td>1-4 <span class="tag">Bowser</span></td><td class="n big ok">50/50</td><td>D</td><td><span class="ok">perfect</span> on held-out starts; the same checkpoint D also clears 1-1 on 30/50</td></tr>
-  <tr><td>2-1</td><td class="n big no">0/50</td><td>A, first sight</td><td>never practised: reaches x ~330 (random buttons ~380)</td></tr>
-  <tr><td>2-2</td><td class="n big no">0/50</td><td>A, first sight</td><td>never practised: reaches x ~210 (random buttons ~1,230)</td></tr>
+  <tr><td>1-1</td><td class="n big ok">40/50</td><td>one_11_13</td><td><span class="ok">consistent</span> (best 1-1-only checkpoint: 46/50)</td></tr>
+  <tr><td>1-2</td><td class="n big mid">29/50</td><td>1-2_12n59</td><td><span class="no">not yet</span>: up from 8/50 overnight; clears more than half the time</td></tr>
+  <tr><td>1-3</td><td class="n big ok">42/50</td><td>one_11_13</td><td><span class="ok">consistent</span>, same weights as 1-1 (best 1-3 checkpoint: 45/50)</td></tr>
+  <tr><td>1-4 <span class="tag">Bowser</span></td><td class="n big ok">50/50</td><td>U3ck28</td><td><span class="ok">perfect</span> on held-out starts; the same brain also clears 1-1 on 30/50</td></tr>
+  <tr><td>2-1</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~330 (random buttons ~380)</td></tr>
+  <tr><td>2-2</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~210 (random buttons ~1,230)</td></tr>
   </tbody></table></div>
-  <p class="dim">Solo clears out of 50 held-out starts. A start waits a different number of frames before the first button, which moves the enemies and lifts; none of these 50 were used to train the brain or to pick the checkpoint. "Consistent" = at least 40 of 50. A = one brain, the same weights for 1-1 and 1-3. B, C, D = other checkpoints of the same line, each strongest at one level.</p>
+  <p class="dim">Solo clears out of 50 held-out starts. A start waits a different number of frames before the first button, which moves the enemies and lifts; none of these 50 were used to train the brain or to pick the checkpoint. "Consistent" = at least 40 of 50. Brains by name: see "Meet the brains". The best single brain across three levels is U3ck83 (15 / 45 / 33 on 1-1 / 1-3 / 1-4).</p>
+
+  <h2>Meet the brains</h2>
+  <p class="dim">Every brain is one Cadence region of 256 neurons reading the screen (coarse grey blocks, this frame and the last) and its own body (speed, ground/air, held buttons). All came from the same line of training (coach labels + DAgger, LEARNING_FIX.md), trained on cadence-net 0.91.1, re-scored on 0.91.3. Scores: solo clears of 50 held-out starts.</p>
+  <div class="tw"><table><thead><tr><th>brain</th><th>nickname</th><th class="n">1-1</th><th class="n">1-2</th><th class="n">1-3</th><th class="n">1-4</th><th>trained on / checkpoint</th><th>what's special</th></tr></thead><tbody>
+  <tr><td>U3ck83</td><td>the three-level champion</td><td class="n">15</td><td class="n">0</td><td class="n ok">45</td><td class="n">33</td><td>1-1 + 1-3 + 1-4, run st_U3 checkpoint 83</td><td>best three-level total (93/150), best 1-3</td></tr>
+  <tr><td>U3ck44</td><td>the balanced one</td><td class="n">25</td><td class="n">0</td><td class="n">15</td><td class="n">37</td><td>1-1 + 1-3 + 1-4, st_U3 checkpoint 44</td><td>first brain to clear all three practised levels</td></tr>
+  <tr><td>one_11_13</td><td>the two-level all-rounder</td><td class="n ok">40</td><td class="n">0</td><td class="n ok">42</td><td class="n">0</td><td>1-1 + 1-3, st_13d checkpoint 13</td><td>consistent (40+) on two levels at once</td></tr>
+  <tr><td>1-1_U3ck3</td><td>the 1-1 specialist</td><td class="n ok">46</td><td class="n">0</td><td class="n">4</td><td class="n">8</td><td>1-1 + 1-3 + 1-4, st_U3 checkpoint 3</td><td>best 1-1</td></tr>
+  <tr><td>U3ck28</td><td>the Bowser specialist</td><td class="n">30</td><td class="n">0</td><td class="n">11</td><td class="n ok">50</td><td>1-1 + 1-3 + 1-4, st_U3 checkpoint 28</td><td>perfect 1-4</td></tr>
+  <tr><td>1-2_12n59</td><td>the underground one</td><td class="n">14</td><td class="n mid">29</td><td class="n">0</td><td class="n">0</td><td>1-2 (90%) + 1-1, st_12n checkpoint 59</td><td>best 1-2, the only brain that clears 1-2</td></tr>
+  </tbody></table></div>
+
+  <h2>Gauntlet</h2>
+  <p class="dim">Real start of 1-1, five lives. A flag moves on to the next level (1-2, 1-3, 1-4, 2-1 ...); a death restarts the current level; no learning between lives; game over on the fifth death. Retries start a few frames later (the emulator is deterministic, so an identical restart would replay the identical death). "One brain" = the same weights the whole way. Each level starts with small Mario.</p>
+  <div class="tw"><table><thead><tr><th>time</th><th>brain</th><th>cleared</th><th>deaths (level: x)</th><th class="n">lives left</th><th>clip</th></tr></thead><tbody>
+  <!--GAUNTLET-ROWS-->
+  <tr><td>10/31 17:15</td><td>U3ck83 (one brain)</td><td>1-1</td><td>1-2: 322, 470, 322, 893, 354</td><td class="n">0</td><td><a href="gauntlet/g01_U3ck83.mp4">clip</a></td></tr>
+  </tbody></table></div>
 
   <h2>Latest</h2>
   <ul class="log">
+    <li><b>10/31 17:30</b> Re-scored every brain on Cadence 0.91.3: identical. Tested the two three-level brains on 1-2: 0 clears in 74 starts each, so "every World 1 level" is not claimed. New: brain roster and a 5-life gauntlet (first one: U3ck83 clears 1-1, then loses all five lives on 1-2).</li>
     <li><b>10/31 16:46</b> First try at World 2 with no coach and no new learning: 0 clears for all five best brains. 2-1: furthest x 723 (stuck at the first tall pipe), most die within 2 seconds. 2-2 (underwater, never seen water): furthest x 514, mostly stops pressing buttons. World 1 skills don't transfer yet. Clips: <a href="levels/w2-firstsight-2-1.mp4">2-1</a>, <a href="levels/w2-firstsight-2-2.mp4">2-2</a>.</li>
     <li><b>10/31 06:15</b> 1-2 up again: 29/50 held-out starts.</li>
     <li><b>10/31 02:26</b> 1-2 moves: 23/50 held-out starts (was 8/50), after testing many more checkpoints between coaching rounds.</li>
@@ -85,11 +110,11 @@
   </ul>
 
   <h2>Clips</h2>
-  <figure><video controls playsinline muted preload="metadata" poster="levels/one-1-1_poster.png"><source src="levels/one-1-1.mp4" type="video/mp4"></video><figcaption>Brain A clears 1-1 from a held-out start. 22 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/one-1-1_poster.png"><source src="levels/one-1-1.mp4" type="video/mp4"></video><figcaption>one_11_13 clears 1-1 from a held-out start. 22 s.</figcaption></figure>
   <figure><video controls playsinline muted preload="metadata" poster="levels/one-1-3_poster.png"><source src="levels/one-1-3.mp4" type="video/mp4"></video><figcaption>The same brain, same weights, clears 1-3 (tree tops and moving lifts) from a held-out start. 16 s.</figcaption></figure>
-  <figure><video controls playsinline muted preload="metadata" poster="levels/perfect-1-4_poster.png"><source src="levels/perfect-1-4.mp4" type="video/mp4"></video><figcaption>Checkpoint D (50/50 on 1-4) beats 1-4 from a held-out start: firebars, then over Bowser to the axe. Every button is the brain's.</figcaption></figure>
-  <figure><video controls playsinline muted preload="metadata" poster="levels/joint-1-4_poster.png"><source src="levels/joint-1-4.mp4" type="video/mp4"></video><figcaption>Brain B beats 1-4 from a held-out start: firebars, then a jump over Bowser to the axe. 14 s.</figcaption></figure>
-  <figure><video controls playsinline muted preload="metadata" poster="levels/joint-1-1_poster.png"><source src="levels/joint-1-1.mp4" type="video/mp4"></video><figcaption>The 44/50 1-1 checkpoint on a held-out start. 20 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/perfect-1-4_poster.png"><source src="levels/perfect-1-4.mp4" type="video/mp4"></video><figcaption>U3ck28, the Bowser specialist (50/50 on 1-4), beats 1-4 from a held-out start: firebars, then over Bowser to the axe. Every button is the brain's.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/joint-1-4_poster.png"><source src="levels/joint-1-4.mp4" type="video/mp4"></video><figcaption>An earlier 1-4 brain (joint_11_14_ck10, 38/50) beats 1-4 from a held-out start: firebars, then a jump over Bowser to the axe. 14 s.</figcaption></figure>
+  <figure><video controls playsinline muted preload="metadata" poster="levels/joint-1-1_poster.png"><source src="levels/joint-1-1.mp4" type="video/mp4"></video><figcaption>joint_11_13_ck8 (44/50 on 1-1) on a held-out start. 20 s.</figcaption></figure>
 
   <h2>How it learned</h2>
   <ul>
@@ -101,7 +126,7 @@
 
   <h2>Honest caveats</h2>
   <ul>
-    <li><b>Not one brain for everything yet.</b> Brain A holds 1-1 and 1-3. The best 1-4 checkpoint (50/50) clears 1-1 only 30/50. The best all-three checkpoints so far: 1-1 25/50, 1-3 15/50, 1-4 37/50, or 1-1 15/50, 1-3 45/50, 1-4 33/50.</li>
+    <li><b>Not one brain for everything yet.</b> one_11_13 holds 1-1 and 1-3 consistently; U3ck83 clears three levels but only 1-3 consistently. The best 1-4 checkpoint (50/50) clears 1-1 only 30/50. The best all-three checkpoints so far: 1-1 25/50, 1-3 15/50, 1-4 37/50, or 1-1 15/50, 1-3 45/50, 1-4 33/50.</li>
     <li><b>1-2 is not cleared reliably.</b> Best 29/50. On 1-2 the brain fits only about 85% of the coach's labels, and even a standard neural net predicts only about 85% of them on screens it hasn't seen. Ruled out: the coach, sharper eyes, step size, more training, a bigger brain.</li>
     <li><b>Held-out means held-out starts, not new levels.</b> Levels it never practised (2-1, 2-2) go nowhere: the skill doesn't transfer yet.</li>
     <li><b>This is not "Cadence beats Super Mario Bros."</b> It's World 1, with a coach's labels as the teacher. The coach itself can't clear 2-1 yet, so the brain can't be taught it.</li>

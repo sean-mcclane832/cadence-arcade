@@ -11,3 +11,7 @@ mario/diag/*.npz
 mario/diag/*.out
 mario/diag/*.err
 mario/runs/*.out
+mario/concepts/runs/**/*.npz
+mario/concepts/runs/*.npz
+mario/concepts/runs/**/*.out
+mario/concepts/runs/*.out
