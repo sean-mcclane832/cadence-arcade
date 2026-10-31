@@ -35,7 +35,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import dagger as D  # noqa: E402
 
-SEL = tuple(s for s in range(0, 80, 4) if not 32 <= s <= 41)  # 18 starts, all inside the DAgger pool
+SEL = tuple(s for s in range(0, 80, 3) if not 32 <= s <= 41)  # 24 starts, all 4 frame phases, inside the DAgger pool
 TEST = tuple(range(32, 42))
 WIDE = tuple(range(100, 140, 2))  # late jitters, reported on every new best (never selected on)
 HELD = TEST + tuple(range(80, 100)) + WIDE  # 50 held-out starts: never in training or selection

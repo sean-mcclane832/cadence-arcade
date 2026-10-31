@@ -411,3 +411,36 @@ TEST or HELD): **1-1 SEL 12/17, TEST 10/10, HELD 44/50 (88%)**; **1-3 SEL 17/17,
 So 1-1 now passes both bars, in a brain that also clears 1-3 from every practice start. Held-out 1-3 is
 weak: 7 of 10 TEST starts stop at x 1,371. Fit 1-1 0.88, 1-3 0.87. E17b recipe (coach-demo rows +
 tie-aware DAgger only), 9 chunks of 250 lessons and 4 DAgger rounds after st_13a.
+H17b result (19:44, st_12tc stopped at 6 chunks, 10,354 1-2 rows): 1-2 fit 0.882, 0.865, 0.850, 0.845,
+0.856, 0.844 as the clean pile grew; SEL 1-2 at most 1/17. **Falsified** on 1-2: without the old rows
+the fit still falls to ~0.85. (The same recipe on 1-3 gave the milestone above, so it is not useless,
+but it does not explain 1-2.)
+
+## E20. 1-3 held-out, from the joint brain (pre-registered 19:44)
+runs/st_13c: from brains/joint_11_13_ck8, 1-3 rows = st_13b's pile so far (runs/d13), 30% 1-1 replay,
+tie-aware DAgger every 2 chunks, 12 attempts, half from the start (starts from the 0-31/42-79 pool).
+- H20: 1-3 TEST >= 6/10 at some joint-best checkpoint within 2 h, with 1-1 HELD >= 40/50 at that
+  checkpoint. Falsified if the best joint checkpoint's 1-3 TEST stays <= 3/10.
+Why tie-aware labels could not fix 1-2 (diag/tierate.py, st_12tc ck_0004 on its own solo paths,
+starts 0 and 8, every decision scored by the coach): of 204 decisions the brain agrees on 142; of the
+62 disagreements only **8 are ties** (<= 2 px), 31 are "small" (its button survives but ends 2-50 px
+behind) and **23 lose** (> 50 px behind). On the coach's critical rows along the brain's own path it is
+wrong on **9 of 33 (27%)**, while its fit on the stored critical rows is ~0.96. The gap is
+generalization to the states its own play reaches, not label noise from ties.
+Note (19:53): st_13b ck_0011 is 1-3 SEL 14/17 but TEST 0/10. TEST 32-41 sits in a hole of the DAgger
+start pool (0-31, 42-79), so it tests enemy/lift phases the brain never practised near; HELD's 80-138
+are beyond the pool. On 1-3 (moving lifts) that matters more than on 1-1.
+
+## E21. 1-4 (pre-registered 19:53)
+runs/fix_coach_1-4: 11 coach demonstrations. runs/st_14a: from brains/joint_11_13_ck8, 1-4 rows = coach
+demos + tie-aware DAgger, 30% 1-1 replay, watched levels 1-1 and 1-4.
+- H21: first solo flag on 1-4 within 2 h. Falsified if 0 SEL flags at 2 h.
+
+## E22. Selection bug: SEL covered one frame phase (found 20:00)
+A decision is 4 frames, so start jitter acts through its phase mod 4. E18's SEL (0, 4, ..., 76) were all
+phase 0. The joint brain's 1-3 TEST flags are exactly starts 32, 36, 40 (phase 0); the other phases stop
+at x 1,371. So its "1-3 SEL 17/17" means "1-3 from one phase", and the joint pick was biased toward
+phase-0 skill. 1-1 is unaffected in substance (the joint brain's 1-1 TEST is 10/10, HELD 44/50, all
+phases). Fix: SEL = 0, 3, ..., 78 minus 32-41 (24 starts, all four phases). Runs st_13b/13c/14a stopped
+and restarted with it: st_13d (1-3, from the joint brain, rows runs/d13b = 6,821) and st_14b (1-4,
+from the joint brain, rows runs/d14). H20 and H21 carry over unchanged to these runs.
