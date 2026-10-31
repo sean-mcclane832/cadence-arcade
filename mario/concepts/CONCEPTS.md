@@ -82,9 +82,9 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 
 | # | time | brain | type | cleared | deaths (level: x) | lives left | clip |
 |---|---|---|---|---|---|---|---|
-| g01 | 17:15 | U3ck83 | one brain | 1-1 | 1-2: 322 (stuck), 470, 322 (stuck), 893, 354 (stuck) | 0 | runs/gauntlet/g01_U3ck83.mp4 |
-| g02 | 17:52 | U3ck44 | one brain | 1-1 | 1-1: 2762, 1784; 1-2: 323, 354, 354 (all stuck) | 0 | runs/gauntlet/g02_U3ck44.mp4 |
-| g03 | 17:55 | 1-1_U3ck3 / 1-2_12n59 / U3ck83 / U3ck28, U3ck83 after | **relay of specialists** | **1-1, 1-2, 1-3, 1-4** | 1-2: 1595, 852, 1336; 2-1: 531, 723 (stuck) | 0 | runs/gauntlet/g03_relay.mp4 |
+| g01 | 17:11 | U3ck83 | one brain | 1-1 | 1-2: 322 (stuck), 470, 322 (stuck), 893, 354 (stuck) | 0 | runs/gauntlet/g01_U3ck83.mp4 |
+| g02 | 17:48 | U3ck44 | one brain | 1-1 | 1-1: 2762, 1784; 1-2: 323, 354, 354 (all stuck) | 0 | runs/gauntlet/g02_U3ck44.mp4 |
+| g03 | 17:48 | 1-1_U3ck3 / 1-2_12n59 / U3ck83 / U3ck28, U3ck83 after | **relay of specialists** | **1-1, 1-2, 1-3, 1-4** | 1-2: 1595, 852, 1336; 2-1: 531, 723 (stuck) | 0 | runs/gauntlet/g03_relay.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
