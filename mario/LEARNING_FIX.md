@@ -502,3 +502,20 @@ the one-brain question (H23) is still open.
 ## Milestone (23:48): 1-4 perfect on held-out starts
 st_U3 ck_0028 (brains/U3ck28.npz), the joint pick at the time (SEL [14, 7, 24]): **1-4 SEL 24/24, TEST
 10/10, HELD 50/50**. Same weights: 1-1 TEST 8/10, HELD 30/50; 1-3 TEST 2/10, HELD 11/50.
+
+## 2-1: the coach cannot clear it (00:27)
+runs/fix_coach_2-1: the coach flags 0 of 11 demonstrations. Alone from starts 0 / 3 (diag/coach12.py):
+x 1,760 died, x 3,026 stuck; with the 24-decision look-ahead menu (lean24) both stuck at x ~722. With
+no teacher that clears 2-1, coach-label DAgger cannot teach it; 2-1 needs a better coach first (not
+attempted tonight). World 1 is where this setup stops for now.
+
+## E24. 1-2 with many checkpoints per DAgger round (pre-registered 00:28)
+What made 1-4 go from 38/50 to 50/50 in st_U3 was testing 10 checkpoints per DAgger cycle instead of
+2-3. The 1-2 runs tested 1-3 per cycle. runs/st_12m: from st_12cw ck_0011 (1-2 HELD 8/50), rows
+runs/d12e (st_12cw's 34,511), 90% 1-2 / 10% 1-1, tie-aware DAgger every 10 chunks, all-phase SEL.
+- H24: some checkpoint reaches 1-2 HELD >= 20/50 within 3 h. Falsified if the best stays <= 10/50.
+Side check (00:42): st_U3 ck_0002 (joint SEL [18, 21, 0]) is 1-1 TEST 9/10, HELD 28/50 and 1-3 TEST 9/10,
+HELD 36/50: it passes the pre-registered 10-start bar on both levels, one_11_13 passes the strict 50-start
+bar on both. Neither holds 1-4.
+st_U3 ck_0044 (joint SEL [13, 15, 14], 00:43): HELD 1-1 25/50, 1-3 15/50, 1-4 37/50. The first checkpoint
+that clears all three practised levels at least sometimes; not consistent on any but 1-4 is close.
