@@ -549,3 +549,17 @@ H25 result (06:48, st_U4 stopped at 69 chunks, past its 3.7 h): **falsified**. N
 ck_0000 (= U3 ck_0083, HELD 15 / 45 / 33). Single-level bests inside it: 1-1 HELD 44/50 (ck_0023), 1-4
 45/50 (ck_0018). Weighting lessons toward 1-1 did not produce a three-level brain.
 st_12n stopped 07:44 (DAgger round past its deadline). Final 1-2 best stays ck_0059, HELD 29/50. All training stopped before 08:00.
+
+## E26. World 2 first sight, no coach, no learning (10/31 16:40, session)
+runs/eval_w2_firstsight: steady.py --eval-only on 2-1 and 2-2, 84 starts each (SEL+TEST+HELD), 2 workers (javaw running).
+Brains: 1-1_U3ck3, U3ck83, U3ck28, 1-2_12n59, one_11_13. **0 flags in all 840 attempts.**
+| brain | 2-1 max x (HELD mean) | 2-2 max x (HELD mean) |
+|---|---|---|
+| 1-1_U3ck3 | 340 (340) | 162 (162) |
+| U3ck83 | 723 (397) | 163 (162) |
+| U3ck28 | 340 (340) | 162 (162) |
+| 1-2_12n59 | 649 (388) | 163 (162) |
+| one_11_13 | 327 (326) | 514 (211) |
+Spot checks (record_fix.py --brain): U3ck28 2-1 start 0 dies after 31 decisions at x 340; U3ck83 2-1 start 3 does not die, ends stuck at the
+first tall pipe x 723 (mostly run, short run+jumps); 2-2 (underwater) ends stuck with mostly noop, x 162 (U3ck28) / 514 (one_11_13, at the coral).
+Imitation on World 1 does not transfer to World 2. Motivates the concepts / goals / learning-from-dying plan.
