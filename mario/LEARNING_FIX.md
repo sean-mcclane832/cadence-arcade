@@ -8,7 +8,8 @@ Best brains (all in mario/brains/, committed):
 - U3ck28.npz (st_U3 ck_0028): 1-4 HELD 50/50 (TEST 10/10), 1-1 HELD 30/50 (TEST 8/10), 1-3 11/50.
 - 1-4_U3ck9.npz (st_U3 ck_0009): 1-4 HELD 42/50 (TEST 9/10); 1-1 and 1-3 0/50.
 - joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
-- 1-2_12m48.npz (st_12m ck_0048): 1-2 HELD 23/50 (TEST 6/10). Best 1-2.
+- 1-2_12n59.npz (st_12n ck_0059): 1-2 HELD 29/50 (TEST 3/10, WIDE 11/20). Best 1-2.
+- 1-2_12m48.npz (st_12m ck_0048): 1-2 HELD 23/50 (TEST 6/10).
 Running: runs/st_U4 (1-1 + 1-3 + 1-4 from brains/U3ck83, rows runs/dV_*, shares 0.45/0.25/0.30) and runs/st_12m (1-2). Continue U4 (new run dir, --init-brain runs/st_U4/best_joint.npz, --data snapshots of runs/st_U4/data_<level>.npz) like:
   cd mario && NUMBA_NUM_THREADS=3 ../.venv-mario/Scripts/python.exe steady.py --out runs/st_U3 --init-brain runs/st_U2/best_joint.npz --data 1-1=runs/fix_cad_body3,1-3=runs/d13d,1-4=runs/d14b --practice 1-1,1-3,1-4 --levels 1-1,1-3,1-4 --chunk 250 --chunks 150 --eta 0.001 --crit 3 --dagger-every 3 --episodes 12 --from-start 0.5 --tie-own --workers 7 --hours 3
   (swap the --data dirs for snapshots of runs/st_U2/data_<level>.npz + that level's coach_paths.json to keep its DAgger rows)
@@ -541,3 +542,6 @@ shares 1-1 0.45, 1-3 0.25, 1-4 0.30; everything else as st_U3.
 H24 result (02:26, st_12m): **holds**. ck_0048: 1-2 SEL 7/24, TEST 6/10, **HELD 23/50** (from 8/50).
 ck_0040: TEST 9/10 but HELD 15/50 (the narrow-band effect again, so not called consistent). The lever
 was the same as on 1-4: ~10 checkpoints tested per DAgger round instead of 2-3.
+st_12m ended (03:58, 3.5 h). Best 1-2 stays ck_0048 (HELD 23/50). Continued as runs/st_12n from ck_0048 with
+its pile (runs/d12f), same recipe, until the 08:00 stop.
+st_12n ck_0059 (06:15): **1-2 HELD 29/50** (SEL 13/24, TEST 3/10, WIDE 11/20), the best 1-2 so far.
