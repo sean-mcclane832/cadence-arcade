@@ -80,6 +80,7 @@ def main():
     ap.add_argument("--clinic", action="store_true"); ap.add_argument("--clinic-max", type=int, default=6)
     ap.add_argument("--survivals", action="store_true"); ap.add_argument("--own-cap", type=float, default=0.2)
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--ignore-games", action="store_true", help="Sean said use the whole PC (10/31 evening): no javaw/hoi4 throttle")
     args = ap.parse_args()
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     logf = open(out / "log.txt", "a", encoding="utf-8")
@@ -249,7 +250,7 @@ def main():
     last_check = time.time()
     for k in range(1, args.chunks + 1):
         if time.time() - last_check > 600 or k == 1:
-            g = gaming(); last_check = time.time()
+            g = gaming() and not args.ignore_games; last_check = time.time()
             if g != R.slow:
                 R.slow = g; numba.set_num_threads(2 if g else 8)
                 log(f"  throttle {'ON (game running): 2 games, 2 threads' if g else 'OFF'}")

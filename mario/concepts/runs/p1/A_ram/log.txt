@@ -1,0 +1,16 @@
+10-31 17:46:59 data 1-1: 2838 rows (713 critical) own 0 from runs/p1/coach_1-1
+10-31 17:46:59 data 1-2: 2519 rows (561 critical) own 0 from runs/p1/coach_1-2
+10-31 17:46:59 data 1-3: 1926 rows (381 critical) own 0 from runs/p1/coach_1-3
+10-31 17:46:59 data 1-4: 1619 rows (325 critical) own 0 from runs/p1/coach_1-4
+10-31 17:46:59 rows stored as ramscreen, brain reads ram
+10-31 17:47:00 fresh brain: 1792 inputs (ram), one region of 256
+10-31 17:47:01 start: {'out': 'runs/p1/A_ram', 'init_brain': None, 'fresh': True, 'width': 256, 'senses': 'ram', 'data': '1-1=runs/p1/coach_1-1,1-2=runs/p1/coach_1-2,1-3=runs/p1/coach_1-3,1-4=runs/p1/coach_1-4', 'practice': None, 'mix': '0.2,0.4,0.2,0.2', 'levels': '1-1,1-2,1-3,1-4', 'chunk': 250, 'chunks': 400, 'hours': 3.2, 'stop_at': None, 'eta': 0.001, 'crit': 3.0, 'dagger_every': 6, 'episodes': 12, 'from_start': 0.67, 'last_all': 60, 'clinic': False, 'clinic_max': 6, 'survivals': False, 'own_cap': 0.2, 'workers': 4, 'ignore_games': True}
+10-31 17:47:19   NEW BEST 1-1 (ck_0000): SEL 0/24 mean 298 | HELD 0/50 mean 298
+10-31 17:47:31   NEW BEST 1-2 (ck_0000): SEL 0/24 mean 163 | HELD 0/50 mean 139
+10-31 17:47:47   NEW BEST 1-3 (ck_0000): SEL 0/24 mean 291 | HELD 0/50 mean 291
+10-31 17:48:05   NEW BEST 1-4 (ck_0000): SEL 0/24 mean 40 | HELD 0/50 mean 40
+10-31 17:48:05   NEW JOINT BEST (ck_0000): SEL [0, 0, 0, 0]
+10-31 17:48:05 chunk 0: 1-1 0/24 m298 1-2 0/24 m163 1-3 0/24 m291 1-4 0/24 m40
+10-31 17:48:43   NEW BEST 1-1 (ck_0001): SEL 0/24 mean 314 | HELD 0/50 mean 314
+10-31 17:48:53   NEW BEST 1-2 (ck_0001): SEL 0/24 mean 179 | HELD 0/50 mean 153
+10-31 17:49:06   NEW BEST 1-3 (ck_0001): SEL 0/24 mean 321 | HELD 0/50 mean 321

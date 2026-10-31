@@ -52,7 +52,7 @@
   <p class="sub"><a href="../">cadence arcade</a> / mario</p>
   <h1>A CADENCE BRAIN CLEARS MARIO LEVELS, SOLO</h1>
   <p class="lede"><b>One brain clears 1-1, 1-3 and 1-4 with the same weights.</b> Brain U3ck83 ("the three-level champion") clears 1-1 on 15, 1-3 on 45 and 1-4 (Bowser) on 33 of 50 starts it never trained on. Specialists do better on single levels (1-4: 50/50). <b>1-2</b> is the hard one: best 29/50, and no brain has cleared all four World 1 levels yet. Every button in every clip is the brain's.</p>
-  <p class="sub">Last updated 2026-10-31 17:30 ET. Brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="sub">Last updated 2026-10-31 17:58 ET. Brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <h2>One brain, three levels</h2>
   <figure><video controls playsinline muted preload="metadata" poster="levels/champ-1-1_poster.png"><source src="levels/champ-1-1.mp4" type="video/mp4"></video><figcaption>U3ck83 clears 1-1 from held-out start 33. 22 s.</figcaption></figure>
@@ -86,11 +86,16 @@
   <p class="dim">Real start of 1-1, five lives. A flag moves on to the next level (1-2, 1-3, 1-4, 2-1 ...); a death restarts the current level; no learning between lives; game over on the fifth death. Retries start a few frames later (the emulator is deterministic, so an identical restart would replay the identical death). "One brain" = the same weights the whole way. Each level starts with small Mario.</p>
   <div class="tw"><table><thead><tr><th>time</th><th>brain</th><th>cleared</th><th>deaths (level: x)</th><th class="n">lives left</th><th>clip</th></tr></thead><tbody>
   <!--GAUNTLET-ROWS-->
+  <tr><td>10/31 17:55</td><td>relay of specialists: 1-1_U3ck3, 1-2_12n59, U3ck83 (1-3), U3ck28 (1-4), U3ck83 (2-1 on)</td><td class="ok">1-1, 1-2, 1-3, 1-4</td><td>1-2: 1,595, 852, 1,336; 2-1: 531 (stuck), 723 (stuck)</td><td class="n">0</td><td><a href="gauntlet/g03_relay.mp4">clip</a></td></tr>
+  <tr><td>10/31 17:52</td><td>U3ck44 (one brain)</td><td>1-1</td><td>1-1: 2,762, 1,784; 1-2: 323, 354, 354 (all stuck)</td><td class="n">0</td><td><a href="gauntlet/g02_U3ck44.mp4">clip</a></td></tr>
   <tr><td>10/31 17:15</td><td>U3ck83 (one brain)</td><td>1-1</td><td>1-2: 322, 470, 322, 893, 354</td><td class="n">0</td><td><a href="gauntlet/g01_U3ck83.mp4">clip</a></td></tr>
   </tbody></table></div>
+  <figure><video controls playsinline muted preload="metadata" poster="gauntlet/g03_relay_poster.png"><source src="gauntlet/g03_relay.mp4" type="video/mp4"></video><figcaption>Relay of specialists (four brains, one per level): all of World 1 in one five-life run, then two lives lost on 2-1, which none of them ever trained on. 1 min 53 s, deaths included.</figcaption></figure>
+  <p class="dim">So far no single brain gets past 1-2 in the gauntlet: the three-level brains have never cleared 1-2.</p>
 
   <h2>Latest</h2>
   <ul class="log">
+    <li><b>10/31 17:55</b> Gauntlet: a relay of specialists (one brain per level) clears all four World 1 levels in one five-life run (1-2 on the fourth try), then dies on 2-1. Single brains stop at 1-2.</li>
     <li><b>10/31 17:30</b> Re-scored every brain on Cadence 0.91.3: identical. Tested the two three-level brains on 1-2: 0 clears in 74 starts each, so "every World 1 level" is not claimed. New: brain roster and a 5-life gauntlet (first one: U3ck83 clears 1-1, then loses all five lives on 1-2).</li>
     <li><b>10/31 16:46</b> First try at World 2 with no coach and no new learning: 0 clears for all five best brains. 2-1: furthest x 723 (stuck at the first tall pipe), most die within 2 seconds. 2-2 (underwater, never seen water): furthest x 514, mostly stops pressing buttons. World 1 skills don't transfer yet. Clips: <a href="levels/w2-firstsight-2-1.mp4">2-1</a>, <a href="levels/w2-firstsight-2-2.mp4">2-2</a>.</li>
     <li><b>10/31 06:15</b> 1-2 up again: 29/50 held-out starts.</li>
