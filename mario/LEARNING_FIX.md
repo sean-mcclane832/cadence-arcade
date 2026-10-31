@@ -4,6 +4,7 @@ Best brains (all in mario/brains/, committed):
 - one_11_13.npz (st_13d ck_0013): 1-1 HELD 40/50 (TEST 8/10), 1-3 HELD 42/50 (TEST 6/10). Best single brain.
 - 1-1_U3ck3.npz (st_U3 ck_0003): 1-1 HELD 46/50 (TEST 10/10), best on 1-1 alone; 1-3 0/24 SEL.
 - joint_11_13_ck8.npz: 1-1 HELD 44/50 (TEST 10/10); 1-3 only one frame phase.
+- U3ck28.npz (st_U3 ck_0028): 1-4 HELD 50/50 (TEST 10/10), 1-1 HELD 30/50 (TEST 8/10), 1-3 11/50.
 - 1-4_U3ck9.npz (st_U3 ck_0009): 1-4 HELD 42/50 (TEST 9/10); 1-1 and 1-3 0/50.
 - joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
 - 1-2: best st_12cw ck_0011, HELD 8/50 (stuck, see "1-2 status").
@@ -497,3 +498,7 @@ st_U3 ck_0009 (brains/1-4_U3ck9.npz), picked as best on 1-4 SEL (19/24): **1-4 T
 It is 0/50 on 1-1 and 1-3: a one-level checkpoint inside the three-level run. Also from st_U3: ck_0003,
 **1-1 HELD 46/50** (TEST 10/10), the best 1-1 so far, 1-3 0/24 SEL. Per-level checkpoints are strong;
 the one-brain question (H23) is still open.
+
+## Milestone (23:48): 1-4 perfect on held-out starts
+st_U3 ck_0028 (brains/U3ck28.npz), the joint pick at the time (SEL [14, 7, 24]): **1-4 SEL 24/24, TEST
+10/10, HELD 50/50**. Same weights: 1-1 TEST 8/10, HELD 30/50; 1-3 TEST 2/10, HELD 11/50.
