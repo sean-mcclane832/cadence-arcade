@@ -2,12 +2,14 @@
 ## RESUME (kept current during the 10/30-31 overnight run)
 Best brains (all in mario/brains/, committed):
 - one_11_13.npz (st_13d ck_0013): 1-1 HELD 40/50 (TEST 8/10), 1-3 HELD 42/50 (TEST 6/10). Best single brain.
+- 1-1_U3ck3.npz (st_U3 ck_0003): 1-1 HELD 46/50 (TEST 10/10), best on 1-1 alone; 1-3 0/24 SEL.
 - joint_11_13_ck8.npz: 1-1 HELD 44/50 (TEST 10/10); 1-3 only one frame phase.
 - joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
 - 1-2: best st_12cw ck_0011, HELD 8/50 (stuck, see "1-2 status").
-Running: runs/st_U2 (one brain for 1-1 + 1-3 + 1-4, from one_11_13). Continue it with:
+Running: runs/st_U3 (one brain for 1-1 + 1-3 + 1-4, from one_11_13, rows runs/dU_*). Continue (new run dir, --init-brain runs/st_U3/best_joint.npz, --data snapshots of runs/st_U3/data_<level>.npz) with:
   cd mario && NUMBA_NUM_THREADS=3 ../.venv-mario/Scripts/python.exe steady.py --out runs/st_U3 --init-brain runs/st_U2/best_joint.npz --data 1-1=runs/fix_cad_body3,1-3=runs/d13d,1-4=runs/d14b --practice 1-1,1-3,1-4 --levels 1-1,1-3,1-4 --chunk 250 --chunks 150 --eta 0.001 --crit 3 --dagger-every 3 --episodes 12 --from-start 0.5 --tie-own --workers 7 --hours 3
   (swap the --data dirs for snapshots of runs/st_U2/data_<level>.npz + that level's coach_paths.json to keep its DAgger rows)
+Showcase page docs/mario/index.html (live /mario/): update its scoreboard, Latest log, "Last updated" and clips in the SAME commit as any result that changes the picture; push; curl-check live. Old 1-1 page: docs/mario/first-1-1.html.
 Score any brain: steady.py --out runs/st_evalX --init-brain x --data x --levels 1-1,1-3 --eval-only <brain.npz>
 <!-- /RESUME -->
 
@@ -483,3 +485,8 @@ E23 restarted (21:15): st_U (from the 1-4 brain) stopped after 2 chunks, before 
 round finished; the better start is one_11_13. runs/st_U2: from brains/one_11_13, rows 1-1
 (fix_cad_body3), 1-3 (runs/d13d = st_13d's final pile, 15,171 rows), 1-4 (runs/d14b), 1/3 each, tie-aware
 DAgger on all three every 3 chunks, joint pick. H23 unchanged (TEST >= 6/10 on all three within 2.5 h).
+E23 st_U2 stopped (22:47, 13 chunks, 4 three-level DAgger cycles of ~25 min): best joint SEL [12, 9, 5]
+(ck_0007; TEST 3/5/0). No checkpoint near TEST 6 on all three yet; fits dropped (1-1 0.84-0.86, 1-3 0.82).
+Change for st_U3: a DAgger cycle costs ~25 min but a checkpoint test ~50 s, and picking checkpoints is
+what has worked, so test 10 checkpoints between DAgger cycles instead of 3. From one_11_13 again, with
+U2's grown piles (runs/dU_<level>). H23 carries over (deadline 01:15).
