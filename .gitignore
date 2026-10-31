@@ -11,3 +11,4 @@ mario/diag/*.npz
 mario/diag/*.out
 mario/diag/*.err
 mario/runs/*.out
+mario/viz/out/

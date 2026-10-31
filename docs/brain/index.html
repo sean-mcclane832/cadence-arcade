@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mario Brain Scope</title>
+<meta name="description" content="Scrub through a Cadence brain playing Super Mario Bros. alone: the game, what the brain sees, and its real recorded neuron activity at every decision.">
+<style>
+:root {
+  --bg: #101218; --panel: #181b23; --line: #2a2e3a; --fg: #e1e4eb; --dim: #8a90a0;
+  --hi: #ffc43d; --sens: #5aaaff; --assoc: #ff963c; --pfc: #aa78ff; --motor: #5adc82; --bad: #ff5a5a;
+}
+:root[data-theme="light"] { --bg: #f4f5f8; --panel: #ffffff; --line: #d8dbe3; --fg: #1b1e26; --dim: #5d6372; --hi: #c98a00; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1180px; margin: 0 auto; padding: 14px 16px 40px; }
+h1 { font-size: 22px; margin: 4px 0 2px; }
+.sub { color: var(--dim); margin: 0 0 12px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tabs button, .ctl button, .ctl select { background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 11px; font: inherit; cursor: pointer; }
+.tabs button.on { border-color: var(--hi); color: var(--hi); }
+.tabs .tag { font-size: 12px; color: var(--dim); margin-left: 4px; }
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+@media (max-width: 820px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+.gamewrap { position: relative; width: 100%; aspect-ratio: 256 / 240; }
+.gamewrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+.status { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: var(--dim); font-size: 13px; margin-top: 6px; }
+.status b { color: var(--fg); }
+.lbl { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: .04em; margin: 2px 0 4px; }
+.lbl small { text-transform: none; letter-spacing: 0; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+.row > div { flex: 1 1 0; min-width: 0; }
+.row.neur > div.wide { flex: 2.4 1 0; }
+@media (max-width: 560px) { .row.neur { display: grid; grid-template-columns: 1fr 1fr; } .row.neur > div.wide { grid-column: 1 / -1; } }
+canvas.px { width: 100%; image-rendering: pixelated; display: block; border-radius: 4px; cursor: crosshair; }
+.reg { font-weight: 600; font-size: 13px; cursor: pointer; }
+.reg.sens { color: var(--sens); } .reg.assoc { color: var(--assoc); } .reg.pfc { color: var(--pfc); } .reg.motor { color: var(--motor); }
+.note { color: var(--dim); font-size: 12px; margin: 2px 0 0; }
+.buttons { display: grid; grid-template-columns: 82px 1fr 46px; gap: 3px 8px; align-items: center; font-size: 13px; }
+.buttons .bar { height: 12px; background: var(--line); border-radius: 3px; position: relative; overflow: hidden; cursor: pointer; }
+.buttons .bar i { position: absolute; top: 0; bottom: 0; background: #737a8c; }
+.buttons .on { color: var(--hi); font-weight: 700; }
+.buttons .bar.on i { background: var(--hi); }
+.buttons .v { color: var(--dim); font-variant-numeric: tabular-nums; text-align: right; }
+.ctl { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin: 12px 0 8px; }
+.ctl label { display: flex; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.ctl .play { min-width: 74px; }
+#timeline { width: 100%; height: 124px; display: block; cursor: pointer; touch-action: none; }
+#trace { width: 100%; height: 120px; display: block; cursor: pointer; touch-action: none; }
+.poke { font-size: 13px; color: var(--dim); margin-top: 6px; min-height: 2.6em; }
+.poke b { color: var(--fg); }
+section.explain { margin-top: 18px; color: var(--fg); }
+section.explain h2 { font-size: 17px; margin: 16px 0 6px; }
+section.explain p, section.explain li { color: var(--dim); max-width: 75ch; }
+section.explain code { color: var(--fg); }
+.loading { color: var(--dim); padding: 30px 0; }
+a { color: var(--sens); }
+.vids { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.vids figure { margin: 0; } .vids video { width: 100%; border-radius: 8px; background: #000; display: block; }
+.vids figcaption { color: var(--dim); font-size: 13px; margin-top: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Mario brain scope</h1>
+  <p class="sub">A Cadence brain (U3ck83) playing Super Mario Bros. alone, no coach. Every number below was recorded from the real brain at each decision. Scrub, play, click neurons.</p>
+  <div class="tabs" id="tabs"></div>
+  <div id="app" class="loading">Loading...</div>
+
+<template id="tpl">
+  <div class="stage">
+    <div class="card">
+      <div class="gamewrap"><canvas id="game" width="256" height="240"></canvas><canvas id="heat" width="256" height="240"></canvas></div>
+      <div class="status"><span>decision <b id="dnum">1</b> / <span id="dtot"></span></span><span>x <b id="xpos"></b></span><span>pressed <b id="press"></b></span></div>
+      <div class="poke" id="poke"></div>
+    </div>
+    <div class="card">
+      <div class="lbl">What it sees <small>(its real input: 26 x 32 grey blocks, 0 = background, shown 3x brighter)</small></div>
+      <div class="row">
+        <div><canvas class="px" id="eyesNow" width="32" height="26"></canvas><div class="note">now</div></div>
+        <div><canvas class="px" id="eyesPrev" width="32" height="26"></canvas><div class="note">previous decision</div></div>
+      </div>
+      <div class="lbl" style="margin-top:8px">Body sense <small>(42 numbers from Mario's body: x speed, y speed, ground/jump/fall/pole, rising, facing, power, hurt/star, time left, held A B right left)</small></div>
+      <canvas class="px" id="body" width="42" height="1" style="height:16px"></canvas>
+      <div class="lbl" style="margin-top:10px">Neurons <small>(final activation after settling; click one, or a region name, for its trace)</small></div>
+      <div class="row neur">
+        <div><span class="reg assoc" data-reg="association">association <span id="nA"></span></span>
+          <canvas class="px" id="assoc" width="16" height="16"></canvas>
+          <div class="note">sorted by the button each one pushes hardest</div></div>
+        <div><span class="reg pfc" data-reg="prefrontal">prefrontal <span id="nP"></span></span>
+          <canvas class="px" id="pfc" width="16" height="16"></canvas>
+          <div class="note">working memory; silent, since predict() reads no live memory</div></div>
+        <div class="wide"><span class="reg sens" data-reg="sensory">sensory <span id="nS"></span></span>
+        <canvas class="px" id="sens" width="65" height="35"></canvas>
+        <div class="note">eyes now | eyes previous | below: body sense, 8 copies</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="ctl">
+    <button class="play" id="play">Play</button>
+    <button id="back" title="previous decision">&lt;</button>
+    <button id="fwd" title="next decision">&gt;</button>
+    <select id="speed"><option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="1" selected>1x (game speed)</option><option value="2">2x</option></select>
+    <label><input type="checkbox" id="salOn"> Poke the brain (saliency)</label>
+  </div>
+  <div class="card">
+    <div class="lbl">Buttons over the whole run <small>(7 motor neurons' activation per decision; white line = the pressed one, green = x progress; click or drag to jump)</small></div>
+    <canvas id="timeline"></canvas>
+  </div>
+  <div class="stage" style="margin-top:14px">
+    <div class="card">
+      <div class="lbl">Buttons now <small>(motor neuron activation; the highest one is pressed)</small></div>
+      <div class="buttons" id="buttons"></div>
+      <div class="lbl" style="margin-top:10px">Settle of this decision <small>(7 motor neurons, step by step)</small></div>
+      <canvas id="settle" class="px" width="300" height="110" style="image-rendering:auto;height:110px"></canvas>
+    </div>
+    <div class="card">
+      <div class="lbl">Trace: <span id="traceName" style="text-transform:none"></span></div>
+      <canvas id="trace"></canvas>
+      <div class="note">Activation over the whole run, cursor at the current decision. Click the trace to jump.</div>
+    </div>
+  </div>
+</template>
+<section class="explain">
+  <h2>Brain-cam videos</h2>
+  <p>The same runs as videos at game speed: game on the left, the recorded brain on the right.</p>
+  <div class="vids"><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-1-clear_poster.jpg" src="clips/u3ck83-1-1-clear.mp4"></video><figcaption>1-1 clear</figcaption></figure><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-4-clear_poster.jpg" src="clips/u3ck83-1-4-clear.mp4"></video><figcaption>1-4 Bowser clear</figcaption></figure><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-1-death_poster.jpg" src="clips/u3ck83-1-1-death.mp4"></video><figcaption>1-1 death</figcaption></figure><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-4-death_poster.jpg" src="clips/u3ck83-1-4-death.mp4"></video><figcaption>1-4 death</figcaption></figure></div>
+  <h2>What you're looking at</h2>
+  <p>The brain is <code>mario/brains/U3ck83.npz</code>: 2,519 neurons in four regions of its connectome (sensory 2,000, association 256, prefrontal 256, motor 7). The same weights clear World 1-1, 1-3 and 1-4. Each run here is a real solo attempt from a fixed start, replayed on the real NES emulator.</p>
+  <ul>
+    <li><b>Decision:</b> every 4 NES frames the brain gets one observation and settles. The most active motor neuron after settling is the button it holds for the next 4 frames.</li>
+    <li><b>Neuron colors:</b> blue is inhibited (about -0.1), black is 0, red to yellow is up to 1.0. Activity is stored at 8 bits, so values are within about 0.002 of the recording.</li>
+    <li><b>Prefrontal is dark on purpose.</b> In this mode the brain answers each screen on its own (Cadence <code>predict</code>, no live memory), so the working-memory region never gets input. That's the real state, not a bug in the page.</li>
+    <li><b>Recording:</b> made with <code>cadence.recording.record_settlements</code>, which runs Cadence's NumPy path. The recorded choice matched the button actually pressed at every decision.</li>
+    <li><b>Poke the brain:</b> for each decision, 4 x 4 block patches of the input (both frames) were blacked out one at a time, 180 patches, and the brain was settled again offline. Red means hiding that spot lowered the activation of the button it pressed (colors scaled per decision; the page prints the biggest drop). The count says how many patches made it press something else. One extra run zeroed the whole body sense.</li>
+  </ul>
+  <p>Code and regeneration steps: <code>mario/viz/</code> in the cadence-arcade repo.</p>
+</section>
+</main>
+<script>
+(() => {
+  "use strict";
+  const BUTTONS = ["noop", "right", "right+jump", "run", "run+jump", "jump", "left"];
+  const STOPS = [[-0.1, [40, 90, 200]], [0, [20, 20, 28]], [0.25, [110, 30, 120]], [0.55, [220, 70, 60]], [0.8, [250, 160, 40]], [1, [255, 245, 150]]];
+  const LUT = new Uint8Array(256 * 3);
+  for (let q = 0; q < 256; q++) {
+    const v = q / 255 * 1.1 - 0.1;
+    let i = 0; while (i < STOPS.length - 2 && v > STOPS[i + 1][0]) i++;
+    const [a, ca] = STOPS[i], [b, cb] = STOPS[i + 1], t = Math.min(1, Math.max(0, (v - a) / (b - a)));
+    for (let c = 0; c < 3; c++) LUT[q * 3 + c] = Math.round(ca[c] + (cb[c] - ca[c]) * t);
+  }
+  const deq = q => q / 255 * 1.1 - 0.1;
+  const $ = id => document.getElementById(id);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const Q = new URLSearchParams(location.search);
+  let R = null, k = 0, playing = false, speed = 1, last = 0, acc = 0, traceSel = null, runs = [];
+
+  async function loadBin(url) {
+    const buf = new Uint8Array(await (await fetch(url)).arrayBuffer());
+    if (buf[0] === 0x1f && buf[1] === 0x8b && "DecompressionStream" in window) {
+      const s = new Blob([buf]).stream().pipeThrough(new DecompressionStream("gzip"));
+      return new Uint8Array(await new Response(s).arrayBuffer());
+    }
+    return buf;  // the server already unzipped it
+  }
+
+  async function loadRun(name) {
+    $("app").className = "loading"; $("app").textContent = "Loading " + name + "...";
+    const meta = await (await fetch("data/" + name + ".json")).json();
+    const [bin, sheets] = await Promise.all([loadBin("data/" + meta.bin), Promise.all(meta.sheets.map(src => new Promise((res, rej) => {
+      const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = "data/" + src; })))]);
+    const view = key => { const L = meta.layout[key]; return bin.subarray(L.offset, L.offset + L.shape.reduce((a, b) => a * b, 1)); };
+    R = { meta, sheets, act: view("act"), eyes: view("eyes"), body: view("body"), settle: view("settle"), sal: view("sal"),
+          N: meta.neurons, S: meta.layout.settle.shape[1], reg: meta.regions };
+    R.motor = Array.from({ length: 7 }, (_, i) => R.reg.motor[0] + i);
+    R.regMean = {};
+    for (const r of ["sensory", "association", "prefrontal", "motor"]) {
+      const [a, b] = R.reg[r], m = new Float32Array(meta.n);
+      for (let d = 0; d < meta.n; d++) { let s = 0; const o = d * R.N; for (let j = a; j < b; j++) s += R.act[o + j]; m[d] = deq(s / (b - a)); }
+      R.regMean[r] = m;
+    }
+    build();
+    k = Math.min(meta.n - 1, Math.max(0, +(Q.get("k") || 1) - 1)); Q.delete("k");
+    if (Q.get("sal") === "1") $("salOn").checked = true;
+    traceSel = { kind: "region", reg: "association" };
+    draw();
+  }
+
+  function build() {
+    const app = $("app"); app.className = ""; app.innerHTML = "";
+    app.appendChild($("tpl").content.cloneNode(true));
+    const m = R.meta;
+    $("dtot").textContent = m.n;
+    $("nA").textContent = "(" + (R.reg.association[1] - R.reg.association[0]) + ")";
+    $("nP").textContent = "(" + (R.reg.prefrontal[1] - R.reg.prefrontal[0]) + ")";
+    $("nS").textContent = "(" + (R.reg.sensory[1] - R.reg.sensory[0]) + ")";
+    const bt = $("buttons"); bt.innerHTML = "";
+    BUTTONS.forEach((b, i) => {
+      bt.insertAdjacentHTML("beforeend", `<span id="bn${i}">${b}</span><div class="bar" id="bb${i}"><i></i></div><span class="v" id="bv${i}"></span>`);
+      $("bb" + i).onclick = () => { traceSel = { kind: "neuron", idx: R.motor[i], name: "motor neuron " + b }; draw(); };
+    });
+    $("play").onclick = () => { playing = !playing; if (playing && k >= m.n - 1) k = 0; last = performance.now(); acc = 0; $("play").textContent = playing ? "Pause" : "Play"; if (playing) requestAnimationFrame(tick); };
+    $("back").onclick = () => seek(k - 1); $("fwd").onclick = () => seek(k + 1);
+    $("speed").onchange = e => speed = +e.target.value;
+    $("salOn").onchange = draw;
+    document.querySelectorAll(".reg").forEach(el => el.onclick = () => { traceSel = { kind: "region", reg: el.dataset.reg }; draw(); });
+    const pick = (id, fn) => { const c = $(id); c.onclick = e => { const r = c.getBoundingClientRect();
+      const x = Math.floor((e.clientX - r.left) / r.width * c.width), y = Math.floor((e.clientY - r.top) / r.height * c.height);
+      const idx = fn(x, y); if (idx != null) { traceSel = { kind: "neuron", idx }; draw(); } }; };
+    pick("assoc", (x, y) => R.reg.association[0] + m.assoc_order[y * 16 + x]);
+    pick("pfc", (x, y) => R.reg.prefrontal[0] + y * 16 + x);
+    pick("sens", (x, y) => {
+      if (y < 26 && x < 32) return y * 32 + x;
+      if (y < 26 && x > 32) return 832 + y * 32 + (x - 33);
+      if (y >= 27 && x < 42) return 1664 + (y - 27) * 42 + x;
+      return null; });
+    scrubber($("timeline"), f => seek(Math.round(f * (m.n - 1))));
+    scrubber($("trace"), f => seek(Math.round(f * (m.n - 1))));
+    window.onresize = draw;
+  }
+
+  function scrubber(c, fn) {
+    let down = false;
+    const go = e => { const r = c.getBoundingClientRect(); fn(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width))); };
+    c.onpointerdown = e => { down = true; c.setPointerCapture(e.pointerId); go(e); };
+    c.onpointermove = e => { if (down) go(e); };
+    c.onpointerup = () => down = false;
+  }
+
+  function seek(d) { k = Math.max(0, Math.min(R.meta.n - 1, d)); draw(); }
+
+  function tick(t) {
+    if (!playing) return;
+    acc += (t - last) / 1000 * 15 * speed; last = t;  // 15 decisions per second = real game speed
+    if (acc >= 1) { const s = Math.floor(acc); acc -= s; k += s;
+      if (k >= R.meta.n - 1) { k = R.meta.n - 1; playing = false; $("play").textContent = "Play"; }
+      draw(); }
+    requestAnimationFrame(tick);
+  }
+
+  function putCells(id, w, h, fill) {
+    const c = $(id), ctx = c.getContext("2d"), img = ctx.createImageData(w, h);
+    for (let i = 0; i < w * h; i++) { const rgb = fill(i); img.data.set(rgb, i * 4); img.data[i * 4 + 3] = 255; }
+    ctx.putImageData(img, 0, 0);
+  }
+  const lutRGB = q => [LUT[q * 3], LUT[q * 3 + 1], LUT[q * 3 + 2]];
+  const greyRGB = q => { const g = Math.min(255, q * 3); return [g, g, g]; };
+
+  function fitCanvas(c) {
+    const dpr = window.devicePixelRatio || 1, r = c.getBoundingClientRect();
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+    if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+    return [c.getContext("2d"), w, h, dpr];
+  }
+
+  function draw() {
+    if (!R) return;
+    const m = R.meta, o = k * R.N, a = m.acts[k];
+    // game frame
+    const g = $("game").getContext("2d"); g.imageSmoothingEnabled = false;
+    const per = m.sheet * m.sheet, si = Math.floor(k / per), j = k % per;
+    g.drawImage(R.sheets[si], (j % m.sheet) * m.fw, Math.floor(j / m.sheet) * m.fh, m.fw, m.fh, 0, 0, 256, 240);
+    // saliency
+    const h = $("heat").getContext("2d"); h.clearRect(0, 0, 256, 240);
+    const salOn = $("salOn").checked;
+    if (salOn) {
+      let mx = 0; for (let i = 0; i < 832; i++) mx = Math.max(mx, R.sal[k * 832 + i]);
+      for (let i = 0; mx > 0 && i < 832; i++) {
+        const v = R.sal[k * 832 + i] / mx; if (v < 0.08) continue;  // scaled to this decision's biggest drop
+        h.fillStyle = `rgba(255,${Math.round(220 - 200 * v)},30,${(0.25 + 0.6 * v).toFixed(3)})`;
+        h.fillRect((i % 32) * 8, 32 + Math.floor(i / 32) * 8, 8, 8);
+      }
+      h.strokeStyle = "rgba(255,255,255,.5)"; h.setLineDash([3, 3]); h.strokeRect(0.5, 32.5, 255, 207); h.setLineDash([]);
+      $("poke").innerHTML = `Blacking out a 4x4 patch changed its button in <b>${m.flips[k]} of ${m.n_patch}</b> patches. ` +
+        `Body sense zeroed: button <b>${m.body_flip[k] ? "changes" : "stays the same"}</b>. Red = hiding that spot lowers its pick (${BUTTONS[a]}); colors are scaled to this decision's biggest drop, ${(mx / 255 * m.sal_scale).toFixed(3)} in activation.`;
+    } else {
+      $("poke").textContent = "Tip: turn on \"Poke the brain\" to see which parts of the screen this decision depended on.";
+    }
+    $("dnum").textContent = k + 1; $("xpos").textContent = m.xs[k]; $("press").textContent = BUTTONS[a];
+    // inputs
+    putCells("eyesNow", 32, 26, i => greyRGB(R.eyes[k * 832 + i]));
+    putCells("eyesPrev", 32, 26, i => greyRGB(R.eyes[Math.max(0, k - 1) * 832 + i]));
+    putCells("body", 42, 1, i => { const q = R.body[k * 42 + i]; return q > 5 ? [q / 3, q, q * 0.85] : [34, 36, 44]; });
+    // neurons
+    putCells("assoc", 16, 16, i => lutRGB(R.act[o + R.reg.association[0] + m.assoc_order[i]]));
+    putCells("pfc", 16, 16, i => lutRGB(R.act[o + R.reg.prefrontal[0] + i]));
+    putCells("sens", 65, 35, i => { const x = i % 65, y = Math.floor(i / 65); let n = null;
+      if (y < 26 && x < 32) n = y * 32 + x; else if (y < 26 && x > 32) n = 832 + y * 32 + x - 33; else if (y >= 27 && x < 42) n = 1664 + (y - 27) * 42 + x;
+      return n == null ? [0, 0, 0] : lutRGB(R.act[o + n]); });
+    // buttons
+    for (let i = 0; i < 7; i++) {
+      const v = deq(R.act[o + R.motor[i]]), on = i === a;
+      const z0 = 0.1 / 1.1 * 100, z1 = (v + 0.1) / 1.1 * 100;
+      const bar = $("bb" + i).firstChild; bar.style.left = Math.min(z0, z1) + "%"; bar.style.width = Math.abs(z1 - z0) + "%";
+      $("bb" + i).classList.toggle("on", on); $("bn" + i).classList.toggle("on", on);
+      $("bv" + i).textContent = (v >= 0 ? "+" : "") + v.toFixed(2);
+    }
+    drawSettle(a); drawTimeline(); drawTrace();
+  }
+
+  function drawSettle(a) {
+    const [c, w, h, dpr] = fitCanvas($("settle")), S = R.S, base = k * S * 7;
+    c.clearRect(0, 0, w, h);
+    c.strokeStyle = css("--line"); c.strokeRect(0.5, 0.5, w - 1, h - 1);
+    const y = v => h - 4 * dpr - (h - 8 * dpr) * (v + 0.1) / 1.1;
+    c.strokeStyle = css("--line"); c.beginPath(); c.moveTo(0, y(0)); c.lineTo(w, y(0)); c.stroke();
+    for (const i of [0, 1, 2, 3, 4, 5, 6].filter(i => i !== a).concat([a])) {
+      c.strokeStyle = i === a ? css("--hi") : "#6b7182"; c.lineWidth = (i === a ? 2.5 : 1) * dpr; c.beginPath();
+      for (let s = 0; s < S; s++) { const X = s / (S - 1) * w, Y = y(deq(R.settle[base + s * 7 + i])); s ? c.lineTo(X, Y) : c.moveTo(X, Y); }
+      c.stroke();
+    }
+    c.fillStyle = css("--dim"); c.font = `${11 * dpr}px system-ui`; c.fillText(`step 0 to ${S - 1}`, 6 * dpr, 14 * dpr);
+  }
+
+  function drawTimeline() {
+    const [c, w, h, dpr] = fitCanvas($("timeline")), m = R.meta, n = m.n;
+    c.clearRect(0, 0, w, h);
+    const top = 4 * dpr, rows = 7, rh = (h - 26 * dpr) / rows, cw = w / n;
+    for (let d = 0; d < n; d++) {
+      for (let i = 0; i < rows; i++) {
+        const q = R.act[d * R.N + R.motor[i]];
+        c.fillStyle = `rgb(${LUT[q * 3]},${LUT[q * 3 + 1]},${LUT[q * 3 + 2]})`;
+        c.fillRect(d * cw, top + i * rh, Math.ceil(cw), Math.ceil(rh));
+      }
+    }
+    // the pressed button per decision as a thin line on top
+    c.strokeStyle = "rgba(255,255,255,.9)"; c.lineWidth = 1.5 * dpr; c.beginPath();
+    for (let d = 0; d < n; d++) { const Y = top + (m.acts[d] + 0.5) * rh; d ? c.lineTo((d + 0.5) * cw, Y) : c.moveTo(0.5 * cw, Y); }
+    c.stroke();
+    // x progress
+    const xmax = Math.max(...m.xs, m.max_x), yb = h - 4 * dpr, hb = 14 * dpr;
+    c.strokeStyle = css("--motor"); c.lineWidth = 1.5 * dpr; c.beginPath();
+    for (let d = 0; d < n; d++) { const Y = yb - hb * m.xs[d] / xmax; d ? c.lineTo((d + 0.5) * cw, Y) : c.moveTo(0, Y); }
+    c.stroke();
+    // end marker
+    const end = m.end, ex = w - 2 * dpr;
+    c.fillStyle = end === "flag" ? css("--motor") : css("--bad");
+    c.fillRect(ex - 3 * dpr, 0, 4 * dpr, h);
+    c.font = `bold ${11 * dpr}px system-ui`; c.textAlign = "right";
+    c.fillText(end === "flag" ? "FLAG" : end === "died" ? "DIED" : "STUCK", ex - 6 * dpr, h - 6 * dpr);
+    c.textAlign = "left"; c.fillStyle = css("--dim"); c.font = `${10 * dpr}px system-ui`;
+    if (h > 60 * dpr && w > 400 * dpr) BUTTONS.forEach((b, i) => { c.fillStyle = "rgba(255,255,255,.55)"; c.fillText(b, 4 * dpr, top + (i + 0.75) * rh); });
+    // cursor
+    c.fillStyle = css("--hi"); c.fillRect((k + 0.5) * cw - dpr, 0, 2 * dpr, h);
+  }
+
+  function drawTrace() {
+    const [c, w, h, dpr] = fitCanvas($("trace")), m = R.meta, n = m.n;
+    c.clearRect(0, 0, w, h);
+    let vals, name, col;
+    if (traceSel.kind === "region") {
+      vals = R.regMean[traceSel.reg]; const [a, b] = R.reg[traceSel.reg];
+      name = `mean of region ${traceSel.reg} (${b - a} neurons)`; col = css({ sensory: "--sens", association: "--assoc", prefrontal: "--pfc", motor: "--motor" }[traceSel.reg]);
+    } else {
+      const idx = traceSel.idx; vals = new Float32Array(n);
+      for (let d = 0; d < n; d++) vals[d] = deq(R.act[d * R.N + idx]);
+      const reg = Object.entries(R.reg).find(([r, [a, b]]) => r !== "motor_actions" && idx >= a && idx < b);
+      name = traceSel.name || `neuron #${idx}, region ${reg ? reg[0] : "?"}`;
+      if (reg && reg[0] === "motor") name = `motor neuron ${BUTTONS[idx - R.reg.motor[0]]} (#${idx})`;
+      if (reg && reg[0] === "association") name += `, pushes "${BUTTONS[m.assoc_pref[m.assoc_order.indexOf(idx - R.reg.association[0])]]}" hardest`;
+      col = css("--hi");
+    }
+    $("traceName").textContent = name + `, now ${vals[k].toFixed(3)}`;
+    let lo = Math.min(0, ...vals), hi = Math.max(0.05, ...vals); const pad = 6 * dpr;
+    const Y = v => h - pad - (h - 2 * pad) * (v - lo) / (hi - lo || 1);
+    c.strokeStyle = css("--line"); c.beginPath(); c.moveTo(0, Y(0)); c.lineTo(w, Y(0)); c.stroke();
+    c.strokeStyle = col; c.lineWidth = 1.5 * dpr; c.beginPath();
+    for (let d = 0; d < n; d++) { const X = (d + 0.5) / n * w; d ? c.lineTo(X, Y(vals[d])) : c.moveTo(X, Y(vals[d])); }
+    c.stroke();
+    c.fillStyle = css("--dim"); c.font = `${10 * dpr}px system-ui`;
+    c.fillText(hi.toFixed(2), 4 * dpr, pad + 8 * dpr); c.fillText(lo.toFixed(2), 4 * dpr, h - pad);
+    c.fillStyle = css("--hi"); c.fillRect((k + 0.5) / n * w - dpr, 0, 2 * dpr, h);
+  }
+
+  document.addEventListener("keydown", e => {
+    if (!R || e.target.tagName === "SELECT") return;
+    if (e.key === "ArrowRight") seek(k + 1); else if (e.key === "ArrowLeft") seek(k - 1);
+    else if (e.key === " ") { e.preventDefault(); $("play").click(); }
+  });
+
+  (async () => {
+    try {
+      runs = await (await fetch("data/runs.json")).json();
+      const tabs = $("tabs");
+      runs.forEach((r, i) => {
+        const b = document.createElement("button");
+        b.innerHTML = `${r.title}<span class="tag">${r.n} decisions</span>`;
+        b.onclick = () => { document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("on")); b.classList.add("on"); playing = false; loadRun(r.name); };
+        tabs.appendChild(b);
+      });
+      let first = Math.max(0, runs.findIndex(r => r.name === Q.get("run")));
+      tabs.children[first].classList.add("on");
+      await loadRun(runs[first].name);
+    } catch (err) {
+      $("app").textContent = "Couldn't load the run data (" + err + "). If you opened the file directly, serve the folder instead: python -m http.server";
+    }
+  })();
+})();
+</script>
+</body>
+</html>
