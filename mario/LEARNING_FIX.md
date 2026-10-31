@@ -4,6 +4,7 @@ Best brains (all in mario/brains/, committed):
 - one_11_13.npz (st_13d ck_0013): 1-1 HELD 40/50 (TEST 8/10), 1-3 HELD 42/50 (TEST 6/10). Best single brain.
 - 1-1_U3ck3.npz (st_U3 ck_0003): 1-1 HELD 46/50 (TEST 10/10), best on 1-1 alone; 1-3 0/24 SEL.
 - joint_11_13_ck8.npz: 1-1 HELD 44/50 (TEST 10/10); 1-3 only one frame phase.
+- 1-4_U3ck9.npz (st_U3 ck_0009): 1-4 HELD 42/50 (TEST 9/10); 1-1 and 1-3 0/50.
 - joint_11_14_ck10.npz: 1-4 HELD 38/50 (TEST 8/10); 1-1 23/50.
 - 1-2: best st_12cw ck_0011, HELD 8/50 (stuck, see "1-2 status").
 Running: runs/st_U3 (one brain for 1-1 + 1-3 + 1-4, from one_11_13, rows runs/dU_*). Continue (new run dir, --init-brain runs/st_U3/best_joint.npz, --data snapshots of runs/st_U3/data_<level>.npz) with:
@@ -490,3 +491,9 @@ E23 st_U2 stopped (22:47, 13 chunks, 4 three-level DAgger cycles of ~25 min): be
 Change for st_U3: a DAgger cycle costs ~25 min but a checkpoint test ~50 s, and picking checkpoints is
 what has worked, so test 10 checkpoints between DAgger cycles instead of 3. From one_11_13 again, with
 U2's grown piles (runs/dU_<level>). H23 carries over (deadline 01:15).
+
+## Milestone (22:58): 1-4 consistent on both bars
+st_U3 ck_0009 (brains/1-4_U3ck9.npz), picked as best on 1-4 SEL (19/24): **1-4 TEST 9/10, HELD 42/50**.
+It is 0/50 on 1-1 and 1-3: a one-level checkpoint inside the three-level run. Also from st_U3: ck_0003,
+**1-1 HELD 46/50** (TEST 10/10), the best 1-1 so far, 1-3 0/24 SEL. Per-level checkpoints are strong;
+the one-brain question (H23) is still open.
