@@ -452,3 +452,17 @@ TEST start 32). **H21 holds** (first SEL flag at chunk 5, 26 min). But the same 
 2/10, HELD 23/50 and 1-3 0/50: the joint pick traded 1-1 for 1-4. Earlier in the same run ck_0008 had
 1-1 HELD 45/50 with 1-4 at 0. One brain per level so far; no checkpoint yet holds two levels at once
 on the strict bar.
+
+## E23. One brain for three levels (pre-registered 20:56)
+runs/st_U: from brains/joint_11_14_ck10, rows 1-1 (runs/fix_cad_body3), 1-3 (runs/d13c, st_13d's pile)
+and 1-4 (runs/d14b, st_14b's pile), lessons 1/3 each, a tie-aware DAgger round on EACH of the three
+levels every 3 chunks, picked by the joint rule (weakest level's SEL flags first).
+- H23: some joint-best checkpoint reaches TEST >= 6/10 on all three levels within 2.5 h. Falsified if
+  none does (then per-level brains are what it takes, at this size and setup).
+
+## Milestone (20:55): one brain holds 1-1 and 1-3 on the strict bar
+runs/st_13d ck_0013 (brains/one_11_13.npz), picked by the joint SEL rule (SEL [15, 19] of 24), never on
+TEST or HELD: **1-1 TEST 8/10, HELD 40/50; 1-3 TEST 6/10, HELD 42/50.** The same weights clear both
+levels on >= 80% of held-out starts. On the pre-registered 10-start TEST bar, 1-3 misses (6/10).
+The best 1-3-only checkpoint (ck_0012: 1-3 TEST 9/10, HELD 28/50) has 1-1 at 0/50, so the joint pick
+mattered. **H20 holds** (1-3 TEST >= 6/10 with 1-1 HELD >= 40/50 at the same checkpoint).
