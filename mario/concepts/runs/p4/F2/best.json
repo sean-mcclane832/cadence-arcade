@@ -1,11 +1,11 @@
 {
  "1-1": {
-  "ckpt": "ck_0031.npz",
-  "chunk": 31,
-  "sel_flags": 18,
-  "sel_mean": 2996,
-  "held_flags": 28,
-  "held_mean": 2675
+  "ckpt": "ck_0066.npz",
+  "chunk": 66,
+  "sel_flags": 21,
+  "sel_mean": 3080,
+  "held_flags": 43,
+  "held_mean": 3094
  },
  "1-2": {
   "ckpt": "ck_0018.npz",
@@ -24,26 +24,26 @@
   "held_mean": 1468
  },
  "1-4": {
-  "ckpt": "ck_0041.npz",
-  "chunk": 41,
-  "sel_flags": 22,
-  "sel_mean": 2235,
-  "held_flags": 44,
-  "held_mean": 2223
+  "ckpt": "ck_0062.npz",
+  "chunk": 62,
+  "sel_flags": 24,
+  "sel_mean": 2260,
+  "held_flags": 43,
+  "held_mean": 2230
  },
  "joint": {
-  "ckpt": "ck_0052.npz",
-  "chunk": 52,
+  "ckpt": "ck_0087.npz",
+  "chunk": 87,
   "key": [
    4,
-   40,
-   7862
+   43,
+   8569
   ],
   "sel": [
    11,
+   10,
    4,
-   5,
-   20
+   18
   ]
  }
 }
