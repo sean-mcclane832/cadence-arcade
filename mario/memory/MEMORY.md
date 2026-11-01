@@ -292,7 +292,8 @@ brains0/AgrippaX_ck0.npz, out runs/night2/AgrippaX. Sean 15:15: same wall-clock 
   place part (memory_choice with memory_demonstrations=0): its place/context records are also never written in
   training. End-of-night: AgrippaX's checkpoints are where the retry curves (store live at play) get read.
 - Parity check: AgrippaX's chunk 0 line (mtrain's own SEL eval path, real x at play) must read 1-1 20/24 m2970, 1-2 7/24
-  m1730, 1-3 9/24 m1812, 1-4 11/24 m2159, as Cato / Cicero / Livy did.
+  m1730, 1-3 9/24 m1812, 1-4 11/24 m2159, as Cato / Cicero / Livy did. **PASS (15:16): identical on all four levels; HELD
+  50 / 11 / 6 / 25 = W1_F2ck110.**
 - Note for the new owner (14:46): the first night2 DAgger round took 1,110 s for 1-1 alone (8 attempts, 2 workers;
   coach labelling is the slow part). Four levels means ~70 min of DAgger every 6 chunks per arm. Consider fewer episodes
   or less frequent rounds if the arms look starved of lessons.
