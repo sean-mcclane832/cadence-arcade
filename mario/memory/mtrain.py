@@ -34,7 +34,7 @@ SEL, HELD, POOL = C.SEL, C.HELD, C.POOL
 P4 = HERE.parent / "concepts" / "runs" / "p4"
 PILES = {"1-1": P4 / "pile_1-1" / "data.npz", "1-2": P4 / "pile_1-2" / "data.npz", "1-3": P4 / "F2" / "data_1-3.npz",
          "1-4": P4 / "pile_1-4" / "data.npz"}  # exactly W1_F2ck110's lesson piles (F2 grew 1-3)
-SLOTS = HERE / "runs" / "night" / "slots"
+SLOTS = HERE / "runs" / "night2" / "slots"
 
 
 class Seq:

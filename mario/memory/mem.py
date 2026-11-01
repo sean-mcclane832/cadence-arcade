@@ -33,13 +33,16 @@ ECHO = dict(history_decays=(0.9,))
 SPECS = {
     "Cato": dict(compose={}, tune=dict(working_memory_amplitude=0.0), parts=[]),
     "Agrippa": dict(compose=dict(PLACE, memory_context=0.0), tune=dict(working_memory_amplitude=0.0), parts=["place"]),
+    # exploratory (14:20): sparser place keys, to test whether key locality is the bottleneck
+    "AgrippaSparse": dict(compose=dict(PLACE, memory_context=0.0, memory_expansion=4096, memory_winners=8),
+                          tune=dict(working_memory_amplitude=0.0), parts=["place"]),
     "Cicero": dict(compose=dict(EFF), tune=dict(working_memory_amplitude=3.0), parts=["thought", "button"]),
     "Livy": dict(compose=dict(EFF, **ECHO, **PLACE), tune=dict(working_memory_amplitude=3.0),
                  parts=["thought", "button", "echo", "place"]),
 }
 PART_OFF = {"thought": dict(working_memory_amplitude=0.0), "button": dict(efference_amplitude=0.0),
             "echo": dict(history_amplitude=0.0), "place": dict(memory_amplitude=0.0)}
-RETRY = (0, 37, 83, 110, 131, 151, 173, 197, 211, 229)  # idle frames per life (gauntlet.py's 5, extended)
+RETRY = (0, 37, 83, 110, 131, 151, 173, 197, 211, 19)  # idle frames per life (gauntlet.py's 5, extended)
 
 
 def _arrays(path):
@@ -276,20 +279,41 @@ def mem_decays(b):
     return d_h, d_e
 
 
+HELD_ACTION = {(0, 0, 0, 0): 0, (0, 0, 1, 0): 1, (1, 0, 1, 0): 2, (0, 1, 1, 0): 3, (1, 1, 1, 0): 4, (1, 0, 0, 0): 5,
+               (0, 0, 0, 1): 6}  # body sense held bits (A, B, right, left) -> the action pressed last
+
+
+def last_action(o_uint8):
+    bits = tuple(int(v > 127) for v in o_uint8[1664 + 38:1664 + 42])
+    return HELD_ACTION.get(bits, 0)
+
+
+def _static(O):
+    """A pile row (no order known): the stationary guess. History = this screen, button memory = the button the body
+    sense says was pressed last (as if held), thought memory = burn-in on this same screen."""
+    return O[0].astype(np.float64) / 255.0, onehot(last_action(O[0]))
+
+
 def set_exact(b, items, ts, d_h, d_e):
     B = len(items)
     if d_h is None and d_e is None:
         return
     Hs, Es = [], []
     for (O, A, _), t in zip(items, ts):
-        H, E = _exact(O, A, t, d_h, d_e); Hs.append(H); Es.append(E)
+        if len(A) == 0:
+            H, E = _static(O)
+        else:
+            H, E = _exact(O, A, t, d_h, d_e)
+        Hs.append(H); Es.append(E)
     if d_h is not None:
         b.history.trace = np.stack(Hs)
     if d_e is not None:
         e = b.efference
         e.trace = np.stack(Es); e.last = np.zeros((B, 7)); e.cold = np.zeros(B, bool)
         for r, ((O, A, _), t) in enumerate(zip(items, ts)):
-            if t > 0:
+            if len(A) == 0:
+                e.last[r, last_action(O[0])] = 1.0
+            elif t > 0:
                 e.last[r, int(A[t - 1])] = 1.0
             else:
                 e.cold[r] = True
@@ -299,7 +323,8 @@ def prime(b, items, K):
     """Bring every stream to decision i of its attempt: K greedy burn-in acts on the K previous observations (the
     working trace needs real settles), exact heard history and efference copy (these are fixed functions of what
     was seen and pressed). items: list of (O uint8 (n, 2000), A actions (n,), i). Rows with i - j < 0 have their
-    trace cleared after that act (attempt start). Returns the target observations (B, 2000) as floats."""
+    trace cleared after that act (attempt start). Pile rows (A empty) get the stationary guess (_static).
+    Returns the target observations (B, 2000) as floats."""
     d_h, d_e = mem_decays(b)
     B = len(items)
     b.reset()
@@ -309,7 +334,7 @@ def prime(b, items, K):
         x = np.stack([O[t] for (O, _, _), t in zip(items, tt)]).astype(np.float64) / 255.0
         set_exact(b, items, tt, d_h, d_e)
         b.act(x, greedy=True)
-        neg = np.array([r for r, t in enumerate(ts) if t < 0], np.int64)
+        neg = np.array([r for r, (t, it) in enumerate(zip(ts, items)) if t < 0 and len(it[1])], np.int64)
         if len(neg) and b.working_memory is not None:
             b.working_memory.reset(B, neg)
     set_exact(b, items, [i for (_, _, i) in items], d_h, d_e)

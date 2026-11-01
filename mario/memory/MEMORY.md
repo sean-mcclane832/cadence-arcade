@@ -4,7 +4,9 @@
   every memory brain starts as W1_F2ck110. Burn-in K=3 (K=1 already 0.9995). Blame: Cadence's write reaches the decisive
   move in 3 of 10 deaths -> OUR blame window (5..30 back) in the retry curves. Place keys overlap ~0.5 even 20 tiles apart.
 - RUNNING: night arms Cato / Cicero / Livy (runs/night, stop 05:45). Agrippa retry curves (runs/p0_retry_*.json).
-- Next: retry-curve answer -> text Sean; gauntlets every ~90 min.
+- Retry answer (14:13): place memory LOSES (life-10 +162 on 1-2, +127 on 2-1, bar +300). Texted Sean. Exploratory sparse keys running.
+- Night restarted 13:58 as runs/night2 (pile rows get a stationary memory guess; v1 thought memory broke play).
+- Next: gauntlets every ~90 min.
 <!-- /RESUME -->
 
 # Memory brains (2026-11-01 night)
@@ -102,6 +104,12 @@ best, stop 05:45 (leaves time for end-of-night retry curves, ablations, gauntlet
 (runs/seq, 13:34): 1-1 776, 1-2 703, 1-3 565, 1-4 471 labelled rows in 22 replayed coach paths.
 Agrippa retry curves running alongside (3 workers): blame window keep vs control, then keep without blame (exploratory).
 
+Correction (13:55): both retry runs CRASHED (ValueError "cannot step in a done environment" while building the game).
+Cause: life 10's offset of 229 idle frames on top of held starts 90 and 95 on 1-2 (319 / 324 idle frames) ends the game
+before the first decision. Checked every start x offset on 1-2 and 2-1: only those two fail. Fix: life 10's offset is 19
+(all offsets now 0, 37, 83, 110, 131, 151, 173, 197, 211, 19, every combination checked). Reran 13:57, KEEP + blame vs
+CONTROL first, then the no-blame KEEP arm. Thanks to the main session for catching it.
+
 ### 0.5 Agrippa retry curves vs reload control (pre-registered 13:50, before any retry result)
 Agrippa (W1_F2ck110's weights + place memory, nothing trained), 10 lives in a row from each of 8 held starts
 (32, 35, 38, 41, 80, 85, 90, 95) on 1-2 and on 2-1. Life i starts after start + (0, 37, 83, 110, 131, 151, 173, 197,
@@ -116,3 +124,41 @@ running best), median over starts, clears per life.
 Lesson-speed note (13:55): Livy (history block of 2,000 neurons) costs ~3x Cato per lesson (0.38 s vs 0.14 s per
 primed batch of 32 on 2 threads). Arms get equal workers and equal hours, so Livy gets fewer lessons. That is the
 honest price of the echo, and it goes in the scoreboard.
+
+### Night, first chunks (13:55)
+All three arms play chunk 0 identically (SEL 20 / 7 / 9 / 11, HELD 50 / 11 / 6 / 25 = W1_F2ck110), the parity check
+in the live driver. After chunk 1: Cato 7 / 2 / 2 / 20, Cicero 0 / 0 / 10 / 7, Livy 0 / 1 / 0 / 0 (SEL of 24). Read with
+care: W1_F2ck110 is a SEL-picked peak of a line that swings wildly chunk to chunk (F2 chunks 100-111 on 1-1 SEL: 12, 14,
+4, 12, 24, 21, 5, 5, 8, 4, 20, 6). So falling off the peak is expected for every arm, and the plan's "Cato itself gets
+worse" branch (fallback: SEL mean x +15%) may well apply. Livy's all-level drop is the biggest; watching it.
+
+### Correction (13:58): night restarted as runs/night2 (v1 in runs/night, stopped after 2-3 chunks)
+Diagnostic on v1's Cicero ck3 (1-1 SEL, runs/diag_cicero3_1-1.json): memory on 0/24 mean 1,247; button memory off
+0/24 mean 1,216; **thought memory off 11/24 mean 2,735**. So the thought-memory synapses had already learned something
+that breaks play. Likely cause: half of every lesson batch was pile rows taught with ALL memories empty (no order known),
+a state that never occurs in play after the first decision, while the thought synapses grew from the few ordered rows.
+Fix (all arms, same driver): pile rows get a stationary guess instead of empty memory: thought memory = K burn-in acts
+on that same screen, echo = that screen, button memory = the button the body sense says was pressed last (the held
+bits are already an input, so nothing new leaks). Ordered rows unchanged (exact). All three arms restarted from ck0 at
+13:58 in runs/night2. (An attempt to restart into runs/night appended ~1 min of log there before I stopped it; ignore
+the tail of runs/night/*.out.)
+
+### 0.5 Result: Agrippa retry curves (14:13, runs/p0_retry_blame.json). **Place memory loses its pre-registered test.**
+Median max x per life over 8 held starts (lives 1..10), KEEP (records kept, + OUR blame window) vs CONTROL (reloaded):
+| level | arm | median max x, lives 1-10 | clears per life | starts cleared at least once |
+|---|---|---|---|---|
+| 1-2 | KEEP | 1197, 989, 863, 863, 870, 745, 861, 376, 862, **1271** | 1,1,0,2,0,0,0,0,1,1 (6) | 3 of 8 |
+| 1-2 | CONTROL | 1197, 1152, 1110, 1097, 1320, 1333, 459, 865, 70, **1109** | 1,2,0,1,0,2,0,1,0,0 (7) | 5 of 8 |
+| 2-1 | KEEP | 396, 335, 397, 338, 341, 343, 338, 338, 340, **464** | 0 | 0 |
+| 2-1 | CONTROL | 396, 531, 530, 399, 402, 396, 341, 530, 530, **337** | 0 | 0 |
+- Life 10: +162 on 1-2, +127 on 2-1 (bar: +300). One start (1-2/85) KEEP cleared and CONTROL never did, but CONTROL
+  cleared three starts KEEP never did (41, 80, 95): that clause reads as noise, not a win. Over lives 2-9 KEEP is mostly
+  BELOW the control on 1-2 (mean x 776 / 745 / 770 / 555 vs 1,108 / 1,456 / 560 / 921 at lives 5-8).
+- Read: with keys this overlapping (0.5 across the level), every death says "the button I died on is bad" nearly
+  everywhere, mostly run / run+jump, so the records push the brain off its good habits as often as off the mistake.
+- Offset artifact, both arms: lives 7-9 (172-211 idle frames) often die at x 60-80 right after the start (an enemy
+  reaches an idle Mario). Same for KEEP and CONTROL, so the comparison stands; the absolute numbers there are low.
+- Texted Sean 14:14.
+Exploratory (labelled, not pre-registered): AgrippaSparse = same but memory_expansion 4096, memory_winners 8 (key cosine
+at 1 / 5 / 20 / 60 decisions apart: 0.61 / 0.41 / 0.37 / 0.31 vs Agrippa's 0.75 / 0.58 / 0.53 / 0.48), and Agrippa KEEP
+without our blame window. Running.
