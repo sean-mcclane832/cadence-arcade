@@ -15,3 +15,4 @@ mario/concepts/runs/**/*.npz
 mario/concepts/runs/*.npz
 mario/concepts/runs/**/*.out
 mario/concepts/runs/*.out
+mario/viz/out/

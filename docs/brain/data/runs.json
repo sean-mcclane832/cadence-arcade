@@ -1,0 +1,34 @@
+[
+ {
+  "name": "u3ck83-1-1-clear",
+  "title": "1-1 clear",
+  "end": "flag",
+  "level": "1-1",
+  "max_x": 3161,
+  "n": 317
+ },
+ {
+  "name": "u3ck83-1-4-clear",
+  "title": "1-4 Bowser clear",
+  "end": "flag",
+  "level": "1-4",
+  "max_x": 2252,
+  "n": 199
+ },
+ {
+  "name": "u3ck83-1-1-death",
+  "title": "1-1 death",
+  "end": "died",
+  "level": "1-1",
+  "max_x": 1801,
+  "n": 173
+ },
+ {
+  "name": "u3ck83-1-4-death",
+  "title": "1-4 death",
+  "end": "died",
+  "level": "1-4",
+  "max_x": 2071,
+  "n": 174
+ }
+]
