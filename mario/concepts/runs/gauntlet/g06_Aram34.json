@@ -1,0 +1,82 @@
+{
+ "name": "A_ram ck34 (RAM CHEAT)",
+ "label": "one brain, RAM CHEAT",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\concepts\\runs\\gauntlet\\g06_brain.npz"
+ },
+ "lives": 5,
+ "cleared": [
+  "1-1"
+ ],
+ "furthest": "1-2",
+ "deaths": {
+  "1-2": [
+   1651,
+   291,
+   676,
+   673,
+   851
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "A_ram ck34 (RAM CHEAT)",
+   "start": 0,
+   "end": "flag",
+   "x": 3161,
+   "decisions": 278,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "A_ram ck34 (RAM CHEAT)",
+   "start": 0,
+   "end": "died",
+   "x": 1651,
+   "decisions": 213,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "A_ram ck34 (RAM CHEAT)",
+   "start": 37,
+   "end": "stuck",
+   "x": 291,
+   "decisions": 65,
+   "lives_before": 4
+  },
+  {
+   "level": "1-2",
+   "brain": "A_ram ck34 (RAM CHEAT)",
+   "start": 83,
+   "end": "died",
+   "x": 676,
+   "decisions": 57,
+   "lives_before": 3
+  },
+  {
+   "level": "1-2",
+   "brain": "A_ram ck34 (RAM CHEAT)",
+   "start": 110,
+   "end": "died",
+   "x": 673,
+   "decisions": 57,
+   "lives_before": 2
+  },
+  {
+   "level": "1-2",
+   "brain": "A_ram ck34 (RAM CHEAT)",
+   "start": 131,
+   "end": "died",
+   "x": 851,
+   "decisions": 99,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 16,
+ "when": "2026-10-31 21:23",
+ "clip": "g06_Aram34.mp4",
+ "clip_seconds": 51.6
+}
