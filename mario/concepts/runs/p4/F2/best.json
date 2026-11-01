@@ -24,26 +24,26 @@
   "held_mean": 1468
  },
  "1-4": {
-  "ckpt": "ck_0001.npz",
-  "chunk": 1,
-  "sel_flags": 20,
-  "sel_mean": 2138,
-  "held_flags": 43,
-  "held_mean": 2159
+  "ckpt": "ck_0041.npz",
+  "chunk": 41,
+  "sel_flags": 22,
+  "sel_mean": 2235,
+  "held_flags": 44,
+  "held_mean": 2223
  },
  "joint": {
-  "ckpt": "ck_0039.npz",
-  "chunk": 39,
+  "ckpt": "ck_0052.npz",
+  "chunk": 52,
   "key": [
-   2,
-   38,
-   7557
+   4,
+   40,
+   7862
   ],
   "sel": [
-   18,
-   2,
-   3,
-   15
+   11,
+   4,
+   5,
+   20
   ]
  }
 }

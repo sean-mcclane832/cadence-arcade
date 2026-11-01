@@ -95,6 +95,7 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g11 | 01:51 EST | W1_F2ck20 (all four levels on HELD) | one brain | none | 1-1: 2850, 2759, 2754, 1796, 2025 | 0 | runs/gauntlet/g11_W1.mp4 |
 | g12 | 02:30 EST | W1_F2ck35 | **one brain** | **1-1, 1-2, 1-3, 1-4** | 1-3: 747, 1200, 1202; 2-1: 343, 346 | 0 | runs/gauntlet/g_W1_F2ck35.mp4 |
 | g13 | 02:30 EST | W1_F2ck39 | one brain | 1-1 | 1-1: 1816, 2469; 1-2: 955, 882, 679 | 0 | runs/gauntlet/g_W1_F2ck39.mp4 |
+| g14 | 03:02 EST | W1_F2ck40 | one brain | 1-1 | 1-1: 1153, 1153; 1-2: 851, 1325, 1321 | 0 | runs/gauntlet/g_W1_F2ck40.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
@@ -227,3 +228,4 @@ More F2 joint picks scored on HELD (1-1 / 1-2 / 1-3 / 1-4 of 50): ck_0027 2 / 5 
 g12: W1_F2ck35 (F2 ck_0035, HELD 7 / 8 / 9 / 27): 1-1 first try, 1-2 first try, 1-3 on the fourth try (deaths at
 x 747, 1200, 1202), 1-4 first try, then two lives lost on 2-1 (never trained). The first single-brain gauntlet past
 1-4. Clip: runs/gauntlet/g_W1_F2ck35.mp4 (also docs/mario/gauntlet/).
+F2 ck_0040 (joint pick 02:37) on HELD: **29 / 8 / 5 / 34** (total 76 of 200, the highest four-level total), brains/W1_F2ck40.npz.
