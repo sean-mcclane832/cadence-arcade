@@ -162,3 +162,24 @@ Median max x per life over 8 held starts (lives 1..10), KEEP (records kept, + OU
 Exploratory (labelled, not pre-registered): AgrippaSparse = same but memory_expansion 4096, memory_winners 8 (key cosine
 at 1 / 5 / 20 / 60 decisions apart: 0.61 / 0.41 / 0.37 / 0.31 vs Agrippa's 0.75 / 0.58 / 0.53 / 0.48), and Agrippa KEEP
 without our blame window. Running.
+
+### Correction (14:20): Livy restarted (runs/night2/Livy; first try in runs/night2/Livy_v1)
+Livy ck1 played 0/24 on every level (dies at x 234 on 1-4). Part-by-part switch-off on 8 held starts
+(runs/diag_livy1.json): echo off -> 1-1 1/8 mean 2,337, 1-4 3/8 mean 2,171; thought, button or place off -> no change
+(still dead). **The echo broke it.** Likely cause: the echo projection is 512,000 synapses (2,000 inputs x 256), all
+starting at zero with fresh normalized-step statistics, so 250 lessons of near full-size steps on every one of them add
+up to a huge drive into the association region. Fix: the echo synapses take 1/8 of the normal step (Cadence's
+per-synapse `synapse_rate`, 0.125 = 256 / 2,000, so its total push is about the size of the thought memory's 256-wide
+projection). Livy restarted from ck0 at 14:20, about 20 min behind the others; same workers and stop time.
+Cicero v2 at chunk 1 played fine (18 / 5 / 11 / 18), so the stationary pile guess fixed the thought-memory problem.
+Exploratory results (14:30, runs/p0_retry_sparse.json, runs/p0_retry_noblame.json), same 8 starts, same CONTROL:
+| arm | 1-2 life-10 median | 1-2 clears in 80 lives | 2-1 life-10 median |
+|---|---|---|---|
+| CONTROL (reloaded every life) | 1,109 | 7 | 337 |
+| Agrippa KEEP + our blame window (pre-registered) | 1,271 | 6 | 464 |
+| AgrippaSparse KEEP + blame (keys 4,096 / 8 winners) | 963 | 2 | 461 |
+| Agrippa KEEP, Cadence's own writes only | 861 | 1 | 341 |
+Sparser keys did not rescue it, and without our blame window the records only hurt. So locality is not the only problem.
+Every variant is at or below simply reloading the brain. The 2-1 life-10 "gains" (+124 to +127) sit inside the swing
+the CONTROL itself shows from life to life (337 to 531). Place memory, as Cadence builds it on these screens, does
+not learn from dying here.

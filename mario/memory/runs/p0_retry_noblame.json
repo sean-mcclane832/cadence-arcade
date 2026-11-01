@@ -1,0 +1,1331 @@
+{
+ "summary": {
+  "1-2|keep": {
+   "median_x": [
+    1197,
+    906,
+    879,
+    883,
+    882,
+    851,
+    72,
+    75,
+    397,
+    861
+   ],
+   "mean_x": [
+    1406,
+    938,
+    854,
+    863,
+    1017,
+    900,
+    366,
+    562,
+    590,
+    815
+   ],
+   "clears": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "starts_cleared_any": 1,
+   "n": 8
+  },
+  "2-1|keep": {
+   "median_x": [
+    396,
+    358,
+    338,
+    442,
+    338,
+    338,
+    340,
+    340,
+    339,
+    341
+   ],
+   "mean_x": [
+    423,
+    478,
+    372,
+    484,
+    432,
+    357,
+    378,
+    394,
+    367,
+    392
+   ],
+   "clears": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "starts_cleared_any": 0,
+   "n": 8
+  }
+ },
+ "results": [
+  {
+   "start": 32,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 1731,
+     "flag": false,
+     "end": "stuck",
+     "dec": 276
+    },
+    {
+     "life": 1,
+     "x": 979,
+     "flag": false,
+     "end": "died",
+     "dec": 115
+    },
+    {
+     "life": 2,
+     "x": 1806,
+     "flag": false,
+     "end": "died",
+     "dec": 201
+    },
+    {
+     "life": 3,
+     "x": 935,
+     "flag": false,
+     "end": "died",
+     "dec": 117
+    },
+    {
+     "life": 4,
+     "x": 890,
+     "flag": false,
+     "end": "died",
+     "dec": 121
+    },
+    {
+     "life": 5,
+     "x": 1812,
+     "flag": false,
+     "end": "died",
+     "dec": 218
+    },
+    {
+     "life": 6,
+     "x": 866,
+     "flag": false,
+     "end": "died",
+     "dec": 102
+    },
+    {
+     "life": 7,
+     "x": 78,
+     "flag": false,
+     "end": "died",
+     "dec": 9
+    },
+    {
+     "life": 8,
+     "x": 72,
+     "flag": false,
+     "end": "died",
+     "dec": 8
+    },
+    {
+     "life": 9,
+     "x": 871,
+     "flag": false,
+     "end": "died",
+     "dec": 114
+    }
+   ]
+  },
+  {
+   "start": 35,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 920,
+     "flag": false,
+     "end": "died",
+     "dec": 105
+    },
+    {
+     "life": 1,
+     "x": 925,
+     "flag": false,
+     "end": "died",
+     "dec": 125
+    },
+    {
+     "life": 2,
+     "x": 874,
+     "flag": false,
+     "end": "died",
+     "dec": 118
+    },
+    {
+     "life": 3,
+     "x": 898,
+     "flag": false,
+     "end": "died",
+     "dec": 102
+    },
+    {
+     "life": 4,
+     "x": 851,
+     "flag": false,
+     "end": "died",
+     "dec": 114
+    },
+    {
+     "life": 5,
+     "x": 877,
+     "flag": false,
+     "end": "died",
+     "dec": 103
+    },
+    {
+     "life": 6,
+     "x": 896,
+     "flag": false,
+     "end": "died",
+     "dec": 90
+    },
+    {
+     "life": 7,
+     "x": 1730,
+     "flag": false,
+     "end": "stuck",
+     "dec": 220
+    },
+    {
+     "life": 8,
+     "x": 943,
+     "flag": false,
+     "end": "died",
+     "dec": 99
+    },
+    {
+     "life": 9,
+     "x": 872,
+     "flag": false,
+     "end": "died",
+     "dec": 103
+    }
+   ]
+  },
+  {
+   "start": 38,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 3161,
+     "flag": true,
+     "end": "flag",
+     "dec": 327
+    },
+    {
+     "life": 1,
+     "x": 870,
+     "flag": false,
+     "end": "died",
+     "dec": 120
+    },
+    {
+     "life": 2,
+     "x": 291,
+     "flag": false,
+     "end": "stuck",
+     "dec": 65
+    },
+    {
+     "life": 3,
+     "x": 896,
+     "flag": false,
+     "end": "died",
+     "dec": 104
+    },
+    {
+     "life": 4,
+     "x": 896,
+     "flag": false,
+     "end": "died",
+     "dec": 122
+    },
+    {
+     "life": 5,
+     "x": 1321,
+     "flag": false,
+     "end": "died",
+     "dec": 129
+    },
+    {
+     "life": 6,
+     "x": 79,
+     "flag": false,
+     "end": "died",
+     "dec": 12
+    },
+    {
+     "life": 7,
+     "x": 73,
+     "flag": false,
+     "end": "died",
+     "dec": 10
+    },
+    {
+     "life": 8,
+     "x": 72,
+     "flag": false,
+     "end": "died",
+     "dec": 7
+    },
+    {
+     "life": 9,
+     "x": 850,
+     "flag": false,
+     "end": "died",
+     "dec": 110
+    }
+   ]
+  },
+  {
+   "start": 41,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 1319,
+     "flag": false,
+     "end": "died",
+     "dec": 151
+    },
+    {
+     "life": 1,
+     "x": 974,
+     "flag": false,
+     "end": "died",
+     "dec": 90
+    },
+    {
+     "life": 2,
+     "x": 851,
+     "flag": false,
+     "end": "died",
+     "dec": 116
+    },
+    {
+     "life": 3,
+     "x": 354,
+     "flag": false,
+     "end": "stuck",
+     "dec": 87
+    },
+    {
+     "life": 4,
+     "x": 1330,
+     "flag": false,
+     "end": "died",
+     "dec": 210
+    },
+    {
+     "life": 5,
+     "x": 826,
+     "flag": false,
+     "end": "died",
+     "dec": 198
+    },
+    {
+     "life": 6,
+     "x": 850,
+     "flag": false,
+     "end": "died",
+     "dec": 116
+    },
+    {
+     "life": 7,
+     "x": 72,
+     "flag": false,
+     "end": "died",
+     "dec": 9
+    },
+    {
+     "life": 8,
+     "x": 63,
+     "flag": false,
+     "end": "died",
+     "dec": 9
+    },
+    {
+     "life": 9,
+     "x": 870,
+     "flag": false,
+     "end": "died",
+     "dec": 124
+    }
+   ]
+  },
+  {
+   "start": 80,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 1197,
+     "flag": false,
+     "end": "died",
+     "dec": 145
+    },
+    {
+     "life": 1,
+     "x": 888,
+     "flag": false,
+     "end": "died",
+     "dec": 122
+    },
+    {
+     "life": 2,
+     "x": 895,
+     "flag": false,
+     "end": "died",
+     "dec": 146
+    },
+    {
+     "life": 3,
+     "x": 1744,
+     "flag": false,
+     "end": "died",
+     "dec": 204
+    },
+    {
+     "life": 4,
+     "x": 682,
+     "flag": false,
+     "end": "died",
+     "dec": 78
+    },
+    {
+     "life": 5,
+     "x": 70,
+     "flag": false,
+     "end": "died",
+     "dec": 11
+    },
+    {
+     "life": 6,
+     "x": 62,
+     "flag": false,
+     "end": "died",
+     "dec": 9
+    },
+    {
+     "life": 7,
+     "x": 68,
+     "flag": false,
+     "end": "died",
+     "dec": 12
+    },
+    {
+     "life": 8,
+     "x": 723,
+     "flag": false,
+     "end": "stuck",
+     "dec": 149
+    },
+    {
+     "life": 9,
+     "x": 652,
+     "flag": false,
+     "end": "died",
+     "dec": 92
+    }
+   ]
+  },
+  {
+   "start": 85,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 855,
+     "flag": false,
+     "end": "died",
+     "dec": 106
+    },
+    {
+     "life": 1,
+     "x": 1647,
+     "flag": false,
+     "end": "died",
+     "dec": 158
+    },
+    {
+     "life": 2,
+     "x": 291,
+     "flag": false,
+     "end": "stuck",
+     "dec": 65
+    },
+    {
+     "life": 3,
+     "x": 853,
+     "flag": false,
+     "end": "died",
+     "dec": 108
+    },
+    {
+     "life": 4,
+     "x": 874,
+     "flag": false,
+     "end": "died",
+     "dec": 108
+    },
+    {
+     "life": 5,
+     "x": 74,
+     "flag": false,
+     "end": "died",
+     "dec": 9
+    },
+    {
+     "life": 6,
+     "x": 65,
+     "flag": false,
+     "end": "died",
+     "dec": 6
+    },
+    {
+     "life": 7,
+     "x": 53,
+     "flag": false,
+     "end": "died",
+     "dec": 4
+    },
+    {
+     "life": 8,
+     "x": 47,
+     "flag": false,
+     "end": "died",
+     "dec": 3
+    },
+    {
+     "life": 9,
+     "x": 853,
+     "flag": false,
+     "end": "stuck",
+     "dec": 132
+    }
+   ]
+  },
+  {
+   "start": 90,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 1198,
+     "flag": false,
+     "end": "died",
+     "dec": 134
+    },
+    {
+     "life": 1,
+     "x": 355,
+     "flag": false,
+     "end": "stuck",
+     "dec": 80
+    },
+    {
+     "life": 2,
+     "x": 884,
+     "flag": false,
+     "end": "died",
+     "dec": 93
+    },
+    {
+     "life": 3,
+     "x": 354,
+     "flag": false,
+     "end": "stuck",
+     "dec": 99
+    },
+    {
+     "life": 4,
+     "x": 2147,
+     "flag": false,
+     "end": "died",
+     "dec": 207
+    },
+    {
+     "life": 5,
+     "x": 67,
+     "flag": false,
+     "end": "died",
+     "dec": 11
+    },
+    {
+     "life": 6,
+     "x": 56,
+     "flag": false,
+     "end": "died",
+     "dec": 8
+    },
+    {
+     "life": 7,
+     "x": 1557,
+     "flag": false,
+     "end": "died",
+     "dec": 178
+    },
+    {
+     "life": 8,
+     "x": 850,
+     "flag": false,
+     "end": "died",
+     "dec": 118
+    },
+    {
+     "life": 9,
+     "x": 880,
+     "flag": false,
+     "end": "died",
+     "dec": 129
+    }
+   ]
+  },
+  {
+   "start": 95,
+   "level": "1-2",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 871,
+     "flag": false,
+     "end": "died",
+     "dec": 97
+    },
+    {
+     "life": 1,
+     "x": 867,
+     "flag": false,
+     "end": "died",
+     "dec": 93
+    },
+    {
+     "life": 2,
+     "x": 947,
+     "flag": false,
+     "end": "died",
+     "dec": 124
+    },
+    {
+     "life": 3,
+     "x": 871,
+     "flag": false,
+     "end": "died",
+     "dec": 101
+    },
+    {
+     "life": 4,
+     "x": 468,
+     "flag": false,
+     "end": "died",
+     "dec": 46
+    },
+    {
+     "life": 5,
+     "x": 2156,
+     "flag": false,
+     "end": "died",
+     "dec": 263
+    },
+    {
+     "life": 6,
+     "x": 60,
+     "flag": false,
+     "end": "died",
+     "dec": 5
+    },
+    {
+     "life": 7,
+     "x": 868,
+     "flag": false,
+     "end": "died",
+     "dec": 119
+    },
+    {
+     "life": 8,
+     "x": 1953,
+     "flag": false,
+     "end": "died",
+     "dec": 294
+    },
+    {
+     "life": 9,
+     "x": 676,
+     "flag": false,
+     "end": "died",
+     "dec": 68
+    }
+   ]
+  },
+  {
+   "start": 32,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 531,
+     "flag": false,
+     "end": "stuck",
+     "dec": 104
+    },
+    {
+     "life": 1,
+     "x": 722,
+     "flag": false,
+     "end": "stuck",
+     "dec": 116
+    },
+    {
+     "life": 2,
+     "x": 631,
+     "flag": false,
+     "end": "died",
+     "dec": 88
+    },
+    {
+     "life": 3,
+     "x": 722,
+     "flag": false,
+     "end": "stuck",
+     "dec": 109
+    },
+    {
+     "life": 4,
+     "x": 724,
+     "flag": false,
+     "end": "stuck",
+     "dec": 109
+    },
+    {
+     "life": 5,
+     "x": 457,
+     "flag": false,
+     "end": "died",
+     "dec": 55
+    },
+    {
+     "life": 6,
+     "x": 644,
+     "flag": false,
+     "end": "died",
+     "dec": 83
+    },
+    {
+     "life": 7,
+     "x": 340,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 8,
+     "x": 530,
+     "flag": false,
+     "end": "stuck",
+     "dec": 114
+    },
+    {
+     "life": 9,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 56
+    }
+   ]
+  },
+  {
+   "start": 35,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 530,
+     "flag": false,
+     "end": "stuck",
+     "dec": 119
+    },
+    {
+     "life": 1,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 37
+    },
+    {
+     "life": 2,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 34
+    },
+    {
+     "life": 3,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 34
+    },
+    {
+     "life": 4,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 37
+    },
+    {
+     "life": 5,
+     "x": 354,
+     "flag": false,
+     "end": "stuck",
+     "dec": 79
+    },
+    {
+     "life": 6,
+     "x": 335,
+     "flag": false,
+     "end": "died",
+     "dec": 34
+    },
+    {
+     "life": 7,
+     "x": 370,
+     "flag": false,
+     "end": "stuck",
+     "dec": 84
+    },
+    {
+     "life": 8,
+     "x": 354,
+     "flag": false,
+     "end": "stuck",
+     "dec": 86
+    },
+    {
+     "life": 9,
+     "x": 370,
+     "flag": false,
+     "end": "stuck",
+     "dec": 100
+    }
+   ]
+  },
+  {
+   "start": 38,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 38
+    },
+    {
+     "life": 1,
+     "x": 340,
+     "flag": false,
+     "end": "died",
+     "dec": 35
+    },
+    {
+     "life": 2,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 49
+    },
+    {
+     "life": 3,
+     "x": 354,
+     "flag": false,
+     "end": "stuck",
+     "dec": 91
+    },
+    {
+     "life": 4,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 35
+    },
+    {
+     "life": 5,
+     "x": 370,
+     "flag": false,
+     "end": "stuck",
+     "dec": 83
+    },
+    {
+     "life": 6,
+     "x": 340,
+     "flag": false,
+     "end": "died",
+     "dec": 45
+    },
+    {
+     "life": 7,
+     "x": 370,
+     "flag": false,
+     "end": "stuck",
+     "dec": 90
+    },
+    {
+     "life": 8,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 43
+    },
+    {
+     "life": 9,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 38
+    }
+   ]
+  },
+  {
+   "start": 41,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 333,
+     "flag": false,
+     "end": "died",
+     "dec": 39
+    },
+    {
+     "life": 1,
+     "x": 370,
+     "flag": false,
+     "end": "stuck",
+     "dec": 90
+    },
+    {
+     "life": 2,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 34
+    },
+    {
+     "life": 3,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 38
+    },
+    {
+     "life": 4,
+     "x": 334,
+     "flag": false,
+     "end": "died",
+     "dec": 45
+    },
+    {
+     "life": 5,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 44
+    },
+    {
+     "life": 6,
+     "x": 341,
+     "flag": false,
+     "end": "died",
+     "dec": 51
+    },
+    {
+     "life": 7,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 41
+    },
+    {
+     "life": 8,
+     "x": 340,
+     "flag": false,
+     "end": "died",
+     "dec": 42
+    },
+    {
+     "life": 9,
+     "x": 354,
+     "flag": false,
+     "end": "stuck",
+     "dec": 88
+    }
+   ]
+  },
+  {
+   "start": 80,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 454,
+     "flag": false,
+     "end": "died",
+     "dec": 53
+    },
+    {
+     "life": 1,
+     "x": 347,
+     "flag": false,
+     "end": "died",
+     "dec": 36
+    },
+    {
+     "life": 2,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 45
+    },
+    {
+     "life": 3,
+     "x": 530,
+     "flag": false,
+     "end": "stuck",
+     "dec": 104
+    },
+    {
+     "life": 4,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 5,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 6,
+     "x": 340,
+     "flag": false,
+     "end": "died",
+     "dec": 41
+    },
+    {
+     "life": 7,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 37
+    },
+    {
+     "life": 8,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 43
+    },
+    {
+     "life": 9,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 35
+    }
+   ]
+  },
+  {
+   "start": 85,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 36
+    },
+    {
+     "life": 1,
+     "x": 724,
+     "flag": false,
+     "end": "stuck",
+     "dec": 109
+    },
+    {
+     "life": 2,
+     "x": 328,
+     "flag": false,
+     "end": "died",
+     "dec": 41
+    },
+    {
+     "life": 3,
+     "x": 722,
+     "flag": false,
+     "end": "stuck",
+     "dec": 154
+    },
+    {
+     "life": 4,
+     "x": 724,
+     "flag": false,
+     "end": "stuck",
+     "dec": 110
+    },
+    {
+     "life": 5,
+     "x": 333,
+     "flag": false,
+     "end": "died",
+     "dec": 39
+    },
+    {
+     "life": 6,
+     "x": 343,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 7,
+     "x": 340,
+     "flag": false,
+     "end": "died",
+     "dec": 35
+    },
+    {
+     "life": 8,
+     "x": 333,
+     "flag": false,
+     "end": "died",
+     "dec": 38
+    },
+    {
+     "life": 9,
+     "x": 334,
+     "flag": false,
+     "end": "died",
+     "dec": 39
+    }
+   ]
+  },
+  {
+   "start": 90,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 334,
+     "flag": false,
+     "end": "died",
+     "dec": 37
+    },
+    {
+     "life": 1,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 2,
+     "x": 332,
+     "flag": false,
+     "end": "died",
+     "dec": 39
+    },
+    {
+     "life": 3,
+     "x": 530,
+     "flag": false,
+     "end": "stuck",
+     "dec": 112
+    },
+    {
+     "life": 4,
+     "x": 331,
+     "flag": false,
+     "end": "died",
+     "dec": 38
+    },
+    {
+     "life": 5,
+     "x": 338,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 6,
+     "x": 345,
+     "flag": false,
+     "end": "died",
+     "dec": 42
+    },
+    {
+     "life": 7,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 36
+    },
+    {
+     "life": 8,
+     "x": 370,
+     "flag": false,
+     "end": "stuck",
+     "dec": 88
+    },
+    {
+     "life": 9,
+     "x": 343,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    }
+   ]
+  },
+  {
+   "start": 95,
+   "level": "2-1",
+   "control": false,
+   "lives": [
+    {
+     "life": 0,
+     "x": 531,
+     "flag": false,
+     "end": "died",
+     "dec": 71
+    },
+    {
+     "life": 1,
+     "x": 652,
+     "flag": false,
+     "end": "died",
+     "dec": 90
+    },
+    {
+     "life": 2,
+     "x": 335,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 3,
+     "x": 339,
+     "flag": false,
+     "end": "died",
+     "dec": 36
+    },
+    {
+     "life": 4,
+     "x": 335,
+     "flag": false,
+     "end": "died",
+     "dec": 38
+    },
+    {
+     "life": 5,
+     "x": 333,
+     "flag": false,
+     "end": "died",
+     "dec": 40
+    },
+    {
+     "life": 6,
+     "x": 336,
+     "flag": false,
+     "end": "died",
+     "dec": 41
+    },
+    {
+     "life": 7,
+     "x": 722,
+     "flag": false,
+     "end": "stuck",
+     "dec": 132
+    },
+    {
+     "life": 8,
+     "x": 333,
+     "flag": false,
+     "end": "died",
+     "dec": 39
+    },
+    {
+     "life": 9,
+     "x": 723,
+     "flag": false,
+     "end": "stuck",
+     "dec": 146
+    }
+   ]
+  }
+ ],
+ "args": {
+  "brain": "brains0/Agrippa_ck0.npz",
+  "levels": "1-2,2-1",
+  "starts": "32,35,38,41,80,85,90,95",
+  "lives": 10,
+  "temp": 0.05,
+  "blame": null,
+  "arms": "keep",
+  "off": "",
+  "out": "runs/p0_retry_noblame.json",
+  "workers": 3
+ },
+ "seconds": 334
+}
