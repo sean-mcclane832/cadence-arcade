@@ -97,6 +97,7 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g13 | 02:30 EST | W1_F2ck39 | one brain | 1-1 | 1-1: 1816, 2469; 1-2: 955, 882, 679 | 0 | runs/gauntlet/g_W1_F2ck39.mp4 |
 | g14 | 03:02 EST | W1_F2ck40 | one brain | 1-1 | 1-1: 1153, 1153; 1-2: 851, 1325, 1321 | 0 | runs/gauntlet/g_W1_F2ck40.mp4 |
 | g15 | 04:42 EST | W1_F2ck87 | one brain | 1-1 | 1-1: 2471, 3154 (stuck); 1-2: 1744, 1646, 1742 | 0 | runs/gauntlet/g_W1_F2ck87.mp4 |
+| g16 | 05:11 EST | W1_F2ck110 | one brain | 1-1 | 1-2: 872, 883, 1320, 468, 1321 | 0 | runs/gauntlet/g_W1_F2ck110.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
@@ -232,3 +233,4 @@ x 747, 1200, 1202), 1-4 first try, then two lives lost on 2-1 (never trained). T
 F2 ck_0040 (joint pick 02:37) on HELD: **29 / 8 / 5 / 34** (total 76 of 200, the highest four-level total), brains/W1_F2ck40.npz.
 F2 ck_0052 (joint pick 03:01) on HELD: 23 / 4 / 5 / 33 (total 65).
 F2 ck_0087 (joint pick 04:13) on HELD: **22 / 7 / 15 / 27** (total 71, min 7, best 1-3 of the four-level brains), brains/W1_F2ck87.npz.
+F2 ck_0110 (joint pick 05:07) on HELD: **50 / 11 / 6 / 25** (total 92, perfect 1-1), brains/W1_F2ck110.npz.
