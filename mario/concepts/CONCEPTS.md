@@ -91,6 +91,7 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g07 | 22:50 | C2 joint best = ck_0000 = 1-2_12n59 | one brain | **1-1, 1-2** | 1-2: 1595, 852, 1336; 1-3: 700, 700 | 0 | runs/gauntlet/g07_C2.mp4 |
 | g08 | 22:51 | N ck_0035 (phase 2 no-clinic joint best) | one brain | **1-1, 1-2** | 1-1: 1790, 1789; 1-2: 1596; 1-3: 656, 659 | 0 | runs/gauntlet/g08_N.mp4 |
 | g09 | 00:51 | C2 ck_0107 (phase 2 clinic arm joint best) | one brain | none | 1-1: 2471, 1674, 1674, 695, 698 | 0 | runs/gauntlet/g09_C2ck107.mp4 |
+| g10 | 01:02 EST | F30 (E-four ck_0030) | one brain | **1-1, 1-2** | 1-1: 1790; 1-2: 1744, 851; 1-3: 427, 427 | 0 | runs/gauntlet/g10_F30.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
