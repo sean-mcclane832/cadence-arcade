@@ -1,0 +1,141 @@
+{
+ "summary": {
+  "brain": "runs/p2b/N/ck_0066.npz",
+  "level": "1-2",
+  "crit_rows": 279,
+  "crit_wrong": 18,
+  "crit_err": 0.065,
+  "rows": 1325,
+  "agree": 0.784,
+  "lose": 50,
+  "flags": 3
+ },
+ "per_start": [
+  {
+   "start": 32,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 324,
+   "agree": 251,
+   "tie": 27,
+   "small": 36,
+   "lose": 10,
+   "crit_rows": 59,
+   "crit_wrong": 2,
+   "crit_wrong_x": [
+    1731,
+    1833
+   ]
+  },
+  {
+   "start": 35,
+   "end": "died",
+   "max_x": 953,
+   "rows": 96,
+   "agree": 84,
+   "tie": 2,
+   "small": 7,
+   "lose": 3,
+   "crit_rows": 25,
+   "crit_wrong": 2,
+   "crit_wrong_x": [
+    850,
+    898
+   ]
+  },
+  {
+   "start": 38,
+   "end": "died",
+   "max_x": 956,
+   "rows": 96,
+   "agree": 86,
+   "tie": 2,
+   "small": 5,
+   "lose": 3,
+   "crit_rows": 19,
+   "crit_wrong": 1,
+   "crit_wrong_x": [
+    898
+   ]
+  },
+  {
+   "start": 41,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 284,
+   "agree": 245,
+   "tie": 18,
+   "small": 16,
+   "lose": 5,
+   "crit_rows": 67,
+   "crit_wrong": 0,
+   "crit_wrong_x": []
+  },
+  {
+   "start": 85,
+   "end": "stuck",
+   "max_x": 292,
+   "rows": 65,
+   "agree": 31,
+   "tie": 6,
+   "small": 28,
+   "lose": 0,
+   "crit_rows": 5,
+   "crit_wrong": 0,
+   "crit_wrong_x": []
+  },
+  {
+   "start": 90,
+   "end": "stuck",
+   "max_x": 292,
+   "rows": 65,
+   "agree": 36,
+   "tie": 11,
+   "small": 18,
+   "lose": 0,
+   "crit_rows": 5,
+   "crit_wrong": 0,
+   "crit_wrong_x": []
+  },
+  {
+   "start": 116,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 284,
+   "agree": 238,
+   "tie": 26,
+   "small": 14,
+   "lose": 6,
+   "crit_rows": 72,
+   "crit_wrong": 0,
+   "crit_wrong_x": []
+  },
+  {
+   "start": 128,
+   "end": "died",
+   "max_x": 850,
+   "rows": 111,
+   "agree": 68,
+   "tie": 9,
+   "small": 11,
+   "lose": 23,
+   "crit_rows": 27,
+   "crit_wrong": 13,
+   "crit_wrong_x": [
+    40,
+    40,
+    816,
+    837,
+    824,
+    823,
+    817,
+    819,
+    818,
+    821,
+    822,
+    821,
+    821
+   ]
+  }
+ ]
+}

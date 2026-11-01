@@ -1,0 +1,166 @@
+{
+ "summary": {
+  "brain": "runs/p2b/C2/ck_0025.npz",
+  "level": "1-2",
+  "crit_rows": 244,
+  "crit_wrong": 39,
+  "crit_err": 0.16,
+  "rows": 1066,
+  "agree": 0.782,
+  "lose": 55,
+  "flags": 1
+ },
+ "per_start": [
+  {
+   "start": 32,
+   "end": "died",
+   "max_x": 866,
+   "rows": 94,
+   "agree": 77,
+   "tie": 4,
+   "small": 7,
+   "lose": 6,
+   "crit_rows": 20,
+   "crit_wrong": 5,
+   "crit_wrong_x": [
+    844,
+    850,
+    850,
+    850,
+    851
+   ]
+  },
+  {
+   "start": 35,
+   "end": "died",
+   "max_x": 867,
+   "rows": 94,
+   "agree": 72,
+   "tie": 6,
+   "small": 10,
+   "lose": 6,
+   "crit_rows": 19,
+   "crit_wrong": 4,
+   "crit_wrong_x": [
+    844,
+    850,
+    850,
+    851
+   ]
+  },
+  {
+   "start": 38,
+   "end": "died",
+   "max_x": 866,
+   "rows": 94,
+   "agree": 75,
+   "tie": 5,
+   "small": 8,
+   "lose": 6,
+   "crit_rows": 20,
+   "crit_wrong": 5,
+   "crit_wrong_x": [
+    844,
+    850,
+    850,
+    850,
+    851
+   ]
+  },
+  {
+   "start": 41,
+   "end": "died",
+   "max_x": 1943,
+   "rows": 212,
+   "agree": 167,
+   "tie": 16,
+   "small": 25,
+   "lose": 4,
+   "crit_rows": 41,
+   "crit_wrong": 3,
+   "crit_wrong_x": [
+    1250,
+    1837,
+    1913
+   ]
+  },
+  {
+   "start": 85,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 99,
+   "agree": 75,
+   "tie": 5,
+   "small": 10,
+   "lose": 9,
+   "crit_rows": 26,
+   "crit_wrong": 4,
+   "crit_wrong_x": [
+    822,
+    913,
+    917,
+    911
+   ]
+  },
+  {
+   "start": 90,
+   "end": "died",
+   "max_x": 2309,
+   "rows": 242,
+   "agree": 200,
+   "tie": 14,
+   "small": 20,
+   "lose": 8,
+   "crit_rows": 55,
+   "crit_wrong": 4,
+   "crit_wrong_x": [
+    890,
+    914,
+    1607,
+    1740
+   ]
+  },
+  {
+   "start": 116,
+   "end": "died",
+   "max_x": 1197,
+   "rows": 137,
+   "agree": 97,
+   "tie": 8,
+   "small": 25,
+   "lose": 7,
+   "crit_rows": 31,
+   "crit_wrong": 6,
+   "crit_wrong_x": [
+    40,
+    42,
+    307,
+    819,
+    1113,
+    1137
+   ]
+  },
+  {
+   "start": 128,
+   "end": "died",
+   "max_x": 866,
+   "rows": 94,
+   "agree": 71,
+   "tie": 8,
+   "small": 6,
+   "lose": 9,
+   "crit_rows": 32,
+   "crit_wrong": 8,
+   "crit_wrong_x": [
+    40,
+    42,
+    307,
+    844,
+    850,
+    850,
+    850,
+    851
+   ]
+  }
+ ]
+}

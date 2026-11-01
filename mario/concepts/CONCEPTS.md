@@ -90,6 +90,7 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g06 | 21:23 | A_ram ck_0034 (phase 1 end, joint best) | one brain, **RAM CHEAT** | 1-1 | 1-2: 1651, 291 (stuck), 676, 673, 851 | 0 | runs/gauntlet/g06_Aram34.mp4 |
 | g07 | 22:50 | C2 joint best = ck_0000 = 1-2_12n59 | one brain | **1-1, 1-2** | 1-2: 1595, 852, 1336; 1-3: 700, 700 | 0 | runs/gauntlet/g07_C2.mp4 |
 | g08 | 22:51 | N ck_0035 (phase 2 no-clinic joint best) | one brain | **1-1, 1-2** | 1-1: 1790, 1789; 1-2: 1596; 1-3: 656, 659 | 0 | runs/gauntlet/g08_N.mp4 |
+| g09 | 00:51 | C2 ck_0107 (phase 2 clinic arm joint best) | one brain | none | 1-1: 2471, 1674, 1674, 695, 698 | 0 | runs/gauntlet/g09_C2ck107.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
@@ -160,3 +161,37 @@ eta 0.001, DAgger on 1-2 every 10 chunks, tie-aware, SEL on 1-1 and 1-2 every ch
    chunk's SEL test and the clinic rewinds deaths of EARLIER checkpoints (>= 1 chunk older than the playing
    brain), which is also what the plan said ("a spot the previous checkpoint died at"). Arm C stopped after 30
    min and restarted as **C2** at 21:53; N keeps running; they are compared at equal elapsed time.
+
+## E-four. One brain for all four World 1 levels (extra, pre-registered 00:25, 11/01)
+Not one of the plan's phases: uses the hours left after phase 2 for the gauntlet's open goal. Screen input (no RAM).
+runs/p4/F: from phase 2 arm N ck_0035 (the brain that clears 1-1 + 1-2 in gauntlet g08; SEL [14, 14]), piles: 1-1
+/ 1-3 / 1-4 = st_U4's (32,904 / 31,883 / 23,188 rows), 1-2 = arm N's final pile (62,799+). Lesson shares 1-1 0.2,
+1-2 0.3, 1-3 0.25, 1-4 0.25; tie-aware DAgger on 1-3 and 1-4 (the levels it lacks) every 10 chunks; all four
+SEL-tested every chunk; joint pick (weakest level first). 4 workers until C2 ends, until 07:30.
+- H-four: some checkpoint flags all four levels on HELD (>= 1 of 50 each) by 07:30, i.e. one brain has cleared
+  every World 1 level on starts it never trained or was picked on. Falsified if no checkpoint does.
+- Also checked: a gauntlet with that brain.
+
+### Phase 2 result (C2 21:50-00:51, N 21:21-00:22, 3 h each; runs/p2b)
+| | 1-2 own-path critical error (8 held-out starts) | 1-2 HELD | 1-1 HELD (best 1-1 ckpt) |
+|---|---|---|---|
+| start: 1-2_12n59 | 22/326 = **6.7%** (5 flags of 8) | 29/50 | 14/50 |
+| C2 clinic + survivals, best 1-2 (ck_0025, picked on SEL) | 39/244 = **16.0%** (1 flag) | 18/50 | 35/50 (ck_0106) |
+| N plain DAgger, best 1-2 (ck_0066, picked on SEL) | 18/279 = **6.5%** (3 flags) | 17/50 | 27/50 (ck_0020) |
+The clinic did do what it was built for mechanically after the fix: 6, 6, 5, 5, 11, 8, 6 of 12 rewound
+retries per round got past the spot an earlier checkpoint died at, and 1,965 of its own surviving buttons were
+kept (capped at 20% of lessons). **Verdict (replacement test fixed at 21:50): lose.** C2 is worse than N on
+own-path critical error (16.0% vs 6.5%) and only level on 1-2 HELD (18 vs 17); neither beats the start (29/50).
+On the original bar (< 15% win, >= 25% lose) C2's 16% would be in between, but that bar was already met by the
+starting brain. Read: 3 more hours of 1-2 coaching, with or without the clinic, did not lift this line off its
+plateau (the same thing st_12n showed last night after ck_0059); SEL-picked checkpoints were worse on HELD than
+the start. C2's critical errors pile up at x 844-851 (the Koopa under the brick columns). One seed per arm.
+Side result: both arms regained 1-1 while practising 1-2 (C2 ck_0106 1-1 HELD 35/50; N ck_0020 27/50).
+Gauntlet after phase 2: g09, C2's joint best ck_0107, no level cleared (1-1 deaths 2471, 1674, 1674, 695, 698).
+
+## Phase 1 extension: does 1-2 come with more time on the RAM map? (pre-registered 01:15, exploratory, CHEAT)
+runs/p1x/R: continue A_ram ck_0034 (RAM CHEAT) with its piles (runs/p2), same recipe as phase 1, 4 workers,
+until 07:30 (~6 h more, ~9.5 h total). No matched control this time (cores go to E-four), so this only answers
+"does the ceiling brain get 1-2 / World 2 with more time", not "faster than the screen".
+- H1x: its end-of-run joint best or best-1-2 checkpoint reaches 1-2 HELD >= 20/50, or 2-1 first sight > 1,000.
+  Falsified if neither does.
