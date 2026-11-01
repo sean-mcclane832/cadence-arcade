@@ -1,12 +1,22 @@
 <!-- RESUME -->
-## RESUME (11/01 13:40 EST)
-- Phase 0: transplant exact (0/3,000); act mode needed cold settles to match W1 (fixed); memory synapses start at 0, so
-  every memory brain starts as W1_F2ck110. Burn-in K=3 (K=1 already 0.9995). Blame: Cadence's write reaches the decisive
-  move in 3 of 10 deaths -> OUR blame window (5..30 back) in the retry curves. Place keys overlap ~0.5 even 20 tiles apart.
-- RUNNING: night arms Cato / Cicero / Livy (runs/night, stop 05:45). Agrippa retry curves (runs/p0_retry_*.json).
-- Retry answer (14:13): place memory LOSES (life-10 +162 on 1-2, +127 on 2-1, bar +300). Texted Sean. Exploratory sparse keys running.
-- Night restarted 13:58 as runs/night2 (pile rows get a stationary memory guess; v1 thought memory broke play).
-- Next: gauntlets every ~90 min.
+## RESUME (11/01 15:00 EST)
+- Phase 0: transplant exact; act mode settles cold (= W1 predict); memory synapses start at 0, so every memory brain
+  starts as W1_F2ck110. Burn-in K=3. Blame: Cadence's write reaches the decisive move in 3 of 10 deaths -> OUR blame
+  window (5..30 back) in the retry curves.
+- RUNNING: night arms Cato / Cicero / Livy (runs/night2, mtrain.py, stop 05:45). Livy restarted 14:20 (echo synapses at
+  1/8 step). Per-level bests so far: Cicero 1-4 HELD 44/50 (ck5), Cato 1-2 HELD 9/50 (ck5). Joint picks still ck0.
+- Place memory retry test (bar: +300 median max x at life 10 vs reload control):
+  - Agrippa LOST (life 10 +162 on 1-2, +127 on 2-1). Sparse keys and no-blame variants worse.
+  - AgrippaX (Sean's idea, x from RAM in the place key; "where am I only, decisions still from the screen") 14:47:
+    keys now local (cosine 0.80 / 0.29 / 0.11 / 0.07 at 1 / 5 / 20 / 60 decisions vs Agrippa 0.69 / 0.58 / 0.56 / 0.52),
+    cortex parity exact, weights byte-identical after retry lives. Retry: **not a win**, life 10 -20 on 1-2, +100 on 2-1
+    (no-blame: -157, -4). Hint only: lives 2-4 on 1-2 a bit above control, then fades. Texted Sean 14:49.
+    Read: locality was not the bottleneck; a -1 on a past button never says what to do instead.
+- Gauntlets: m01 Agrippa (remembers across lives) 1-1 then dies on 1-2 x5; m02-m04 Cato / Cicero / Livy joint = ck0,
+  identical to g16 (1-1, then 1-2 x5).
+- STILL NOT DONE (end-of-night agent, after 05:45): top-3 SEL checkpoints scored on HELD, play-time ablations (one
+  memory part off at a time on Cicero, Livy, Agrippa), end-of-night retry curves (Livy, Agrippa), gauntlets on moved
+  joint picks, brain-cam panels, roster cards, retry-curve chart, page update.
 <!-- /RESUME -->
 
 # Memory brains (2026-11-01 night)
@@ -183,3 +193,73 @@ Sparser keys did not rescue it, and without our blame window the records only hu
 Every variant is at or below simply reloading the brain. The 2-1 life-10 "gains" (+124 to +127) sit inside the swing
 the CONTROL itself shows from life to life (337 to 531). Place memory, as Cadence builds it on these screens, does
 not learn from dying here.
+
+## Gauntlets (5 lives, gauntletm.py, every attempt clipped; runs/gauntlet/)
+| # | time | brain | mode | cleared | deaths (level: x) | clip |
+|---|---|---|---|---|---|---|
+| m01 | 14:30 | Agrippa (ck0 = W1_F2ck110 weights + place memory) | remembers across lives (temp 0.05, + our blame window) | 1-1 | 1-2: 874, 978 (stuck), 2,150, 675, 825 (stuck) | m01_Agrippa.mp4 |
+| m02 | 14:57 | Cato best_joint (= ck0) | act mode, nothing kept | 1-1 | 1-2: 872, 883, 1,320, 468, 1,321 | m02_Cato.mp4 |
+| m03 | 14:57 | Cicero best_joint (= ck0, memory synapses still 0) | act mode, nothing kept | 1-1 | 1-2: 872, 883, 1,320, 468, 1,321 | m03_Cicero.mp4 |
+| m04 | 14:57 | Livy best_joint (= ck0, memory synapses still 0) | act mode, nothing kept | 1-1 | 1-2: 872, 883, 1,320, 468, 1,321 | m04_Livy.mp4 |
+For comparison, W1_F2ck110 without memory (g16, last night): 1-1, then 1-2: 872, 883, 1,320, 468, 1,321.
+m02-m04: at 14:57 every night arm's joint pick (best SEL sum over the four levels) was still chunk 0, i.e. W1_F2ck110's
+weights with the memory synapses at zero. So the three gauntlets are the same game, frame for frame, and match g16
+exactly: a gauntlet-level parity check, not a test of memory. Per-level bests have moved (Cicero 1-4 HELD 44/50 at ck5,
+Cato 1-2 HELD 9/50 at ck5), but no later checkpoint beats ck0 on all four levels together yet. Rerun when a joint pick
+moves (the end-of-night agent).
+
+### Exploratory: AgrippaX, place memory keyed on x from game RAM (Sean's idea, 14:55; where am I only, decisions still from the screen)
+Not pre-registered; read with the same +300 bar. Same as Agrippa (W1_F2ck110 weights, place memory only, memory_context=0,
+memory_demonstrations=0, fan-in 32, same retry protocol / starts / offsets / our blame window), but the observation gets 112
+extra inputs: Mario's level x from RAM (0x6D * 256 + 0x86) as bumps every 2 tiles, about 4 tiles wide, height 8. Cadence
+keys the place records on the observation code, and I found no API to give the episodic key a separate code, so the x
+block is extra SENSORY input whose synapses into the cortex are all zero (transplant maps the shifted neuron indices;
+only the initial `sign` array differs, because a wider sensory region shifts the random draws, and the settle uses the
+copied efficacies). So only the episodic key sees x.
+(Source, 0.91.3: the place records key on `Brain._placed(x)`, generic.py ~4227, which without a learned code is the
+observation code, then the fixed `PatternSeparator`, stream.py ~2106. No separate-key option.)
+- Parity: AgrippaX plays the same buttons as Agrippa (= W1_F2ck110) on 1-1/32, 1-2/35, 1-2/80, 1-3/85 (every action
+  identical).
+- Key cosine on a real 1-2 attempt, decisions 1 / 5 / 20 / 60 apart: Agrippa 0.69 / 0.58 / 0.56 / 0.52, AgrippaSparse
+  0.56 / 0.42 / 0.39 / 0.39, **AgrippaX 0.80 / 0.29 / 0.11 / 0.07**: now local.
+- **Result (14:47, runs/p0_retry_x.json, same protocol as 0.5: 8 held starts, 10 lives, temp 0.05, + our blame window).
+  Not a win.** CONTROL replayed Agrippa's CONTROL exactly (16 of 16 series identical), so the comparison is clean.
+  | level | arm | median max x, lives 1-10 | clears per life | starts cleared at least once |
+  |---|---|---|---|---|
+  | 1-2 | KEEP (x key) | 1197, 1261, **1875**, 861, 860, 876, 272, 898, 372, **1089** | 1,3,1,1,0,0,0,0,0,2 (8) | 4 of 8 (32, 38, 41, 90) |
+  | 1-2 | CONTROL | 1197, 1152, 1110, 1097, 1320, 1333, 459, 865, 70, **1109** | 1,2,0,1,0,2,0,1,0,0 (7) | 5 of 8 (35, 38, 41, 80, 95) |
+  | 2-1 | KEEP (x key) | 396, 339, 413, 398, 344, 340, 338, 399, 339, **437** | 0 | 0 |
+  | 2-1 | CONTROL | 396, 531, 530, 399, 402, 396, 341, 530, 530, **337** | 0 | 0 |
+  - Life 10: **-20 on 1-2, +100 on 2-1** (bar +300). KEEP cleared two starts CONTROL never did (32, 90), CONTROL cleared
+    three KEEP never did (35, 80, 95): same reading as Agrippa's, a swap, not a win.
+  - The one hint: lives 2-4 on 1-2 KEEP mean 1,600 vs CONTROL 1,365 (life 3 median 1,875 vs 1,110, 4 clears vs 3 in
+    lives 2-4). Then it fades: lives 5-10 KEEP is at or below CONTROL. Pooled lives 2-10: 1-2 1,137 vs 1,104, 2-1 425
+    vs 472. Small sample (8 starts), so the early bump may be noise; it is NOT a result.
+  - vs Agrippa (same blame window): life-10 1-2 1,089 vs 1,271, 2-1 437 vs 464. Local keys did not beat overlapping
+    ones. So key locality was not the bottleneck. Best guess: the write itself. Our blame window puts -1 on whatever
+    button was pressed 5..30 decisions back, which says "not that" but never "do this instead"; with only 7 buttons and
+    a cortex that already prefers run / run+jump, a few -1s mostly push it onto a worse second choice. Positive records
+    only come from a flag (+1), which ends the attempt.
+  - Label: "place memory keyed on x from game RAM (where am I only; decisions still from the screen)".
+  - Records-only (14:50, runs/_xcheck.py -> runs/x_weightcheck.out): 10 KEEP lives on 1-2/32 with the blame window
+    (69 place writes) replay the json's series exactly, and efficacy / bias / gain / critic are byte-identical after.
+  - Exploratory, KEEP with Cadence's own writes only (no blame window; 14:56, runs/p0_retry_x_noblame.json), vs the
+    same CONTROL: 1-2 median by life 1197, 925, 1664, 672, 1118, 897, 267, 458, 473, **952** (9 clears in 80 lives,
+    starts 35, 38, 41, 85, 90, 95 = 6 of 8); 2-1 396, 722, 402, 626, 722, 530, 338, 335, 337, **333**, 0 clears. Life 10:
+    **-157 on 1-2, -4 on 2-1**. It cleared two starts CONTROL never did (85, 90) and missed one CONTROL cleared (80).
+    Read: 9 vs 7 clears and 6 vs 5 starts on 8 starts is inside the noise, and the life-10 medians are below CONTROL.
+    Not a win; not run as a gauntlet. Same early shape as the blame arm: lives 2-4 mean 1,436 vs 1,365, then down.
+    (Contrast: Agrippa's no-blame KEEP was clearly worse, 1 clear, life-10 861. With x keys, Cadence's own -1 on the
+    dying decision no longer smears over the whole level, so it stops hurting; it just doesn't help.)
+  - Not done: the AgrippaX gauntlet (only on a win, per the brief).
+- AgrippaX build notes (for whoever picks this up): `mem.xblock(ram)` = 8.0 * exp(-((x - 32k) / 32)^2) for k = 0..111
+  (XN, XSTEP, XWIDTH, XAMP in mem.py). Spec `SPECS["AgrippaX"]` has `xinputs=112`. Brain: brains0/AgrippaX_ck0.npz
+  (built by p0_xkey.py: transplant + parity + key cosine). `MemPlayer.xkey` is set when the sensory width is > 2000, and
+  `play_attempt` then appends xblock to every observation (also the final one passed to `end`). `keep_obs` stores only
+  the 2,000 screen/body values. Height 8 was chosen so position dominates the separated key (the screen part has a norm
+  of roughly 15-20; with fan-in 32 most cells read 0-2 x inputs, and those win the top-24). Not tuned further.
+  gauntletm.py did NOT append the x block (it calls player.act directly); fixed 14:40 (o and the end observation get
+  mem.xblock when player.xkey). evalm.py untested with it.
+- Note for the new owner (14:46): the first night2 DAgger round took 1,110 s for 1-1 alone (8 attempts, 2 workers;
+  coach labelling is the slow part). Four levels means ~70 min of DAgger every 6 chunks per arm. Consider fewer episodes
+  or less frequent rounds if the arms look starved of lessons.

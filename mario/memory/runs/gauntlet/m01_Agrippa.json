@@ -1,0 +1,85 @@
+{
+ "name": "Agrippa",
+ "label": "one brain, remembers across lives",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\memory\\brains0\\Agrippa_ck0.npz"
+ },
+ "mode": "retry",
+ "temp": 0.05,
+ "blame": "5,30,-1",
+ "lives": 5,
+ "cleared": [
+  "1-1"
+ ],
+ "furthest": "1-2",
+ "deaths": {
+  "1-2": [
+   874,
+   978,
+   2150,
+   675,
+   825
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "Agrippa",
+   "start": 0,
+   "end": "flag",
+   "x": 3161,
+   "decisions": 307,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "Agrippa",
+   "start": 0,
+   "end": "died",
+   "x": 874,
+   "decisions": 90,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "Agrippa",
+   "start": 37,
+   "end": "stuck",
+   "x": 978,
+   "decisions": 208,
+   "lives_before": 4
+  },
+  {
+   "level": "1-2",
+   "brain": "Agrippa",
+   "start": 83,
+   "end": "died",
+   "x": 2150,
+   "decisions": 282,
+   "lives_before": 3
+  },
+  {
+   "level": "1-2",
+   "brain": "Agrippa",
+   "start": 110,
+   "end": "died",
+   "x": 675,
+   "decisions": 81,
+   "lives_before": 2
+  },
+  {
+   "level": "1-2",
+   "brain": "Agrippa",
+   "start": 131,
+   "end": "stuck",
+   "x": 825,
+   "decisions": 169,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 61,
+ "when": "2026-11-01 14:30",
+ "clip": "m01_Agrippa.mp4",
+ "clip_seconds": 76.6
+}

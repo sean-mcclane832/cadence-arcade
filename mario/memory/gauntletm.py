@@ -87,6 +87,8 @@ def main():
         text = f"{label}: {who} | {L} try {tries + 1} | lives {lives}/{a.lives} | cleared {len(cleared)}"
         while not g.done and g.decisions < D.MAX_DECISIONS and g.stuck < D.STUCK:
             o = b.obs()
+            if player.xkey:  # AgrippaX: place key carries x from RAM (cortex weights from it are 0)
+                o = np.concatenate([o, mem.xblock(g.env.ram)])
             act = player.act(o)
             if a.senses in ("ram", "ramscreen"):
                 b.eprev = C.concept_map(g.env.ram)[1]
@@ -97,7 +99,10 @@ def main():
             if poster is None and g.decisions == 40:
                 poster = g.screen.copy()
         end = "flag" if g.flag else ("died" if g.done else "stuck")
-        player.end(b.obs(), end)
+        oe = b.obs()
+        if player.xkey:
+            oe = np.concatenate([oe, mem.xblock(g.env.ram)])
+        player.end(oe, end)
         tail = f"{L}: FLAG" if g.flag else f"{L}: {'died' if g.done else 'stuck'} at x {g.max_x}"
         for _ in range(45 if g.flag else 30):
             try:

@@ -1,0 +1,85 @@
+{
+ "name": "Cato_joint_ck0",
+ "label": "one brain",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\memory\\brains_snap\\Cato_best_joint_1457.npz"
+ },
+ "mode": "greedy",
+ "temp": null,
+ "blame": null,
+ "lives": 5,
+ "cleared": [
+  "1-1"
+ ],
+ "furthest": "1-2",
+ "deaths": {
+  "1-2": [
+   872,
+   883,
+   1320,
+   468,
+   1321
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "Cato_joint_ck0",
+   "start": 0,
+   "end": "flag",
+   "x": 3161,
+   "decisions": 276,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "Cato_joint_ck0",
+   "start": 0,
+   "end": "died",
+   "x": 872,
+   "decisions": 91,
+   "lives_before": 5
+  },
+  {
+   "level": "1-2",
+   "brain": "Cato_joint_ck0",
+   "start": 37,
+   "end": "died",
+   "x": 883,
+   "decisions": 87,
+   "lives_before": 4
+  },
+  {
+   "level": "1-2",
+   "brain": "Cato_joint_ck0",
+   "start": 83,
+   "end": "died",
+   "x": 1320,
+   "decisions": 157,
+   "lives_before": 3
+  },
+  {
+   "level": "1-2",
+   "brain": "Cato_joint_ck0",
+   "start": 110,
+   "end": "died",
+   "x": 468,
+   "decisions": 46,
+   "lives_before": 2
+  },
+  {
+   "level": "1-2",
+   "brain": "Cato_joint_ck0",
+   "start": 131,
+   "end": "died",
+   "x": 1321,
+   "decisions": 151,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 20,
+ "when": "2026-11-01 14:56",
+ "clip": "m02_Cato.mp4",
+ "clip_seconds": 53.8
+}

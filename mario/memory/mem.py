@@ -29,6 +29,7 @@ FROZEN = dict(actor_eta=0.0, actor_eta_bias=0.0, actor_eta_critic=0.0)
 PLACE = dict(memory_choice=True, memory_demonstrations=0.0, memory_fan_in=32)
 EFF = dict(efference_amplitude=1.0, efference_decay=0.8)
 ECHO = dict(history_decays=(0.9,))
+XN, XSTEP, XWIDTH, XAMP = 112, 32, 32.0, 8.0  # x block: bumps every 2 tiles, ~4 tiles wide, up to x 3,584
 # compose settings (layout) and play-time amplitudes (retune) per brain
 SPECS = {
     "Cato": dict(compose={}, tune=dict(working_memory_amplitude=0.0), parts=[]),
@@ -36,6 +37,10 @@ SPECS = {
     # exploratory (14:20): sparser place keys, to test whether key locality is the bottleneck
     "AgrippaSparse": dict(compose=dict(PLACE, memory_context=0.0, memory_expansion=4096, memory_winners=8),
                           tune=dict(working_memory_amplitude=0.0), parts=["place"]),
+    # exploratory (Sean's idea, 14:55): place memory keyed on x from game RAM (where am I only; decisions still from
+    # the screen). The x block is extra sensory input with ZERO weights into the cortex; only the episodic key sees it.
+    "AgrippaX": dict(compose=dict(PLACE, memory_context=0.0), tune=dict(working_memory_amplitude=0.0), parts=["place"],
+                     xinputs=XN),
     "Cicero": dict(compose=dict(EFF), tune=dict(working_memory_amplitude=3.0), parts=["thought", "button"]),
     "Livy": dict(compose=dict(EFF, **ECHO, **PLACE), tune=dict(working_memory_amplitude=3.0),
                  parts=["thought", "button", "echo", "place"]),
@@ -50,9 +55,18 @@ def _arrays(path):
         return {k: f[k] for k in f.files}
 
 
+
+
+def xblock(ram, amp=XAMP):
+    """Mario's level x from game RAM as overlapping bumps (AgrippaX's place key: where am I)."""
+    x = int(ram[0x006D]) * 256 + int(ram[0x0086])
+    c = np.arange(XN) * XSTEP
+    return amp * np.exp(-((x - c) / XWIDTH) ** 2)
+
+
 def compose(name, seed=0):
     from cadence import Brain
-    return Brain.compose(2000, 7, modules=(256,), seed=seed, teaching="normalized", learning_surprise=False,
+    return Brain.compose(2000 + SPECS[name].get("xinputs", 0), 7, modules=(256,), seed=seed, teaching="normalized", learning_surprise=False,
                          **SPECS[name]["compose"])
 
 
@@ -68,17 +82,22 @@ def transplant(name, out, quiet=0.1, src=START):
     old, n = _arrays(src), _arrays(tmp)
     tmp.unlink()
     N = int(max(n["pre"].max(), n["post"].max())) + 1
+    extra = SPECS[name].get("xinputs", 0)
+    shift = lambda j: np.where(j < 2000, j, j + extra)  # noqa: E731  (x block widens the sensory region)
+    old["pre"], old["post"] = shift(old["pre"]), shift(old["post"])
     kn = n["pre"] * N + n["post"]; ko = old["pre"] * N + old["post"]
     order = np.argsort(kn); pos = np.searchsorted(kn[order], ko); mp = order[pos]
     assert (kn[mp] == ko).all(), "old synapse missing in new connectome"
     for k in ("sign", "count", "plastic_synapses"):
+        if k == "sign" and extra:  # a wider sensory region shifts the random draws; sign is only the initial
+            n[k] = n[k].copy(); n[k][mp] = old[k]; continue  # efficacy (copied below) is what the settle uses
         assert (n[k][mp] == old[k]).all(), k
-    m = len(old["bias"])
-    assert (n["plastic_neurons"][:m] == old["plastic_neurons"]).all()
+    m = len(old["bias"]); nm = shift(np.arange(m))
+    assert (n["plastic_neurons"][nm] == old["plastic_neurons"]).all()
     for k in ("efficacy", "velocity", "second_moment"):
         n[k] = n[k].copy(); n[k][mp] = old[k]
     for k in ("log_gain", "bias", "velocity_bias", "second_moment_bias"):
-        n[k] = n[k].copy(); n[k][:m] = old[k]
+        n[k] = n[k].copy(); n[k][nm] = old[k]
     n["actor/w_critic"] = old["actor/w_critic"].copy()
     # quiet start for the memory projections that W1 never used (prefrontal, efference, history -> association)
     pops = new.connectome.populations
@@ -88,6 +107,8 @@ def transplant(name, out, quiet=0.1, src=START):
             mem_pre[np.asarray(pops[r])] = True
     q = mem_pre[n["pre"]]
     n["efficacy"][q] *= quiet
+    if extra:
+        n["efficacy"][(n["pre"] >= 2000) & (n["pre"] < 2000 + extra)] = 0.0  # the x block never reaches the cortex
     n["efficacy"] = n["efficacy"] + 0.0  # no signed zeros (-0.0 + 0.0 steps would flip bytes without changing values)
     np.savez(out, **n)
     b = Brain.load(out)
@@ -125,6 +146,7 @@ class MemPlayer:
         if mode == "retry":
             self.b.retune(**FROZEN)
         self.ep = getattr(self.b, "_episodic", None)
+        self.xkey = len(self.b.sensory_index) > 2000
 
     def begin(self, seed=0):
         self.b.reset()
@@ -177,15 +199,20 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
     cap = max_dec or D.MAX_DECISIONS
     while not g.done and g.decisions < cap and g.stuck < D.STUCK:
         o = body.obs()
+        if getattr(player, "xkey", False):
+            o = np.concatenate([o, xblock(g.env.ram)])
         a = player.act(o)
         if keep_obs:
-            obs.append(np.round(o * 255).astype(np.uint8))
+            obs.append(np.round(o[:2000] * 255).astype(np.uint8))
         acts.append(a); xs.append(int(g.x))
         if cb is not None:
             cb(g, o, a)
         body.step(a)
     end = "flag" if g.flag else ("died" if g.done else "stuck")
-    player.end(body.obs(), end)
+    oe = body.obs()
+    if getattr(player, "xkey", False):
+        oe = np.concatenate([oe, xblock(g.env.ram)])
+    player.end(oe, end)
     out = dict(start=int(start), max_x=int(g.max_x), flag=bool(g.flag), end=end, decisions=g.decisions,
                actions=acts, xs=xs)
     if keep_obs:
