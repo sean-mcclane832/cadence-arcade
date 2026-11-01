@@ -117,6 +117,12 @@ def main():
     mix = dict(zip(levels, [float(v) for v in args.mix.split(",")]))
     b = mem.make_cold(Brain.load((HERE / args.init).resolve()))  # settles from rest, as the act-mode players do
     b.learner.config = dataclasses.replace(b.learner.config, eta=args.eta, eta_bias=args.eta / 10)
+    xin = len(b.sensory_index) - 2000  # AgrippaX: x block from RAM (play appends the real one, mem.play_attempt)
+    if xin > 0:  # stored lesson rows hold 2,000 screen values only: zero x block on lesson / burn-in inputs (MEMORY.md)
+        pad = lambda x: np.concatenate([x, np.zeros((len(x), xin))], 1) if x.shape[1] == 2000 else x  # noqa: E731
+        _act, _lesson = b.act, b.lesson
+        b.act = lambda x, **kw: _act(pad(np.asarray(x, np.float64)), **kw)
+        b.lesson = lambda x, y: _lesson(pad(np.asarray(x, np.float64)), y)
     rng = np.random.default_rng(11)
     deadline = time.time() + args.hours * 3600
     if args.stop_at:

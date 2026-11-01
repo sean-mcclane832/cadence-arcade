@@ -1,10 +1,16 @@
 <!-- RESUME -->
-## RESUME (11/01 15:00 EST)
+## RESUME (11/01 15:15 EST)
 - Phase 0: transplant exact; act mode settles cold (= W1 predict); memory synapses start at 0, so every memory brain
   starts as W1_F2ck110. Burn-in K=3. Blame: Cadence's write reaches the decisive move in 3 of 10 deaths -> OUR blame
   window (5..30 back) in the retry curves.
 - RUNNING: night arms Cato / Cicero / Livy (runs/night2, mtrain.py, stop 05:45). Livy restarted 14:20 (echo synapses at
-  1/8 step). Per-level bests so far: Cicero 1-4 HELD 44/50 (ck5), Cato 1-2 HELD 9/50 (ck5). Joint picks still ck0.
+  1/8 step; stop still 05:45, so Livy gets 22 min less than Cato / Cicero's 15 h 47 min, not changed).
+  AgrippaX (4th arm, same mtrain recipe, runs/night2/AgrippaX, log.txt) started LATE at 15:10, --stop-at 06:57 (= 15 h
+  47 min, same wall-clock budget as Cato / Cicero, Sean 15:15). Lesson rows get a zero x block, play gets real x; its
+  place store stays empty in training (see "AgrippaX training arm"), so expect it to track Cato. Its end-of-night
+  scoring runs AFTER 06:57, later than the others: top-3 SEL checkpoints on HELD, World 2 first sight, ablation with the
+  place vote off (x block / memory_amplitude 0), retry curves vs reload control. Check-ins: read its log.txt too.
+  Per-level bests so far: Cicero 1-4 HELD 44/50 (ck5), Cato 1-2 HELD 9/50 (ck5). Joint picks still ck0.
 - Place memory retry test (bar: +300 median max x at life 10 vs reload control):
   - Agrippa LOST (life 10 +162 on 1-2, +127 on 2-1). Sparse keys and no-blame variants worse.
   - AgrippaX (Sean's idea, x from RAM in the place key; "where am I only, decisions still from the screen") 14:47:
@@ -260,6 +266,33 @@ observation code, then the fixed `PatternSeparator`, stream.py ~2106. No separat
   of roughly 15-20; with fan-in 32 most cells read 0-2 x inputs, and those win the top-24). Not tuned further.
   gauntletm.py did NOT append the x block (it calls player.act directly); fixed 14:40 (o and the end observation get
   mem.xblock when player.xkey). evalm.py untested with it.
+### AgrippaX training arm (Sean 15:10: "the exact same pipeline as the other brains"; written 15:10, BEFORE launch)
+Same mtrain.py recipe and args as Cato / Cicero / Livy (--workers 2 --K 3, chunk 250, DAgger every 6), init
+brains0/AgrippaX_ck0.npz, out runs/night2/AgrippaX. Sean 15:15: same wall-clock budget as Cato / Cicero (13:58 -> 05:45 =
+15 h 47 min), so its --stop-at is its launch time + 15:47, not 05:45.
+- Catch: stored lesson rows (W1's piles, runs/seq coach paths, DAgger files) hold only the 2,000 screen values; AgrippaX's
+  input is 2,112 wide. Piles have no RAM and no order, so x can't be recovered for them (rules out a and b for half of
+  every batch); re-collecting would cover only the ordered rows.
+- **Choice: (c) zero x block on lesson and burn-in inputs; play (SEL, HELD, DAgger) gets the real x** (mem.play_attempt).
+  mtrain.py change: when the brain is wider than 2,000 inputs, `b.act` / `b.lesson` zero-pad 2,000-wide inputs. No-op for
+  the other three (they are 2,000 wide; their running processes have the old file loaded anyway).
+- Why it is faithful, checked in source and by test (scratch xcheck.py, 15:05):
+  1. Place records are never written by this recipe. Cadence 0.91.3 writes the place store from a lesson only at
+     memory_demonstrations (0 here, generic.py _teach ~3611), and from an act only when an outcome arrives via learn();
+     mtrain never calls learn. Test: place vote max |v| = 0.0 before and after 6 burn-in + lesson batches (zero or real x).
+  2. With a zero x block, the x->cortex synapses (28,672, efficacy 0 at ck0) stay exactly 0.0 (efficacy and velocity),
+     because every EP step on them is pre x post with pre = 0. With a real x block they grow (0.0046 after 6 batches):
+     the cortex would start reading x, i.e. the RAM-cheat experiment, not "where am I only, decisions from the screen".
+  So under (c) the lessons see what they would see with real x in every way that matters (the cortex never sees x, the
+  store is empty either way), and only play sees x, where the key is built.
+- **Consequence, say it plainly:** under mtrain's recipe AgrippaX's place memory is inert all night (empty store, zero
+  vote), so its training should track Cato's: same weights in the cortex, plus an x key that is empty. It is the
+  pipeline Sean asked for, but it will NOT test "weights trained with the vote live" (Next night in the vault plan);
+  that needs a recipe change (memory_demonstrations > 0, or learn() on DAgger/retry lives). The same holds for Livy's
+  place part (memory_choice with memory_demonstrations=0): its place/context records are also never written in
+  training. End-of-night: AgrippaX's checkpoints are where the retry curves (store live at play) get read.
+- Parity check: AgrippaX's chunk 0 line (mtrain's own SEL eval path, real x at play) must read 1-1 20/24 m2970, 1-2 7/24
+  m1730, 1-3 9/24 m1812, 1-4 11/24 m2159, as Cato / Cicero / Livy did.
 - Note for the new owner (14:46): the first night2 DAgger round took 1,110 s for 1-1 alone (8 attempts, 2 workers;
   coach labelling is the slow part). Four levels means ~70 min of DAgger every 6 chunks per arm. Consider fewer episodes
   or less frequent rounds if the arms look starved of lessons.
