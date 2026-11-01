@@ -195,3 +195,10 @@ until 07:30 (~6 h more, ~9.5 h total). No matched control this time (cores go to
 "does the ceiling brain get 1-2 / World 2 with more time", not "faster than the screen".
 - H1x: its end-of-run joint best or best-1-2 checkpoint reaches 1-2 HELD >= 20/50, or 2-1 first sight > 1,000.
   Falsified if neither does.
+
+Clock note: daylight saving ended at 02:00 EDT -> 01:00 EST. Times below are EST. Runs started with --stop-at 07:30
+computed that in EDT, so they stop at 06:30 EST (inside the 08:00 limit either way).
+
+E-four at 1.5 h (01:00 EST): joint pick ck_0030 (SEL [18, 9, 0, 11]) scored on HELD: **1-1 42/50, 1-2 9/50, 1-4
+34/50**, 1-3 0. The first brain that clears 1-2 AND 1-4 with the same weights (and 1-1 consistently). Saved as
+brains/F30.npz. 1-3 is the missing level: all 24 of its DAgger attempts so far died (this line never knew 1-3).
