@@ -46,6 +46,39 @@ def summarize(st):
     return rows
 
 
+def video_html(out):
+    """Clips in the out folder (every *.mp4 with a .json next to it, from record_level.py).
+    Clips whose json has a caption belong to the in-order run; the rest are learning-fix brains
+    (captioned with care on the showcase page), listed here by brain name."""
+    run_v, other_v = [], []
+    for js in sorted(Path(out).glob("*.json")):
+        mp4 = js.with_suffix(".mp4")
+        if not mp4.exists():
+            continue
+        m = json.loads(js.read_text())
+        poster = js.with_name(js.stem + "_poster.png")
+        pa = f' poster="{poster.name}"' if poster.exists() else ""
+        if m.get("caption"):
+            what = m["caption"]
+            dest = run_v
+        else:
+            run = str(m.get("run", ""))
+            brain = Path(run).stem if run.endswith(".npz") else (Path(run).name + f", round {m['round']}" if run else f"round {m['round']}")
+            end = "flag" if m.get("flag") else f'x {m["max_x"]:,}'
+            what = f'{brain} on {m["level"]}, start {m["start"]}: {end}'
+            dest = other_v
+        dest.append(f'<figure><video controls playsinline muted preload="metadata"{pa}>'
+                    f'<source src="{mp4.name}" type="video/mp4"></video>'
+                    f"<figcaption>{html.escape(what)}. Every button is the brain's. {m['seconds']} s.</figcaption></figure>")
+    parts = []
+    parts.append('<div class="clips">' + "".join(run_v) + '</div>' if run_v else '<p class="dim">No clip yet.</p>')
+    if other_v:
+        parts.append('<h3>Learning-fix brains</h3><p class="small dim">Solo clips of the later brains, by file name. '
+                     'The <a href="../">Mario page</a> has them with context and the brain roster.</p>'
+                     '<div class="clips">' + "".join(other_v) + '</div>')
+    return "\n  ".join(parts), len(run_v) + len(other_v)
+
+
 def load(p):
     p = HERE / p if p else None
     return json.loads(p.read_text()) if p and p.exists() else None
@@ -153,19 +186,7 @@ def main():
                 '<div class="tw"><table><thead><tr><th>level</th><th class="n">now</th><th class="n">its best</th><th class="n">flags</th></tr></thead>'
                 f'<tbody>{cells}</tbody></table></div>')
 
-    vids = []
-    for js in sorted(out.glob("*.json")):
-        mp4 = js.with_suffix(".mp4")
-        if not mp4.exists():
-            continue
-        m = json.loads(js.read_text())
-        poster = js.with_name(js.stem + "_poster.png")
-        what = m.get("caption") or f'{m["level"]}, round {m["round"]}: x {m["max_x"]:,}'
-        vids.append(f'<figure><video controls playsinline muted preload="metadata"'
-                    f'{" poster=" + chr(34) + poster.name + chr(34) if poster.exists() else ""}>'
-                    f'<source src="{mp4.name}" type="video/mp4"></video>'
-                    f'<figcaption>{html.escape(what)}. Every button is the brain\'s. {m["seconds"]} s.</figcaption></figure>')
-    vid_html = "".join(vids) or '<p class="dim">No clip yet.</p>'
+    vid_html, n_vids = video_html(out)
     tp = HERE / args.text
     notes = "".join(f"<li>{html.escape(l)}</li>" for l in (json.loads(tp.read_text()) if tp.exists() else []))
     now = time.strftime("%Y-%m-%d %H:%M")
@@ -179,48 +200,37 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cadence Plays Mario In Order</title>
 <meta name="description" content="One Cadence brain plays Super Mario Bros. levels in order. How far does it get on each new level at first sight, against simple baselines, before and after better senses?">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
 <style>
-  :root {{ --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --blue: #6cb6ff; --line: #23272e; --bad: #ff6b6b; --good: #7bd88f; --panel: #12151a; }}
-  * {{ box-sizing: border-box; }}
-  html, body {{ overflow-x: hidden; }}
-  body {{ margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 28px 16px 40px; }}
-  main {{ max-width: 640px; margin: 0 auto; }}
-  h1 {{ font-family: "Silkscreen", monospace; font-weight: 400; font-size: 22px; letter-spacing: .05em; margin: 0 0 6px; }}
-  h2 {{ font-family: "Silkscreen", monospace; font-weight: 400; font-size: 15px; letter-spacing: .05em; margin: 30px 0 8px; }}
-  .sub, .dim {{ color: var(--dim); font-size: 12.5px; }}
-  .sub {{ margin: 0 0 16px; }}
-  a {{ color: var(--accent); }}
-  svg {{ width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }}
-  svg .grid {{ stroke: var(--line); }} svg .ax {{ fill: var(--dim); font: 9px "JetBrains Mono", monospace; }}
+  /* page tokens mapped onto the shared site tokens (assets/site.css) */
+  :root {{ --dim: var(--c-dim); --accent: var(--c-accent-bg); --blue: var(--c-blue); --line: var(--c-line); --panel: var(--c-surface); }}
+  svg {{ width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: var(--c-radius); }}
+  svg .grid {{ stroke: var(--line); }} svg .ax {{ fill: var(--dim); font: 9px var(--c-mono); }}
   svg .bar-b {{ fill: var(--dim); }} svg .bar-a {{ fill: var(--accent); }} svg .tick {{ stroke: var(--blue); stroke-width: 2.5; }}
-  .legend {{ color: var(--dim); font-size: 12px; margin: 6px 0 0; }}
+  .legend {{ color: var(--dim); font-size: 13px; margin: 8px 0 0; }}
   .sw {{ display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 10px; vertical-align: -1px; }}
   .sw.b {{ background: var(--dim); margin-left: 0; }} .sw.a {{ background: var(--accent); }} .sw.t {{ background: var(--blue); height: 3px; vertical-align: 2px; }}
-  .tw {{ width: 100%; overflow-x: auto; }}
-  table {{ width: 100%; border-collapse: collapse; font-size: 12px; }}
-  th, td {{ text-align: left; padding: 5px 5px; border-bottom: 1px solid var(--line); vertical-align: top; }}
-  th {{ color: var(--dim); font-weight: 400; }}
-  td.n, th.n {{ text-align: right; white-space: nowrap; }}
-  .ok {{ color: var(--good); }} .no {{ color: var(--bad); }}
-  ul {{ padding-left: 18px; margin: 10px 0; }} li {{ margin: 7px 0; }}
-  figure {{ margin: 0 0 18px; }}
-  video {{ display: block; width: 100%; aspect-ratio: 256 / 240; background: #000; border: 1px solid var(--line); border-radius: 6px; image-rendering: pixelated; }}
-  figcaption {{ color: var(--dim); font-size: 12.5px; margin-top: 6px; }}
-  footer {{ color: var(--dim); font-size: 12px; margin-top: 32px; }} footer a {{ color: var(--dim); }}
+  .site video {{ aspect-ratio: 256 / 240; image-rendering: pixelated; object-fit: contain; }}
 </style>
 </head>
-<body>
-<main>
-  <p class="sub"><a href="../../">cadence arcade</a> / <a href="../">mario</a> / levels in order</p>
-  <h1>MARIO, LEVEL BY LEVEL</h1>
-  <p class="sub">One Cadence brain (cadence-net {cad}) plays the levels in order, learning the whole time. Two runs: a nearly blind brain (before), then a fresh brain with better senses (after). Updated {now}.</p>
+<body class="site">
+<!--site-header-->
+<header class="site-header"><div class="site-header-in">
+  <a class="site-logo" href="../../">CADENCE<span>ARCADE</span></a>
+  <nav class="site-nav" aria-label="Site"><a href="../" aria-current="page">Mario</a><a href="../../brain/">Brain scope</a><a href="../../chat/">Chat</a><a href="../../ember-field/">Ember Field</a><a href="../../breakout/">Breakout</a></nav>
+</div></header>
+<!--/site-header-->
+<main class="page">
+  <p class="crumbs"><a href="../../">Home</a> / <a href="../">Mario</a> / Level by level</p>
+  <h1>Mario, level by level</h1>
+  <p class="lede">One Cadence brain (cadence-net {cad}) plays the levels in order, learning the whole time. Two runs: a nearly blind brain (before), then a fresh brain with better senses (after). Updated {now}.</p>
 {fix_html}
   <h2>First sight</h2>
-  <p class="dim">How far it gets on a level before any practice on it: median x of 3 solo attempts.</p>
+  <p class="small dim">How far it gets on a level before any practice on it: median x of 3 solo attempts.</p>
   {"".join(svg)}
   {legend}
 
@@ -230,12 +240,12 @@ def main():
   <h2>First sight vs baselines</h2>
   <div class="tw"><table><thead><tr><th>level</th><th class="n">blind</th><th class="n">senses</th><th class="n">run</th><th class="n">jump</th><th class="n">random</th><th class="n">fresh</th><th class="n">fresh+</th></tr></thead>
   <tbody>{"".join(fs_rows)}</tbody></table></div>
-  <p class="dim">Median x, same 3 starts as first sight. run = hold run right; jump = hold run+jump; random = random buttons (10 attempts, fixed seeds); fresh = an untrained Cadence brain with the blind input; fresh+ = an untrained brain with the new senses. <span class="ok">&gt;</span> beats the best baseline, <span class="no">&le;</span> does not. The blind brain's 1-1 is "pre": it began from last night's 1-1 training.</p>
+  <p class="small dim">Median x, same 3 starts as first sight. run = hold run right; jump = hold run+jump; random = random buttons (10 attempts, fixed seeds); fresh = an untrained Cadence brain with the blind input; fresh+ = an untrained brain with the new senses. <span class="ok">&gt;</span> beats the best baseline, <span class="no">&le;</span> does not. The blind brain's 1-1 is "pre": it began from last night's 1-1 training.</p>
 
   <h2>After practice</h2>
   <div class="tw"><table><thead><tr><th>level</th><th class="n">blind best</th><th>cleared</th><th class="n">senses best</th><th>cleared</th></tr></thead>
   <tbody>{pr_rows}</tbody></table></div>
-  <p class="dim">Best solo median x over the practice rounds (about 38 minutes per level). Cleared = flag in 2 of 3 solo attempts.</p>
+  <p class="small dim">Best solo median x over the practice rounds (about 38 minutes per level). Cleared = flag in 2 of 3 solo attempts.</p>
 
   <h2>Videos</h2>
   {vid_html}
@@ -243,19 +253,24 @@ def main():
   <h2>Coaching used</h2>
   {coach_table(A, "New senses")}
   {coach_table(B, "Blind")}
-  <p class="dim">coached: tries where the brain plays and a look-ahead planner writes down the button it would have pressed on each screen; it never takes the controls. labels: buttons it wrote. own: screens from the brain's own attempts that made progress. old play: share of self-play spent on an earlier level. min: practice minutes.</p>
+  <p class="small dim">coached: tries where the brain plays and a look-ahead planner writes down the button it would have pressed on each screen; it never takes the controls. labels: buttons it wrote. own: screens from the brain's own attempts that made progress. old play: share of self-play spent on an earlier level. min: practice minutes.</p>
 
   <h2>Retention</h2>
   {ret_table(sa, "New senses")}
   {ret_table(sb, "Blind")}
 
-  <footer>Independent experiment by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">cadence-arcade/mario</a> (levels.py, game.py).</footer>
 </main>
+<!--site-footer-->
+<footer class="site-footer"><div class="site-footer-in">
+  <p>Independent experiment by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>.</p>
+  <p>Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">cadence-arcade/mario</a> (levels.py, game.py)</p>
+</div></footer>
+<!--/site-footer-->
 </body>
 </html>
 """
     (out / "index.html").write_text(page, encoding="utf-8", newline="\n")
-    print(f"wrote {out / 'index.html'} ({len(names)} levels, {len(vids)} videos)")
+    print(f"wrote {out / 'index.html'} ({len(names)} levels, {n_vids} videos)")
 
 
 if __name__ == "__main__":
