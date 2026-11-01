@@ -5,24 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mario Brain Scope</title>
 <meta name="description" content="Scrub through a Cadence brain playing Super Mario Bros. alone: the game, what the brain sees, and its real recorded neuron activity at every decision.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
 <style>
 :root {
-  --bg: #101218; --panel: #181b23; --line: #2a2e3a; --fg: #e1e4eb; --dim: #8a90a0;
+  /* surfaces come from the shared site tokens (assets/site.css); region colors are this page's own */
+  --bg: var(--c-bg); --panel: var(--c-surface); --line: var(--c-line); --fg: var(--c-fg); --dim: var(--c-dim);
   --hi: #ffc43d; --sens: #5aaaff; --assoc: #ff963c; --pfc: #aa78ff; --motor: #5adc82; --bad: #ff5a5a;
 }
-:root[data-theme="light"] { --bg: #f4f5f8; --panel: #ffffff; --line: #d8dbe3; --fg: #1b1e26; --dim: #5d6372; --hi: #c98a00; }
+:root:not([data-theme="dark"]) { --hi: #b47a00; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --hi: #ffc43d; } }
 * { box-sizing: border-box; }
-html, body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-main { max-width: 1180px; margin: 0 auto; padding: 14px 16px 40px; }
-h1 { font-size: 22px; margin: 4px 0 2px; }
 .sub { color: var(--dim); margin: 0 0 12px; }
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 .tabs button, .ctl button, .ctl select { background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 11px; font: inherit; cursor: pointer; }
 .tabs button.on { border-color: var(--hi); color: var(--hi); }
-.tabs .tag { font-size: 12px; color: var(--dim); margin-left: 4px; }
+.tabs .tag { font: 12px/1.3 var(--c-font); color: var(--dim); margin-left: 4px; border: 0; padding: 0; text-transform: none; letter-spacing: 0; vertical-align: baseline; }
 .stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
 @media (max-width: 820px) { .stage { grid-template-columns: minmax(0, 1fr); } }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; min-width: 0; }
 .gamewrap { position: relative; width: 100%; aspect-ratio: 256 / 240; }
 .gamewrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
 .status { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: var(--dim); font-size: 13px; margin-top: 6px; }
@@ -55,27 +59,37 @@ section.explain h2 { font-size: 17px; margin: 16px 0 6px; }
 section.explain p, section.explain li { color: var(--dim); max-width: 75ch; }
 section.explain code { color: var(--fg); }
 .loading { color: var(--dim); padding: 30px 0; }
-a { color: var(--sens); }
 .vids { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
 .vids figure { margin: 0; } .vids video { width: 100%; border-radius: 8px; background: #000; display: block; }
 .vids figcaption { color: var(--dim); font-size: 13px; margin-top: 4px; }
+.feature-vid { margin: 0 0 16px; }
+.feature-vid video { width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 10px; background: #000; display: block; }
+.feature-vid figcaption { color: var(--dim); font-size: 14px; margin-top: 6px; max-width: 75ch; }
+.feature-vid figcaption b { color: var(--fg); }
 </style>
 </head>
-<body>
-<main>
+<body class="site">
+<!--site-header-->
+<header class="site-header"><div class="site-header-in">
+  <a class="site-logo" href="../">CADENCE<span>ARCADE</span></a>
+  <nav class="site-nav" aria-label="Site"><a href="../mario/">Mario</a><a href="./" aria-current="page">Brain scope</a><a href="../chat/">Chat</a><a href="../ember-field/">Ember Field</a><a href="../breakout/">Breakout</a></nav>
+</div></header>
+<!--/site-header-->
+<main class="page wide">
+  <p class="crumbs"><a href="../">Home</a> / <a href="../mario/">Mario</a> / Brain scope</p>
   <h1>Mario brain scope</h1>
-  <p class="sub">A Cadence brain (U3ck83) playing Super Mario Bros. alone, no coach. Every number below was recorded from the real brain at each decision. Scrub, play, click neurons.</p>
+  <p class="sub">A Cadence brain (U3ck83) playing Super Mario Bros. alone, no coach. Every number below was recorded from the real brain at each decision. Scrub, play, click neurons. Or watch <a href="#brain-cam">W1b's whole World 1 gauntlet with its brain</a>.</p>
   <div class="tabs" id="tabs"></div>
   <div id="app" class="loading">Loading...</div>
 
 <template id="tpl">
   <div class="stage">
-    <div class="card">
+    <div class="panel">
       <div class="gamewrap"><canvas id="game" width="256" height="240"></canvas><canvas id="heat" width="256" height="240"></canvas></div>
       <div class="status"><span>decision <b id="dnum">1</b> / <span id="dtot"></span></span><span>x <b id="xpos"></b></span><span>pressed <b id="press"></b></span></div>
       <div class="poke" id="poke"></div>
     </div>
-    <div class="card">
+    <div class="panel">
       <div class="lbl">What it sees <small>(its real input: 26 x 32 grey blocks, 0 = background, shown 3x brighter)</small></div>
       <div class="row">
         <div><canvas class="px" id="eyesNow" width="32" height="26"></canvas><div class="note">now</div></div>
@@ -104,18 +118,18 @@ a { color: var(--sens); }
     <select id="speed"><option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="1" selected>1x (game speed)</option><option value="2">2x</option></select>
     <label><input type="checkbox" id="salOn"> Poke the brain (saliency)</label>
   </div>
-  <div class="card">
+  <div class="panel">
     <div class="lbl">Buttons over the whole run <small>(7 motor neurons' activation per decision; white line = the pressed one, green = x progress; click or drag to jump)</small></div>
     <canvas id="timeline"></canvas>
   </div>
   <div class="stage" style="margin-top:14px">
-    <div class="card">
+    <div class="panel">
       <div class="lbl">Buttons now <small>(motor neuron activation; the highest one is pressed)</small></div>
       <div class="buttons" id="buttons"></div>
       <div class="lbl" style="margin-top:10px">Settle of this decision <small>(7 motor neurons, step by step)</small></div>
       <canvas id="settle" class="px" width="300" height="110" style="image-rendering:auto;height:110px"></canvas>
     </div>
-    <div class="card">
+    <div class="panel">
       <div class="lbl">Trace: <span id="traceName" style="text-transform:none"></span></div>
       <canvas id="trace"></canvas>
       <div class="note">Activation over the whole run, cursor at the current decision. Click the trace to jump.</div>
@@ -123,8 +137,9 @@ a { color: var(--sens); }
   </div>
 </template>
 <section class="explain">
-  <h2>Brain-cam videos</h2>
-  <p>The same runs as videos at game speed: game on the left, the recorded brain on the right.</p>
+  <h2 id="brain-cam">Brain-cam videos</h2>
+  <figure class="feature-vid"><video controls playsinline muted preload="none" poster="../mario/gauntlet/g_W1_F2ck35_brain_poster.jpg" width="1280" height="720"><source src="../mario/gauntlet/g_W1_F2ck35_brain.mp4" type="video/mp4"></video><figcaption><b>W1b beats World 1 in one five-life gauntlet, with its brain.</b> All nine attempts (1-1, 1-2, 1-3 on the fourth try, 1-4, then two lives lost on 2-1), re-recorded with the brain's real activity next to the game. Every replay matched the gauntlet log exactly. This is a different brain from the scope above (W1_F2ck35, from the <a href="../mario/">Mario page</a>). 1 min 33 s, 7 MB.</figcaption></figure>
+  <p>The four runs in the scope as videos at game speed: game on the left, the recorded brain (U3ck83) on the right.</p>
   <div class="vids"><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-1-clear_poster.jpg" src="clips/u3ck83-1-1-clear.mp4"></video><figcaption>1-1 clear</figcaption></figure><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-4-clear_poster.jpg" src="clips/u3ck83-1-4-clear.mp4"></video><figcaption>1-4 Bowser clear</figcaption></figure><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-1-death_poster.jpg" src="clips/u3ck83-1-1-death.mp4"></video><figcaption>1-1 death</figcaption></figure><figure><video controls playsinline muted preload="none" poster="clips/u3ck83-1-4-death_poster.jpg" src="clips/u3ck83-1-4-death.mp4"></video><figcaption>1-4 death</figcaption></figure></div>
   <h2>What you're looking at</h2>
   <p>The brain is <code>mario/brains/U3ck83.npz</code>: 2,519 neurons in four regions of its connectome (sensory 2,000, association 256, prefrontal 256, motor 7). The same weights clear World 1-1, 1-3 and 1-4. Each run here is a real solo attempt from a fixed start, replayed on the real NES emulator.</p>
@@ -138,6 +153,12 @@ a { color: var(--sens); }
   <p>Code and regeneration steps: <code>mario/viz/</code> in the cadence-arcade repo.</p>
 </section>
 </main>
+<!--site-footer-->
+<footer class="site-footer"><div class="site-footer-in">
+  <p>Independent experiment by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>.</p>
+  <p>Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario/viz">cadence-arcade/mario/viz</a></p>
+</div></footer>
+<!--/site-footer-->
 <script>
 (() => {
   "use strict";

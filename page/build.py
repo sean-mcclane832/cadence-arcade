@@ -82,7 +82,7 @@ def main(run, out):
                    f"{r0[1][0]:.0f} and {r0[1][1]:.0f}."),
         "foot": (f"Cadence {meta['cadence']} (cadence-net), Python {meta['python']}, CPU. "
                  f"Cadence settings: {json.dumps(meta['cadence_settings'])}. MLP: {meta['mlp']}. "
-                 f"Game, players and recordings: P:/projects/cadence-arcade. Built 2026-10-28."),
+                 f"Game, players and recordings: github.com/sean-mcclane832/cadence-arcade (game/, page/). Built 2026-10-28."),
     }
     html = Path(__file__).with_name("template.html").read_text(encoding="utf-8")
     html = html.replace("/*DATA*/null", json.dumps(data, separators=(",", ":")))

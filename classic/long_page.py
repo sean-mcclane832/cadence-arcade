@@ -121,45 +121,43 @@ def page(S):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Breakout, Long Run</title>
 <meta name="description" content="One-Frame Breakout trained 10x longer: does a Cadence brain keep improving, and does the 0.89.0 recall position term start to matter?">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
 <style>
-  :root {{ --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; }}
-  * {{ box-sizing: border-box; }}
-  body {{ margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace; padding: 40px 16px; }}
-  main {{ max-width: 720px; margin: 0 auto; }}
-  h1 {{ font-family: "Silkscreen", monospace; font-weight: 400; font-size: 26px; letter-spacing: .06em; margin: 0 0 6px; }}
-  h2 {{ font-family: "Silkscreen", monospace; font-weight: 400; font-size: 16px; letter-spacing: .05em; margin: 34px 0 10px; }}
-  .sub, .dim {{ color: var(--dim); }}
-  .sub {{ font-size: 13px; margin: 0 0 26px; }}
-  a {{ color: var(--accent); }}
+  /* page tokens mapped onto the shared site tokens (assets/site.css) */
+  :root {{ --dim: var(--c-dim); --line: var(--c-line); }}
   svg {{ width: 100%; height: auto; display: block; }}
   svg .grid {{ stroke: var(--line); }} svg .mark {{ stroke: var(--dim); stroke-dasharray: 3 4; }}
-  svg .tick {{ fill: var(--dim); font: 11px "JetBrains Mono", monospace; }}
-  .legend {{ display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--dim); margin: 8px 0 0; }}
+  svg .tick {{ fill: var(--dim); font: 11px var(--c-mono); }}
+  .chartbox {{ background: var(--c-surface); border: 1px solid var(--c-line); border-radius: var(--c-radius); padding: 8px; overflow-x: auto; }}
+  .chartbox svg {{ min-width: 480px; }}
+  .legend {{ display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--dim); margin: 10px 0 0; }}
   i {{ display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }}
-  .scroll {{ overflow-x: auto; }}
-  table {{ border-collapse: collapse; width: 100%; font-size: 13px; }}
-  th, td {{ text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }}
-  th {{ color: var(--dim); font-weight: 400; }}
-  ul {{ padding-left: 18px; }} li {{ margin: 6px 0; }}
-  footer {{ color: var(--dim); font-size: 12px; margin-top: 36px; }} footer a {{ color: var(--dim); }}
+  .site td {{ white-space: nowrap; }}
 </style>
 </head>
-<body>
-<main>
-  <p class="sub"><a href="../">cadence arcade</a> / <a href="../breakout/">one-frame breakout</a> / long run</p>
-  <h1>BREAKOUT, 10X LONGER</h1>
-  <p class="sub">Same game, players and protocol as <a href="../breakout/">One-Frame Breakout</a>, but each life trains for 300 blocks (300,000 moments) instead of 30. 12 seeds per player. cadence-net 0.89.0.</p>
+<body class="site">
+<!--site-header-->
+<header class="site-header"><div class="site-header-in">
+  <a class="site-logo" href="../">CADENCE<span>ARCADE</span></a>
+  <nav class="site-nav" aria-label="Site"><a href="../mario/">Mario</a><a href="../brain/">Brain scope</a><a href="../chat/">Chat</a><a href="../ember-field/">Ember Field</a><a href="../breakout/" aria-current="page">Breakout</a></nav>
+</div></header>
+<!--/site-header-->
+<main class="page">
+  <p class="crumbs"><a href="../">Home</a> / <a href="../breakout/">One-Frame Breakout</a> / 10x longer</p>
+  <p class="eyebrow">MinAtar Breakout &middot; follow-up</p>
+  <h1>Breakout, 10x longer</h1>
+  <p class="lede">Same game, players and protocol as <a href="../breakout/">One-Frame Breakout</a>, but each life trains for 300 blocks (300,000 moments) instead of 30. 12 seeds per player. cadence-net 0.89.0.</p>
 
   <p>The first run stopped while every curve was still climbing. So: what happens if you just keep going?</p>
 
   <h2>Bricks per test game</h2>
-  {svg_chart(S)}
+  <div class="chartbox">{svg_chart(S)}</div>
   <div class="legend">{legend}</div>
-  <p class="dim" style="font-size:12px">Median of 12 seeds, each point a 10-block window. Shaded: middle half of seeds for the position-term brain and the two-frame MLP.</p>
+  <p class="small dim">Median of 12 seeds, each point a 10-block window. Shaded: middle half of seeds for the position-term brain and the two-frame MLP.</p>
 
   <h2>What it showed</h2>
   <ul>
@@ -170,22 +168,27 @@ def page(S):
   </ul>
 
   <h2>Numbers</h2>
-  <div class="scroll"><table>
+  <div class="tw"><table>
     <tr><th>player</th><th>30 blocks</th><th>300 blocks [IQR]</th><th>agrees w/ coach</th></tr>
     {trows}
   </table></div>
-  <p class="dim" style="font-size:12px">Bricks per test game over the last 10 blocks, median over seeds. The 30-block column is the first run (separate lives, same seeds).</p>
+  <p class="small dim">Bricks per test game over the last 10 blocks, median over seeds. The 30-block column is the first run (separate lives, same seeds).</p>
 
-  <div class="scroll"><table>
+  <div class="tw"><table>
     <tr><th>paired, by seed</th><th>wins</th><th>median diff</th><th>Wilcoxon p</th></tr>
     {srows}
   </table></div>
 
   <h2>How it ran</h2>
-  <p class="dim" style="font-size:13px">One command on a desktop CPU, about 30 minutes per Cadence life and 3 per MLP life, 6 at a time: <code>run.py --seeds 10-21 --arms pos32,pos0,norecall,mlp1,mlp2 --blocks 300 --procs 6 --out runs/long10x</code>. Nothing else changed from the pre-declared protocol in <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/classic/run.py">run.py</a>. Raw lives in <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/classic/runs/long10x">runs/long10x</a>.</p>
+  <p class="small dim">One command on a desktop CPU, about 30 minutes per Cadence life and 3 per MLP life, 6 at a time: <code>run.py --seeds 10-21 --arms pos32,pos0,norecall,mlp1,mlp2 --blocks 300 --procs 6 --out runs/long10x</code>. Nothing else changed from the pre-declared protocol in <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/classic/run.py">run.py</a>. Raw lives in <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/classic/runs/long10x">runs/long10x</a>.</p>
 
-  <footer>Independent experiments by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>. Game: MinAtar Breakout (Young &amp; Tian 2019).</footer>
 </main>
+<!--site-footer-->
+<footer class="site-footer"><div class="site-footer-in">
+  <p>Independent experiments by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>. Game: MinAtar Breakout (Young &amp; Tian 2019).</p>
+  <p>Code: <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/classic">cadence-arcade/classic</a></p>
+</div></footer>
+<!--/site-footer-->
 </body>
 </html>
 """
