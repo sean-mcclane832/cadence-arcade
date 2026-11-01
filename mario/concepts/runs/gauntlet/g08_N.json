@@ -1,0 +1,96 @@
+{
+ "name": "N joint best",
+ "label": "one brain",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\concepts\\runs\\gauntlet\\g08_brain.npz"
+ },
+ "lives": 5,
+ "cleared": [
+  "1-1",
+  "1-2"
+ ],
+ "furthest": "1-3",
+ "deaths": {
+  "1-1": [
+   1790,
+   1789
+  ],
+  "1-2": [
+   1596
+  ],
+  "1-3": [
+   656,
+   659
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "N joint best",
+   "start": 0,
+   "end": "died",
+   "x": 1790,
+   "decisions": 160,
+   "lives_before": 5
+  },
+  {
+   "level": "1-1",
+   "brain": "N joint best",
+   "start": 37,
+   "end": "died",
+   "x": 1789,
+   "decisions": 166,
+   "lives_before": 4
+  },
+  {
+   "level": "1-1",
+   "brain": "N joint best",
+   "start": 83,
+   "end": "flag",
+   "x": 3161,
+   "decisions": 332,
+   "lives_before": 3
+  },
+  {
+   "level": "1-2",
+   "brain": "N joint best",
+   "start": 0,
+   "end": "died",
+   "x": 1596,
+   "decisions": 172,
+   "lives_before": 3
+  },
+  {
+   "level": "1-2",
+   "brain": "N joint best",
+   "start": 37,
+   "end": "flag",
+   "x": 3161,
+   "decisions": 320,
+   "lives_before": 2
+  },
+  {
+   "level": "1-3",
+   "brain": "N joint best",
+   "start": 0,
+   "end": "died",
+   "x": 656,
+   "decisions": 59,
+   "lives_before": 2
+  },
+  {
+   "level": "1-3",
+   "brain": "N joint best",
+   "start": 37,
+   "end": "died",
+   "x": 659,
+   "decisions": 60,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 25,
+ "when": "2026-10-31 22:51",
+ "clip": "g08_N.mp4",
+ "clip_seconds": 84.4
+}

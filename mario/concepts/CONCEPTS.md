@@ -88,6 +88,8 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g04 | 19:20 | A_ram ck_0013 (phase 1 joint best, 1.5 h) | one brain, **RAM CHEAT** | none | 1-1: 2850 (stuck), 1820, 1820, 2850 (stuck), 1820 | 0 | runs/gauntlet/g04_Aram.mp4 |
 | g05 | 19:20 | A_body ck_0016 (phase 1 control joint best) | one brain | none | 1-1: 1126 x5 | 0 | runs/gauntlet/g05_Abody.mp4 |
 | g06 | 21:23 | A_ram ck_0034 (phase 1 end, joint best) | one brain, **RAM CHEAT** | 1-1 | 1-2: 1651, 291 (stuck), 676, 673, 851 | 0 | runs/gauntlet/g06_Aram34.mp4 |
+| g07 | 22:50 | C2 joint best = ck_0000 = 1-2_12n59 | one brain | **1-1, 1-2** | 1-2: 1595, 852, 1336; 1-3: 700, 700 | 0 | runs/gauntlet/g07_C2.mp4 |
+| g08 | 22:51 | N ck_0035 (phase 2 no-clinic joint best) | one brain | **1-1, 1-2** | 1-1: 1790, 1789; 1-2: 1596; 1-3: 656, 659 | 0 | runs/gauntlet/g08_N.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched

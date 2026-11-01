@@ -1,0 +1,31 @@
+{
+ "1-1": {
+  "ckpt": "ck_0020.npz",
+  "chunk": 20,
+  "sel_flags": 18,
+  "sel_mean": 3072,
+  "held_flags": 27,
+  "held_mean": 2733
+ },
+ "1-2": {
+  "ckpt": "ck_0025.npz",
+  "chunk": 25,
+  "sel_flags": 15,
+  "sel_mean": 2583,
+  "held_flags": 18,
+  "held_mean": 2086
+ },
+ "joint": {
+  "ckpt": "ck_0000.npz",
+  "chunk": 0,
+  "key": [
+   7,
+   20,
+   4311
+  ],
+  "sel": [
+   7,
+   13
+  ]
+ }
+}
