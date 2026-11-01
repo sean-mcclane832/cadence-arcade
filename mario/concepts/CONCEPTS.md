@@ -105,3 +105,40 @@ HELD 0), 1-1 HELD 2/50 at ck_0015. RAM arm: 0 SEL flags but goes further on 1-1 
 1,126). DAgger rounds are the slow part (~35-40 min for four levels on 4 workers vs ~1 min per chunk).
 Side fix: critpath.py did two plan searches per decision and would have taken ~3 h on 2 workers; now one
 search per decision (same label and weight), 8 held-out starts, to be run on the full PC after phase 1.
+
+### Phase 1 result (stopped 21:16 after 3.5 h; runs/p1/score.json, HELD = 50 held-out starts)
+| checkpoint (picked on SEL) | 1-1 | 1-2 | 1-3 | 1-4 | 2-1 first sight max x (mean) | 2-2 max x |
+|---|---|---|---|---|---|---|
+| A ram (CHEAT), joint best ck_0034 (pre-registered) | 10 | **0** | 0 | 36 | **429** (428) | 162 |
+| A ram (CHEAT), best 1-2 ck_0032 (pre-registered) | 0 | **0**, max 1,330 | 0 | 20 | **474** (472) | 162 |
+| A ram (CHEAT), best 1-4 ck_0028 (not pre-registered) | 0 | 0 | 0 | **49** | 1,021 (962) | 162 |
+| B body (control), joint best ck_0020 | 2 | 0 | 0 | 0 | 340 | 162 |
+| B body (control), best 1-1 ck_0029 | 0 | 0 | 0 | 0 | 530 (472) | 163 |
+| showcase control (10+ h each) | 46 | 29 | 45 | 50 | 723 (U3ck83) | 514 |
+**Verdict as pre-registered: phase 1 does not win.** 1-2 HELD 0/50 (needed 20), 2-1 first sight 429 / 474
+on the two pre-registered checkpoints (needed > 1,000, and below the showcase's 723). By the lose rule
+("no better than control on both 1-2 and 2-1") it **loses**: on 1-2 it ties arm B at 0, on 2-1 the
+pre-registered checkpoints are no better than the showcase control.
+What it did show, clearly: **learning speed**. Same recipe, same coach rows, same 3.5 h, same PC share:
+the RAM brain learned 1-4 to 49/50 and a 1-1 + 1-4 brain (10 + 36 of 50), while the screen brain got
+1-1 2/50 and nothing else. With perfect "what is where", imitation learns World 1 levels several times
+faster. It did not make 1-2 or first sight come in 3.5 h. One exploratory number, flagged because I did not
+pre-register it and it is the best of five brains scored: the 1-4 specialist ck_0028 reaches x ~960-1,021 on
+2-1 on every held-out start (the screen brains: 340-723). Not a win; worth a look on a later night.
+Phase 3 (learned concepts) is skipped: it was conditional on a phase 1 win.
+
+## Phase 2. Death clinic + keep-only-survivals (pre-registered 21:20)
+Best input from phase 1 for 1-2: phase 1 lost on its 1-2 / first-sight test, so the screen input stays
+(and that keeps the result honest for the showcase, no RAM). Starting brain: 1-2_12n59 (1-2 HELD 29/50), the
+brain line where the 27% own-path critical error was measured. A/B, same everything else:
+- arm C (clinic): every DAgger round = 6 normal attempts + the death clinic: up to 4 of the current
+  checkpoint's failed SEL attempts on 1-2, each rewound to 1 / 2 / 4 s (15 / 30 / 60 decisions) before the
+  end, the brain plays on, the coach labels (12 attempts) + survivals: its own buttons from those retries
+  when it gets >= 16 px past where it died, weight 0.5, capped at 20% of each lesson.
+- arm N (no clinic): 18 normal attempts per round (same coach budget).
+Both: rows = st_12n's 1-2 pile (52,445) + 1-1 replay (fix_cad_body3), lessons 90% 1-2 / 10% 1-1, crit x3,
+eta 0.001, DAgger on 1-2 every 10 chunks, tie-aware, SEL on 1-1 and 1-2 every chunk, 4 workers each, 3 h.
+- Metric (critpath.py): 1-2 own-path critical error on 8 held-out starts, coach scoring every decision of
+  the brain's own solo path. Measured on 1-2_12n59 (start) and each arm's best 1-2 checkpoint at the end.
+- Win: C's best 1-2 checkpoint < 15% own-path critical error (from 27%). Lose: still >= 25%.
+- Secondary: C beats N on own-path critical error and on 1-2 HELD.

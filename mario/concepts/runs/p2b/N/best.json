@@ -1,0 +1,11 @@
+{
+ "1-1": {
+  "ckpt": "ck_0000.npz",
+  "chunk": 0,
+  "sel_flags": 7,
+  "sel_mean": 1941,
+  "held_flags": 14,
+  "held_mean": 1593
+ },
+ "1-2": null
+}

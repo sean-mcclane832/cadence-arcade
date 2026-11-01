@@ -1,0 +1,5 @@
+10-31 21:21:14 data 1-1: 10383 rows (2535 critical) own 0 from ../runs/fix_cad_body3
+10-31 21:21:14 data 1-2: 52445 rows (11344 critical) own 0 from runs/p2b/pile_1-2
+10-31 21:21:14 rows stored as body, brain reads body
+10-31 21:21:15 start: {'out': 'runs/p2b/N', 'init_brain': '../brains/1-2_12n59.npz', 'fresh': False, 'width': 256, 'senses': 'body', 'data': '1-1=../runs/fix_cad_body3,1-2=runs/p2b/pile_1-2', 'practice': '1-2', 'mix': '0.1,0.9', 'levels': '1-1,1-2', 'chunk': 250, 'chunks': 400, 'hours': 3.0, 'stop_at': None, 'eta': 0.001, 'crit': 3.0, 'dagger_every': 10, 'episodes': 18, 'from_start': 0.67, 'last_all': 60, 'clinic': False, 'clinic_max': 6, 'survivals': False, 'own_cap': 0.2, 'workers': 4, 'ignore_games': True}
+10-31 21:22:03   NEW BEST 1-1 (ck_0000): SEL 7/24 mean 1941 | HELD 14/50 mean 1593

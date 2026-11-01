@@ -52,7 +52,7 @@
   <p class="sub"><a href="../">cadence arcade</a> / mario</p>
   <h1>A CADENCE BRAIN CLEARS MARIO LEVELS, SOLO</h1>
   <p class="lede"><b>One brain clears 1-1, 1-3 and 1-4 with the same weights.</b> Brain U3ck83 ("the three-level champion") clears 1-1 on 15, 1-3 on 45 and 1-4 (Bowser) on 33 of 50 starts it never trained on. Specialists do better on single levels (1-4: 50/50). <b>1-2</b> is the hard one: best 29/50, and no brain has cleared all four World 1 levels yet. Every button in every clip is the brain's.</p>
-  <p class="sub">Last updated 2026-10-31 19:22 ET. Brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="sub">Last updated 2026-10-31 21:25 ET. Brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <h2>One brain, three levels</h2>
   <figure><video controls playsinline muted preload="metadata" poster="levels/champ-1-1_poster.png"><source src="levels/champ-1-1.mp4" type="video/mp4"></video><figcaption>U3ck83 clears 1-1 from held-out start 33. 22 s.</figcaption></figure>
@@ -95,8 +95,18 @@
   <figure><video controls playsinline muted preload="metadata" poster="gauntlet/g03_relay_poster.png"><source src="gauntlet/g03_relay.mp4" type="video/mp4"></video><figcaption>Relay of specialists (four brains, one per level): all of World 1 in one five-life run, then two lives lost on 2-1, which none of them ever trained on. 1 min 53 s, deaths included.</figcaption></figure>
   <p class="dim">So far no single brain gets past 1-2 in the gauntlet: the three-level brains have never cleared 1-2.</p>
 
+  <h2>Tonight's test: would perfect "what is where" help? <span class="tag">RAM / cheat</span></h2>
+  <p>A ceiling test, labeled as a cheat: a fresh brain read a map built from the game's memory (13 x 16 tiles around Mario: solid, enemy, pit, power-up) plus its body sense, no screen. A matched fresh brain read the normal screen. Same coach, same recipe, same 3.5 hours, same share of the PC.</p>
+  <div class="tw"><table><thead><tr><th>fresh brain, 3.5 h</th><th class="n">1-1</th><th class="n">1-2</th><th class="n">1-3</th><th class="n">1-4</th><th class="n">2-1 first sight</th></tr></thead><tbody>
+  <tr><td>RAM map <span class="tag">cheat</span>, best 1-4 checkpoint</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n ok">49/50</td><td class="n">x 1,021*</td></tr>
+  <tr><td>RAM map <span class="tag">cheat</span>, best joint checkpoint</td><td class="n">10/50</td><td class="n">0</td><td class="n">0</td><td class="n">36/50</td><td class="n">x 429</td></tr>
+  <tr><td>normal screen (control), best checkpoint</td><td class="n">2/50</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">x 340-530</td></tr>
+  </tbody></table></div>
+  <p class="dim">Result: with a perfect map it learns World 1 levels far faster, but it did not crack 1-2 or carry over to World 2 in 3.5 h, which were the pre-registered win conditions. So by its own rules the test lost. *Not pre-registered and the best of five brains scored, so treat it as a lead, not a result. This brain never plays on this page's scoreboard; it can't see the screen.</p>
+
   <h2>Latest</h2>
   <ul class="log">
+    <li><b>10/31 21:20</b> RAM-map ceiling test (a cheat, see below): a fresh brain with a perfect "what is where" map learns 1-4 to 49/50 in 3.5 h, where the same fresh brain on the screen gets almost nothing. But no 1-2 and no World 2, so it misses its own bar. Next: "death clinic" on 1-2 (practice the exact spots where it dies).</li>
     <li><b>10/31 17:48</b> Gauntlet: a relay of specialists (one brain per level) clears all four World 1 levels in one five-life run (1-2 on the fourth try), then dies on 2-1. Single brains stop at 1-2.</li>
     <li><b>10/31 17:20</b> Re-scored every brain on Cadence 0.91.3: identical. Tested the two three-level brains on 1-2: 0 clears in 74 starts each, so "every World 1 level" is not claimed. New: brain roster and a 5-life gauntlet (first one: U3ck83 clears 1-1, then loses all five lives on 1-2).</li>
     <li><b>10/31 16:46</b> First try at World 2 with no coach and no new learning: 0 clears for all five best brains. 2-1: furthest x 723 (stuck at the first tall pipe), most die within 2 seconds. 2-2 (underwater, never seen water): furthest x 514, mostly stops pressing buttons. World 1 skills don't transfer yet. Clips: <a href="levels/w2-firstsight-2-1.mp4">2-1</a>, <a href="levels/w2-firstsight-2-2.mp4">2-2</a>.</li>

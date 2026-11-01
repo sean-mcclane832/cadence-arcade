@@ -1,46 +1,46 @@
 {
  "1-1": {
-  "ckpt": "ck_0015.npz",
-  "chunk": 15,
-  "sel_flags": 0,
-  "sel_mean": 1999,
-  "held_flags": 2,
-  "held_mean": 2225
+  "ckpt": "ck_0029.npz",
+  "chunk": 29,
+  "sel_flags": 1,
+  "sel_mean": 1308,
+  "held_flags": 0,
+  "held_mean": 1144
  },
  "1-2": {
-  "ckpt": "ck_0016.npz",
-  "chunk": 16,
+  "ckpt": "ck_0020.npz",
+  "chunk": 20,
   "sel_flags": 1,
-  "sel_mean": 893,
+  "sel_mean": 959,
   "held_flags": 0,
-  "held_mean": 776
+  "held_mean": 748
  },
  "1-3": {
-  "ckpt": "ck_0016.npz",
-  "chunk": 16,
+  "ckpt": "ck_0033.npz",
+  "chunk": 33,
   "sel_flags": 0,
-  "sel_mean": 768,
+  "sel_mean": 773,
   "held_flags": 0,
-  "held_mean": 768
+  "held_mean": 772
  },
  "1-4": {
-  "ckpt": "ck_0015.npz",
-  "chunk": 15,
+  "ckpt": "ck_0028.npz",
+  "chunk": 28,
   "sel_flags": 0,
-  "sel_mean": 1222,
+  "sel_mean": 1460,
   "held_flags": 0,
-  "held_mean": 1224
+  "held_mean": 1261
  },
  "joint": {
-  "ckpt": "ck_0016.npz",
-  "chunk": 16,
+  "ckpt": "ck_0020.npz",
+  "chunk": 20,
   "key": [
    0,
-   1,
-   2954
+   2,
+   4110
   ],
   "sel": [
-   0,
+   1,
    1,
    0,
    0
