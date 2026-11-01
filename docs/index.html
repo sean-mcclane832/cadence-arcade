@@ -2,76 +2,124 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cadence Arcade</title>
-<meta name="description" content="Game demos and experiments with the Cadence brain (cadence-net). Independent, not affiliated with Pragma Research.">
-<meta name="color-scheme" content="dark">
+<meta name="description" content="Game demos and experiments with the Cadence brain (cadence-net): Mario, a brain scope, chat, Ember Field and Breakout. Independent, not affiliated with Pragma Research.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cadence Arcade">
+<meta property="og:description" content="Game experiments with the Cadence brain. Headline: one brain beat all of Mario World 1 in a single 5-life gauntlet.">
+<meta property="og:image" content="https://sean-mcclane832.github.io/cadence-arcade/assets/thumbs/mario.jpg">
+<meta property="og:url" content="https://sean-mcclane832.github.io/cadence-arcade/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-  :root { --bg: #0b0d10; --fg: #e8e6e1; --dim: #8a8f98; --accent: #ffb347; --line: #23272e; }
-  * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--fg);
-         font: 15px/1.6 "JetBrains Mono", ui-monospace, monospace;
-         display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
-  main { width: 100%; max-width: 560px; }
-  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 28px; letter-spacing: .06em; margin: 0 0 6px; }
-  .sub { color: var(--dim); margin: 0 0 36px; font-size: 13px; }
-  .item { border-top: 1px solid var(--line); padding: 18px 0; }
-  .item:last-of-type { border-bottom: 1px solid var(--line); }
-  .name { font-family: "Silkscreen", monospace; font-size: 17px; letter-spacing: .05em; }
-  .name a { color: var(--fg); text-decoration: none; }
-  .name a:hover { color: var(--accent); }
-  .what { color: var(--dim); font-size: 13px; margin: 4px 0 10px; }
-  .links a { color: var(--accent); text-decoration: none; margin-right: 14px; font-size: 13px; }
-  .links a:hover { text-decoration: underline; }
-  footer { color: var(--dim); font-size: 12px; margin-top: 28px; }
-  footer a { color: var(--dim); }
+  .home-hero { padding: var(--c-s6) 0 var(--c-s5); }
+  .home-hero h1 { font-family: var(--c-pixel); font-weight: 400; letter-spacing: .05em; font-size: clamp(1.9rem, 1.2rem + 3.6vw, 3rem); line-height: 1.1; margin-bottom: var(--c-s4); }
+  .home-hero h1 span { color: var(--c-accent); }
+  .home-hero .lede { margin-bottom: 0; }
+  .card .kicker { font: 600 11px/1.3 var(--c-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent); }
+  .card.feature .text { font-size: var(--c-step-0); }
+  .older { font-size: var(--c-step--1); color: var(--c-dim); margin-top: var(--c-s5); }
 </style>
 </head>
-<body>
-<main>
-  <h1>CADENCE ARCADE</h1>
-  <p class="sub">Game demos for the Cadence brain (cadence-net 0.89.0 to 0.91.1).</p>
+<body class="site home">
+<!--site-header-->
+<header class="site-header"><div class="site-header-in">
+  <a class="site-logo" href="./">CADENCE<span>ARCADE</span></a>
+  <nav class="site-nav" aria-label="Site"><a href="mario/">Mario</a><a href="brain/">Brain scope</a><a href="chat/">Chat</a><a href="ember-field/">Ember Field</a><a href="breakout/">Breakout</a></nav>
+</div></header>
+<!--/site-header-->
 
-  <div class="item">
-    <div class="name"><a href="mario/levels/">MARIO, LEVEL BY LEVEL</a></div>
-    <div class="what">The same kind of brain plays the levels in order, 1-1, 1-2, 1-3..., learning as it goes. Headline: how far it gets on each new level at first sight.</div>
-    <div class="links"><a href="mario/levels/">results</a><a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">code</a></div>
+<main class="page wide">
+  <section class="home-hero">
+    <h1>CADENCE <span>ARCADE</span></h1>
+    <p class="lede">Cadence (<code>cadence-net</code>, by Pragma Research) is a brain-like learning library: regions of neurons that settle on every answer and learn with a local rule, no backprop. These are independent experiments that put it in games and report what actually happened, misses included.</p>
+  </section>
+
+  <div class="cards">
+    <a class="card feature" href="mario/">
+      <img class="thumb" src="assets/thumbs/mario.jpg" alt="Mario jumping up the stairs at the end of World 1-2, played by the Cadence brain W1b" width="480" height="300">
+      <div class="body">
+        <span class="kicker">Super Mario Bros. &middot; main showcase</span>
+        <p class="title">One brain beat all of World 1 in a single 5-life gauntlet</p>
+        <p class="text">Brain W1b cleared 1-1, 1-2, 1-3 and 1-4 (Bowser) back to back with the same weights, alone from the screen. Not consistent yet: 7 to 27 clears per level on 50 held-out starts.</p>
+        <span class="more">Clips, brains and scoreboard &rarr;</span>
+      </div>
+    </a>
+
+    <a class="card" href="brain/">
+      <img class="thumb smooth" src="assets/thumbs/brain.jpg" alt="Brain-cam frame: Mario in 1-4 next to the brain's recorded neuron activity" width="480" height="270" loading="lazy">
+      <div class="body">
+        <span class="kicker">Mario &middot; interactive</span>
+        <p class="title">Brain scope</p>
+        <p class="text">Scrub through solo runs and see the brain's real recorded neuron activity at every decision, or poke it to see what each move depended on.</p>
+        <span class="more">Open the scope &rarr;</span>
+      </div>
+    </a>
+
+    <a class="card" href="mario/levels/">
+      <img class="thumb" src="assets/thumbs/levels.jpg" alt="Mario underwater in World 2-2, the blind brain's first sight of the level" width="480" height="300" loading="lazy">
+      <div class="body">
+        <span class="kicker">Mario &middot; first sight</span>
+        <p class="title">Mario, level by level</p>
+        <p class="text">One brain plays the levels in order, learning as it goes. At first sight of a new level it never beat the best simple baseline.</p>
+        <span class="more">Results &rarr;</span>
+      </div>
+    </a>
+
+    <a class="card" href="chat/">
+      <img class="thumb smooth" src="assets/thumbs/chat.jpg" alt="The chat page: a short exchange with the Cadence brain" width="480" height="300" loading="lazy">
+      <div class="body">
+        <span class="kicker">Toy language</span>
+        <p class="title">Chat</p>
+        <p class="text">Text one Cadence brain on a toy 188-word grammar. 83% valid replies on held-out prompts; a plain MLP gets 95%.</p>
+        <span class="more">Chat with it &rarr;</span>
+      </div>
+    </a>
+
+    <a class="card" href="ember-field/">
+      <img class="thumb smooth" src="assets/thumbs/ember-field.jpg" alt="Ember Field replay: two lantern creatures under falling embers" width="480" height="300" loading="lazy">
+      <div class="body">
+        <span class="kicker">Original game</span>
+        <p class="title">Ember Field</p>
+        <p class="text">Learn which embers feed and which sting, then the colours swap. The Cadence brain relearns after each turn; a plain neural net is the stronger player here.</p>
+        <span class="more">Watch the replay &rarr;</span>
+      </div>
+    </a>
+
+    <a class="card" href="breakout/">
+      <img class="thumb smooth" src="assets/thumbs/breakout.jpg" alt="One-Frame Breakout replay boards" width="480" height="300" loading="lazy">
+      <div class="body">
+        <span class="kicker">MinAtar &middot; cadence-net 0.89.0</span>
+        <p class="title">One-Frame Breakout</p>
+        <p class="text">One frame at a time, so the ball's direction is hidden. The new recall position term didn't help as shipped (6 seeds better, 6 worse).</p>
+        <span class="more">Replay and verdict &rarr;</span>
+      </div>
+    </a>
+
+    <a class="card" href="breakout-long/">
+      <img class="thumb smooth" src="assets/thumbs/breakout-long.jpg" alt="Chart of bricks per game over a 10x longer training run" width="480" height="300" loading="lazy">
+      <div class="body">
+        <span class="kicker">MinAtar &middot; follow-up</span>
+        <p class="title">Breakout, 10x longer</p>
+        <p class="text">The same Breakout players trained 10x longer. Cadence keeps climbing; the two-frame MLP pulls ahead.</p>
+        <span class="more">Results &rarr;</span>
+      </div>
+    </a>
   </div>
 
-  <div class="item">
-    <div class="name"><a href="mario/">MARIO SOLO CLEARS</a></div>
-    <div class="what">A Cadence brain (0.91.1) clears Super Mario Bros. levels alone from the screen: 1-1, 1-3 and 1-4 (Bowser) on most held-out starts. Scoreboard, clips, and the honest caveats.</div>
-    <div class="links"><a href="mario/">showcase</a><a href="mario/first-1-1.html">first 1-1 run</a><a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/mario">code</a></div>
-  </div>
-
-  <div class="item">
-    <div class="name"><a href="chat/">CHAT</a></div>
-    <div class="what">Text one Cadence brain (0.91.1) on a toy 188-word grammar. 83% valid replies on held-out prompts (a plain MLP: 95%). Replies precomputed by the real brain on a PC.</div>
-    <div class="links"><a href="chat/">chat</a><a href="https://github.com/sean-mcclane832/cadence-lab/tree/main/chat">code</a></div>
-  </div>
-
-  <div class="item">
-    <div class="name"><a href="breakout/">ONE-FRAME BREAKOUT</a></div>
-    <div class="what">MinAtar Breakout, one frame at a time. Tests the 0.89.0 recall position term.</div>
-    <div class="links"><a href="breakout/">play</a><a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/classic">code</a></div>
-  </div>
-
-  <div class="item">
-    <div class="name"><a href="breakout-long/">BREAKOUT, 10X LONGER</a></div>
-    <div class="what">The same Breakout players trained 10x longer. Cadence keeps climbing; the two-frame MLP pulls ahead.</div>
-    <div class="links"><a href="breakout-long/">results</a><a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/classic">code</a></div>
-  </div>
-
-  <div class="item">
-    <div class="name"><a href="ember-field/">EMBER FIELD</a></div>
-    <div class="what">Original game. Learn which embers feed and which sting, then the colours swap.</div>
-    <div class="links"><a href="ember-field/">play</a><a href="https://github.com/sean-mcclane832/cadence-arcade/tree/master/game">code</a></div>
-  </div>
-
-  <footer>Independent experiments by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>.</footer>
+  <p class="older">Older Mario pages: <a href="mario/first-1-1.html">the first 1-1 run</a> (10/28-29, replay and learning curve) and <a href="mario/watch/">watch it as plain video</a>.</p>
 </main>
+
+<!--site-footer-->
+<footer class="site-footer"><div class="site-footer-in">
+  <p>Independent experiments by <a href="https://github.com/sean-mcclane832">sean-mcclane832</a>. Not affiliated with Pragma Research. Cadence: <a href="https://github.com/muellerberndt/cadence">muellerberndt/cadence</a>.</p>
+  <p><a href="https://github.com/sean-mcclane832/cadence-arcade">Code on GitHub</a></p>
+</div></footer>
+<!--/site-footer-->
 </body>
 </html>
