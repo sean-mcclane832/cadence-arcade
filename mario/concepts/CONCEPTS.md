@@ -93,6 +93,8 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g09 | 00:51 | C2 ck_0107 (phase 2 clinic arm joint best) | one brain | none | 1-1: 2471, 1674, 1674, 695, 698 | 0 | runs/gauntlet/g09_C2ck107.mp4 |
 | g10 | 01:02 EST | F30 (E-four ck_0030) | one brain | **1-1, 1-2** | 1-1: 1790; 1-2: 1744, 851; 1-3: 427, 427 | 0 | runs/gauntlet/g10_F30.mp4 |
 | g11 | 01:51 EST | W1_F2ck20 (all four levels on HELD) | one brain | none | 1-1: 2850, 2759, 2754, 1796, 2025 | 0 | runs/gauntlet/g11_W1.mp4 |
+| g12 | 02:30 EST | W1_F2ck35 | **one brain** | **1-1, 1-2, 1-3, 1-4** | 1-3: 747, 1200, 1202; 2-1: 343, 346 | 0 | runs/gauntlet/g_W1_F2ck35.mp4 |
+| g13 | 02:30 EST | W1_F2ck39 | one brain | 1-1 | 1-1: 1816, 2469; 1-2: 955, 882, 679 | 0 | runs/gauntlet/g_W1_F2ck39.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
@@ -217,3 +219,11 @@ w1-1-3 (99, its only 1-3 clear), w1-1-4 (34). Honest size: it is the weakest pos
 1 of 50 and 1-2 10 of 50; consistent only on 1-4. Earlier F2 checkpoint ck_0010 was 1-1 16, 1-2 9, 1-3 3, 1-4 0.
 Gauntlet g11 with this brain: 0 levels, five 1-1 deaths (2850, 2759, 2754, 1796, 2025). It clears 1-1 about 1 in 3.
 Lineage: 1-2_12n59 -> phase 2 arm N (3 h of 1-2) ck_0035 -> E-four F ck_0030 (F30: 1-1 42, 1-2 9, 1-4 34) -> F2 ck_0020.
+More F2 joint picks scored on HELD (1-1 / 1-2 / 1-3 / 1-4 of 50): ck_0027 2 / 5 / 1 / 3; **ck_0035 7 / 8 / 9 / 27**
+(every level >= 7 of 50: the most balanced four-level brain, brains/W1_F2ck35.npz); **ck_0039 43 / 1 / 4 / 36**
+(1-1 consistent, all four cleared, brains/W1_F2ck39.npz). Four different F2 checkpoints now clear all four levels.
+
+## Milestone (02:30 EST): one brain beats all of World 1 in one five-life gauntlet
+g12: W1_F2ck35 (F2 ck_0035, HELD 7 / 8 / 9 / 27): 1-1 first try, 1-2 first try, 1-3 on the fourth try (deaths at
+x 747, 1200, 1202), 1-4 first try, then two lives lost on 2-1 (never trained). The first single-brain gauntlet past
+1-4. Clip: runs/gauntlet/g_W1_F2ck35.mp4 (also docs/mario/gauntlet/).

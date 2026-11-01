@@ -51,8 +51,9 @@
 <main>
   <p class="sub"><a href="../">cadence arcade</a> / mario</p>
   <h1>A CADENCE BRAIN CLEARS MARIO LEVELS, SOLO</h1>
-  <p class="lede"><b>One brain has now cleared every World 1 level with the same weights.</b> Brain W1 ("the World 1 finisher", trained tonight) clears 1-1 on 16, 1-2 on 10, 1-3 on 1 and 1-4 (Bowser) on 34 of 50 starts it never trained on. 1-3 is just once in 50, so it is not consistent there yet. Specialists still do better on single levels (1-1 46/50, 1-4 50/50). Every button in every clip is the brain's.</p>
-  <p class="sub">Last updated 2026-11-01 01:55 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. Tonight's brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="lede"><b>One brain beat all of World 1 in a single five-life run.</b> Brain W1b ("the balanced finisher", trained tonight) cleared 1-1, 1-2, 1-3 and 1-4 (Bowser) back to back with the same weights, losing three lives on 1-3, then ran out on 2-1, a level it never trained on. On 50 held-out starts per level it clears 1-1 7, 1-2 8, 1-3 9 and 1-4 27 times: every level, none consistently yet. Specialists still do better on single levels (1-1 46/50, 1-4 50/50). Every button in every clip is the brain's.</p>
+  <figure><video controls playsinline muted preload="metadata" poster="gauntlet/g_W1_F2ck35_poster.png"><source src="gauntlet/g_W1_F2ck35.mp4" type="video/mp4"></video><figcaption>W1b's gauntlet: one brain, five lives, 1-1 to 1-4 in one run (deaths on 1-3 included), then 2-1. 1 min 33 s.</figcaption></figure>
+  <p class="sub">Last updated 2026-11-01 02:33 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. Tonight's brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <h2>One brain, every World 1 level</h2>
   <figure><video controls playsinline muted preload="metadata" poster="levels/w1-1-1_poster.png"><source src="levels/w1-1-1.mp4" type="video/mp4"></video><figcaption>W1 clears 1-1 from held-out start 34. 22 s.</figcaption></figure>
@@ -81,6 +82,8 @@
   <h2>Meet the brains</h2>
   <p class="dim">Every brain is one Cadence region of 256 neurons reading the screen (coarse grey blocks, this frame and the last) and its own body (speed, ground/air, held buttons). All came from the same line of training (coach labels + DAgger, LEARNING_FIX.md), older ones trained on cadence-net 0.91.1 and re-scored on 0.91.3, W1 and F30 trained on 0.91.3. Scores: solo clears of 50 held-out starts.</p>
   <div class="tw"><table><thead><tr><th>brain</th><th>nickname</th><th class="n">1-1</th><th class="n">1-2</th><th class="n">1-3</th><th class="n">1-4</th><th>trained on / checkpoint</th><th>what's special</th></tr></thead><tbody>
+  <tr><td>W1_F2ck35 (W1b)</td><td>the balanced finisher</td><td class="n">7</td><td class="n">8</td><td class="n">9</td><td class="n">27</td><td>all four levels, run p4/F2 checkpoint 35 (0.91.3)</td><td>beat all of World 1 in one five-life gauntlet; every level at least 7/50</td></tr>
+  <tr><td>W1_F2ck39</td><td>the finisher with a strong 1-1</td><td class="n ok">43</td><td class="n">1</td><td class="n">4</td><td class="n">36</td><td>all four levels, run p4/F2 checkpoint 39 (0.91.3)</td><td>all four levels, consistent on 1-1</td></tr>
   <tr><td>W1_F2ck20</td><td>the World 1 finisher</td><td class="n">16</td><td class="n">10</td><td class="n">1</td><td class="n">34</td><td>all four levels, run p4/F2 checkpoint 20 (0.91.3)</td><td>first brain to clear every World 1 level</td></tr>
   <tr><td>F30</td><td>the 1-2 + Bowser one</td><td class="n ok">42</td><td class="n">9</td><td class="n">0</td><td class="n">34</td><td>all four levels, run p4/F checkpoint 30 (0.91.3)</td><td>first brain to clear 1-2 and 1-4 together</td></tr>
   <tr><td>U3ck83</td><td>the three-level champion</td><td class="n">15</td><td class="n">0</td><td class="n ok">45</td><td class="n">33</td><td>1-1 + 1-3 + 1-4, run st_U3 checkpoint 83</td><td>best three-level total (93/150), best 1-3</td></tr>
@@ -95,6 +98,8 @@
   <p class="dim">Real start of 1-1, five lives. A flag moves on to the next level (1-2, 1-3, 1-4, 2-1 ...); a death restarts the current level; no learning between lives; game over on the fifth death. Retries start a few frames later (the emulator is deterministic, so an identical restart would replay the identical death). "One brain" = the same weights the whole way. Each level starts with small Mario.</p>
   <div class="tw"><table><thead><tr><th>time</th><th>brain</th><th>cleared</th><th>deaths (level: x)</th><th class="n">lives left</th><th>clip</th></tr></thead><tbody>
   <!--GAUNTLET-ROWS-->
+  <tr><td>11/01 02:30 EST</td><td><b>W1b = W1_F2ck35, the balanced finisher (one brain)</b></td><td class="ok"><b>1-1, 1-2, 1-3, 1-4</b></td><td>1-3: 747, 1,200, 1,202; 2-1: 343, 346</td><td class="n">0</td><td><a href="gauntlet/g_W1_F2ck35.mp4">clip</a></td></tr>
+  <tr><td>11/01 02:30 EST</td><td>W1_F2ck39 (one brain)</td><td>1-1</td><td>1-1: 1,816, 2,469; 1-2: 955, 882, 679</td><td class="n">0</td><td><a href="gauntlet/g_W1_F2ck39.mp4">clip</a></td></tr>
   <tr><td>11/01 01:51 EST</td><td>W1_F2ck20, the World 1 finisher (one brain)</td><td>none</td><td>1-1: 2,850, 2,759, 2,754, 1,796, 2,025</td><td class="n">0</td><td><a href="gauntlet/g11_W1.mp4">clip</a></td></tr>
   <tr><td>11/01 01:02 EST</td><td>F30 (one brain; clears 1-1, 1-2, 1-4 on held-out starts)</td><td class="ok">1-1, 1-2</td><td>1-1: 1,790; 1-2: 1,744, 851; 1-3: 427, 427</td><td class="n">0</td><td><a href="gauntlet/g10_F30.mp4">clip</a></td></tr>
   <tr><td>11/01 00:51</td><td>tonight's death-clinic brain (phase 2, checkpoint 107) (one brain)</td><td>none</td><td>1-1: 2,471, 1,674, 1,674, 695, 698</td><td class="n">0</td><td><a href="gauntlet/g09_C2ck107.mp4">clip</a></td></tr>
@@ -108,7 +113,7 @@
   <tr><td>10/31 17:11</td><td>U3ck83 (one brain)</td><td>1-1</td><td>1-2: 322, 470, 322, 893, 354</td><td class="n">0</td><td><a href="gauntlet/g01_U3ck83.mp4">clip</a></td></tr>
   </tbody></table></div>
   <figure><video controls playsinline muted preload="metadata" poster="gauntlet/g03_relay_poster.png"><source src="gauntlet/g03_relay.mp4" type="video/mp4"></video><figcaption>Relay of specialists (four brains, one per level): all of World 1 in one five-life run, then two lives lost on 2-1, which none of them ever trained on. 1 min 53 s, deaths included.</figcaption></figure>
-  <p class="dim">Best single brain so far: 1-1 and 1-2, then out of lives on 1-3 (1-2_12n59 and a 1-2 practice checkpoint from tonight). The three-level brains have never cleared 1-2, and the 1-2 brains have never cleared 1-3.</p>
+  <p class="dim">Best single brain: W1b, all four World 1 levels in one run (11/01 02:30). Before tonight the best single brain stopped at 1-2.</p>
 
   <h2>Tonight's test: would perfect "what is where" help? <span class="tag">RAM / cheat</span></h2>
   <p>A ceiling test, labeled as a cheat: a fresh brain read a map built from the game's memory (13 x 16 tiles around Mario: solid, enemy, pit, power-up) plus its body sense, no screen. A matched fresh brain read the normal screen. Same coach, same recipe, same 3.5 hours, same share of the PC.</p>
@@ -130,6 +135,7 @@
 
   <h2>Latest</h2>
   <ul class="log">
+    <li><b>11/01 02:30 EST</b> Milestone: one brain (W1b) beats all of World 1 in one five-life gauntlet run: 1-1, 1-2, 1-4 first try, 1-3 on the fourth. Three more checkpoints of the same run also clear all four levels on held-out starts.</li>
     <li><b>11/01 01:49 EST</b> Milestone: one brain (W1) clears all four World 1 levels with the same weights on held-out starts: 1-1 16/50, 1-2 10/50, 1-3 1/50, 1-4 34/50. Clips above. Not consistent on 1-3 or 1-2 yet.</li>
     <li><b>11/01 01:00</b> New brain F30: 1-1 42/50, 1-2 9/50 and 1-4 34/50 with the same weights, the first brain to clear both 1-2 and 1-4. 1-3 is still missing; training continues.</li>
     <li><b>11/01 01:15</b> Death clinic for 1-2 (practice from just before each death): no gain over plain coaching, and neither beat the 29/50 starting brain in 3 hours. Now trying to grow one brain that clears all four World 1 levels.</li>
@@ -171,7 +177,7 @@
 
   <h2>Honest caveats</h2>
   <ul>
-    <li><b>One brain for everything, but barely.</b> W1 clears all four World 1 levels, but 1-3 only once in 50 and 1-2 ten times. one_11_13 holds 1-1 and 1-3 consistently; U3ck83 clears three levels but only 1-3 consistently. The best 1-4 checkpoint (50/50) clears 1-1 only 30/50. The best all-three checkpoints so far: 1-1 25/50, 1-3 15/50, 1-4 37/50, or 1-1 15/50, 1-3 45/50, 1-4 33/50.</li>
+    <li><b>One brain for everything, but not consistently.</b> W1b clears all four World 1 levels, but 7-27 times in 50, not 40+. one_11_13 holds 1-1 and 1-3 consistently; U3ck83 clears three levels but only 1-3 consistently. The best 1-4 checkpoint (50/50) clears 1-1 only 30/50. The best all-three checkpoints so far: 1-1 25/50, 1-3 15/50, 1-4 37/50, or 1-1 15/50, 1-3 45/50, 1-4 33/50.</li>
     <li><b>1-2 is not cleared reliably.</b> Best 29/50. On 1-2 the brain fits only about 85% of the coach's labels, and even a standard neural net predicts only about 85% of them on screens it hasn't seen. Ruled out: the coach, sharper eyes, step size, more training, a bigger brain.</li>
     <li><b>Held-out means held-out starts, not new levels.</b> Levels it never practised (2-1, 2-2) go nowhere: the skill doesn't transfer yet.</li>
     <li><b>This is not "Cadence beats Super Mario Bros."</b> It's World 1, with a coach's labels as the teacher. The coach itself can't clear 2-1 yet, so the brain can't be taught it.</li>
