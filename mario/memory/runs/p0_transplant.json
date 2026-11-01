@@ -1,0 +1,82 @@
+{
+ "Cato": {
+  "synapses": 581120,
+  "old_synapses": 581120,
+  "memory_synapses": 65536,
+  "quiet": 0.0,
+  "predict_differ": 0,
+  "memories": [
+   "working_memory",
+   "hippocampus"
+  ],
+  "populations": {
+   "association": 256,
+   "motor": 7,
+   "motor/actions": 7,
+   "prefrontal": 256,
+   "sensory": 2000
+  }
+ },
+ "Agrippa": {
+  "synapses": 581120,
+  "old_synapses": 581120,
+  "memory_synapses": 65536,
+  "quiet": 0.0,
+  "predict_differ": 0,
+  "memories": [
+   "working_memory",
+   "hippocampus",
+   "episodic"
+  ],
+  "populations": {
+   "association": 256,
+   "motor": 7,
+   "motor/actions": 7,
+   "prefrontal": 256,
+   "sensory": 2000
+  }
+ },
+ "Cicero": {
+  "synapses": 582912,
+  "old_synapses": 581120,
+  "memory_synapses": 67328,
+  "quiet": 0.0,
+  "predict_differ": 0,
+  "memories": [
+   "working_memory",
+   "efference",
+   "hippocampus"
+  ],
+  "populations": {
+   "association": 256,
+   "efference": 7,
+   "motor": 7,
+   "motor/actions": 7,
+   "prefrontal": 256,
+   "sensory": 2000
+  }
+ },
+ "Livy": {
+  "synapses": 1094912,
+  "old_synapses": 581120,
+  "memory_synapses": 579328,
+  "quiet": 0.0,
+  "predict_differ": 0,
+  "memories": [
+   "working_memory",
+   "efference",
+   "history",
+   "hippocampus",
+   "episodic"
+  ],
+  "populations": {
+   "association": 256,
+   "efference": 7,
+   "history": 2000,
+   "motor": 7,
+   "motor/actions": 7,
+   "prefrontal": 256,
+   "sensory": 2000
+  }
+ }
+}

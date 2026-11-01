@@ -1,0 +1,384 @@
+{
+ "Cicero": {
+  "1-2/32": {
+   "end": "died",
+   "x": 1320,
+   "decisions": 163,
+   "by_k": {
+    "0": {
+     "trace": 0.0,
+     "trace_min": 0.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "1": {
+     "trace": 0.9999,
+     "trace_min": 0.9995,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "2": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "3": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "4": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "6": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "8": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "12": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    }
+   }
+  },
+  "1-3/80": {
+   "end": "died",
+   "x": 1714,
+   "decisions": 160,
+   "by_k": {
+    "0": {
+     "trace": 0.0,
+     "trace_min": 0.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "1": {
+     "trace": 0.9998,
+     "trace_min": 0.9996,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "2": {
+     "trace": 0.9999,
+     "trace_min": 0.998,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "3": {
+     "trace": 0.9999,
+     "trace_min": 0.998,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "4": {
+     "trace": 0.9999,
+     "trace_min": 0.998,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "6": {
+     "trace": 0.9999,
+     "trace_min": 0.998,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "8": {
+     "trace": 0.9999,
+     "trace_min": 0.998,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    },
+    "12": {
+     "trace": 0.9999,
+     "trace_min": 0.998,
+     "efference": 1.0,
+     "history": null,
+     "n": 18
+    }
+   }
+  },
+  "1-1/90": {
+   "end": "flag",
+   "x": 3161,
+   "decisions": 309,
+   "by_k": {
+    "0": {
+     "trace": 0.0,
+     "trace_min": 0.0,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    },
+    "1": {
+     "trace": 0.9995,
+     "trace_min": 0.9898,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    },
+    "2": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    },
+    "3": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    },
+    "4": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    },
+    "6": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    },
+    "8": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    },
+    "12": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": null,
+     "n": 34
+    }
+   }
+  }
+ },
+ "Livy": {
+  "1-2/32": {
+   "end": "died",
+   "x": 872,
+   "decisions": 104,
+   "by_k": {
+    "0": {
+     "trace": 0.0,
+     "trace_min": 0.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    },
+    "1": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    },
+    "2": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    },
+    "3": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    },
+    "4": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    },
+    "6": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    },
+    "8": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    },
+    "12": {
+     "trace": 1.0,
+     "trace_min": 1.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 11
+    }
+   }
+  },
+  "1-3/80": {
+   "end": "died",
+   "x": 1245,
+   "decisions": 112,
+   "by_k": {
+    "0": {
+     "trace": 0.0,
+     "trace_min": 0.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    },
+    "1": {
+     "trace": 0.9998,
+     "trace_min": 0.9997,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    },
+    "2": {
+     "trace": 0.9998,
+     "trace_min": 0.9981,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    },
+    "3": {
+     "trace": 0.9998,
+     "trace_min": 0.9981,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    },
+    "4": {
+     "trace": 0.9998,
+     "trace_min": 0.9981,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    },
+    "6": {
+     "trace": 0.9998,
+     "trace_min": 0.9981,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    },
+    "8": {
+     "trace": 0.9998,
+     "trace_min": 0.9981,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    },
+    "12": {
+     "trace": 0.9998,
+     "trace_min": 0.9981,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 12
+    }
+   }
+  },
+  "1-1/90": {
+   "end": "flag",
+   "x": 3161,
+   "decisions": 309,
+   "by_k": {
+    "0": {
+     "trace": 0.0,
+     "trace_min": 0.0,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    },
+    "1": {
+     "trace": 0.9995,
+     "trace_min": 0.9888,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    },
+    "2": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    },
+    "3": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    },
+    "4": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    },
+    "6": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    },
+    "8": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    },
+    "12": {
+     "trace": 0.9999,
+     "trace_min": 0.9998,
+     "efference": 1.0,
+     "history": 1.0,
+     "n": 34
+    }
+   }
+  }
+ }
+}

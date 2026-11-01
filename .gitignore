@@ -16,3 +16,8 @@ mario/concepts/runs/*.npz
 mario/concepts/runs/**/*.out
 mario/concepts/runs/*.out
 mario/viz/out/
+mario/memory/runs/**/*.npz
+mario/memory/runs/*.npz
+mario/memory/runs/**/*.out
+mario/memory/runs/*.out
+mario/memory/brains0/
