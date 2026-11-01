@@ -8,12 +8,12 @@
   "held_mean": 3161
  },
  "1-2": {
-  "ckpt": "ck_0027.npz",
-  "chunk": 27,
+  "ckpt": "ck_0049.npz",
+  "chunk": 49,
   "sel_flags": 1,
-  "sel_mean": 708,
-  "held_flags": 4,
-  "held_mean": 897
+  "sel_mean": 946,
+  "held_flags": 0,
+  "held_mean": 861
  },
  "1-3": {
   "ckpt": "ck_0021.npz",

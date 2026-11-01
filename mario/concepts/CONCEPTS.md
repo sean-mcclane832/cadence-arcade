@@ -1,6 +1,23 @@
 <!-- RESUME -->
-## RESUME
-(filled in at the end of the run)
+## RESUME (end of the 10/31-11/01 overnight concepts run, all training stopped 06:31 EST)
+- **One brain has cleared every World 1 level.** Run runs/p4/F2 (E-four), screen input, Cadence 0.91.3. Eight F2
+  checkpoints clear all four on HELD. Saved in mario/brains/: W1_F2ck20 (16/10/1/34, first), W1_F2ck35 = "W1b"
+  (7/8/9/27; **beat all of World 1 in one 5-life gauntlet**, g12), W1_F2ck40 (29/8/5/34), W1_F2ck87 (22/7/15/27,
+  best 1-3), W1_F2ck110 (**50**/11/6/25, best total 92/200). F30 = 1-1 42, 1-2 9, 1-4 34.
+  Recipe: 1-2_12n59 -> 3 h of 1-2 DAgger (phase 2 arm N) -> four-level lessons (1-1 .15, 1-2 .25, 1-3 .40, 1-4 .20)
+  with DAgger on 1-3 only, joint pick on SEL. None is consistent (40+/50) on 1-2 or 1-3 yet.
+- Phase 0: 0.91.1 brains act identically on 0.91.3 (0 of 18,000 answers differ, every HELD score reproduces).
+  U3ck83 / U3ck44 on 1-2: 0 of 74.
+- Phase 1 (RAM map, CHEAT): lost its pre-registered test (no 1-2, no World 2), but learned World 1 levels far faster
+  than a matched screen brain (1-4 49/50 in 3.5 h vs nothing). +5 h (1x): 1-1 50/50, still 0 on 1-2.
+- Phase 2 (death clinic): lost. The 27% baseline was stale (12n59 is 6.7%). Clinic needed a fix (same deterministic
+  checkpoint replays the same death). Clinic 16.0% vs plain 6.5% own-path critical error; neither beat 29/50 on 1-2.
+- Phase 3 skipped (phase 1 lost). Cadence CAN do a second readout on one brain: compose(slots=(7, 2, ...)).
+- World 2 first sight unchanged (2-1 ~735 max, 2-2 ~514, 0 flags).
+- Next: push W1 brains toward consistency (1-2 and 1-3 at 40+/50), e.g. continue F2 from ck_0110 / ck_0087 with
+  more checkpoints per DAgger round; deeper-search coach for 2-1; goal input / hindsight (plan phase 4).
+- Tools: csteady.py (driver; --clinic/--survivals, --stop-at, --ignore-games), evalset.py, critpath.py,
+  gauntlet.py (5 lives, retries start 0/37/83/110/131 idle frames), collect.py. Page: docs/mario/index.html.
 <!-- /RESUME -->
 
 # Concepts, goals, learning from dying (2026-10-31 night)
@@ -234,3 +251,29 @@ F2 ck_0040 (joint pick 02:37) on HELD: **29 / 8 / 5 / 34** (total 76 of 200, the
 F2 ck_0052 (joint pick 03:01) on HELD: 23 / 4 / 5 / 33 (total 65).
 F2 ck_0087 (joint pick 04:13) on HELD: **22 / 7 / 15 / 27** (total 71, min 7, best 1-3 of the four-level brains), brains/W1_F2ck87.npz.
 F2 ck_0110 (joint pick 05:07) on HELD: **50 / 11 / 6 / 25** (total 92, perfect 1-1), brains/W1_F2ck110.npz.
+
+### Phase 1 extension result (06:31 EST, ~5 h more, runs/p1x/R): **H1x falsified**
+End-of-run joint best = ck_0000 (unchanged: no later checkpoint beat [18, 0, 0, 18] on the weakest level) and best 1-2
+ck_0049: 1-2 HELD **0/50** for both; 2-1 first sight max x 429 (ck_0000) and 736 (ck_0049, mean 620); 2-2 162.
+Meanwhile the RAM brain got 1-1 HELD **50/50** (ck_0012) and 1-4 43/50 (ck_0016). So with perfect "what is where" it
+still never learned 1-2 in ~8.5 h total, while the screen line (E-four) got 1-2 + everything else. Whatever blocks 1-2
+is not missing concepts of this kind.
+
+### World 2 first sight of the four-level brains (runs/final_w2.json, HELD, 0 flags everywhere)
+2-1 max x (mean): W1b ck35 722 (520), ck40 335 (328), ck87 722 (483), ck110 735 (605). 2-2: 163-514. Same as the
+showcase (723 / 514): learning all of World 1 did not transfer to World 2.
+
+## Scoreboard at the end of the night (HELD solo clears of 50; first sight = never trained on)
+| phase / brain | 1-1 | 1-2 | 1-3 | 1-4 | 2-1 max x | 2-2 max x | 1-2 own-path crit err |
+|---|---|---|---|---|---|---|---|
+| 0: showcase bests (per level) | 46 | 29 | 45 | 50 | 723 | 514 | 6.7% (12n59) |
+| 1: RAM (CHEAT) fresh 3.5 h, joint | 10 | 0 | 0 | 36 | 429 | 162 | - |
+| 1: screen fresh 3.5 h (control) | 2 | 0 | 0 | 0 | 340 | 162 | - |
+| 1x: RAM (CHEAT) +5 h, best per level | 50 | 0 | 0 | 43 | 736 | 162 | - |
+| 2: death clinic best 1-2 | 35* | 18 | - | - | - | - | 16.0% |
+| 2: plain DAgger best 1-2 | 27* | 17 | - | - | - | - | 6.5% |
+| E-four: W1_F2ck110 (one brain) | **50** | 11 | 6 | 25 | 735 | 163 | - |
+| E-four: W1b = W1_F2ck35 (one brain) | 7 | 8 | 9 | 27 | 722 | 163 | - |
+| E-four: W1_F2ck87 (one brain) | 22 | 7 | 15 | 27 | 722 | 514 | - |
+(*best 1-1 checkpoint of that arm, a different checkpoint from its best 1-2.)
+Gauntlet furthest: **one brain, all four World 1 levels** (g12, W1b, 02:30 EST), then died on 2-1. Relay: also World 1 (g03).
