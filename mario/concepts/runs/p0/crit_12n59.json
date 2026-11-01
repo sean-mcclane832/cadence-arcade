@@ -1,0 +1,147 @@
+{
+ "summary": {
+  "brain": "../brains/1-2_12n59.npz",
+  "level": "1-2",
+  "crit_rows": 326,
+  "crit_wrong": 22,
+  "crit_err": 0.067,
+  "rows": 1632,
+  "agree": 0.798,
+  "lose": 56,
+  "flags": 5
+ },
+ "per_start": [
+  {
+   "start": 32,
+   "end": "died",
+   "max_x": 1648,
+   "rows": 191,
+   "agree": 145,
+   "tie": 16,
+   "small": 23,
+   "lose": 7,
+   "crit_rows": 30,
+   "crit_wrong": 3,
+   "crit_wrong_x": [
+    817,
+    1634,
+    1643
+   ]
+  },
+  {
+   "start": 35,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 148,
+   "agree": 124,
+   "tie": 6,
+   "small": 13,
+   "lose": 5,
+   "crit_rows": 20,
+   "crit_wrong": 0,
+   "crit_wrong_x": []
+  },
+  {
+   "start": 38,
+   "end": "died",
+   "max_x": 1660,
+   "rows": 193,
+   "agree": 155,
+   "tie": 11,
+   "small": 21,
+   "lose": 6,
+   "crit_rows": 24,
+   "crit_wrong": 2,
+   "crit_wrong_x": [
+    817,
+    1644
+   ]
+  },
+  {
+   "start": 41,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 302,
+   "agree": 234,
+   "tie": 36,
+   "small": 28,
+   "lose": 4,
+   "crit_rows": 62,
+   "crit_wrong": 0,
+   "crit_wrong_x": []
+  },
+  {
+   "start": 85,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 99,
+   "agree": 75,
+   "tie": 5,
+   "small": 10,
+   "lose": 9,
+   "crit_rows": 26,
+   "crit_wrong": 4,
+   "crit_wrong_x": [
+    822,
+    913,
+    917,
+    911
+   ]
+  },
+  {
+   "start": 90,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 305,
+   "agree": 247,
+   "tie": 26,
+   "small": 22,
+   "lose": 10,
+   "crit_rows": 69,
+   "crit_wrong": 5,
+   "crit_wrong_x": [
+    881,
+    1736,
+    1742,
+    1827,
+    1836
+   ]
+  },
+  {
+   "start": 116,
+   "end": "flag",
+   "max_x": 3161,
+   "rows": 305,
+   "agree": 246,
+   "tie": 28,
+   "small": 21,
+   "lose": 10,
+   "crit_rows": 69,
+   "crit_wrong": 5,
+   "crit_wrong_x": [
+    881,
+    1736,
+    1742,
+    1827,
+    1836
+   ]
+  },
+  {
+   "start": 128,
+   "end": "died",
+   "max_x": 877,
+   "rows": 89,
+   "agree": 77,
+   "tie": 4,
+   "small": 3,
+   "lose": 5,
+   "crit_rows": 26,
+   "crit_wrong": 3,
+   "crit_wrong_x": [
+    40,
+    40,
+    864
+   ]
+  }
+ ]
+}

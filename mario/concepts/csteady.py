@@ -129,6 +129,9 @@ def main():
             st += 86400
         deadline = min(deadline, st)
     last_solo = {}
+    fail_buf = {}  # level -> list of (chunk, failed SEL attempt) from EARLIER checkpoints (the clinic needs a
+    # different brain than the one that died: brain and emulator are deterministic, so the same checkpoint
+    # replayed from a rewind dies at exactly the same spot; found 21:50, first clinic round passed 0 of 12)
 
     def solo(path, L, starts):
         return R.map([C.task(path, S, L, s) for s in starts])
@@ -141,6 +144,7 @@ def main():
         rec = {}
         for L in levels:
             ev = solo(path, L, SEL); last_solo[L] = ev
+            fail_buf.setdefault(L, []).extend((k, r) for r in ev if not r["flag"])
             s = summ(ev); rec[L] = s
             cur = best.get(L)
             if cur is None or (s["flags"], s["mean"]) > (cur["sel_flags"], cur["sel_mean"]):
@@ -207,10 +211,11 @@ def main():
                 tasks.append(C.task(pol_path, STORE, L, s0, mode="dagger", prefix=path[:j], seed=k * 100 + 50 + i,
                                     **{kk: v for kk, v in base.items() if kk != "senses"}))
                 meta.append(None)
-            if args.clinic and L in last_solo:
-                fails = [r for r in last_solo[L] if not r["flag"]]
-                rng.shuffle(fails)
-                for r in fails[:args.clinic_max]:
+            if args.clinic and L in fail_buf:
+                old = [r for (kk, r) in fail_buf[L] if kk <= k - 2]  # policy = checkpoint k-1; deaths from k-2 and older
+                fail_buf[L] = [(kk, r) for (kk, r) in fail_buf[L] if kk > k - 12]  # keep the recent ones
+                pick = [old[i] for i in rng.permutation(len(old))[:args.clinic_max]] if old else []
+                for r in pick:
                     n = len(r["actions"])
                     for back in (15, 30, 60):
                         tasks.append(C.task(pol_path, STORE, L, r["start"], mode="dagger", prefix=r["actions"][:max(0, n - back)],

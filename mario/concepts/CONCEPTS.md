@@ -143,3 +143,18 @@ eta 0.001, DAgger on 1-2 every 10 chunks, tie-aware, SEL on 1-1 and 1-2 every ch
   the brain's own solo path. Measured on 1-2_12n59 (start) and each arm's best 1-2 checkpoint at the end.
 - Win: C's best 1-2 checkpoint < 15% own-path critical error (from 27%). Lose: still >= 25%.
 - Secondary: C beats N on own-path critical error and on 1-2 HELD.
+
+### Phase 2 corrections (21:50, before any phase 2 result)
+1. **The 27% baseline does not hold for the starting brain.** critpath.py on 1-2_12n59 (runs/p0/crit_12n59.json,
+   8 held-out starts, 1,632 decisions scored): **own-path critical error 22/326 = 6.7%** (5 of 8 flags). The 27%
+   (9 of 33) was E20's st_12tc ck_0004 on 2 starts, a much weaker brain. So the pre-registered win bar (< 15%)
+   is already met before any clinic: it can't tell us anything. Replacement test, fixed now before results:
+   **C's best 1-2 checkpoint vs N's best 1-2 checkpoint vs the start (6.7%, HELD 29/50): win if C has both
+   lower own-path critical error than N and higher 1-2 HELD than N and than 29; lose if C is no better than N on
+   both.** The wrong errors cluster at x ~817-917 (the Koopa/brick section) and ~1,634-1,836.
+2. **Clinic bug.** First clinic round: 12 rewound retries, 0 got past the death spot. Brain and emulator are both
+   deterministic, and the retries used the SAME checkpoint that died, so each retry replayed the identical
+   death: the clinic only re-labelled the same rows. Fix (csteady.py fail_buf): deaths are collected from every
+   chunk's SEL test and the clinic rewinds deaths of EARLIER checkpoints (>= 1 chunk older than the playing
+   brain), which is also what the plan said ("a spot the previous checkpoint died at"). Arm C stopped after 30
+   min and restarted as **C2** at 21:53; N keeps running; they are compared at equal elapsed time.
