@@ -95,13 +95,14 @@ class Layout:
         self.reg_mean = {r: fin[:, self.pops[r]].mean(1) for r in ("sensory", "association", "prefrontal", "motor")}
         self.f = {s: font(s) for s in (12, 13, 15, 17)}
         self.fb = {s: font(s, True) for s in (13, 15, 18)}
+        self.tag = TAG
         self.static = self._static()
 
     def _static(self):
         img = Image.new("RGB", (W, H), BG)
         d = ImageDraw.Draw(img)
         m, P = self.meta, self.pops
-        d.text((GX + 12, 8), f"Cadence brain {Path(m['brain']).stem}  |  World {m['level']}  |  solo, no coach",
+        d.text((GX + 12, 8), f"Cadence brain {Path(m['brain']).stem}  |  World {m['level']}  |  {self.tag}",
                fill=FG, font=self.fb[15])
         d.text((GX + 12, 34), "WHAT IT SEES  (real input, 26x32 blocks, shown 3x brighter)", fill=DIM, font=self.f[12])
         d.text((GX + 12, 50 + 182 + 2), "now", fill=DIM, font=self.f[12])
@@ -200,12 +201,18 @@ class Layout:
         return np.asarray(img)
 
 
+TAG = "solo, no coach"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--crf", type=int, default=27)
+    ap.add_argument("--tag", default="solo, no coach", help="right side of the title line")
     args = ap.parse_args()
+    global TAG
+    TAG = args.tag
     import sys
     sys.path.insert(0, str(VIZ.parent))
     z = np.load(VIZ / "out" / f"{args.name}.npz")
