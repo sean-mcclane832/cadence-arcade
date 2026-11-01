@@ -1,0 +1,49 @@
+{
+ "1-1": {
+  "ckpt": "ck_0000.npz",
+  "chunk": 0,
+  "sel_flags": 18,
+  "sel_mean": 2940,
+  "held_flags": 42,
+  "held_mean": 2971
+ },
+ "1-2": {
+  "ckpt": "ck_0018.npz",
+  "chunk": 18,
+  "sel_flags": 14,
+  "sel_mean": 2376,
+  "held_flags": 14,
+  "held_mean": 1572
+ },
+ "1-3": {
+  "ckpt": "ck_0020.npz",
+  "chunk": 20,
+  "sel_flags": 1,
+  "sel_mean": 1414,
+  "held_flags": 1,
+  "held_mean": 1375
+ },
+ "1-4": {
+  "ckpt": "ck_0001.npz",
+  "chunk": 1,
+  "sel_flags": 20,
+  "sel_mean": 2138,
+  "held_flags": 43,
+  "held_mean": 2159
+ },
+ "joint": {
+  "ckpt": "ck_0020.npz",
+  "chunk": 20,
+  "key": [
+   1,
+   27,
+   7899
+  ],
+  "sel": [
+   9,
+   6,
+   1,
+   11
+  ]
+ }
+}

@@ -92,6 +92,7 @@ after 37 / 83 / 110 / 131 idle frames (all held-out starts), the first try of ea
 | g08 | 22:51 | N ck_0035 (phase 2 no-clinic joint best) | one brain | **1-1, 1-2** | 1-1: 1790, 1789; 1-2: 1596; 1-3: 656, 659 | 0 | runs/gauntlet/g08_N.mp4 |
 | g09 | 00:51 | C2 ck_0107 (phase 2 clinic arm joint best) | one brain | none | 1-1: 2471, 1674, 1674, 695, 698 | 0 | runs/gauntlet/g09_C2ck107.mp4 |
 | g10 | 01:02 EST | F30 (E-four ck_0030) | one brain | **1-1, 1-2** | 1-1: 1790; 1-2: 1744, 851; 1-3: 427, 427 | 0 | runs/gauntlet/g10_F30.mp4 |
+| g11 | 01:51 EST | W1_F2ck20 (all four levels on HELD) | one brain | none | 1-1: 2850, 2759, 2754, 1796, 2025 | 0 | runs/gauntlet/g11_W1.mp4 |
 
 Phase 1 run notes: coach demos (collect.py, 17:19-17:44, 26 min on 8 cores) reproduce the earlier round-0
 row counts exactly (1-1 2,838, 1-2 2,519, 1-3 1,926; 1-4 1,619), coach flags 8/6/6/6 of 11. Arms launched
@@ -203,3 +204,16 @@ computed that in EDT, so they stop at 06:30 EST (inside the 08:00 limit either w
 E-four at 1.5 h (01:00 EST): joint pick ck_0030 (SEL [18, 9, 0, 11]) scored on HELD: **1-1 42/50, 1-2 9/50, 1-4
 34/50**, 1-3 0. The first brain that clears 1-2 AND 1-4 with the same weights (and 1-1 consistently). Saved as
 brains/F30.npz. 1-3 is the missing level: all 24 of its DAgger attempts so far died (this line never knew 1-3).
+Change (01:04 EST): F stopped after 46 chunks (1-3 fit 0.74-0.79, critical 0.83-0.90, still 0 SEL flags on 1-3).
+F2 continues from F30 with F's grown 1-3 / 1-4 piles and lesson shares 1-1 0.15, 1-2 0.25, 1-3 0.40, 1-4 0.20,
+DAgger on 1-3 only, 16 attempts, half from the start and half from points along the coach's 1-3 paths. H-four
+unchanged (deadline 06:30 EST).
+
+## Milestone (01:49 EST): one brain has cleared every World 1 level. **H-four holds.**
+runs/p4/F2 ck_0020 (brains/W1_F2ck20.npz), the first joint pick whose SEL flagged all four levels (SEL [9, 6, 1, 11]),
+then played on HELD (never trained or picked on): **1-1 16/50, 1-2 10/50, 1-3 1/50, 1-4 34/50** (runs/p4/held_F2ck20.json).
+Clips verified by replay (record_fix.py: same x, same flag): docs/mario/levels/w1-1-1.mp4 (start 34), w1-1-2 (34),
+w1-1-3 (99, its only 1-3 clear), w1-1-4 (34). Honest size: it is the weakest possible version of the claim. 1-3 is
+1 of 50 and 1-2 10 of 50; consistent only on 1-4. Earlier F2 checkpoint ck_0010 was 1-1 16, 1-2 9, 1-3 3, 1-4 0.
+Gauntlet g11 with this brain: 0 levels, five 1-1 deaths (2850, 2759, 2754, 1796, 2025). It clears 1-1 about 1 in 3.
+Lineage: 1-2_12n59 -> phase 2 arm N (3 h of 1-2) ck_0035 -> E-four F ck_0030 (F30: 1-1 42, 1-2 9, 1-4 34) -> F2 ck_0020.

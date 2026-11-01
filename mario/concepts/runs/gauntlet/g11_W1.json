@@ -1,0 +1,71 @@
+{
+ "name": "W1_F2ck20",
+ "label": "one brain",
+ "pols": {
+  "default": "P:\\projects\\cadence-arcade\\mario\\brains\\W1_F2ck20.npz"
+ },
+ "lives": 5,
+ "cleared": [],
+ "furthest": "1-1",
+ "deaths": {
+  "1-1": [
+   2850,
+   2759,
+   2754,
+   1796,
+   2025
+  ]
+ },
+ "lives_left": 0,
+ "attempts": [
+  {
+   "level": "1-1",
+   "brain": "W1_F2ck20",
+   "start": 0,
+   "end": "died",
+   "x": 2850,
+   "decisions": 293,
+   "lives_before": 5
+  },
+  {
+   "level": "1-1",
+   "brain": "W1_F2ck20",
+   "start": 37,
+   "end": "died",
+   "x": 2759,
+   "decisions": 254,
+   "lives_before": 4
+  },
+  {
+   "level": "1-1",
+   "brain": "W1_F2ck20",
+   "start": 83,
+   "end": "died",
+   "x": 2754,
+   "decisions": 247,
+   "lives_before": 3
+  },
+  {
+   "level": "1-1",
+   "brain": "W1_F2ck20",
+   "start": 110,
+   "end": "died",
+   "x": 1796,
+   "decisions": 150,
+   "lives_before": 2
+  },
+  {
+   "level": "1-1",
+   "brain": "W1_F2ck20",
+   "start": 131,
+   "end": "died",
+   "x": 2025,
+   "decisions": 170,
+   "lives_before": 1
+  }
+ ],
+ "seconds": 25,
+ "when": "2026-11-01 01:51",
+ "clip": "g11_W1.mp4",
+ "clip_seconds": 74.2
+}
