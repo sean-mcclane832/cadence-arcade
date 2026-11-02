@@ -86,6 +86,7 @@ def main():
     ap.add_argument("--dagger-levels", default="1-1,1-2,1-3,1-4")
     ap.add_argument("--workers", type=int, default=2); ap.add_argument("--stop-at", default=None)
     ap.add_argument("--hours", type=float, default=20); ap.add_argument("--stall-hours", type=float, default=3.0)
+    ap.add_argument("--more-seq", default=None, help="resume: also load seq_<L>_d*.npz from this run dir")
     args = ap.parse_args()
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     logf = open(out / "log.txt", "a", encoding="utf-8")
@@ -112,6 +113,9 @@ def main():
         p = (HERE / args.seq / f"seq_{L}_coach.npz").resolve()
         if p.exists():
             seqs[L].load(p)
+        if args.more_seq:  # resume: DAgger attempts an earlier leg of this arm collected
+            for q in sorted((HERE / args.more_seq).resolve().glob(f"seq_{L}_d*.npz")):
+                seqs[L].load(q)
     for L in levels:
         log(f"data {L}: pile {len(piles[L]['y'])} rows, ordered {len(seqs[L].rows)} rows in {len(seqs[L].atts)} attempts")
     mix = dict(zip(levels, [float(v) for v in args.mix.split(",")]))

@@ -23,6 +23,7 @@
 - STILL NOT DONE (end-of-night agent, after 05:45): top-3 SEL checkpoints scored on HELD, play-time ablations (one
   memory part off at a time on Cicero, Livy, Agrippa), end-of-night retry curves (Livy, Agrippa), gauntlets on moved
   joint picks, brain-cam panels, roster cards, retry-curve chart, page update.
+- Cicero RESUMED 21:05 (Sean: "Continue Cicero"): runs/night2/Cicero_r2, init = Cicero leg-1 ck0024 (r2 ck0000 = leg-1 ck0024), --stall-hours 99, --more-seq loads leg-1's DAgger attempts (ordered rows 4816/3811/2777/3587 = leg-1's), stop 05:45. Leg 1 ran 13:58-18:14 (auto-stopped by the 3 h rule); total ~12h55m vs Cato's 15h47m. End-of-night: score Cicero over BOTH dirs (leg-1 bests + r2 bests). If another arm auto-stops, resume it the same way (Sean wants equal time).
 <!-- /RESUME -->
 
 # Memory brains (2026-11-01 night)
@@ -297,3 +298,9 @@ brains0/AgrippaX_ck0.npz, out runs/night2/AgrippaX. Sean 15:15: same wall-clock 
 - Note for the new owner (14:46): the first night2 DAgger round took 1,110 s for 1-1 alone (8 attempts, 2 workers;
   coach labelling is the slow part). Four levels means ~70 min of DAgger every 6 chunks per arm. Consider fewer episodes
   or less frequent rounds if the arms look starved of lessons.
+
+### No-progress note (17:45, session check-in)
+Cicero: no new SEL best since 14:32 (3h+), the plan's no-progress rule. Noted only, not killed (Sean: hands-on, keep it running). Cato joint best moved to ck0020 at ~17:45; its gauntlet is deferred until after 01:00 (Sean on Minecraft, no extra CPU side jobs before then). Livy ck0018 1-4 HELD 50/50.
+
+### Cicero stopped itself (18:14)
+mtrain.py's built-in --stall-hours 3.0 stopped Cicero at chunk 24 (no new SEL best since 14:32). Not a crash. The other arms run the same rule, so any of them can stop early the same way. Cicero trained ~4h16m vs the others' planned 15h47m: say so on every comparison. Asked Sean whether to resume it.
