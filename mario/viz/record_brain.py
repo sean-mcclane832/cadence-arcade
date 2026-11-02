@@ -88,6 +88,47 @@ def play(brain, level, start, keep_every=2):
             np.array(dec_frames, np.uint8), res)
 
 
+def play_act(path, level, start, off=(), keep_every=2):
+    """Act mode (memory brains, mario/memory): the memory player (mem.MemPlayer, greedy, cold settles, memories
+    live) plays one attempt exactly like evalm/gauntletm, and every act's real settle is recorded DURING play
+    (memories depend on the history, so a replay of single observations would not reproduce them)."""
+    sys.path.insert(0, str(MARIO / "memory"))
+    import mem  # noqa: E402
+    from cadence.recording import record_settlements
+    pl = mem.MemPlayer(str(path), "greedy", off=tuple(off))
+    pl.begin(0)
+    body = mem.C.CBody(int(start), "body", "lean", level); g = body.g
+    brain = pl.b; motor = np.asarray(brain.motor_index)
+    obs, acts, xs, nes, dec_frames, final, settle_motor, steps = [], [], [], [], [], [], [], []
+    while not g.done and g.decisions < D.MAX_DECISIONS and g.stuck < D.STUCK:
+        o = body.obs()
+        if pl.xkey:
+            o = np.concatenate([o, mem.xblock(g.env.ram, pl.xamp)])
+        recs = []
+        with record_settlements(recs.append, label="viz"):
+            a = pl.act(o)
+        r = max(recs, key=lambda r: r.steps)
+        act = np.asarray(r.activation)[:, 0, :]
+        final.append(act[-1].astype(np.float32)); settle_motor.append(act[:, motor].astype(np.float32))
+        steps.append(int(r.steps))
+        obs.append(o[:2000].astype(np.float64)); acts.append(a); xs.append(int(g.x)); dec_frames.append(g.screen.copy())
+        g.step(a, keep_frames=nes); body.held = ACTIONS[a]
+    end = "flag" if g.flag else ("died" if g.done else "stuck")
+    for _ in range(60 if g.flag else 40):
+        try:
+            s_, _, _, _ = g.env.step(0); nes.append(s_.copy())
+        except Exception:  # noqa: BLE001
+            break
+    n_dec = len(acts)
+    vid = nes[::keep_every]
+    vid_dec = [min((i * keep_every) // FRAMES, n_dec - 1) for i in range(len(vid))]
+    res = dict(max_x=int(g.max_x), flag=bool(g.flag), end=end, decisions=n_dec, replay_ok=True)
+    rec_choice = np.array([int(np.argmax(f[motor])) for f in final])
+    g.close()
+    return (brain, np.array(obs), np.array(acts), np.array(xs), np.array(vid, np.uint8), np.array(vid_dec),
+            np.array(dec_frames, np.uint8), res, np.array(final), settle_motor, np.array(steps), rec_choice, r)
+
+
 def record(brain, obs):
     from cadence.recording import record_settlements
     final, settle_motor, steps, rec_choice = [], [], [], []
@@ -141,15 +182,24 @@ def main():
     ap.add_argument("--start", type=int, default=0)
     ap.add_argument("--name", required=True)
     ap.add_argument("--no-saliency", action="store_true")
+    ap.add_argument("--act", action="store_true", help="memory brains: act mode, memories live (implies --no-saliency)")
+    ap.add_argument("--off", default="", help="act mode: memory parts off at play, e.g. thought+button")
+    ap.add_argument("--parts", default="", help="act mode: memory parts this brain has (for the panels)")
     args = ap.parse_args()
     from cadence import Brain
     t0 = time.time()
     path = (MARIO / args.brain).resolve()
-    brain = Brain.load(path)
     lv = tuple(int(v) for v in args.level.split("-"))
-    obs, acts, xs, vid, vid_dec, dec_frames, res = play(brain, lv, args.start)
-    print(f"played {args.level} start {args.start}: {res} ({time.time() - t0:.0f}s)", flush=True)
-    final, settle_motor, steps, rec_choice, last = record(brain, obs)
+    if args.act:
+        args.no_saliency = True
+        (brain, obs, acts, xs, vid, vid_dec, dec_frames, res, final, settle_motor, steps, rec_choice,
+         last) = play_act(path, lv, args.start, [p for p in args.off.split("+") if p])
+        print(f"played (act mode) {args.level} start {args.start}: {res} ({time.time() - t0:.0f}s)", flush=True)
+    else:
+        brain = Brain.load(path)
+        obs, acts, xs, vid, vid_dec, dec_frames, res = play(brain, lv, args.start)
+        print(f"played {args.level} start {args.start}: {res} ({time.time() - t0:.0f}s)", flush=True)
+        final, settle_motor, steps, rec_choice, last = record(brain, obs)
     agree = float((rec_choice == acts).mean())
     print(f"recorded {len(obs)} settles, steps {steps.min()}-{steps.max()}, recorded choice = played button "
           f"on {agree:.1%} ({time.time() - t0:.0f}s)", flush=True)
@@ -175,7 +225,8 @@ def main():
     out = VIZ / "out"; out.mkdir(exist_ok=True)
     meta = dict(res, brain=args.brain, level=args.level, start=args.start, name=args.name,
                 record_agree=agree, steps_min=int(steps.min()), steps_max=int(steps.max()),
-                actions=ACTION_NAMES, patch=PATCH, stride=STRIDE)
+                actions=ACTION_NAMES, patch=PATCH, stride=STRIDE, act=bool(args.act),
+                parts=[p for p in args.parts.split("+") if p])
     np.savez_compressed(out / f"{args.name}.npz", obs=obs.astype(np.float32), acts=acts, xs=xs, vid=vid,
                         vid_dec=vid_dec, dec_frames=dec_frames, final=final, settle_motor=sm, steps=steps,
                         rec_choice=rec_choice, a2m=a2m, meta=json.dumps(meta),

@@ -46,7 +46,8 @@ SPECS = {
                  parts=["thought", "button", "echo", "place"]),
 }
 PART_OFF = {"thought": dict(working_memory_amplitude=0.0), "button": dict(efference_amplitude=0.0),
-            "echo": dict(history_amplitude=0.0), "place": dict(memory_amplitude=0.0)}
+            "echo": dict(history_amplitude=0.0), "place": dict(memory_amplitude=0.0),
+            "x": dict()}  # "x" (AgrippaX only): x block zeroed at play, see MemPlayer.xamp
 RETRY = (0, 37, 83, 110, 131, 151, 173, 197, 211, 19)  # idle frames per life (gauntlet.py's 5, extended)
 
 
@@ -142,11 +143,13 @@ class MemPlayer:
             tune = {}
             for p in off:
                 tune.update(PART_OFF[p])
-            self.b.retune(**tune)
+            if tune:
+                self.b.retune(**tune)
         if mode == "retry":
             self.b.retune(**FROZEN)
         self.ep = getattr(self.b, "_episodic", None)
         self.xkey = len(self.b.sensory_index) > 2000
+        self.xamp = 0.0 if "x" in off else XAMP  # end-of-night ablation: x block zeroed
 
     def begin(self, seed=0):
         self.b.reset()
@@ -200,7 +203,7 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
     while not g.done and g.decisions < cap and g.stuck < D.STUCK:
         o = body.obs()
         if getattr(player, "xkey", False):
-            o = np.concatenate([o, xblock(g.env.ram)])
+            o = np.concatenate([o, xblock(g.env.ram, getattr(player, "xamp", XAMP))])
         a = player.act(o)
         if keep_obs:
             obs.append(np.round(o[:2000] * 255).astype(np.uint8))
@@ -211,7 +214,7 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
     end = "flag" if g.flag else ("died" if g.done else "stuck")
     oe = body.obs()
     if getattr(player, "xkey", False):
-        oe = np.concatenate([oe, xblock(g.env.ram)])
+        oe = np.concatenate([oe, xblock(g.env.ram, getattr(player, "xamp", XAMP))])
     player.end(oe, end)
     out = dict(start=int(start), max_x=int(g.max_x), flag=bool(g.flag), end=end, decisions=g.decisions,
                actions=acts, xs=xs)

@@ -1,0 +1,226 @@
+{
+ "Cato": {
+  "n_candidates": 96,
+  "top": [
+   {
+    "arm": "Cato",
+    "leg": 1,
+    "chunk": 20,
+    "key": [
+     7,
+     51,
+     8596
+    ],
+    "sel": [
+     15,
+     7,
+     17,
+     12
+    ],
+    "path": "runs/night2/Cato/Cato_ck0020.npz"
+   },
+   {
+    "arm": "Cato",
+    "leg": 1,
+    "chunk": 68,
+    "key": [
+     6,
+     36,
+     8253
+    ],
+    "sel": [
+     12,
+     6,
+     8,
+     10
+    ],
+    "path": "runs/night2/Cato/Cato_ck0068.npz"
+   },
+   {
+    "arm": "Cato",
+    "leg": 1,
+    "chunk": 8,
+    "key": [
+     6,
+     28,
+     7981
+    ],
+    "sel": [
+     7,
+     8,
+     6,
+     7
+    ],
+    "path": "runs/night2/Cato/Cato_ck0008.npz"
+   }
+  ]
+ },
+ "Livy": {
+  "n_candidates": 85,
+  "top": [
+   {
+    "arm": "Livy",
+    "leg": 1,
+    "chunk": 57,
+    "key": [
+     3,
+     27,
+     7160
+    ],
+    "sel": [
+     7,
+     9,
+     3,
+     8
+    ],
+    "path": "runs/night2/Livy/Livy_ck0057.npz"
+   },
+   {
+    "arm": "Livy",
+    "leg": 1,
+    "chunk": 27,
+    "key": [
+     2,
+     36,
+     8047
+    ],
+    "sel": [
+     20,
+     3,
+     2,
+     11
+    ],
+    "path": "runs/night2/Livy/Livy_ck0027.npz"
+   },
+   {
+    "arm": "Livy",
+    "leg": 1,
+    "chunk": 11,
+    "key": [
+     2,
+     25,
+     7824
+    ],
+    "sel": [
+     11,
+     2,
+     2,
+     10
+    ],
+    "path": "runs/night2/Livy/Livy_ck0011.npz"
+   }
+  ]
+ },
+ "Cicero": {
+  "n_candidates": 72,
+  "top": [
+   {
+    "arm": "Cicero",
+    "leg": 2,
+    "chunk": 1,
+    "key": [
+     6,
+     55,
+     8459
+    ],
+    "sel": [
+     19,
+     6,
+     8,
+     22
+    ],
+    "path": "runs/night2/Cicero_r2/Cicero_ck0001.npz"
+   },
+   {
+    "arm": "Cicero",
+    "leg": 1,
+    "chunk": 1,
+    "key": [
+     5,
+     52,
+     8527
+    ],
+    "sel": [
+     18,
+     5,
+     11,
+     18
+    ],
+    "path": "runs/night2/Cicero/Cicero_ck0001.npz"
+   },
+   {
+    "arm": "Cicero",
+    "leg": 1,
+    "chunk": 6,
+    "key": [
+     4,
+     28,
+     8687
+    ],
+    "sel": [
+     4,
+     8,
+     5,
+     11
+    ],
+    "path": "runs/night2/Cicero/Cicero_ck0006.npz"
+   }
+  ]
+ },
+ "AgrippaX": {
+  "n_candidates": 93,
+  "top": [
+   {
+    "arm": "AgrippaX",
+    "leg": 1,
+    "chunk": 18,
+    "key": [
+     5,
+     40,
+     8321
+    ],
+    "sel": [
+     12,
+     6,
+     5,
+     17
+    ],
+    "path": "runs/night2/AgrippaX/AgrippaX_ck0018.npz"
+   },
+   {
+    "arm": "AgrippaX",
+    "leg": 1,
+    "chunk": 49,
+    "key": [
+     5,
+     25,
+     7800
+    ],
+    "sel": [
+     6,
+     6,
+     8,
+     5
+    ],
+    "path": "runs/night2/AgrippaX/AgrippaX_ck0049.npz"
+   },
+   {
+    "arm": "AgrippaX",
+    "leg": 1,
+    "chunk": 34,
+    "key": [
+     4,
+     27,
+     7168
+    ],
+    "sel": [
+     8,
+     6,
+     4,
+     9
+    ],
+    "path": "runs/night2/AgrippaX/AgrippaX_ck0034.npz"
+   }
+  ]
+ }
+}

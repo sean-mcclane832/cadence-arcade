@@ -32,6 +32,22 @@
   .runline b { font-family: var(--c-mono); min-width: 2.6em; }
   .callout h3 { margin-top: 0; }
   .relay { max-width: 420px; }
+  .rchart, .legend { --keep: #a65800; --ctrl: #1f66c9; }
+  .rchart { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--c-s3); margin: var(--c-s3) 0; }
+  @media (min-width: 640px) { .rchart { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :is(.rchart, .legend) { --keep: #c27420; --ctrl: #4a96e0; } }
+  :root[data-theme="dark"] :is(.rchart, .legend) { --keep: #c27420; --ctrl: #4a96e0; }
+  .rchart figure { margin: 0; position: relative; background: var(--c-surface); border: 1px solid var(--c-line); border-radius: var(--c-radius); padding: 10px 10px 6px; }
+  .rchart svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .rchart .grid line { stroke: var(--c-line); stroke-width: 1; }
+  .rchart text { fill: var(--c-dim); font-size: 11px; font-family: var(--c-font); }
+  .rchart .k { stroke: var(--keep); } .rchart .c { stroke: var(--ctrl); }
+  .rchart .kd { fill: var(--keep); } .rchart .cd { fill: var(--ctrl); }
+  .rchart .tip { position: absolute; pointer-events: none; background: var(--c-surface); border: 1px solid var(--c-line); border-radius: 6px; padding: 4px 8px; font-size: 12px; color: var(--c-fg); box-shadow: var(--c-shadow); display: none; white-space: nowrap; }
+  .legend { display: flex; gap: 16px; font-size: var(--c-step--1); color: var(--c-dim); flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 18px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 6px; }
+  .verdict { list-style: none; padding: 0; display: grid; gap: 8px; }
+  .verdict li { margin: 0; }
 </style>
 </head>
 <body class="site">
@@ -87,20 +103,106 @@
     </div>
   </div>
 
-  <p class="updated">Last updated 2026-11-01 06:36 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="updated">Last updated 2026-11-02 07:30 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <nav class="toc" aria-label="On this page">
-    <a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
+    <a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
   </nav>
+
+  <h2 id="memory">Memory night (11/1 to 11/2): does a memory help?</h2>
+  <div class="callout">
+    <h3>Short answer: not yet. Every pre-registered test lost.</h3>
+    <p>Four brains trained side by side overnight from the same start (W1_F2ck110), same coach, same lessons, same driver, about 13 to 16 hours each. One has no memory (Cato, the control). The others got memory parts that Cadence already has but that our Mario play had never switched on. None of them beat the control by more than the gap between two copies of the control itself, and switching the short-term memory off at play made the best memory brain <i>better</i>, not worse.</p>
+  </div>
+
+  <h3>How it remembers (plain words)</h3>
+  <ul class="prose">
+    <li><b>Thought memory.</b> A second group of 256 neurons (the "prefrontal") that keeps a fading copy of what the brain was thinking a moment ago, and feeds it back in with the next screen.</li>
+    <li><b>Button memory.</b> Seven neurons that remember which button it pressed and for how long, fading over about five decisions.</li>
+    <li><b>Echo.</b> A fading copy of the last second or so of everything it saw, so it can tell "the enemy is getting closer" apart from one still frame.</li>
+    <li><b>Place memory.</b> A notebook keyed on "where am I": after a death it writes "not that button, here", and next life at the same spot the note votes. Agrippa keys places by the screen; AgrippaX by Mario's x position read from the game (where it is only; decisions still come from the screen).</li>
+  </ul>
+  <p class="small dim">Every memory brain started as an exact copy of W1_F2ck110 with its memory wires at zero, so on the first chunk all four played identically (checked: same buttons, same scores). Anything different later came from what the memory wires learned.</p>
+
+  <div class="roster">
+    <div class="brain"><div class="id">Cato</div><div class="nick">the control: no memory</div>
+      <div class="lv"><div><b>33</b><small>1-1</small></div><div><b>10</b><small>1-2</small></div><div class="ok"><b>46</b><small>1-3</small></div><div><b>30</b><small>1-4</small></div></div>
+      <p class="why">Top 3 picks: 119, 70, 33 of 200 (mean 74). Scores shown: its first pick, ck20.</p><p class="src">memory parts: none &middot; 15 h 47 min</p></div>
+    <div class="brain"><div class="id">AgrippaX</div><div class="nick">the control's twin</div>
+      <div class="lv"><div><b>29</b><small>1-1</small></div><div><b>14</b><small>1-2</small></div><div><b>4</b><small>1-3</small></div><div><b>38</b><small>1-4</small></div></div>
+      <p class="why">Has a place memory (keyed on x), but the night's recipe never writes to it, so it trained like Cato. Top 3: 85, 64, 60 (mean 70). It measures the noise.</p><p class="src">memory parts: Place memory (empty) &middot; 15 h 47 min</p></div>
+    <div class="brain"><div class="id">Cicero</div><div class="nick">thinks back a moment</div>
+      <div class="lv"><div><b>19</b><small>1-1</small></div><div><b>11</b><small>1-2</small></div><div><b>13</b><small>1-3</small></div><div class="ok"><b>45</b><small>1-4</small></div></div>
+      <p class="why">Top 3: 88, 97, 61 (mean 82). The brain in the World 1 demo below. With its memory switched off it scores 106.</p><p class="src">memory parts: Thought memory, Button memory &middot; about 12 h 55 min, less after a CPU slot jam</p></div>
+    <div class="brain"><div class="id">Livy</div><div class="nick">all four memories</div>
+      <div class="lv"><div><b>5</b><small>1-1</small></div><div><b>18</b><small>1-2</small></div><div><b>3</b><small>1-3</small></div><div><b>17</b><small>1-4</small></div></div>
+      <p class="why">Top 3: 43, 65, 56 (mean 55), the lowest. Its weights lean on the memories (all off: 15), but it plays worse than the control.</p><p class="src">memory parts: Thought memory, Button memory, Echo, Place memory &middot; about 15 h, ~3x the work per lesson</p></div>
+    <div class="brain"><div class="id">Agrippa</div><div class="nick">remembers places across lives</div>
+      <div class="lv"><div class="ok"><b>50</b><small>1-1</small></div><div><b>11</b><small>1-2</small></div><div><b>6</b><small>1-3</small></div><div><b>25</b><small>1-4</small></div></div>
+      <p class="why">W1_F2ck110's weights plus a place memory, tested only on retries (11/1 afternoon): no better than reloading the brain every life.</p><p class="src">memory parts: Place memory (keyed on the screen) &middot; not trained</p></div>
+  </div>
+  <p class="small dim">Scores: solo clears of 50 held-out starts per level, World 1. Each brain's "top 3" are its three best checkpoints on practice starts (both legs of the night pooled, the shared starting checkpoint left out), then played once on the 50 held-out starts. Cards show each brain's first pick. W1_F2ck110, where they all started: 50 / 11 / 6 / 25 = 92.</p>
+
+  <h3>The tests, as written before the night</h3>
+  <div class="tw"><table><thead><tr><th>brain (top 3 picks)</th><th class="n">World 1 clears, of 200</th><th class="n">mean</th><th class="n">2-1 first sight, mean x</th><th class="n">2-1 starts past the pipe (x 723), of 50</th><th class="n">memory off at play (first pick)</th></tr></thead><tbody>
+    <tr><td>Cato (control)</td><td class="n">119, 70, 33</td><td class="n">74</td><td class="n">671</td><td class="n">0, 0, 0</td><td class="n">-</td></tr>
+    <tr><td>AgrippaX (control's twin)</td><td class="n">85, 64, 60</td><td class="n">70</td><td class="n">589</td><td class="n">0, 5*, 0</td><td class="n">no change (85)</td></tr>
+    <tr><td>Cicero</td><td class="n">88, 97, 61</td><td class="n">82</td><td class="n">524</td><td class="n">0, 0, 7</td><td class="n no">+18 (88 &rarr; 106)</td></tr>
+    <tr><td>Livy</td><td class="n">43, 65, 56</td><td class="n">55</td><td class="n">572</td><td class="n">0, 0, 0</td><td class="n">-28 (43 &rarr; 15)</td></tr>
+  </tbody></table></div>
+  <p class="small dim">*AgrippaX's five (and five of W1_F2ck110's) are deaths at x 735, right at the pipe; Cicero's seven, all on one checkpoint, reach x 914 to 1,021, really past it. Nobody cleared 2-1 or 2-2. World 2 is never coached.</p>
+  <ul class="verdict prose">
+    <li><b>Short memory helps</b> (bar: Cicero or Livy beats Cato by 20+ of 200, or by 150+ mean x on 2-1, AND its memory off at play costs 10+ clears): <span class="no">lost</span>. Cicero is +8 (bar 20), Livy -19; on 2-1 both are behind Cato. Cicero with its memory switched off <i>gains</i> 18 clears. Livy loses 28 with its memory off, but its weights grew up leaning on it, and it still plays worse than the control.</li>
+    <li><b>Place memory works</b> (bar: retry curve 300+ above the reload control by life 10, or a level cleared that the control never clears): <span class="no">lost</span>. Livy at life 10 on 1-2: x 904 vs 1,320 for the control, and 10 clears vs 18 in 80 lives; 2-1: 501 vs 530. Agrippa and AgrippaX lost the same test on 11/1.</li>
+    <li><b>The fallback</b> (if the control got worse: practice-start mean x +15%): lost too. Cicero +3%, Livy -7%.</li>
+  </ul>
+  <div class="callout">
+    <h3>How big is the noise?</h3>
+    <p>Cato and AgrippaX are two copies of the same recipe (AgrippaX's place memory stays empty all night, and its extra input never reaches the decisions), so the gap between them is luck. Their top-3 means differ by only 4 clears (74 vs 70), but single checkpoints from one line swing from 33 to 119 of 200, and the twins' best picks differ by 34. A rough estimate from that spread: a top-3 difference under about 25 clears is noise. Cicero (+8) and Livy (-19) are both inside it. On 2-1 the twins' means differ by 82 x. The 1-3 record (Cato_ck20, 46/50) is one lucky draw from many.</p>
+    <p class="small dim">Also unequal: Cicero got about 3 hours less (it stopped itself after 3 hours without a new best and was restarted, then waited for a CPU slot), and Livy's lessons cost about 3x as much, so it saw fewer. One seed per brain. The next nights fix this: 3 seeds per brain, equal lessons, a checkpoint rule fixed in advance.</p>
+  </div>
+
+  <h3>Retry curves: does it learn from dying?</h3>
+  <p class="small dim">Livy (first pick, ck57) plays 10 lives in a row from each of 8 held-out starts. Remembers: its place notes are kept between lives. Control: the same brain reloaded before every life. Median furthest x per life; the weights never change.</p>
+  <div class="legend"><span><i style="border-color: var(--keep); border-top-style: solid"></i>remembers between lives</span><span><i style="border-color: var(--ctrl); border-top-style: dashed"></i>reloaded every life (control)</span></div>
+  <div class="rchart" id="rchart"
+    data-l12k="1646,863,870,861,879,851,69,817,446,904" data-l12c="1646,1531,1670,1198,1392,859,929,1049,67,1320"
+    data-l21k="322,731,417,465,436,398,626,461,450,501" data-l21c="322,399,530,348,401,530,461,498,530,530"></div>
+  <details>
+    <summary>Retry numbers as a table</summary>
+    <div class="in"><div class="tw"><table><thead><tr><th>level, arm</th><th>median furthest x, lives 1 to 10</th><th class="n">clears in 80 lives</th></tr></thead><tbody>
+      <tr><td>1-2, remembers</td><td>1646, 863, 870, 861, 879, 851, 69, 817, 446, 904</td><td class="n">10</td></tr>
+      <tr><td>1-2, control</td><td>1646, 1531, 1670, 1198, 1392, 859, 929, 1049, 67, 1320</td><td class="n">18</td></tr>
+      <tr><td>2-1, remembers</td><td>322, 731, 417, 465, 436, 398, 626, 461, 450, 501</td><td class="n">0</td></tr>
+      <tr><td>2-1, control</td><td>322, 399, 530, 348, 401, 530, 461, 498, 530, 530</td><td class="n">0</td></tr>
+    </tbody></table></div>
+    <p class="small dim">Lives 7 to 9 start after a long idle wait, so an enemy often reaches Mario right away: both arms dip there.</p></div>
+  </details>
+  <p class="small dim">Why it fails, best guess: a death note only says "not the button I pressed here", never what to do instead. With 7 buttons and a brain that already likes run and run+jump, the notes mostly push it onto a worse second choice.</p>
+
+  <h3>Demo: a memory brain beats World 1 (one run, not evidence)</h3>
+  <div class="w1b">
+    <figure>
+      <video class="nes" controls playsinline muted preload="metadata" poster="gauntlet/m06_Cicero_poster.png"><source src="gauntlet/m06_Cicero.mp4" type="video/mp4"></video>
+      <figcaption>Cicero (thought + button memory, checkpoint r2 ck1) at 01:03: 1-1 first try, 1-2 and 1-3 on the second try, 1-4 first try, then three lives on 2-1. 1 min 41 s.</figcaption>
+    </figure>
+    <div>
+      <p>The second brain ever to beat all of World 1 in one five-life run, and the first with a memory. It is a demo: one run of one checkpoint, played with a little randomness in the button choice (sampled at temperature 0.05; the held-out scores are plain greedy play). The same brain clears 19 / 11 / 13 / 45 of 50 held-out starts, and with its memory switched off it clears <i>more</i> (26 / 11 / 24 / 45). So this clip shows a capable brain, not a memory that helps.</p>
+    </div>
+  </div>
+  <figure>
+    <video class="wide16" controls playsinline muted preload="none" poster="gauntlet/brain_cicero-1-2-38_poster.jpg" width="1280" height="720"><source src="gauntlet/brain_cicero-1-2-38.mp4" type="video/mp4"></video>
+    <figcaption><b>Cicero's brain-cam, 1-2 from held-out start 38 (a clear).</b> Same panels as W1b's, plus its memories live: the thought memory (256 prefrontal neurons carrying the last moments) and the button memory (what it pressed, fading). Greedy play, recorded during the run; the recorded choice matched the pressed button at every decision. 21 s. Also: <a href="gauntlet/brain_cicero-1-1-0.mp4">1-1 from the real start</a>.</figcaption>
+  </figure>
 
   <h2 id="best">Best per level</h2>
   <div class="stats">
     <div class="stat ok"><div class="v">50<small>/50</small></div><div class="k"><b>1-1</b> &middot; W1_F2ck110</div></div>
     <div class="stat mid"><div class="v">29<small>/50</small></div><div class="k"><b>1-2</b> &middot; 1-2_12n59</div></div>
-    <div class="stat ok"><div class="v">42<small>/50</small></div><div class="k"><b>1-3</b> &middot; one_11_13</div></div>
+    <div class="stat ok"><div class="v">46<small>/50</small></div><div class="k"><b>1-3</b> &middot; Cato_ck20*</div></div>
     <div class="stat ok"><div class="v">50<small>/50</small></div><div class="k"><b>1-4</b> Bowser &middot; U3ck28</div></div>
   </div>
-  <p class="small dim">Solo clears on 50 held-out starts, each level's brain from the scoreboard below. These are four different brains; the one-brain result is W1b above.</p>
+  <p class="small dim">Solo clears on 50 held-out starts, each level's brain from the scoreboard below. These are four different brains; the one-brain result is W1b above. *Best of many: the 11/1 night saved about 350 checkpoints across four brains and this is the best 1-3 among the twelve scored on held-out starts. A record pick, not a typical brain (the same line's other picks score 11 and 12).</p>
 
   <h3>One brain, every World 1 level</h3>
   <div class="clips">
@@ -123,7 +225,7 @@
   <div class="tw stack"><table><thead><tr><th>level</th><th class="n">solo clears</th><th>brain</th><th>status</th></tr></thead><tbody>
   <tr><td>1-1</td><td class="n big ok">50/50</td><td>W1_F2ck110</td><td><span class="ok">perfect</span> on held-out starts, and the same brain clears all four World 1 levels</td></tr>
   <tr><td>1-2</td><td class="n big mid">29/50</td><td>1-2_12n59</td><td><span class="no">not yet</span>: up from 8/50 overnight; clears more than half the time</td></tr>
-  <tr><td>1-3</td><td class="n big ok">42/50</td><td>one_11_13</td><td><span class="ok">consistent</span>, same weights as 1-1 (best 1-3 checkpoint: 45/50)</td></tr>
+  <tr><td>1-3</td><td class="n big ok">46/50</td><td>Cato_ck20 (best of many)</td><td><span class="ok">consistent</span>; the same brain also clears 1-1 33, 1-2 10, 1-4 30 (119/200). Before: one_11_13 42/50, U3ck83 45/50</td></tr>
   <tr><td>1-4 <span class="tag">Bowser</span></td><td class="n big ok">50/50</td><td>U3ck28</td><td><span class="ok">perfect</span> on held-out starts; the same brain also clears 1-1 on 30/50</td></tr>
   <tr><td>2-1</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~330 (random buttons ~380)</td></tr>
   <tr><td>2-2</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~210 (random buttons ~1,230)</td></tr>
@@ -198,6 +300,10 @@
   <p class="small dim">Real start of 1-1, five lives. A flag moves on to the next level (1-2, 1-3, 1-4, 2-1 ...); a death restarts the current level; no learning between lives; game over on the fifth death. Retries start a few frames later (the emulator is deterministic, so an identical restart would replay the identical death). "One brain" = the same weights the whole way. Each level starts with small Mario.</p>
   <div class="tw stack"><table><thead><tr><th>time</th><th>brain</th><th>cleared</th><th>deaths (level: x)</th><th class="n">lives left</th><th>clip</th></tr></thead><tbody>
   <!--GAUNTLET-ROWS-->
+  <tr><td>11/02 07:05 EST</td><td>AgrippaX ck18 (memory night, first pick; one brain, sampled play*)</td><td>1-1</td><td>1-2: 873, 873, 850, 871, 1,595</td><td class="n">0</td><td><a href="gauntlet/m08_AgrippaX.mp4">clip</a></td></tr>
+  <tr><td>11/02 06:44 EST</td><td>Livy ck57 (memory night, first pick; one brain, sampled play*)</td><td>1-1</td><td>1-1: 315, 312, 312; 1-2: 1,743, 867</td><td class="n">0</td><td><a href="gauntlet/m07_Livy.mp4">clip</a></td></tr>
+  <tr class="hl"><td>11/02 01:03 EST</td><td><b>Cicero r2 ck1, thought + button memory (one brain, sampled play*)</b></td><td class="ok"><b>1-1, 1-2, 1-3, 1-4</b></td><td>1-2: 1,344; 1-3: 936; 2-1: 471, 722 (stuck), 330</td><td class="n">0</td><td><a href="gauntlet/m06_Cicero.mp4">clip</a></td></tr>
+  <tr><td>11/01 23:47 EST</td><td>Cato ck20, the no-memory control (one brain, sampled play*)</td><td class="ok">1-1, 1-2</td><td>1-2: 978 (stuck); 1-3: 1,256, 1,140, 1,942, 1,910</td><td class="n">0</td><td><a href="gauntlet/m05_Cato.mp4">clip</a></td></tr>
   <tr><td>11/01 05:11 EST</td><td>W1_F2ck110 (one brain; held-out 50 / 11 / 6 / 25)</td><td>1-1</td><td>1-2: 872, 883, 1,320, 468, 1,321</td><td class="n">0</td><td><a href="gauntlet/g_W1_F2ck110.mp4">clip</a></td></tr>
   <tr><td>11/01 04:42 EST</td><td>W1_F2ck87 (one brain; held-out 22 / 7 / 15 / 27)</td><td>1-1</td><td>1-1: 2,471, 3,154 (stuck); 1-2: 1,744, 1,646, 1,742</td><td class="n">0</td><td><a href="gauntlet/g_W1_F2ck87.mp4">clip</a></td></tr>
   <tr><td>11/01 03:02 EST</td><td>W1_F2ck40 (one brain; held-out 29 / 8 / 5 / 34)</td><td>1-1</td><td>1-1: 1,153, 1,153; 1-2: 851, 1,325, 1,321</td><td class="n">0</td><td><a href="gauntlet/g_W1_F2ck40.mp4">clip</a></td></tr>
@@ -215,7 +321,7 @@
   <tr><td>10/31 17:48</td><td>U3ck44 (one brain)</td><td>1-1</td><td>1-1: 2,762, 1,784; 1-2: 323, 354, 354 (all stuck)</td><td class="n">0</td><td><a href="gauntlet/g02_U3ck44.mp4">clip</a></td></tr>
   <tr><td>10/31 17:11</td><td>U3ck83 (one brain)</td><td>1-1</td><td>1-2: 322, 470, 322, 893, 354</td><td class="n">0</td><td><a href="gauntlet/g01_U3ck83.mp4">clip</a></td></tr>
   </tbody></table></div>
-  <p class="small dim">Best single brain: W1b, all four World 1 levels in one run (11/01 02:30). Before that night the best single brain stopped at 1-2.</p>
+  <p class="small dim">Best single brains: W1b (11/01 02:30) and Cicero (11/02 01:03), all four World 1 levels in one run each. Gauntlets are demos: one run of one checkpoint (W1b was one of six checkpoints tried that night). *The memory-night gauntlets choose buttons with a little randomness (sampled at temperature 0.05, weights unchanged, checked); the older rows are greedy. Found and labelled 11/02.</p>
   <figure class="relay"><video class="nes" controls playsinline muted preload="metadata" poster="gauntlet/g03_relay_poster.png"><source src="gauntlet/g03_relay.mp4" type="video/mp4"></video><figcaption><b>Not one brain:</b> a relay of specialists (four brains, one per level) clears all of World 1 in one five-life run, then loses two lives on 2-1, which none of them ever trained on. 1 min 53 s, deaths included.</figcaption></figure>
 
   <h2 id="tests">Tests from the 10/31 night</h2>
@@ -242,6 +348,8 @@
 
   <h2 id="latest">Latest</h2>
   <ul class="log" id="latest-new">
+    <li><time>11/02 07:30</time><span><b>Memory night results: memory didn't help, by every test written in advance.</b> Four brains trained side by side for about 15 hours from W1_F2ck110: a no-memory control (Cato), its twin (AgrippaX, same recipe, used to measure the noise), Cicero (thought + button memory) and Livy (all four memories). Top-3 means on held-out World 1: Cato 74, AgrippaX 70, Cicero 82, Livy 55 of 200, all inside the noise. Cicero with its memory switched off gets better (88 to 106). Livy's place memory loses its retry test (life 10 on 1-2: x 904 vs 1,320 for the reloaded control). No World 2 clears. New 1-3 high, Cato_ck20 46/50, labelled best of many. Details in "Memory night" above.</span></li>
+    <li><time>11/02 01:03</time><span>Demo: Cicero, a memory brain, beats all of World 1 in one five-life run (1-2 and 1-3 on the second try). One run of one checkpoint, and its held-out scores go up with the memory off, so it's a capable brain, not proof that memory helps.</span></li>
     <li><time>11/01 06:35</time><span>Night over, all training stopped. One brain clears every World 1 level (best total: W1_F2ck110, 50 / 11 / 6 / 25 of 50), and one (W1b) beat World 1 in a single five-life gauntlet. Still not consistent on 1-2 and 1-3, and World 2 at first sight is unchanged (no clears). The RAM-map brain had 5 more hours and still never cleared 1-2.</span></li>
     <li><time>11/01 05:11</time><span>Another all-four brain from the same run: W1_F2ck110 clears 1-1 on all 50 held-out starts, plus 1-2 11, 1-3 6, 1-4 25. Eight checkpoints of that run now clear every World 1 level on held-out starts.</span></li>
     <li><time>11/01 02:30</time><span><b>Milestone:</b> one brain (W1b) beats all of World 1 in one five-life gauntlet run: 1-1, 1-2, 1-4 first try, 1-3 on the fourth. Three more checkpoints of the same run also clear all four levels on held-out starts.</span></li>
@@ -299,6 +407,7 @@
     <li><b>One brain for everything, but not consistently.</b> W1b clears all four World 1 levels, but 7-27 times in 50, not 40+. one_11_13 holds 1-1 and 1-3 consistently; U3ck83 clears three levels but only 1-3 consistently. The best 1-4 checkpoint (U3ck28, 50/50) clears 1-1 only 30/50. The best all-three checkpoints so far: 1-1 25/50, 1-3 15/50, 1-4 37/50 (U3ck44), or 1-1 15/50, 1-3 45/50, 1-4 33/50 (U3ck83).</li>
     <li><b>1-2 is not cleared reliably.</b> Best 29/50. On 1-2 the brain fits only about 85% of the coach's labels, and even a standard neural net predicts only about 85% of them on screens it hasn't seen. Ruled out: the coach, sharper eyes, step size, more training, a bigger brain.</li>
     <li><b>Held-out means held-out starts, not new levels.</b> Levels it never practised (2-1, 2-2) go nowhere, even for the brains that clear all of World 1: the skill doesn't transfer yet.</li>
+    <li><b>Memory brains: no gain yet.</b> On the 11/1 night the gap between two copies of the same no-memory recipe (top-3 means 74 vs 70, single checkpoints 33 to 119 of 200) was bigger than anything a memory added. One seed per brain and unequal compute; record numbers from a single checkpoint (like 1-3 46/50) are best-of-many picks. Notebook: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/memory/MEMORY.md">MEMORY.md</a>.</li>
     <li><b>This is not "Cadence beats Super Mario Bros."</b> It's World 1, with a coach's labels as the teacher. The coach itself can't clear 2-1 yet, so the brain can't be taught it.</li>
     <li>Numbers on this page are from the run logs, and earlier claims that didn't hold are corrected in the Latest log. Notebooks, dead ends included: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/concepts/CONCEPTS.md">CONCEPTS.md</a> (the 10/31 night: RAM test, death clinic, the all-four brains, every gauntlet) and <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/LEARNING_FIX.md">LEARNING_FIX.md</a> (everything before).</li>
   </ul>
@@ -326,6 +435,54 @@
       Array.prototype.forEach.call(tr.children, function (td, i) { if (!td.hasAttribute("data-label")) td.setAttribute("data-label", h[i] || ""); });
     });
   });
+</script>
+<script>
+/* retry curves: two small line charts from the data-* lists on #rchart (no library) */
+(function () {
+  var el = document.getElementById('rchart'); if (!el) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  function nums(k) { return el.dataset[k].split(',').map(Number); }
+  [['1-2', nums('l12k'), nums('l12c'), 3200], ['2-1', nums('l21k'), nums('l21c'), 1000]].forEach(function (c) {
+    var name = c[0], K = c[1], C = c[2], ymax = c[3];
+    var W = 340, H = 200, L = 40, R = 72, T = 22, B = 26, pw = W - L - R, ph = H - T - B;
+    var fig = document.createElement('figure'); el.appendChild(fig);
+    var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', 'Retry curve ' + name + ': median furthest x per life, remembers vs reloaded control');
+    fig.appendChild(svg);
+    function mk(t, a, p) { var e = document.createElementNS(NS, t); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
+    function X(i) { return L + pw * i / 9; } function Y(v) { return T + ph - ph * Math.min(v, ymax) / ymax; }
+    var g = mk('g', { 'class': 'grid' });
+    var step = ymax > 2000 ? 1000 : 250;
+    for (var v = 0; v <= ymax; v += step) { mk('line', { x1: L, x2: L + pw, y1: Y(v), y2: Y(v) }, g); var t = mk('text', { x: L - 6, y: Y(v) + 4, 'text-anchor': 'end' }); t.textContent = v.toLocaleString('en-US'); }
+    [1, 5, 10].forEach(function (n) { var t = mk('text', { x: X(n - 1), y: H - 8, 'text-anchor': 'middle' }); t.textContent = 'life ' + n; });
+    var tt = mk('text', { x: L, y: 12 }); tt.textContent = name + ' (median furthest x)'; tt.setAttribute('style', 'fill: var(--c-fg); font-weight: 600');
+    function line(D, cls, dash) {
+      mk('polyline', { points: D.map(function (v, i) { return X(i) + ',' + Y(v); }).join(' '), fill: 'none', 'class': cls, 'stroke-width': 2, 'stroke-dasharray': dash || 'none', 'stroke-linejoin': 'round' });
+    }
+    line(C, 'c', '5 4'); line(K, 'k');
+    var lk = mk('text', { x: L + pw + 6, y: Y(K[9]) + 4 }); lk.textContent = 'remembers ' + K[9];
+    var lc = mk('text', { x: L + pw + 6, y: Y(C[9]) + 4 }); lc.textContent = 'control ' + C[9];
+    if (Math.abs(Y(K[9]) - Y(C[9])) < 13) { if (K[9] < C[9]) lk.setAttribute('y', +lc.getAttribute('y') + 13); else lc.setAttribute('y', +lk.getAttribute('y') + 13); }
+    var cross = mk('line', { y1: T, y2: T + ph, stroke: 'var(--c-dim)', 'stroke-width': 1, visibility: 'hidden' });
+    var dk = mk('circle', { r: 4, 'class': 'kd', visibility: 'hidden', stroke: 'var(--c-surface)', 'stroke-width': 2 });
+    var dc = mk('circle', { r: 4, 'class': 'cd', visibility: 'hidden', stroke: 'var(--c-surface)', 'stroke-width': 2 });
+    var tip = document.createElement('div'); tip.className = 'tip'; fig.appendChild(tip);
+    var hit = mk('rect', { x: L - 10, y: T, width: pw + 20, height: ph, fill: 'transparent' });
+    function show(ev) {
+      var r = svg.getBoundingClientRect(), sx = (ev.clientX - r.left) * W / r.width;
+      var i = Math.max(0, Math.min(9, Math.round((sx - L) / pw * 9)));
+      [cross, dk, dc].forEach(function (e) { e.setAttribute('visibility', 'visible'); });
+      cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i));
+      dk.setAttribute('cx', X(i)); dk.setAttribute('cy', Y(K[i])); dc.setAttribute('cx', X(i)); dc.setAttribute('cy', Y(C[i]));
+      tip.innerHTML = '<b>' + name + ', life ' + (i + 1) + '</b><br>remembers: x ' + K[i].toLocaleString('en-US') + '<br>control: x ' + C[i].toLocaleString('en-US');
+      tip.style.display = 'block';
+      var px = X(i) / W * r.width, left = px + 12; if (left + tip.offsetWidth > r.width) left = px - tip.offsetWidth - 12;
+      tip.style.left = left + 'px'; tip.style.top = '28px';
+    }
+    function hide() { tip.style.display = 'none'; [cross, dk, dc].forEach(function (e) { e.setAttribute('visibility', 'hidden'); }); }
+    hit.addEventListener('pointermove', show); hit.addEventListener('pointerdown', show); hit.addEventListener('pointerleave', hide);
+  });
+})();
 </script>
 </body>
 </html>

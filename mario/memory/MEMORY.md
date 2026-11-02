@@ -1,29 +1,31 @@
 <!-- RESUME -->
-## RESUME (11/01 15:15 EST)
-- Phase 0: transplant exact; act mode settles cold (= W1 predict); memory synapses start at 0, so every memory brain
-  starts as W1_F2ck110. Burn-in K=3. Blame: Cadence's write reaches the decisive move in 3 of 10 deaths -> OUR blame
-  window (5..30 back) in the retry curves.
-- RUNNING: night arms Cato / Cicero / Livy (runs/night2, mtrain.py, stop 05:45). Livy restarted 14:20 (echo synapses at
-  1/8 step; stop still 05:45, so Livy gets 22 min less than Cato / Cicero's 15 h 47 min, not changed).
-  AgrippaX (4th arm, same mtrain recipe, runs/night2/AgrippaX, log.txt) started LATE at 15:10, --stop-at 06:57 (= 15 h
-  47 min, same wall-clock budget as Cato / Cicero, Sean 15:15). Lesson rows get a zero x block, play gets real x; its
-  place store stays empty in training (see "AgrippaX training arm"), so expect it to track Cato. Its end-of-night
-  scoring runs AFTER 06:57, later than the others: top-3 SEL checkpoints on HELD, World 2 first sight, ablation with the
-  place vote off (x block / memory_amplitude 0), retry curves vs reload control. Check-ins: read its log.txt too.
-  Per-level bests so far: Cicero 1-4 HELD 44/50 (ck5), Cato 1-2 HELD 9/50 (ck5). Joint picks still ck0.
-- Place memory retry test (bar: +300 median max x at life 10 vs reload control):
-  - Agrippa LOST (life 10 +162 on 1-2, +127 on 2-1). Sparse keys and no-blame variants worse.
-  - AgrippaX (Sean's idea, x from RAM in the place key; "where am I only, decisions still from the screen") 14:47:
-    keys now local (cosine 0.80 / 0.29 / 0.11 / 0.07 at 1 / 5 / 20 / 60 decisions vs Agrippa 0.69 / 0.58 / 0.56 / 0.52),
-    cortex parity exact, weights byte-identical after retry lives. Retry: **not a win**, life 10 -20 on 1-2, +100 on 2-1
-    (no-blame: -157, -4). Hint only: lives 2-4 on 1-2 a bit above control, then fades. Texted Sean 14:49.
-    Read: locality was not the bottleneck; a -1 on a past button never says what to do instead.
-- Gauntlets: m01 Agrippa (remembers across lives) 1-1 then dies on 1-2 x5; m02-m04 Cato / Cicero / Livy joint = ck0,
-  identical to g16 (1-1, then 1-2 x5).
-- STILL NOT DONE (end-of-night agent, after 05:45): top-3 SEL checkpoints scored on HELD, play-time ablations (one
-  memory part off at a time on Cicero, Livy, Agrippa), end-of-night retry curves (Livy, Agrippa), gauntlets on moved
-  joint picks, brain-cam panels, roster cards, retry-curve chart, page update.
-- Cicero RESUMED 21:05 (Sean: "Continue Cicero"): runs/night2/Cicero_r2, init = Cicero leg-1 ck0024 (r2 ck0000 = leg-1 ck0024), --stall-hours 99, --more-seq loads leg-1's DAgger attempts (ordered rows 4816/3811/2777/3587 = leg-1's), stop 05:45. Leg 1 ran 13:58-18:14 (auto-stopped by the 3 h rule); total ~12h55m vs Cato's 15h47m. End-of-night: score Cicero over BOTH dirs (leg-1 bests + r2 bests). If another arm auto-stops, resume it the same way (Sean wants equal time).
+## RESUME (11/02 07:30 EST, night over, all training stopped)
+- **Verdict: memory lost every pre-registered test.** Details: "End of night (11/02)" at the bottom.
+  - Short memory helps (Cicero/Livy beat Cato by 20+ HELD/200 or +150 2-1 mean x, AND memory-off costs 10+): LOST.
+    Top-3 HELD W1 means: Cato 74, AgrippaX 70, Cicero 82 (+8), Livy 55 (-19). 2-1 mean x: Cato 671, Cicero 524,
+    Livy 572. Cicero memory off at play GAINS 18 (88 -> 106); Livy all off -28 (43 -> 15): its weights lean on the
+    memories, but it plays worse than Cato.
+  - Place memory works (retry +300 by life 10, or a level only KEEP clears): LOST. Livy life 10: 1-2 904 vs 1,320,
+    clears 10 vs 18 of 80; 2-1 501 vs 530. (Agrippa, AgrippaX lost 11/1.)
+  - Fallback (SEL mean x +15%): LOST (Cicero +3%, Livy -7%).
+- **Noise floor (A/A = AgrippaX vs Cato):** top-3 mean gap 4 (74 vs 70), best-pick gap 34 (119 vs 85), one line's
+  checkpoints span 33-119/200; rough SE of a top-3-mean difference ~25 clears. 2-1 mean gap 82 x. Every memory
+  difference is inside it. AgrippaX ablations (place off, x zeroed, both) identical to on (85): store empty, as built.
+- **Correction (11/02):** `gauntletm.py --mode act` is NOT greedy. MemPlayer only special-cases 'greedy'/'retry', so
+  'act' samples at temperature 0.05 and calls learn() mid-attempt (weights byte-identical after, runs/_actcheck.py,
+  runs/eon/actcheck.out; it reproduces m06 exactly, greedy does not). m05-m08 are sampled play; HELD scores are greedy.
+  Labeled on the page and in the gauntlet table. Fix next time: an explicit --mode greedy/sampled, reject unknown modes.
+- Gauntlets (demos): m05 Cato ck20 1-1, 1-2; m06 Cicero r2 ck1 all of World 1; m07 Livy ck57 1-1; m08 AgrippaX ck18 1-1.
+- Brain-cam: viz/record_brain.py --act (records settles DURING act-mode play) + brain_video.py memory panels.
+  Cicero r2 ck1 on 1-2/38 and 1-1/0 (docs/mario/gauntlet/brain_cicero-*.mp4).
+- Page docs/mario/ updated (Memory night section, roster, retry chart, verdicts, noise floor, m06 demo, 1-3 46/50
+  Cato_ck20 labeled best of many). Pushed.
+- **NEXT** (vault Plans/Cadence Roadmap 2026-11-02, in order): (1) done tonight: noise floor published. (2) Offline
+  checks: MLP/CNN clone on the ~179k W1 pile rows scored on World 2; linear probe of W1_F2ck110 for RAM labels on W1 vs
+  W2 screens; 2-1 transfer vs number of training levels. (3) Methods fix: fresh start set, 3 seeds, equal lessons
+  (not wall time), FIFO throttle slots, one primary metric (share of HELD 2-1 starts past x 723), checkpoint rule
+  fixed in advance; also fix the gauntletm mode bug. (4) Deeper coach + 8-12 SMB1 stages, held-out stages
+  (World 2 never coached). (5) No-coach 2-1 curve: 100-200 own attempts, hindsight goals, Brain.live as the memory arm.
 <!-- /RESUME -->
 
 # Memory brains (2026-11-01 night)
@@ -208,6 +210,8 @@ not learn from dying here.
 | m02 | 14:57 | Cato best_joint (= ck0) | act mode, nothing kept | 1-1 | 1-2: 872, 883, 1,320, 468, 1,321 | m02_Cato.mp4 |
 | m03 | 14:57 | Cicero best_joint (= ck0, memory synapses still 0) | act mode, nothing kept | 1-1 | 1-2: 872, 883, 1,320, 468, 1,321 | m03_Cicero.mp4 |
 | m04 | 14:57 | Livy best_joint (= ck0, memory synapses still 0) | act mode, nothing kept | 1-1 | 1-2: 872, 883, 1,320, 468, 1,321 | m04_Livy.mp4 |
+| m05 | 23:47 | Cato best_joint (ck0020) | act mode, nothing kept, "one brain" (demo, not evidence) | 1-1, 1-2 | 1-2: 978 (stuck); 1-3: 1,256, 1,140, 1,942, 1,910 | runs/gauntlet_night/m05_Cato.mp4 |
+| m06 | 01:03 | Cicero r2 best_joint (r2 ck0001 = leg-1 ck0025) | act mode, nothing kept, "one brain" (demo, not evidence) | 1-1, 1-2, 1-3, 1-4 | 1-2: 1,344; 1-3: 936; 2-1: 471, 722, 330 | runs/gauntlet_night/m06_Cicero.mp4 |
 For comparison, W1_F2ck110 without memory (g16, last night): 1-1, then 1-2: 872, 883, 1,320, 468, 1,321.
 m02-m04: at 14:57 every night arm's joint pick (best SEL sum over the four levels) was still chunk 0, i.e. W1_F2ck110's
 weights with the memory synapses at zero. So the three gauntlets are the same game, frame for frame, and match g16
@@ -307,3 +311,116 @@ mtrain.py's built-in --stall-hours 3.0 stopped Cicero at chunk 24 (no new SEL be
 
 ### Throttle note (22:46)
 Game detected from ~21:45 (Sean on HOI4/Minecraft): all arms throttled to 2 shared worker slots, 1 thread. Compute per hour is much lower from here, roughly equal across arms. The 3 h stall clock keeps running in wall time, so arms may auto-stop during throttle; resume them like Cicero (r2 pattern).
+
+### Slot starvation (23:05)
+Throttle has a fairness hole: an arm releases its slot at the end of a chunk and grabs it again at once, while a waiting arm polls every 30 s. Cicero_r2 waited for a slot from 22:02 (no progress for 1h+) while Livy and AgrippaX held both through long 1-thread DAgger rounds. No game running at 23:02 (gamecheck NONE), so it self-heals: each arm rechecks the game at its next chunk, turns throttle OFF and stops taking slots. Not intervening. Cicero loses roughly 1-1.5 h more of compute: note on comparisons. Fix for next time: a FIFO ticket queue for slots, and recheck the game inside slot_acquire.
+
+### Old RESUME (11/01 15:15 to 11/02 03:47), kept for the record
+- Phase 0: transplant exact; act mode settles cold (= W1 predict); memory synapses start at 0, so every memory brain
+  starts as W1_F2ck110. Burn-in K=3. Blame: Cadence's write reaches the decisive move in 3 of 10 deaths -> OUR blame
+  window (5..30 back) in the retry curves.
+- RUNNING: night arms Cato / Cicero / Livy (runs/night2, mtrain.py, stop 05:45). Livy restarted 14:20 (echo synapses at
+  1/8 step; stop still 05:45, so Livy gets 22 min less than Cato / Cicero's 15 h 47 min, not changed).
+  AgrippaX (4th arm, same mtrain recipe, runs/night2/AgrippaX, log.txt) started LATE at 15:10, --stop-at 06:57 (= 15 h
+  47 min, same wall-clock budget as Cato / Cicero, Sean 15:15). Lesson rows get a zero x block, play gets real x; its
+  place store stays empty in training (see "AgrippaX training arm"), so expect it to track Cato. Its end-of-night
+  scoring runs AFTER 06:57, later than the others: top-3 SEL checkpoints on HELD, World 2 first sight, ablation with the
+  place vote off (x block / memory_amplitude 0), retry curves vs reload control. Check-ins: read its log.txt too.
+  Per-level bests so far: Cicero 1-4 HELD 44/50 (ck5), Cato 1-2 HELD 9/50 (ck5). Joint picks still ck0.
+- Place memory retry test (bar: +300 median max x at life 10 vs reload control):
+  - Agrippa LOST (life 10 +162 on 1-2, +127 on 2-1). Sparse keys and no-blame variants worse.
+  - AgrippaX (Sean's idea, x from RAM in the place key; "where am I only, decisions still from the screen") 14:47:
+    keys now local (cosine 0.80 / 0.29 / 0.11 / 0.07 at 1 / 5 / 20 / 60 decisions vs Agrippa 0.69 / 0.58 / 0.56 / 0.52),
+    cortex parity exact, weights byte-identical after retry lives. Retry: **not a win**, life 10 -20 on 1-2, +100 on 2-1
+    (no-blame: -157, -4). Hint only: lives 2-4 on 1-2 a bit above control, then fades. Texted Sean 14:49.
+    Read: locality was not the bottleneck; a -1 on a past button never says what to do instead.
+- Gauntlets: m01 Agrippa (remembers across lives) 1-1 then dies on 1-2 x5; m02-m04 Cato / Cicero / Livy joint = ck0,
+  identical to g16 (1-1, then 1-2 x5).
+- STILL NOT DONE (end-of-night agent, after 05:45): top-3 SEL checkpoints scored on HELD, play-time ablations (one
+  memory part off at a time on Cicero, Livy, Agrippa), end-of-night retry curves (Livy, Agrippa), gauntlets on moved
+  joint picks, brain-cam panels, roster cards, retry-curve chart, page update.
+- Cicero RESUMED 21:05 (Sean: "Continue Cicero"): runs/night2/Cicero_r2, init = Cicero leg-1 ck0024 (r2 ck0000 = leg-1 ck0024), --stall-hours 99, --more-seq loads leg-1's DAgger attempts (ordered rows 4816/3811/2777/3587 = leg-1's), stop 05:45. Leg 1 ran 13:58-18:14 (auto-stopped by the 3 h rule); total ~12h55m vs Cato's 15h47m. End-of-night: score Cicero over BOTH dirs (leg-1 bests + r2 bests). If another arm auto-stops, resume it the same way (Sean wants equal time).
+- END-OF-NIGHT NOTE (roadmap review 11/1 23:40): AgrippaX trains as a near-clone of Cato (empty store, zero x in lessons, same seed), so report AgrippaX vs Cato as the NOISE FLOOR (A/A spread; by chunk 47 SEL-best HELD totals were Cato 154 vs AgrippaX 113). Memory arms count only above that gap plus a 10+ clear ablation. Single-checkpoint records (e.g. Cato 1-3 46/50) are best-of-many picks: label them so. Note unequal compute (Cicero ~12h55m + slot starvation; Livy ~3x cost per lesson).
+- m06 (01:03): Cicero (thought + button memory) r2 ck0001 beat all of World 1 in one 5-life gauntlet (deaths 1-2 x1,344, 1-3 x936; 2-1 x471/722/330). Second brain ever, first memory brain. A demo (one run of one checkpoint), not evidence that memory helps: page it as such, with the clip runs/gauntlet_night/m06_Cicero.mp4.
+- Cato auto-stopped 02:44 (3 h rule, chunk 78); RESUMED 02:46 as runs/night2/Cato_r2 from ck0078 (r2 ck0000 = leg-1 ck0078), stall off, leg-1 DAgger rows carried, stop 05:45. Score Cato over both dirs. Lost ~2 min.
+- AgrippaX auto-stopped 02:46 (3 h rule, chunk 66); RESUMED ~02:50 as runs/night2/AgrippaX_r2 from ck0066, stall off, leg-1 DAgger rows carried, stop 06:57 (equal duration kept). Score over both dirs; scoring still after 06:57 (cron 07:07).
+- Livy auto-stopped 03:23 (3 h rule, chunk 73); RESUMED 03:47 as runs/night2/Livy_r2 from ck0073, stall off, DAgger rows carried, stop 05:45. Lost ~23 min (on top of its 22 min late start). Score over both dirs.
+
+## End of night (11/02, 05:51-07:30)
+Training stopped: Cato_r2 05:49, Livy_r2 05:47, Cicero_r2 06:02 (its last chunk began with a DAgger round before
+05:45; the deadline check runs after a chunk, same rule as the others), AgrippaX_r2 06:57.
+
+**Picks (written before any HELD score, eon_select.py -> runs/eon/picks.json):** per arm, top 3 checkpoints by mtrain's
+joint SEL key [min flags, sum flags, sum mean], both legs pooled. Chunk 0 left out: leg-1 ck0 is W1_F2ck110 in every
+arm (it was in every arm's top 3, which would compare the start with itself), scored once as "Start"; r2 ck0 = leg-1
+last. Candidates: Cato 96, Cicero 71, Livy 85, AgrippaX 93. First pick = the arm's chosen checkpoint (ablations,
+gauntlet), fixed by SEL rank, not by HELD.
+
+**HELD (50 starts per level, greedy act mode, evalm.py; runs/eon/held_*.json, eon_table.py):**
+| brain | 1-1 | 1-2 | 1-3 | 1-4 | W1 /200 | 2-1 mean x | 2-1 max | 2-1 past x 723 | 2-2 mean / max |
+|---|---|---|---|---|---|---|---|---|---|
+| Start (W1_F2ck110) | 50 | 11 | 6 | 25 | 92 | 604 | 735 | 5/50 (all x 735 deaths at the pipe) | 162 / 163 |
+| Cato L1 ck20 | 33 | 10 | 46 | 30 | 119 | 664 | 722 | 0 | 163 / 163 |
+| Cato L1 ck68 | 18 | 11 | 11 | 30 | 70 | 722 | 723 | 0 | 138 / 162 |
+| Cato L1 ck8 | 6 | 1 | 12 | 14 | 33 | 626 | 722 | 0 | 142 / 163 |
+| AgrippaX L1 ck18 | 29 | 14 | 4 | 38 | 85 | 544 | 723 | 0 | 163 / 163 |
+| AgrippaX L1 ck49 | 13 | 7 | 27 | 17 | 64 | 678 | 735 | 5/50 (x 735) | 163 / 163 |
+| AgrippaX L1 ck34 | 24 | 12 | 3 | 21 | 60 | 545 | 722 | 0 | 162 / 163 |
+| Cicero r2 ck1 | 19 | 11 | 13 | 45 | 88 | 479 | 722 | 0 | 162 / 163 |
+| Cicero L1 ck1 | 38 | 12 | 20 | 27 | 97 | 515 | 723 | 0 | 162 / 163 |
+| Cicero L1 ck6 | 17 | 17 | 3 | 24 | 61 | 578 | 1,021 | 7/50 (x 914-1,021) | 151 / 163 |
+| Livy L1 ck57 | 5 | 18 | 3 | 17 | 43 | 530 | 532 | 0 | 163 / 163 |
+| Livy L1 ck27 | 37 | 9 | 1 | 18 | 65 | 464 | 465 | 0 | 163 / 163 |
+| Livy L1 ck11 | 21 | 7 | 4 | 24 | 56 | 722 | 723 | 0 | 211 / 514 |
+Top-3 means: Cato 74, AgrippaX 70, Cicero 82, Livy 55; 2-1 mean x (avg of 3): 671, 589, 524, 572. No World 2 clears.
+Every arm's average pick is BELOW the start (92): training from a SEL-picked peak regresses, as the review said.
+Cato ck20 1-3 46/50 is a new 1-3 high (beats U3ck83 45), but it is the best of 12 HELD-scored picks from ~350 saved
+checkpoints: best of many, labeled so on the page.
+
+**Noise floor (A/A):** Cato vs AgrippaX, same recipe (empty store, zero x into the cortex). Top-3 mean gap 4; best-pick
+gap 34; within-arm range 33-119 (Cato) and 60-85 (AgrippaX). Pooled checkpoint SD ~32 -> SE of a 3-vs-3 mean difference
+~26. 2-1 mean gap 82 x (bar was 150). Memory arms: Cicero +8, Livy -19 vs Cato: inside the floor either way.
+
+**Ablations (first picks, HELD W1; runs/eon/abl_*.json):**
+| brain | on | thought off | button off | echo off | place off | all off |
+|---|---|---|---|---|---|---|
+| Cicero r2 ck1 | 19/11/13/45 = 88 | 28/7/24/45 = 104 (+16) | 20/8/13/45 = 86 (-2) | - | - | 26/11/24/45 = 106 (+18) |
+| Livy ck57 | 5/18/3/17 = 43 | 0/2/6/29 = 37 (-6) | 6/20/3/27 = 56 (+13) | 8/1/0/15 = 24 (-19) | identical (43) | 0/11/1/3 = 15 (-28) |
+| AgrippaX ck18 | 29/14/4/38 = 85 | - | - | - | identical | x zeroed: identical; both: identical |
+Read: Cicero's memory costs it clears (mostly 1-1 and 1-3). Livy's weights depend on thought memory and echo (1-2
+falls 18 -> 2 or 1 without them), but the whole brain is still the worst arm. Place off changes nothing in greedy play
+for Livy or AgrippaX: greedy acts write no place records, so the vote is zero (expected, a parity check).
+
+**Retry curves, Livy ck57 (retry.py, phase-0 protocol: 8 held starts, 10 lives, temp 0.05, our blame window 5..30,
+keep vs reload control; runs/eon/retry_Livy.json):**
+| level | arm | median max x, lives 1-10 | clears per life (total) | starts cleared any |
+|---|---|---|---|---|
+| 1-2 | KEEP | 1646, 863, 870, 861, 879, 851, 69, 817, 446, **904** | 2,1,1,1,1,2,0,0,2,0 (10) | 8 of 8 |
+| 1-2 | CONTROL | 1646, 1531, 1670, 1198, 1392, 859, 929, 1049, 67, **1320** | 2,3,3,1,3,1,2,1,0,2 (18) | 8 of 8 |
+| 2-1 | KEEP | 322, 731, 417, 465, 436, 398, 626, 461, 450, **501** | 0 | 0 |
+| 2-1 | CONTROL | 322, 399, 530, 348, 401, 530, 461, 498, 530, **530** | 0 | 0 |
+Life 10: -416 on 1-2, -29 on 2-1 (bar +300). No level cleared by KEEP that CONTROL never cleared. LOST. KEEP is below
+CONTROL from life 2 on 1-2, the same shape as Agrippa's.
+AgrippaX retry: SKIPPED. Its place memory lost the same retry test on 11/1 (frozen W1 weights), and tonight's arm
+never wrote its store, so its weights are Cato-like with an empty notebook: a retry run would repeat the 11/1 test on
+different weights with no reason to expect a different answer (Sean's "it never learned to use it" needs the
+live-store recipe, now folded into roadmap step 5).
+
+**Gauntlets (demos, sampled play, see correction):** m05 Cato ck20 (23:47) 1-1, 1-2; m06 Cicero r2 ck1 (01:03) all of
+World 1; m07 Livy ck57 (06:44) 1-1 (third try), then 1-2 x 1,743, 867; m08 AgrippaX ck18 (07:05) 1-1, then 1-2 873,
+873, 850, 871, 1,595. Cato's and Cicero's chosen checkpoints are m05's and m06's brains, so no rerun.
+
+**Correction: gauntletm --mode act is sampled, not greedy.** MemPlayer handles 'greedy' and 'retry'; any other mode
+(incl. 'act', used for m05-m08 per the brief) falls into the sampled branch (temperature 0.05) and calls learn() every
+decision without the frozen actor rates. runs/_actcheck.py: weights byte-identical after two attempts (learn() with
+reward 0 mid-attempt and no final learn changes nothing hashed), mode act reproduces m06's log exactly (1-1 flag in
+306 decisions, 1-2 death at x 1,344), greedy does not (312 decisions; 1-2 dies at x 921). So m06 is one sampled draw.
+Labeled on the page; HELD/SEL scores were always greedy.
+
+**Brain-cam:** record_brain.py --act --parts (plays with mem.MemPlayer greedy cold, records each act's settle during
+play; act-mode recorded choice = pressed button 100% on 1-2/38, 99.7% on 1-1/0) and brain_video.py panels for thought
+memory (prefrontal), button memory (efference) and echo (history eye block). Cicero r2 ck1: 1-2/38 clear, 1-1/0 clear.
+No place panel: greedy play has an empty store.
+
+**Code changed tonight:** mem.py (ablation part "x": x block zeroed via MemPlayer.xamp; retune skipped when empty),
+eon_select.py, eon_table.py, runs/_actcheck.py, viz/record_brain.py, viz/brain_video.py.

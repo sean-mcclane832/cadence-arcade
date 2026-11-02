@@ -96,6 +96,7 @@ class Layout:
         self.f = {s: font(s) for s in (12, 13, 15, 17)}
         self.fb = {s: font(s, True) for s in (13, 15, 18)}
         self.tag = TAG
+        self.act = bool(self.meta.get("act")); self.parts = list(self.meta.get("parts", []))
         self.static = self._static()
 
     def _static(self):
@@ -125,11 +126,20 @@ class Layout:
         d.text((GX + 12, y + 18), f"association ({na})", fill=REG_COL["association"], font=self.fb[13])
         d.text((GX + 12, y + 34), "sorted by the button", fill=DIM, font=self.f[12])
         d.text((GX + 12, y + 48), "each pushes hardest", fill=DIM, font=self.f[12])
-        d.text((GX + 176, y + 18), f"prefrontal ({npf})", fill=REG_COL["prefrontal"], font=self.fb[13])
-        d.text((GX + 176, y + 34), "working memory: off", fill=DIM, font=self.f[12])
-        d.text((GX + 176, y + 48), "in predict mode, so 0", fill=DIM, font=self.f[12])
-        d.text((GX + 340, y + 18), f"sensory ({ns})", fill=REG_COL["sensory"], font=self.fb[13])
-        d.text((GX + 340, y + 34), "eyes, now (first 832)", fill=DIM, font=self.f[12])
+        if self.act and "thought" in self.parts:
+            d.text((GX + 176, y + 18), f"thought memory ({npf})", fill=REG_COL["prefrontal"], font=self.fb[13])
+            d.text((GX + 176, y + 34), "prefrontal, live: carries", fill=DIM, font=self.f[12])
+            d.text((GX + 176, y + 48), "the last moments' activity", fill=DIM, font=self.f[12])
+        else:
+            d.text((GX + 176, y + 18), f"prefrontal ({npf})", fill=REG_COL["prefrontal"], font=self.fb[13])
+            d.text((GX + 176, y + 34), "working memory: off", fill=DIM, font=self.f[12])
+            d.text((GX + 176, y + 48), "(this brain has none)" if self.act else "in predict mode, so 0", fill=DIM, font=self.f[12])
+        if self.act and "echo" in self.parts and "history" in P:
+            d.text((GX + 340, y + 18), f"echo ({len(P['history'])})", fill=(120, 200, 220), font=self.fb[13])
+            d.text((GX + 340, y + 34), "fading copy of past input", fill=DIM, font=self.f[12])
+        else:
+            d.text((GX + 340, y + 18), f"sensory ({ns})", fill=REG_COL["sensory"], font=self.fb[13])
+            d.text((GX + 340, y + 34), "eyes, now (first 832)", fill=DIM, font=self.f[12])
         y = 540
         d.text((GX + 12, y), "BUTTONS  (7 motor neurons, highest = pressed)", fill=DIM, font=self.f[12])
         d.text((GX + 300, 566), "SETTLE of this decision", fill=DIM, font=self.f[12])
@@ -160,10 +170,20 @@ class Layout:
         y = 318 + 66
         img.paste(grid_img(fin[P["association"]][self.assoc_order], 16, 16, 9), (GX + 12, y))
         img.paste(grid_img(fin[P["prefrontal"]], 16, 16, 9), (GX + 176, y))
-        img.paste(grid_img(fin[P["sensory"][:832]], 26, 32, 5), (GX + 340, y - 16))
-        # region means over the last 90 decisions
-        y0, h = 318 + 66 + 150, 0
+        echo = self.act and "echo" in self.parts and "history" in P
+        img.paste(grid_img(fin[(P["history"] if echo else P["sensory"])[:832]], 26, 32, 5), (GX + 340, y - 16))
         x0 = GX + 340; wd = 128; top = y - 16 + 130 + 20; hh = 30
+        if self.act and "button" in self.parts and "efference" in P:
+            # button memory: the efference region (what it pressed, fading), one cell per button
+            d.text((x0, top - 16), "button memory (what it pressed)", fill=DIM, font=self.f[12])
+            ef = fin[P["efference"]]
+            for i, v in enumerate(ef):
+                c = int(np.clip(v, 0, 1) * 255)
+                d.rectangle([x0 + i * 22, top, x0 + i * 22 + 19, top + 18], fill=(c, int(c * 0.75), 40) if v > 0.02 else (34, 36, 44))
+                d.text((x0 + i * 22 + 2, top + 20), BUTTONS[i][:3] if i != 2 and i != 4 else ("r+j" if i == 2 else "R+j"),
+                       fill=DIM, font=self.f[12])
+            return self._rest(img, d, fin, k)
+        # region means over the last 90 decisions
         d.text((x0, top - 16), "region means, last 90 decisions", fill=DIM, font=self.f[12])
         d.rectangle([x0, top, x0 + wd, top + hh], outline=(50, 54, 64))
         lo = max(0, k - 89)
@@ -175,6 +195,11 @@ class Layout:
                 d.line(pts, fill=REG_COL[r], width=2)
         d.text((x0 + wd + 4, top - 2), "0.25", fill=DIM, font=self.f[12])
         d.text((x0 + wd + 4, top + hh - 12), "0", fill=DIM, font=self.f[12])
+        return self._rest(img, d, fin, k)
+
+    def _rest(self, img, d, fin, k):
+        z, P = self.z, self.pops
+        a = int(z["acts"][k])
         # buttons
         mot = fin[P["motor"]]
         by = 560
