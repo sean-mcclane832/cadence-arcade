@@ -304,3 +304,6 @@ Cicero: no new SEL best since 14:32 (3h+), the plan's no-progress rule. Noted on
 
 ### Cicero stopped itself (18:14)
 mtrain.py's built-in --stall-hours 3.0 stopped Cicero at chunk 24 (no new SEL best since 14:32). Not a crash. The other arms run the same rule, so any of them can stop early the same way. Cicero trained ~4h16m vs the others' planned 15h47m: say so on every comparison. Asked Sean whether to resume it.
+
+### Throttle note (22:46)
+Game detected from ~21:45 (Sean on HOI4/Minecraft): all arms throttled to 2 shared worker slots, 1 thread. Compute per hour is much lower from here, roughly equal across arms. The 3 h stall clock keeps running in wall time, so arms may auto-stop during throttle; resume them like Cicero (r2 pattern).

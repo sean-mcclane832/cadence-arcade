@@ -37,7 +37,7 @@ sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE.parent))
 import cplay as C  # noqa: E402
 
 SEL, TEST, WIDE, HELD, POOL = C.SEL, C.TEST, C.WIDE, C.HELD, C.POOL
-GAMES = ("hoi4.exe", "javaw.exe")
+GAMES = ("hoi4.exe", "factorio.exe", "javaw.exe")
 
 
 def gaming():
