@@ -21,3 +21,9 @@ mario/memory/runs/*.npz
 mario/memory/runs/**/*.out
 mario/memory/runs/*.out
 mario/memory/brains0/
+mario/coldstart/runs/**/*.npz
+mario/coldstart/runs/**/*.out
+mario/coldstart/data/**/*.npz
+mario/coldstart/brains0/*.npz
+mario/coldstart/runs/_test/
+mario/coldstart/runs/slots/

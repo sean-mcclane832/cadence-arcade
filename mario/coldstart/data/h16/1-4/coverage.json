@@ -1,0 +1,126 @@
+{
+ "level": "1-4",
+ "horizon": 16,
+ "clean_clears": 5,
+ "clean_runs": 6,
+ "all_clears": 6,
+ "rows": 1619,
+ "critical": 325,
+ "clean_max_x": [
+  2246,
+  2251,
+  2246,
+  2246,
+  2267,
+  1591
+ ],
+ "clean_ends": [
+  "flag",
+  "flag",
+  "flag",
+  "flag",
+  "flag",
+  "died"
+ ],
+ "runs": [
+  {
+   "start": 0,
+   "eps": 0.0,
+   "flag": true,
+   "end": "flag",
+   "max_x": 2246,
+   "decisions": 194,
+   "secs": 157
+  },
+  {
+   "start": 3,
+   "eps": 0.0,
+   "flag": true,
+   "end": "flag",
+   "max_x": 2251,
+   "decisions": 196,
+   "secs": 165
+  },
+  {
+   "start": 8,
+   "eps": 0.0,
+   "flag": true,
+   "end": "flag",
+   "max_x": 2246,
+   "decisions": 194,
+   "secs": 140
+  },
+  {
+   "start": 13,
+   "eps": 0.0,
+   "flag": true,
+   "end": "flag",
+   "max_x": 2246,
+   "decisions": 194,
+   "secs": 154
+  },
+  {
+   "start": 20,
+   "eps": 0.0,
+   "flag": true,
+   "end": "flag",
+   "max_x": 2267,
+   "decisions": 196,
+   "secs": 175
+  },
+  {
+   "start": 27,
+   "eps": 0.0,
+   "flag": false,
+   "end": "died",
+   "max_x": 1591,
+   "decisions": 140,
+   "secs": 119
+  },
+  {
+   "start": 1,
+   "eps": 0.12,
+   "flag": false,
+   "end": "died",
+   "max_x": 548,
+   "decisions": 54,
+   "secs": 51
+  },
+  {
+   "start": 15,
+   "eps": 0.12,
+   "flag": true,
+   "end": "flag",
+   "max_x": 2246,
+   "decisions": 193,
+   "secs": 137
+  },
+  {
+   "start": 24,
+   "eps": 0.12,
+   "flag": false,
+   "end": "died",
+   "max_x": 2181,
+   "decisions": 192,
+   "secs": 182
+  },
+  {
+   "start": 10,
+   "eps": 0.25,
+   "flag": false,
+   "end": "died",
+   "max_x": 228,
+   "decisions": 28,
+   "secs": 16
+  },
+  {
+   "start": 22,
+   "eps": 0.25,
+   "flag": false,
+   "end": "died",
+   "max_x": 439,
+   "decisions": 38,
+   "secs": 29
+  }
+ ]
+}

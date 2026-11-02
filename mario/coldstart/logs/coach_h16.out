@@ -1,0 +1,41 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+11:40:17 1-4 h16: clean 5/6 max x [2246, 2251, 2246, 2246, 2267, 1591] ends fffffd | all 6/11 | rows 1619 crit 325
+11:40:33 1-2 h16: clean 6/6 max x [3161, 3161, 3161, 3161, 3161, 3161] ends ffffff | all 6/11 | rows 2519 crit 561
+11:41:43 2-4 h16: clean 6/6 max x [2264, 2245, 2264, 2249, 2256, 2268] ends ffffff | all 7/11 | rows 1701 crit 323
+11:42:22 2-3 h16: clean 6/6 max x [3593, 3593, 3593, 3593, 3593, 3593] ends ffffff | all 6/11 | rows 2605 crit 329
+11:42:52 1-3 h16: clean 5/6 max x [2425, 2425, 2425, 1727, 2425, 2425] ends fffdff | all 6/11 | rows 1926 crit 381
+11:42:56 2-1 h16: clean 0/6 max x [1760, 3026, 1760, 1554, 1760, 3026] ends dsddds | all 0/11 | rows 2069 crit 518
+11:43:36 3-1 h16: clean 6/6 max x [3193, 3193, 3193, 3193, 3193, 3193] ends ffffff | all 6/11 | rows 2487 crit 596
+11:44:52 1-1 h16: clean 6/6 max x [3161, 3161, 3161, 3161, 3161, 3161] ends ffffff | all 8/11 | rows 2838 crit 713
+11:45:16 3-4 h16: clean 0/6 max x [1434, 1434, 1431, 1433, 1695, 434] ends dddddd | all 0/11 | rows 1292 crit 414
+11:46:05 3-3 h16: clean 3/6 max x [795, 2409, 795, 2409, 795, 2409] ends dfdfdf | all 3/11 | rows 1358 crit 235
+11:50:17 3-2 h16: clean 6/6 max x [3337, 3337, 3337, 3337, 3337, 3337] ends ffffff | all 7/11 | rows 2709 crit 428
+11:51:03 2-2 h16: clean 5/6 max x [3161, 3161, 3161, 3161, 3161, 2482] ends fffffs | all 5/11 | rows 4576 crit 73
+done 6133s

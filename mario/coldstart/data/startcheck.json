@@ -1,0 +1,98 @@
+{
+ "1-1": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "1-2": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "1-3": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "1-4": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "2-1": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "2-2": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "2-3": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "2-4": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "3-1": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "3-2": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "3-3": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "3-4": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "4-1": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "4-2": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "4-3": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ },
+ "4-4": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_after_idle": 40
+ }
+}

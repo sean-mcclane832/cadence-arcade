@@ -1,0 +1,82 @@
+{
+ "level": "2-1",
+ "horizon": 24,
+ "stuck": 150,
+ "clean_clears": 0,
+ "clean_runs": 6,
+ "all_clears": 0,
+ "rows": 1965,
+ "critical": 312,
+ "clean_max_x": [
+  723,
+  869,
+  723,
+  869,
+  723,
+  869
+ ],
+ "clean_ends": [
+  "stuck",
+  "stuck",
+  "stuck",
+  "stuck",
+  "stuck",
+  "stuck"
+ ],
+ "runs": [
+  {
+   "start": 0,
+   "eps": 0.0,
+   "flag": false,
+   "end": "stuck",
+   "max_x": 723,
+   "decisions": 314,
+   "secs": 1011
+  },
+  {
+   "start": 3,
+   "eps": 0.0,
+   "flag": false,
+   "end": "stuck",
+   "max_x": 869,
+   "decisions": 341,
+   "secs": 1016
+  },
+  {
+   "start": 8,
+   "eps": 0.0,
+   "flag": false,
+   "end": "stuck",
+   "max_x": 723,
+   "decisions": 314,
+   "secs": 1009
+  },
+  {
+   "start": 13,
+   "eps": 0.0,
+   "flag": false,
+   "end": "stuck",
+   "max_x": 869,
+   "decisions": 341,
+   "secs": 1016
+  },
+  {
+   "start": 20,
+   "eps": 0.0,
+   "flag": false,
+   "end": "stuck",
+   "max_x": 723,
+   "decisions": 314,
+   "secs": 1012
+  },
+  {
+   "start": 27,
+   "eps": 0.0,
+   "flag": false,
+   "end": "stuck",
+   "max_x": 869,
+   "decisions": 341,
+   "secs": 1019
+  }
+ ]
+}
