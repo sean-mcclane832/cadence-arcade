@@ -9,8 +9,9 @@
   needs both metrics). runs/morning/curve.json, morning.md.
 - HELD 50 (greedy, act mode) at ck74 and each last ck: 12 training levels 1-18 flags of 600 (mostly 1-4, 2-4, 3-2),
   mean x 850-1074. **World 4 first sight: 0 flags on 4-1..4-3 for all 11 checkpoints** (mean x 344-751, best CatoB
-  ck84, furthest 1,859 on 4-1). **4-4: every attempt of every brain ends at exactly x 138** (550/550): harness or a
-  fixed obstacle, NOT a brain result; not investigated. runs/morning/held.json.
+  ck84, furthest 1,859 on 4-1). **4-4: every attempt of every brain ends at exactly x 138** (550/550). Checked 11/3:
+  it is a real death, the lava pit right after the start. Holding right dies at x 136-138; a scripted run+jump
+  pattern gets past it (x 1,060). So no harness bug: no brain ever jumps that first pit. runs/morning/held.json.
 - Gauntlets (demos, 48 = 6 runs x greedy/sampled x from 1-1/2-1/3-1/4-1, 5 lives, last ck): one level cleared in
   total, CiceroA ck108 SAMPLED (temp 0.05) 1-1 on its 4th life, then 1-2 deaths at 918, 886. Every other run died out
   on its first level. Best World 4: CatoB ck84 greedy 4-1 deaths 346, 1842, 1842, 1320, 344. Clips copied to
@@ -18,7 +19,7 @@
 - Page docs/mario/ updated (Cold-start section, scoreboard row 4-1..4-3, gauntlet rows, Latest). Full report in the
   vault: Research/Cadence Report 2026-10-29 to 11-03.
 - NEXT: upgrade .venv-concepts to Cadence 0.92 (Brain.grow) + parity check; deeper/smarter coach for 2-1 and 3-4;
-  no-coach learning curve on a held-out level; check the 4-4 x 138 wall before using 4-4 as a test.
+  no-coach learning curve on a held-out level. 4-4 checked (real lava-pit death, valid test).
 <!-- /RESUME -->
 
 # Cold-start night (2026-11-02): Cato / Cicero / Livy from scratch, worlds 1-3, World 4 held out
