@@ -1,0 +1,82 @@
+{
+ "1-1": {
+  "ckpt": "LivyA_ck0083.npz",
+  "chunk": 83,
+  "sel_flags": 11,
+  "sel_mean": 2471
+ },
+ "1-2": {
+  "ckpt": "LivyA_ck0088.npz",
+  "chunk": 88,
+  "sel_flags": 0,
+  "sel_mean": 879
+ },
+ "1-3": {
+  "ckpt": "LivyA_ck0057.npz",
+  "chunk": 57,
+  "sel_flags": 0,
+  "sel_mean": 830
+ },
+ "1-4": {
+  "ckpt": "LivyA_ck0033.npz",
+  "chunk": 33,
+  "sel_flags": 7,
+  "sel_mean": 1927
+ },
+ "2-1": {
+  "ckpt": "LivyA_ck0025.npz",
+  "chunk": 25,
+  "sel_flags": 0,
+  "sel_mean": 1452
+ },
+ "2-2": {
+  "ckpt": "LivyA_ck0080.npz",
+  "chunk": 80,
+  "sel_flags": 0,
+  "sel_mean": 1372
+ },
+ "2-3": {
+  "ckpt": "LivyA_ck0086.npz",
+  "chunk": 86,
+  "sel_flags": 1,
+  "sel_mean": 1771
+ },
+ "2-4": {
+  "ckpt": "LivyA_ck0087.npz",
+  "chunk": 87,
+  "sel_flags": 5,
+  "sel_mean": 1925
+ },
+ "3-1": {
+  "ckpt": "LivyA_ck0069.npz",
+  "chunk": 69,
+  "sel_flags": 0,
+  "sel_mean": 1112
+ },
+ "3-2": {
+  "ckpt": "LivyA_ck0017.npz",
+  "chunk": 17,
+  "sel_flags": 12,
+  "sel_mean": 2578
+ },
+ "3-3": {
+  "ckpt": "LivyA_ck0040.npz",
+  "chunk": 40,
+  "sel_flags": 6,
+  "sel_mean": 1838
+ },
+ "3-4": {
+  "ckpt": "LivyA_ck0089.npz",
+  "chunk": 89,
+  "sel_flags": 1,
+  "sel_mean": 1340
+ },
+ "joint": {
+  "ckpt": "LivyA_ck0069.npz",
+  "chunk": 69,
+  "key": [
+   14,
+   13816
+  ]
+ }
+}

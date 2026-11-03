@@ -1,13 +1,24 @@
 <!-- RESUME -->
-## RESUME (11/02 12:05 EST, RUNNING, stop 08:00 11/03)
-- Six fresh runs launched 11:51:52 (ctrain.py, runs/<run>/log.txt, curve.csv): CatoA pid 19240, CatoB 9680,
-  CiceroA 23456, CiceroB 14864, LivyA 12372, LivyB 9616. All six wrote chunk 1 by 12:03 (chunk = 500 lesson batches,
-  ~5 min for Cato/Cicero, ~7 min for Livy incl. a ~4 min SEL pass on 12 levels). No stall rule; stop 08:00.
-- Coach coverage: 10 of 12 training levels cleared by the coach; 2-1 0/6 (deeper horizon tried, worse) and 3-4 0/6
-  train on labels up to where the coach reaches. Table below.
-- Pre-registered metric: below ("Pre-registered"). MORNING: `python morning.py` (all steps, ~1.5-2 h on 8 workers);
-  `python morning.py --steps curve` for the verdict alone. Writes runs/morning/morning.md.
-- If an arm crashed: restart it into a NEW --out dir (curve.csv would mix chunk numbers) and say so; morning.py reads runs/<run>/ (edit RUNS). No resume-from-checkpoint built.
+## RESUME (11/03 09:30 EST, night over, scored, page pushed)
+- **Verdict (pre-registered rule): NOT DISTINGUISHABLE for both memory arms.** Kc = 74 (LivyB, suspended 18:40-23:07,
+  sets the common range; 37,000 lesson batches). AUC / END (mean SEL x over 12 training levels):
+  CatoA 783.4 / 979.3, CatoB 800.5 / 1090.9, CiceroA 790.5 / 1076.6, CiceroB 734.7 / 926.9, LivyA 719.5 / 1118.9,
+  LivyB 738.0 / 966.0. Arms: Cato 792.0 / 1035.1, Cicero 762.6 / 1001.8, Livy 728.8 / 1042.5.
+  Floor (largest within-arm gap): AUC 55.8, END 152.9. Cicero vs Cato: AUC +7.1 / -65.8, END +97.3 / -164.0.
+  Livy vs Cato: AUC -63.9 / -62.5 (both below by more than the floor), END +139.6 / -124.9 -> not "hurts" (rule
+  needs both metrics). runs/morning/curve.json, morning.md.
+- HELD 50 (greedy, act mode) at ck74 and each last ck: 12 training levels 1-18 flags of 600 (mostly 1-4, 2-4, 3-2),
+  mean x 850-1074. **World 4 first sight: 0 flags on 4-1..4-3 for all 11 checkpoints** (mean x 344-751, best CatoB
+  ck84, furthest 1,859 on 4-1). **4-4: every attempt of every brain ends at exactly x 138** (550/550): harness or a
+  fixed obstacle, NOT a brain result; not investigated. runs/morning/held.json.
+- Gauntlets (demos, 48 = 6 runs x greedy/sampled x from 1-1/2-1/3-1/4-1, 5 lives, last ck): one level cleared in
+  total, CiceroA ck108 SAMPLED (temp 0.05) 1-1 on its 4th life, then 1-2 deaths at 918, 886. Every other run died out
+  on its first level. Best World 4: CatoB ck84 greedy 4-1 deaths 346, 1842, 1842, 1320, 344. Clips copied to
+  docs/mario/gauntlet/c01_CiceroA.mp4, c02_CatoB_w4.mp4. runs/morning/gauntlets.json.
+- Page docs/mario/ updated (Cold-start section, scoreboard row 4-1..4-3, gauntlet rows, Latest). Full report in the
+  vault: Research/Cadence Report 2026-10-29 to 11-03.
+- NEXT: upgrade .venv-concepts to Cadence 0.92 (Brain.grow) + parity check; deeper/smarter coach for 2-1 and 3-4;
+  no-coach learning curve on a held-out level; check the 4-4 x 138 wall before using 4-4 as a test.
 <!-- /RESUME -->
 
 # Cold-start night (2026-11-02): Cato / Cicero / Livy from scratch, worlds 1-3, World 4 held out
@@ -108,3 +119,16 @@ was trained without memory and the memory synapses started at zero).
 - Expectation (honest): fresh brains learned ~2/200 clears in 14 worker-hours before, so clears will be near zero;
   the curves are the result.
 - Morning script: morning.py (not run tonight). `morning.py --steps curve` gives the verdict in seconds.
+
+### Ease-up (18:40, Sean using the PC)
+All 6 runs at Idle priority; seed-B runs (CatoB, CiceroB, LivyB) SUSPENDED (frozen, not killed) to free cores. Seeds A keep going. Restore planned 23:07. The pre-registered metric uses the lesson range all 6 reach, so B seeds being behind shrinks that range; report it.
+- 23:07: restored (seed-B runs resumed, all Normal priority).
+
+## Results (morning 11/03, morning.py)
+See RESUME for the numbers. Notes:
+- Runs stopped 08:04-08:17 (CiceroA and LivyA finished a chunk past 08:00). Last chunks: CatoA 104, CatoB 84,
+  CiceroA 108, CiceroB 93, LivyA 90, LivyB 74. Seed-B runs were frozen 18:40-23:07 for Sean's PC use, so Kc = 74.
+- Livy costs more per lesson but the metric is at equal lessons, so that's fair by construction.
+- The within-arm seed gaps (56 AUC, 153 END) are as big as any between-arm difference: with 2 seeds this design can
+  only catch a large effect. None showed up.
+- Morning step cost: HELD ~25 min, gauntlets ~5 min on 8 workers.

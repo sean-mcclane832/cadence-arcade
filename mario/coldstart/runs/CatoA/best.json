@@ -1,0 +1,82 @@
+{
+ "1-1": {
+  "ckpt": "CatoA_ck0097.npz",
+  "chunk": 97,
+  "sel_flags": 8,
+  "sel_mean": 2511
+ },
+ "1-2": {
+  "ckpt": "CatoA_ck0102.npz",
+  "chunk": 102,
+  "sel_flags": 0,
+  "sel_mean": 904
+ },
+ "1-3": {
+  "ckpt": "CatoA_ck0098.npz",
+  "chunk": 98,
+  "sel_flags": 0,
+  "sel_mean": 1187
+ },
+ "1-4": {
+  "ckpt": "CatoA_ck0093.npz",
+  "chunk": 93,
+  "sel_flags": 9,
+  "sel_mean": 1920
+ },
+ "2-1": {
+  "ckpt": "CatoA_ck0071.npz",
+  "chunk": 71,
+  "sel_flags": 0,
+  "sel_mean": 1456
+ },
+ "2-2": {
+  "ckpt": "CatoA_ck0081.npz",
+  "chunk": 81,
+  "sel_flags": 0,
+  "sel_mean": 1385
+ },
+ "2-3": {
+  "ckpt": "CatoA_ck0086.npz",
+  "chunk": 86,
+  "sel_flags": 1,
+  "sel_mean": 1837
+ },
+ "2-4": {
+  "ckpt": "CatoA_ck0091.npz",
+  "chunk": 91,
+  "sel_flags": 14,
+  "sel_mean": 1630
+ },
+ "3-1": {
+  "ckpt": "CatoA_ck0086.npz",
+  "chunk": 86,
+  "sel_flags": 0,
+  "sel_mean": 1089
+ },
+ "3-2": {
+  "ckpt": "CatoA_ck0068.npz",
+  "chunk": 68,
+  "sel_flags": 2,
+  "sel_mean": 1156
+ },
+ "3-3": {
+  "ckpt": "CatoA_ck0096.npz",
+  "chunk": 96,
+  "sel_flags": 0,
+  "sel_mean": 1663
+ },
+ "3-4": {
+  "ckpt": "CatoA_ck0089.npz",
+  "chunk": 89,
+  "sel_flags": 0,
+  "sel_mean": 1548
+ },
+ "joint": {
+  "ckpt": "CatoA_ck0091.npz",
+  "chunk": 91,
+  "key": [
+   17,
+   11283
+  ]
+ }
+}

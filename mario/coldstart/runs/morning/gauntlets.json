@@ -1,0 +1,678 @@
+{
+ "CatoA_ck104_greedy_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    1129,
+    1149,
+    1967,
+    1960,
+    1127
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "CatoA_ck104_greedy_from1-1.mp4"
+ },
+ "CatoA_ck104_greedy_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    1387,
+    453,
+    456,
+    748,
+    456
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CatoA_ck104_greedy_from2-1.mp4"
+ },
+ "CatoA_ck104_greedy_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    606,
+    607,
+    607,
+    606,
+    607
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CatoA_ck104_greedy_from3-1.mp4"
+ },
+ "CatoA_ck104_greedy_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    345,
+    532,
+    532,
+    532,
+    348
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CatoA_ck104_greedy_from4-1.mp4"
+ },
+ "CatoA_ck104_sampled_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    680,
+    1959,
+    679,
+    1129,
+    1953
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "CatoA_ck104_sampled_from1-1.mp4"
+ },
+ "CatoA_ck104_sampled_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    735,
+    455,
+    461,
+    1064,
+    456
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CatoA_ck104_sampled_from2-1.mp4"
+ },
+ "CatoA_ck104_sampled_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    915,
+    354,
+    510,
+    606,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CatoA_ck104_sampled_from3-1.mp4"
+ },
+ "CatoA_ck104_sampled_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    345,
+    1277,
+    1854,
+    538,
+    348
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CatoA_ck104_sampled_from4-1.mp4"
+ },
+ "CatoB_ck84_greedy_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    2760,
+    2763,
+    1951,
+    1785,
+    1242
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "CatoB_ck84_greedy_from1-1.mp4"
+ },
+ "CatoB_ck84_greedy_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    814,
+    820,
+    820,
+    911,
+    820
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CatoB_ck84_greedy_from2-1.mp4"
+ },
+ "CatoB_ck84_greedy_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    815,
+    510,
+    510,
+    815,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CatoB_ck84_greedy_from3-1.mp4"
+ },
+ "CatoB_ck84_greedy_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    346,
+    1842,
+    1842,
+    1320,
+    344
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CatoB_ck84_greedy_from4-1.mp4"
+ },
+ "CatoB_ck84_sampled_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    899,
+    899,
+    1794,
+    1129,
+    1244
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "CatoB_ck84_sampled_from1-1.mp4"
+ },
+ "CatoB_ck84_sampled_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    912,
+    820,
+    812,
+    911,
+    1368
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CatoB_ck84_sampled_from2-1.mp4"
+ },
+ "CatoB_ck84_sampled_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    608,
+    510,
+    510,
+    815,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CatoB_ck84_sampled_from3-1.mp4"
+ },
+ "CatoB_ck84_sampled_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    346,
+    1307,
+    1306,
+    1306,
+    344
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CatoB_ck84_sampled_from4-1.mp4"
+ },
+ "CiceroA_ck108_greedy_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    2471,
+    692,
+    1128,
+    1126,
+    1128
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "CiceroA_ck108_greedy_from1-1.mp4"
+ },
+ "CiceroA_ck108_greedy_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    909,
+    734,
+    734,
+    909,
+    643
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CiceroA_ck108_greedy_from2-1.mp4"
+ },
+ "CiceroA_ck108_greedy_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    813,
+    510,
+    510,
+    813,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CiceroA_ck108_greedy_from3-1.mp4"
+ },
+ "CiceroA_ck108_greedy_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    479,
+    484,
+    471,
+    1304,
+    471
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CiceroA_ck108_greedy_from4-1.mp4"
+ },
+ "CiceroA_ck108_sampled_from1-1": {
+  "cleared": [
+   "1-1"
+  ],
+  "deaths": {
+   "1-1": [
+    679,
+    1797,
+    1129
+   ],
+   "1-2": [
+    918,
+    886
+   ]
+  },
+  "furthest": "1-2",
+  "clip": "CiceroA_ck108_sampled_from1-1.mp4"
+ },
+ "CiceroA_ck108_sampled_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    908,
+    734,
+    734,
+    646,
+    734
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CiceroA_ck108_sampled_from2-1.mp4"
+ },
+ "CiceroA_ck108_sampled_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    813,
+    510,
+    510,
+    813,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CiceroA_ck108_sampled_from3-1.mp4"
+ },
+ "CiceroA_ck108_sampled_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    339,
+    1306,
+    1304,
+    537,
+    336
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CiceroA_ck108_sampled_from4-1.mp4"
+ },
+ "CiceroB_ck93_greedy_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    2476,
+    687,
+    687,
+    2227,
+    687
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "CiceroB_ck93_greedy_from1-1.mp4"
+ },
+ "CiceroB_ck93_greedy_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    808,
+    348,
+    348,
+    812,
+    348
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CiceroB_ck93_greedy_from2-1.mp4"
+ },
+ "CiceroB_ck93_greedy_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    375,
+    412,
+    350,
+    375,
+    350
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CiceroB_ck93_greedy_from3-1.mp4"
+ },
+ "CiceroB_ck93_greedy_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    339,
+    1307,
+    474,
+    1319,
+    336
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CiceroB_ck93_greedy_from4-1.mp4"
+ },
+ "CiceroB_ck93_sampled_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    1795,
+    687,
+    687,
+    680,
+    709
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "CiceroB_ck93_sampled_from1-1.mp4"
+ },
+ "CiceroB_ck93_sampled_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    808,
+    739,
+    806,
+    1648,
+    348
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "CiceroB_ck93_sampled_from2-1.mp4"
+ },
+ "CiceroB_ck93_sampled_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    607,
+    360,
+    918,
+    1659,
+    607
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "CiceroB_ck93_sampled_from3-1.mp4"
+ },
+ "CiceroB_ck93_sampled_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    339,
+    1300,
+    1866,
+    536,
+    336
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "CiceroB_ck93_sampled_from4-1.mp4"
+ },
+ "LivyA_ck90_greedy_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    2759,
+    312,
+    312,
+    2759,
+    312
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "LivyA_ck90_greedy_from1-1.mp4"
+ },
+ "LivyA_ck90_greedy_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    1017,
+    463,
+    727,
+    736,
+    734
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "LivyA_ck90_greedy_from2-1.mp4"
+ },
+ "LivyA_ck90_greedy_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    1394,
+    622,
+    622,
+    1397,
+    622
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "LivyA_ck90_greedy_from3-1.mp4"
+ },
+ "LivyA_ck90_greedy_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    535,
+    322,
+    322,
+    535,
+    322
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "LivyA_ck90_greedy_from4-1.mp4"
+ },
+ "LivyA_ck90_sampled_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    315,
+    1126,
+    713,
+    2761,
+    1128
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "LivyA_ck90_sampled_from1-1.mp4"
+ },
+ "LivyA_ck90_sampled_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    1170,
+    459,
+    348,
+    471,
+    753
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "LivyA_ck90_sampled_from2-1.mp4"
+ },
+ "LivyA_ck90_sampled_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    1651,
+    609,
+    510,
+    607,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "LivyA_ck90_sampled_from3-1.mp4"
+ },
+ "LivyA_ck90_sampled_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    458,
+    1857,
+    1307,
+    535,
+    1305
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "LivyA_ck90_sampled_from4-1.mp4"
+ },
+ "LivyB_ck74_greedy_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    315,
+    312,
+    312,
+    315,
+    312
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "LivyB_ck74_greedy_from1-1.mp4"
+ },
+ "LivyB_ck74_greedy_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    737,
+    1023,
+    1023,
+    737,
+    1370
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "LivyB_ck74_greedy_from2-1.mp4"
+ },
+ "LivyB_ck74_greedy_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    1070,
+    510,
+    510,
+    1070,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "LivyB_ck74_greedy_from3-1.mp4"
+ },
+ "LivyB_ck74_greedy_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    322,
+    322,
+    322,
+    322,
+    322
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "LivyB_ck74_greedy_from4-1.mp4"
+ },
+ "LivyB_ck74_sampled_from1-1": {
+  "cleared": [],
+  "deaths": {
+   "1-1": [
+    315,
+    312,
+    312,
+    315,
+    312
+   ]
+  },
+  "furthest": "1-1",
+  "clip": "LivyB_ck74_sampled_from1-1.mp4"
+ },
+ "LivyB_ck74_sampled_from2-1": {
+  "cleared": [],
+  "deaths": {
+   "2-1": [
+    737,
+    1023,
+    737,
+    737,
+    1364
+   ]
+  },
+  "furthest": "2-1",
+  "clip": "LivyB_ck74_sampled_from2-1.mp4"
+ },
+ "LivyB_ck74_sampled_from3-1": {
+  "cleared": [],
+  "deaths": {
+   "3-1": [
+    1070,
+    898,
+    510,
+    1582,
+    510
+   ]
+  },
+  "furthest": "3-1",
+  "clip": "LivyB_ck74_sampled_from3-1.mp4"
+ },
+ "LivyB_ck74_sampled_from4-1": {
+  "cleared": [],
+  "deaths": {
+   "4-1": [
+    322,
+    322,
+    322,
+    322,
+    322
+   ]
+  },
+  "furthest": "4-1",
+  "clip": "LivyB_ck74_sampled_from4-1.mp4"
+ }
+}

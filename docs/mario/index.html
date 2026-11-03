@@ -72,6 +72,7 @@
     <p class="eyebrow">Super Mario Bros. &middot; solo from the screen</p>
     <h1>One Cadence brain beat all of World 1 in a single 5-life gauntlet</h1>
     <p class="lede">Brain W1b ("the balanced finisher", trained overnight 10/31) cleared 1-1, 1-2, 1-3 and 1-4 (Bowser) back to back with the same weights, losing three lives on 1-3, then ran out on 2-1, a level it never trained on. On 50 held-out starts per level it clears 1-1 7, 1-2 8, 1-3 9 and 1-4 27 times: every level, none consistently yet. Other brains still do better on single levels (1-1 50/50 with W1_F2ck110, 1-4 50/50). Every button in every clip is the brain's.</p>
+    <p class="lede"><b>Latest (11/3):</b> six brains trained from scratch on worlds 1 to 3, with and without memory. Memory made no difference we can tell apart from seed luck, and none of them cleared a World 4 level at first sight. <a href="#coldstart">Details</a>.</p>
   </section>
 
   <figure>
@@ -103,11 +104,52 @@
     </div>
   </div>
 
-  <p class="updated">Last updated 2026-11-02 07:30 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="updated">Last updated 2026-11-03 09:30 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <nav class="toc" aria-label="On this page">
-    <a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
+    <a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
   </nav>
+
+  <h2 id="coldstart">Cold-start night (11/2 to 11/3): memory from birth, World 4 as the exam</h2>
+  <div class="callout">
+    <h3>Short answer: no difference we can tell apart from luck. World 4 at first sight: 0 clears.</h3>
+    <p>The memory night started from a brain that already played well without memory, so maybe it never needed one. This time six brains started from nothing: Cato (no memory), Cicero (thought + button memory) and Livy (all four memories), two seeds each, memory live from the first lesson. Same coach, same lessons, about 20 hours, trained on all 12 levels of worlds 1 to 3. World 4 was never coached or trained on: it is the exam.</p>
+  </div>
+  <h3>The test, as written before the night</h3>
+  <p class="small dim">One number per brain: the practice-start mean x averaged over all 12 training levels, as a learning curve. Compared at equal lessons (chunks 0 to 74, 37,000 lesson batches, the most every run reached). AUC = the area under that curve divided by its length (a mean x over training); END = the value at chunk 74. "Noise" = the biggest gap between the two seeds of one brain type. Memory "helps" only if BOTH seeds beat Cato's matching seed by more than the noise, on BOTH numbers.</p>
+  <div class="tw"><table><thead><tr><th>run</th><th class="n">AUC (mean x)</th><th class="n">END (mean x at chunk 74)</th><th class="n">practice flags at 74, of 288</th></tr></thead><tbody>
+    <tr><td>Cato A (control)</td><td class="n">783</td><td class="n">979</td><td class="n">0</td></tr>
+    <tr><td>Cato B (control)</td><td class="n">801</td><td class="n">1,091</td><td class="n">8</td></tr>
+    <tr><td>Cicero A</td><td class="n">791</td><td class="n">1,077</td><td class="n">0</td></tr>
+    <tr><td>Cicero B</td><td class="n">735</td><td class="n">927</td><td class="n">12</td></tr>
+    <tr><td>Livy A</td><td class="n">720</td><td class="n">1,119</td><td class="n">0</td></tr>
+    <tr><td>Livy B</td><td class="n">738</td><td class="n">966</td><td class="n">0</td></tr>
+  </tbody></table></div>
+  <ul class="verdict prose">
+    <li><b>Noise:</b> AUC 56, END 153 (the seed gaps inside one brain type).</li>
+    <li><b>Cicero vs Cato:</b> AUC +7 / -66, END +97 / -164 (seed A / seed B). The seeds disagree in sign: <span class="no">not distinguishable</span>.</li>
+    <li><b>Livy vs Cato:</b> AUC -64 / -63 (both below Cato by a bit more than the noise), END +140 / -125: <span class="no">not distinguishable</span>. Livy was slower on the area by both seeds, but the rule needs both numbers, and END splits.</li>
+  </ul>
+  <h3>World 4, first sight (never coached, never trained)</h3>
+  <div class="tw"><table><thead><tr><th>checkpoint</th><th class="n">12 training levels, held-out flags of 600</th><th class="n">4-1 to 4-3 flags of 150</th><th class="n">4-1 to 4-3 mean x</th></tr></thead><tbody>
+    <tr><td>Cato A ck74 / ck104</td><td class="n">7 / 3</td><td class="n">0 / 0</td><td class="n">520 / 513</td></tr>
+    <tr><td>Cato B ck74 / ck84</td><td class="n">8 / 11</td><td class="n">0 / 0</td><td class="n">602 / 751</td></tr>
+    <tr><td>Cicero A ck74 / ck108</td><td class="n">1 / 15</td><td class="n">0 / 0</td><td class="n">571 / 414</td></tr>
+    <tr><td>Cicero B ck74 / ck93</td><td class="n">11 / 18</td><td class="n">0 / 0</td><td class="n">412 / 595</td></tr>
+    <tr><td>Livy A ck74 / ck90</td><td class="n">3 / 7</td><td class="n">0 / 0</td><td class="n">528 / 387</td></tr>
+    <tr><td>Livy B ck74 (its last)</td><td class="n">6</td><td class="n">0</td><td class="n">344</td></tr>
+  </tbody></table></div>
+  <p class="small dim">Greedy play on 50 held-out starts per level, checkpoints fixed in advance (chunk 74 = equal lessons, and each run's last). The few training-level clears are almost all 1-4, 2-4 and 3-2. 4-4 (the maze castle) is reported separately: every attempt of every brain ends at exactly x 138, so it says nothing about the brains yet (not investigated). Two seeds per brain, fresh brains, about 20 hours: the honest expectation was near-zero clears, and the curves are the result.</p>
+  <div class="w1b">
+    <figure>
+      <video class="nes" controls playsinline muted preload="metadata" poster="gauntlet/c02_CatoB_w4_poster.png"><source src="gauntlet/c02_CatoB_w4.mp4" type="video/mp4"></video>
+      <figcaption>World 4 first sight: Cato B ck84 (greedy) from the start of 4-1, five lives. Deaths at x 346, 1,842, 1,842, 1,320, 344. Its best World 4 run of the night.</figcaption>
+    </figure>
+    <figure>
+      <video class="nes" controls playsinline muted preload="metadata" poster="gauntlet/c01_CiceroA_poster.png"><source src="gauntlet/c01_CiceroA.mp4" type="video/mp4"></video>
+      <figcaption>The only level cleared in 48 cold-start gauntlets: Cicero A ck108, <b>sampled</b> (temperature 0.05), clears 1-1 on its fourth life, then dies twice on 1-2. A demo, not evidence.</figcaption>
+    </figure>
+  </div>
 
   <h2 id="memory">Memory night (11/1 to 11/2): does a memory help?</h2>
   <div class="callout">
@@ -229,6 +271,7 @@
   <tr><td>1-4 <span class="tag">Bowser</span></td><td class="n big ok">50/50</td><td>U3ck28</td><td><span class="ok">perfect</span> on held-out starts; the same brain also clears 1-1 on 30/50</td></tr>
   <tr><td>2-1</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~330 (random buttons ~380)</td></tr>
   <tr><td>2-2</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~210 (random buttons ~1,230)</td></tr>
+  <tr><td>4-1 to 4-3</td><td class="n big no">0/150</td><td>cold-start brains, first sight</td><td>never coached or trained (the exam): best mean x 751 (Cato B ck84), furthest 1,859</td></tr>
   </tbody></table></div>
   <p class="small dim">Solo clears out of 50 held-out starts. A start waits a different number of frames before the first button, which moves the enemies and lifts; none of these 50 were used to train the brain or to pick the checkpoint. "Consistent" = at least 40 of 50. Brains by name: see "Meet the brains". The best single brain across three levels is U3ck83 (15 / 45 / 33 on 1-1 / 1-3 / 1-4).</p>
 
@@ -300,6 +343,8 @@
   <p class="small dim">Real start of 1-1, five lives. A flag moves on to the next level (1-2, 1-3, 1-4, 2-1 ...); a death restarts the current level; no learning between lives; game over on the fifth death. Retries start a few frames later (the emulator is deterministic, so an identical restart would replay the identical death). "One brain" = the same weights the whole way. Each level starts with small Mario.</p>
   <div class="tw stack"><table><thead><tr><th>time</th><th>brain</th><th>cleared</th><th>deaths (level: x)</th><th class="n">lives left</th><th>clip</th></tr></thead><tbody>
   <!--GAUNTLET-ROWS-->
+  <tr><td>11/03 08:55 EST</td><td>Cicero A ck108 (cold start, from scratch; one brain, sampled play*)</td><td>1-1</td><td>1-1: 679, 1,797, 1,129; 1-2: 918, 886</td><td class="n">0</td><td><a href="gauntlet/c01_CiceroA.mp4">clip</a></td></tr>
+  <tr><td>11/03 08:53 EST</td><td>Cold start, all six brains, greedy and sampled, from 1-1, 2-1, 3-1 and 4-1 (48 runs)</td><td>none (except the row above)</td><td>every run ends on its first level; best World 4: Cato B ck84 4-1: 346, 1,842, 1,842, 1,320, 344</td><td class="n">0</td><td><a href="gauntlet/c02_CatoB_w4.mp4">4-1 clip</a></td></tr>
   <tr><td>11/02 07:05 EST</td><td>AgrippaX ck18 (memory night, first pick; one brain, sampled play*)</td><td>1-1</td><td>1-2: 873, 873, 850, 871, 1,595</td><td class="n">0</td><td><a href="gauntlet/m08_AgrippaX.mp4">clip</a></td></tr>
   <tr><td>11/02 06:44 EST</td><td>Livy ck57 (memory night, first pick; one brain, sampled play*)</td><td>1-1</td><td>1-1: 315, 312, 312; 1-2: 1,743, 867</td><td class="n">0</td><td><a href="gauntlet/m07_Livy.mp4">clip</a></td></tr>
   <tr class="hl"><td>11/02 01:03 EST</td><td><b>Cicero r2 ck1, thought + button memory (one brain, sampled play*)</b></td><td class="ok"><b>1-1, 1-2, 1-3, 1-4</b></td><td>1-2: 1,344; 1-3: 936; 2-1: 471, 722 (stuck), 330</td><td class="n">0</td><td><a href="gauntlet/m06_Cicero.mp4">clip</a></td></tr>
@@ -321,7 +366,7 @@
   <tr><td>10/31 17:48</td><td>U3ck44 (one brain)</td><td>1-1</td><td>1-1: 2,762, 1,784; 1-2: 323, 354, 354 (all stuck)</td><td class="n">0</td><td><a href="gauntlet/g02_U3ck44.mp4">clip</a></td></tr>
   <tr><td>10/31 17:11</td><td>U3ck83 (one brain)</td><td>1-1</td><td>1-2: 322, 470, 322, 893, 354</td><td class="n">0</td><td><a href="gauntlet/g01_U3ck83.mp4">clip</a></td></tr>
   </tbody></table></div>
-  <p class="small dim">Best single brains: W1b (11/01 02:30) and Cicero (11/02 01:03), all four World 1 levels in one run each. Gauntlets are demos: one run of one checkpoint (W1b was one of six checkpoints tried that night). *The memory-night gauntlets choose buttons with a little randomness (sampled at temperature 0.05, weights unchanged, checked); the older rows are greedy. Found and labelled 11/02.</p>
+  <p class="small dim">Best single brains: W1b (11/01 02:30) and Cicero (11/02 01:03), all four World 1 levels in one run each. Gauntlets are demos: one run of one checkpoint (W1b was one of six checkpoints tried that night). *The memory-night gauntlets and the "sampled" cold-start runs choose buttons with a little randomness (sampled at temperature 0.05, weights unchanged, checked); the older rows are greedy. Found and labelled 11/02.</p>
   <figure class="relay"><video class="nes" controls playsinline muted preload="metadata" poster="gauntlet/g03_relay_poster.png"><source src="gauntlet/g03_relay.mp4" type="video/mp4"></video><figcaption><b>Not one brain:</b> a relay of specialists (four brains, one per level) clears all of World 1 in one five-life run, then loses two lives on 2-1, which none of them ever trained on. 1 min 53 s, deaths included.</figcaption></figure>
 
   <h2 id="tests">Tests from the 10/31 night</h2>
@@ -348,17 +393,18 @@
 
   <h2 id="latest">Latest</h2>
   <ul class="log" id="latest-new">
+    <li><time>11/03 09:30</time><span><b>Cold-start night: memory from birth didn't make a difference we can measure.</b> Six fresh brains (Cato, Cicero, Livy, two seeds each) trained about 20 hours on all 12 levels of worlds 1 to 3. At equal lessons the 12-level learning curves (area / end value): Cato 792 / 1,035, Cicero 763 / 1,002, Livy 729 / 1,043, with seed gaps up to 56 / 153. Both memory brains: not distinguishable by the rule written before the night. World 4 at first sight (never coached): 0 of 150 on 4-1 to 4-3 for every brain; 4-4 stops every brain at x 138 (not investigated). Gauntlets: one 1-1 clear in 48 runs (sampled).</span></li>
     <li><time>11/02 07:30</time><span><b>Memory night results: memory didn't help, by every test written in advance.</b> Four brains trained side by side for about 15 hours from W1_F2ck110: a no-memory control (Cato), its twin (AgrippaX, same recipe, used to measure the noise), Cicero (thought + button memory) and Livy (all four memories). Top-3 means on held-out World 1: Cato 74, AgrippaX 70, Cicero 82, Livy 55 of 200, all inside the noise. Cicero with its memory switched off gets better (88 to 106). Livy's place memory loses its retry test (life 10 on 1-2: x 904 vs 1,320 for the reloaded control). No World 2 clears. New 1-3 high, Cato_ck20 46/50, labelled best of many. Details in "Memory night" above.</span></li>
     <li><time>11/02 01:03</time><span>Demo: Cicero, a memory brain, beats all of World 1 in one five-life run (1-2 and 1-3 on the second try). One run of one checkpoint, and its held-out scores go up with the memory off, so it's a capable brain, not proof that memory helps.</span></li>
     <li><time>11/01 06:35</time><span>Night over, all training stopped. One brain clears every World 1 level (best total: W1_F2ck110, 50 / 11 / 6 / 25 of 50), and one (W1b) beat World 1 in a single five-life gauntlet. Still not consistent on 1-2 and 1-3, and World 2 at first sight is unchanged (no clears). The RAM-map brain had 5 more hours and still never cleared 1-2.</span></li>
     <li><time>11/01 05:11</time><span>Another all-four brain from the same run: W1_F2ck110 clears 1-1 on all 50 held-out starts, plus 1-2 11, 1-3 6, 1-4 25. Eight checkpoints of that run now clear every World 1 level on held-out starts.</span></li>
     <li><time>11/01 02:30</time><span><b>Milestone:</b> one brain (W1b) beats all of World 1 in one five-life gauntlet run: 1-1, 1-2, 1-4 first try, 1-3 on the fourth. Three more checkpoints of the same run also clear all four levels on held-out starts.</span></li>
-    <li><time>11/01 01:49</time><span><b>Milestone:</b> one brain (W1_F2ck20) clears all four World 1 levels with the same weights on held-out starts: 1-1 16/50, 1-2 10/50, 1-3 1/50, 1-4 34/50. Clips above. Not consistent on 1-3 or 1-2 yet.</span></li>
   </ul>
   <details>
-    <summary>Older entries <span class="dim">(10/29 to 11/01 01:15)</span></summary>
+    <summary>Older entries <span class="dim">(10/29 to 11/01 01:49)</span></summary>
     <div class="in">
     <ul class="log" id="latest-old">
+      <li><time>11/01 01:49</time><span><b>Milestone:</b> one brain (W1_F2ck20) clears all four World 1 levels with the same weights on held-out starts: 1-1 16/50, 1-2 10/50, 1-3 1/50, 1-4 34/50. Clips above. Not consistent on 1-3 or 1-2 yet.</span></li>
       <li><time>11/01 01:15</time><span>Death clinic for 1-2 (practice from just before each death): no gain over plain coaching, and neither beat the 29/50 starting brain in 3 hours. Now trying to grow one brain that clears all four World 1 levels.</span></li>
       <li><time>11/01 01:00</time><span>New brain F30: 1-1 42/50, 1-2 9/50 and 1-4 34/50 with the same weights, the first brain to clear both 1-2 and 1-4. 1-3 is still missing; training continues.</span></li>
       <li><time>10/31 22:51</time><span>Gauntlet: one brain (1-2_12n59) clears 1-1 and 1-2 in a single five-life run, the furthest a single brain has gone, then loses its last two lives on 1-3.</span></li>
