@@ -18,7 +18,11 @@
   docs/mario/gauntlet/c01_CiceroA.mp4, c02_CatoB_w4.mp4. runs/morning/gauntlets.json.
 - Page docs/mario/ updated (Cold-start section, scoreboard row 4-1..4-3, gauntlet rows, Latest). Full report in the
   vault: Research/Cadence Report 2026-10-29 to 11-03.
-- NEXT: upgrade .venv-concepts to Cadence 0.92 (Brain.grow) + parity check; deeper/smarter coach for 2-1 and 3-4;
+- 11/3 14:50: .venv-concepts upgraded 0.91.3 -> 0.92.1 (non-editable, --no-deps; old copy in .cadence-0.91.3-backup/).
+  Parity: 3 brains (CatoA ck91, CiceroA ck104, LivyA ck83) x greedy/sampled x 1-1/2-4, action hashes identical (12/12).
+- Sean's hypothesis (11/3): memory and no-memory learn at about the same pace, but memory plateaus much higher. Tonight's
+  ~20 h is the early part of the curve; testing it needs the runs continued until the curves flatten.
+- NEXT: deeper/smarter coach for 2-1 and 3-4;
   no-coach learning curve on a held-out level. 4-4 checked (real lava-pit death, valid test).
 <!-- /RESUME -->
 
