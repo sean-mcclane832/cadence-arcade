@@ -1,0 +1,13 @@
+23:54:48 2 runs, coach smart {'learn': True}, 2 workers
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+00:09:30 3-3 s27: flag x2409 dec 245 881.5s 3592 ms/call
+00:09:46 3-3 s3: flag x2409 dec 241 897.2s 3716 ms/call
+3-3: 2/2 ff [2409, 2409] 3653 ms/call
+all: 486 calls, 3653.4 ms/call, wall 898s

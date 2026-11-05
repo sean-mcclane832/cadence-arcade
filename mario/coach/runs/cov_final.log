@@ -1,0 +1,103 @@
+00:01:22 72 runs, coach smart {'learn': True}, 1 workers
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+00:15:19 2-1 s0: flag x3193 dec 350 836.6s 2383 ms/call
+00:30:01 2-1 s3: flag x3193 dec 346 881.7s 2541 ms/call
+00:31:02 workers 1 -> 4
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+00:43:03 2-1 s8: flag x3193 dec 350 781.9s 2227 ms/call
+00:43:57 2-1 s20: flag x3193 dec 350 774.0s 2205 ms/call
+00:45:39 2-1 s13: flag x3193 dec 363 876.7s 2408 ms/call
+00:46:32 2-1 s27: flag x3193 dec 392 929.6s 2365 ms/call
+00:52:38 3-4 s0: flag x2244 dec 213 574.0s 2688 ms/call
+00:53:20 3-4 s3: flag x2266 dec 217 563.0s 2588 ms/call
+00:54:11 3-4 s8: flag x2268 dec 219 511.9s 2331 ms/call
+00:56:33 3-4 s13: flag x2245 dec 207 600.7s 2896 ms/call
+01:02:39 3-4 s27: flag x2267 dec 214 558.5s 2604 ms/call
+01:03:17 3-4 s20: flag x2267 dec 224 639.4s 2848 ms/call
+01:06:44 3-3 s0: flag x2409 dec 241 752.0s 3114 ms/call
+01:11:30 3-3 s3: flag x2409 dec 241 896.5s 3713 ms/call
+01:13:09 3-3 s8: flag x2409 dec 219 630.0s 2870 ms/call
+01:17:35 3-3 s20: flag x2409 dec 222 650.7s 2925 ms/call
+01:18:46 3-3 s13: flag x2409 dec 251 928.5s 3693 ms/call
+01:21:09 1-1 s0: flag x3161 dec 269 479.7s 1777 ms/call
+01:25:22 1-1 s3: flag x3161 dec 264 466.5s 1761 ms/call
+01:26:11 3-3 s27: flag x2409 dec 245 880.6s 3588 ms/call
+01:26:46 1-1 s8: flag x3161 dec 269 479.7s 1777 ms/call
+01:30:50 1-1 s13: flag x3161 dec 289 580.2s 2002 ms/call
+01:33:22 1-1 s20: flag x3161 dec 269 479.7s 1777 ms/call
+01:35:35 2-4 s0: flag x2267 dec 227 529.1s 2325 ms/call
+01:35:51 1-1 s27: flag x3161 dec 289 579.2s 1998 ms/call
+01:38:00 2-4 s3: flag x2266 dec 220 430.5s 1951 ms/call
+01:40:11 2-4 s8: flag x2248 dec 209 409.6s 1953 ms/call
+01:41:57 2-4 s13: flag x2251 dec 203 381.4s 1872 ms/call
+01:42:43 2-4 s20: flag x2263 dec 207 411.6s 1982 ms/call
+01:44:20 2-4 s27: flag x2267 dec 200 379.9s 1893 ms/call
+01:52:57 1-3 s0: flag x2425 dec 210 765.9s 3641 ms/call
+01:54:46 1-3 s3: flag x2425 dec 215 769.0s 3571 ms/call
+01:55:29 1-3 s8: flag x2425 dec 210 765.7s 3640 ms/call
+01:58:02 1-3 s13: flag x2425 dec 219 821.1s 3743 ms/call
+01:59:34 1-4 s0: flag x2244 dec 189 244.3s 1286 ms/call
+02:03:13 1-4 s3: flag x2245 dec 190 310.7s 1629 ms/call
+02:04:30 1-4 s8: flag x2245 dec 189 296.1s 1560 ms/call
+02:05:44 1-3 s20: flag x2425 dec 210 766.2s 3642 ms/call
+02:07:36 1-3 s27: flag x2425 dec 215 770.0s 3575 ms/call
+02:08:02 1-4 s13: flag x2244 dec 189 289.3s 1524 ms/call
+02:08:54 1-4 s20: flag x2267 dec 191 263.9s 1375 ms/call
+02:10:11 1-4 s27: flag x2267 dec 191 266.8s 1390 ms/call
+02:24:21 2-2 s0: flag x3161 dec 482 1004.2s 2077 ms/call
+02:24:50 2-2 s3: flag x3161 dec 461 1007.3s 2178 ms/call
+02:25:23 2-2 s8: flag x3161 dec 473 988.3s 2083 ms/call
+02:27:44 2-2 s13: flag x3161 dec 479 1052.5s 2191 ms/call
+02:33:49 1-2 s0: flag x3161 dec 289 506.3s 1745 ms/call
+02:38:53 1-2 s3: flag x3161 dec 316 668.7s 2109 ms/call
+02:41:49 2-2 s27: flag x3161 dec 474 1018.8s 2143 ms/call
+02:43:05 2-2 s20: flag x3161 dec 517 1123.6s 2167 ms/call
+02:43:27 1-2 s8: flag x3161 dec 307 577.9s 1876 ms/call
+02:47:41 1-2 s13: flag x3161 dec 276 527.6s 1905 ms/call
+02:49:53 1-2 s20: flag x3161 dec 277 483.2s 1738 ms/call
+02:53:09 1-2 s27: flag x3161 dec 298 603.8s 2019 ms/call
+02:55:11 2-3 s0: flag x3593 dec 306 703.3s 2292 ms/call
+03:01:12 2-3 s3: flag x3593 dec 321 811.3s 2521 ms/call
+03:02:58 2-3 s8: flag x3593 dec 313 785.4s 2503 ms/call
+03:05:51 2-3 s13: flag x3593 dec 317 761.9s 2397 ms/call
+03:06:00 2-3 s20: flag x3593 dec 307 649.2s 2108 ms/call
+03:11:53 2-3 s27: flag x3593 dec 306 641.0s 2088 ms/call
+03:13:05 3-1 s0: flag x3193 dec 323 606.2s 1870 ms/call
+03:14:51 3-1 s3: flag x3193 dec 320 540.2s 1682 ms/call
+03:15:22 3-1 s8: flag x3193 dec 304 561.5s 1841 ms/call
+03:20:30 3-1 s13: flag x3193 dec 299 516.6s 1721 ms/call
+03:23:24 3-1 s27: flag x3193 dec 297 512.4s 1719 ms/call
+03:23:45 3-1 s20: flag x3193 dec 323 639.8s 1974 ms/call
+03:25:47 3-2 s0: flag x3337 dec 316 624.4s 1970 ms/call
+03:30:25 3-2 s3: flag x3337 dec 301 595.1s 1971 ms/call
+03:33:04 3-2 s13: flag x3337 dec 294 558.9s 1895 ms/call
+03:33:42 3-2 s8: flag x3337 dec 309 617.5s 1992 ms/call
+03:34:11 3-2 s20: flag x3337 dec 282 502.9s 1777 ms/call
+03:41:10 3-2 s27: flag x3337 dec 312 644.7s 2060 ms/call
+2-1: 6/6 ffffff [3193, 3193, 3193, 3193, 3193, 3193] 2355 ms/call
+3-4: 6/6 ffffff [2244, 2266, 2268, 2245, 2267, 2267] 2658 ms/call
+3-3: 6/6 ffffff [2409, 2409, 2409, 2409, 2409, 2409] 3333 ms/call
+1-1: 6/6 ffffff [3161, 3161, 3161, 3161, 3161, 3161] 1852 ms/call
+2-4: 6/6 ffffff [2267, 2266, 2248, 2251, 2263, 2267] 2002 ms/call
+1-3: 6/6 ffffff [2425, 2425, 2425, 2425, 2425, 2425] 3636 ms/call
+1-4: 6/6 ffffff [2244, 2245, 2245, 2244, 2267, 2267] 1461 ms/call
+2-2: 6/6 ffffff [3161, 3161, 3161, 3161, 3161, 3161] 2140 ms/call
+1-2: 6/6 ffffff [3161, 3161, 3161, 3161, 3161, 3161] 1903 ms/call
+2-3: 6/6 ffffff [3593, 3593, 3593, 3593, 3593, 3593] 2321 ms/call
+3-1: 6/6 ffffff [3193, 3193, 3193, 3193, 3193, 3193] 1803 ms/call
+3-2: 6/6 ffffff [3337, 3337, 3337, 3337, 3337, 3337] 1947 ms/call
+all: 20396 calls, 2250.7 ms/call, wall 13189s

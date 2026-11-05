@@ -1,0 +1,42 @@
+{
+ "coach": "smart",
+ "opts": {
+  "learn": true
+ },
+ "summary": {
+  "2-1": {
+   "clears": 6,
+   "n": 6,
+   "max_x": [
+    3193,
+    3193,
+    3193,
+    3193,
+    3193,
+    3193
+   ],
+   "ends": "ffffff",
+   "per_call": 2.3344
+  },
+  "3-4": {
+   "clears": 6,
+   "n": 6,
+   "max_x": [
+    2244,
+    2266,
+    2268,
+    2245,
+    2267,
+    2267
+   ],
+   "ends": "ffffff",
+   "per_call": 2.6651
+  },
+  "_all": {
+   "calls": 3424,
+   "coach_secs": 8420.9,
+   "per_call": 2.4594,
+   "wall": 2284
+  }
+ }
+}

@@ -28,3 +28,4 @@ mario/coldstart/brains0/*.npz
 mario/coldstart/runs/_test/
 mario/coldstart/runs/slots/
 /.cadence-0.91.3-backup/
+mario/coach/runs/**/*.png

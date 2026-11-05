@@ -1,0 +1,29 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+{"level": "2-4", "start": 3, "coach": "smart", "flag": true, "end": "flag", "max_x": 2266, "decisions": 220, "secs": 216.7, "calls": 90, "coach_secs": 216.16, "per_call": 2.4018, "p95_call": 8.0202, "acts": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0, 0, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 3, 3, 3, 3], "found": [[1714, 1, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], 4]], "stalls": 1, "cache_hits": 0}
+{'i': 130, 'x': 1501, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.1945}
+{'i': 140, 'x': 1621, 'y': 175, 'vx': 48, 'a': 0, 'w': 1.0, 'dt': 5.4275}
+{'i': 150, 'x': 1714, 'y': 176, 'vx': 0, 'a': 0, 'w': 1.0, 'dt': 2.442}
+{'i': 160, 'x': 1714, 'y': 176, 'vx': 0, 'a': 0, 'w': 10.0, 'dt': 2.3415}
+{'i': 170, 'x': 1714, 'y': 133, 'vx': 3, 'a': 3, 'w': 10.0, 'dt': 2.0925}
+{'i': 180, 'x': 1797, 'y': 78, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.194}
+{'i': 190, 'x': 1917, 'y': 84, 'vx': 48, 'a': 0, 'w': 1.0, 'dt': 2.1855}
+{'i': 200, 'x': 2035, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.1955}
+{'i': 210, 'x': 2155, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.174}
+{'i': 205, 'x': 2095, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.196}
+{'i': 206, 'x': 2107, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.345}
+{'i': 207, 'x': 2119, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.386}
+{'i': 208, 'x': 2131, 'y': 128, 'vx': 48, 'a': 3, 'w': 10.0, 'dt': 1.1345}
+{'i': 209, 'x': 2143, 'y': 128, 'vx': 48, 'a': 3, 'w': 10.0, 'dt': 1.1105}
+{'i': 210, 'x': 2155, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.174}
+{'i': 211, 'x': 2167, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.271}
+{'i': 212, 'x': 2179, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.3315}
+{'i': 213, 'x': 2191, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.608}
+{'i': 214, 'x': 2203, 'y': 128, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 1.5655}
+{'i': 215, 'x': 2215, 'y': 128, 'vx': 48, 'a': 4, 'w': 1.0, 'dt': 1.5635}
+{'i': 216, 'x': 2227, 'y': 110, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.016}
+{'i': 217, 'x': 2239, 'y': 92, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.0115}
+{'i': 218, 'x': 2251, 'y': 86, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.0065}
+{'i': 219, 'x': 2263, 'y': 93, 'vx': 48, 'a': 3, 'w': 1.0, 'dt': 0.001}

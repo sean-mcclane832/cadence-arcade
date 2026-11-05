@@ -108,6 +108,9 @@ def main():
     ap.add_argument("--dagger-every", type=int, default=4); ap.add_argument("--episodes", type=int, default=2)
     ap.add_argument("--workers", type=int, default=1); ap.add_argument("--stop-at", default="08:00")
     ap.add_argument("--hours", type=float, default=24)
+    ap.add_argument("--coach", default="base", help="DAgger label coach: base (game.py, default) or a ../coach "
+                    "smartcoach variant, e.g. smart (coach/COACH.md)")
+    ap.add_argument("--coach-opts", default="{}", help="JSON options for the --coach variant")
     args = ap.parse_args()
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     logf = open(out / "log.txt", "a", encoding="utf-8")
@@ -119,7 +122,13 @@ def main():
     levels = args.levels.split(",")
     deep = cs.deep_levels()
     lv_dirs = json.loads((cs.DATA / "levels.json").read_text())
-    ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=cs.worker_init, initargs=(deep,))
+    if args.coach == "base":  # default: unchanged
+        ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=cs.worker_init, initargs=(deep,))
+    else:  # opt-in smarter coach for DAgger labels (World 4 refused inside plug)
+        sys.path.insert(0, str(HERE.parent / "coach"))
+        import plug  # noqa: E402
+        ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=plug.worker_init,
+                                 initargs=(deep, args.coach, json.loads(args.coach_opts)))
     state = dict(slow=False)
 
     def pmap(fn, tasks):

@@ -1,0 +1,24 @@
+{
+ "coach": "smart",
+ "opts": {
+  "learn": true
+ },
+ "summary": {
+  "3-3": {
+   "clears": 2,
+   "n": 2,
+   "max_x": [
+    2409,
+    2409
+   ],
+   "ends": "ff",
+   "per_call": 3.6534
+  },
+  "_all": {
+   "calls": 486,
+   "coach_secs": 1775.6,
+   "per_call": 3.6534,
+   "wall": 898
+  }
+ }
+}

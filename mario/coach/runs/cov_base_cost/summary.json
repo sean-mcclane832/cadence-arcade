@@ -1,0 +1,48 @@
+{
+ "coach": "base",
+ "opts": {},
+ "summary": {
+  "1-1": {
+   "clears": 1,
+   "n": 1,
+   "max_x": [
+    3161
+   ],
+   "ends": "f",
+   "per_call": 1.1354
+  },
+  "2-1": {
+   "clears": 0,
+   "n": 1,
+   "max_x": [
+    1760
+   ],
+   "ends": "d",
+   "per_call": 1.154
+  },
+  "3-1": {
+   "clears": 1,
+   "n": 1,
+   "max_x": [
+    3193
+   ],
+   "ends": "f",
+   "per_call": 1.4061
+  },
+  "3-4": {
+   "clears": 0,
+   "n": 1,
+   "max_x": [
+    1434
+   ],
+   "ends": "d",
+   "per_call": 0.9824
+  },
+  "_all": {
+   "calls": 888,
+   "coach_secs": 1083.7,
+   "per_call": 1.2204,
+   "wall": 480
+  }
+ }
+}

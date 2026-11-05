@@ -22,7 +22,9 @@
   Parity: 3 brains (CatoA ck91, CiceroA ck104, LivyA ck83) x greedy/sampled x 1-1/2-4, action hashes identical (12/12).
 - Sean's hypothesis (11/3): memory and no-memory learn at about the same pace, but memory plateaus much higher. Tonight's
   ~20 h is the early part of the curve; testing it needs the runs continued until the curves flatten.
-- NEXT: deeper/smarter coach for 2-1 and 3-4;
+- 11/5: deeper coach done (../coach/COACH.md): smart coach clears 72/72 coverage runs on the 12 training levels
+  (base 54/72; 2-1 and 3-4 0/6 -> 6/6), 1.8x cost per call. Opt-in: ctrain.py --coach smart. Piles still base.
+- NEXT: rebuild 2-1/3-4 piles with the smart coach;
   no-coach learning curve on a held-out level. 4-4 checked (real lava-pit death, valid test).
 <!-- /RESUME -->
 

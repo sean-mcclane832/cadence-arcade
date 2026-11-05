@@ -1,0 +1,32 @@
+20:26:14 12 runs, coach smart {'learn': True}, 4 workers
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+20:39:09 2-1 s3: flag x3193 dec 346 774.4s 2232 ms/call
+20:39:51 2-1 s0: flag x3193 dec 343 816.1s 2373 ms/call
+20:39:51 2-1 s8: flag x3193 dec 343 816.3s 2373 ms/call
+20:40:41 2-1 s13: flag x3193 dec 363 866.5s 2380 ms/call
+20:49:28 3-4 s0: flag x2244 dec 213 576.5s 2700 ms/call
+20:50:07 3-4 s3: flag x2266 dec 217 565.5s 2600 ms/call
+20:52:36 2-1 s20: flag x3193 dec 343 806.7s 2345 ms/call
+20:54:57 2-1 s27: flag x3193 dec 392 906.3s 2306 ms/call
+20:58:02 3-4 s8: flag x2268 dec 219 513.8s 2340 ms/call
+21:00:10 3-4 s13: flag x2245 dec 207 602.5s 2904 ms/call
+21:03:15 3-4 s20: flag x2267 dec 224 639.3s 2848 ms/call
+21:04:17 3-4 s27: flag x2267 dec 214 559.4s 2607 ms/call
+2-1: 6/6 ffffff [3193, 3193, 3193, 3193, 3193, 3193] 2334 ms/call
+3-4: 6/6 ffffff [2244, 2266, 2268, 2245, 2267, 2267] 2665 ms/call
+all: 3424 calls, 2459.4 ms/call, wall 2284s
