@@ -9,8 +9,12 @@ stationary memory guess for pile rows, DAgger), changed for a FRESH brain on 12 
   - Throttle: FIFO tickets for 2 shared worker slots while a game runs, with a game recheck INSIDE the wait (an arm
     that just released its slot queues behind the ones already waiting: no starvation).
   - 1 play worker per arm.
+  - 11/5 (plateau test): --sel8 scores SEL on 8 of the 24 starts (cs.SEL8, fixed in advance); --resume continues a
+    run in its own out dir from its last checkpoint (chunk numbering, history, DAgger seq files and the RNG stream
+    replayed to the same point); --stop-chunk N stops after chunk N.
 
     python ctrain.py --name CatoA --init brains0/CatoA_ck0.npz --out runs/CatoA --stop-at 08:00
+    python ctrain.py --name CatoA --init brains0/CatoA_ck0.npz --out runs/CatoA --resume --sel8 --stop-chunk 200 --stop-at ""
 """
 from __future__ import annotations
 
@@ -111,7 +115,11 @@ def main():
     ap.add_argument("--coach", default="base", help="DAgger label coach: base (game.py, default) or a ../coach "
                     "smartcoach variant, e.g. smart (coach/COACH.md)")
     ap.add_argument("--coach-opts", default="{}", help="JSON options for the --coach variant")
+    ap.add_argument("--sel8", action="store_true", help="SEL on cs.SEL8 (8 fixed starts per level) instead of all 24")
+    ap.add_argument("--resume", action="store_true", help="continue the run in --out from its last checkpoint")
+    ap.add_argument("--stop-chunk", type=int, default=0, help="stop after this chunk (0: no limit besides --max-chunks)")
     args = ap.parse_args()
+    sel = tuple(cs.SEL8) if args.sel8 else tuple(SEL)
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     logf = open(out / "log.txt", "a", encoding="utf-8")
 
@@ -139,11 +147,37 @@ def main():
         d = (HERE / lv_dirs[L]).resolve()
         z = np.load(d / "data.npz"); piles[L] = dict(X=z["X"], y=z["y"], W=z["W"].astype(np.float64))
         seqs[L].load(d / f"seq_{L}_coach.npz")
+        if args.resume:  # DAgger attempts this run already collected, in round order (as mtrain --more-seq)
+            for q in sorted(out.glob(f"seq_{L}_d*.npz")):
+                seqs[L].load(q)
         log(f"data {L} ({lv_dirs[L]}, coach horizon {deep.get(L, 16)}): pile {len(piles[L]['y'])} rows, "
             f"ordered {len(seqs[L].rows)} rows in {len(seqs[L].atts)} attempts")
-    b = mem.make_cold(Brain.load((HERE / args.init).resolve()))  # settles from rest, as the act-mode players do
+    k0 = 0
+    if args.resume:
+        hist = [json.loads(l) for l in open(out / "history.jsonl") if l.strip()]
+        k0 = int(hist[-1]["chunk"])
+        ck = out / f"{args.name}_ck{k0:04d}.npz"
+        assert ck.exists(), ck
+        late = sorted(q for q in out.glob("seq_*_d*.npz") if int(q.stem.rsplit("_d", 1)[1]) > k0)
+        assert not late, f"DAgger files past the last scored chunk {k0}: {late[:3]}"
+        init = ck
+        import ast  # the recipe must match the run's first leg (its first "start:" line in log.txt)
+        first = next(l for l in open(out / "log.txt", encoding="utf-8") if " start: {" in l)
+        orig = ast.literal_eval(first.split(" start: ", 1)[1].split("} deep=", 1)[0] + "}")
+        for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts"):
+            if key in orig or key in ("coach", "coach_opts"):
+                want = orig.get(key, {"coach": "base", "coach_opts": "{}"}.get(key))
+                assert getattr(args, key) == want, f"--resume recipe mismatch: {key} {getattr(args, key)!r} vs first leg {want!r}"
+    else:
+        init = (HERE / args.init).resolve()
+    b = mem.make_cold(Brain.load(init))  # settles from rest, as the act-mode players do
     b.learner.config = dataclasses.replace(b.learner.config, eta=args.eta, eta_bias=args.eta / 10)
     rng = np.random.default_rng(11)
+    for k in range(1, k0 + 1):  # replay the main RNG stream to where the run stopped (DAgger starts, lesson seeds)
+        if args.dagger_every and k % args.dagger_every == 0:
+            for L in levels:
+                rng.choice(POOL, args.episodes, replace=False)
+        rng.integers(1 << 30)
     deadline = time.time() + args.hours * 3600
     if args.stop_at:
         hh, mm = (int(v) for v in args.stop_at.split(":")); lt = time.localtime()
@@ -152,6 +186,12 @@ def main():
             st += 86400
         deadline = min(deadline, st)
     best = {}; bestf = out / "best.json"
+    if args.resume and args.sel8 and bestf.exists() and not (out / "best24.json").exists():
+        # bests picked on 24 starts are not comparable with 8-start scores: keep them aside, start fresh
+        for q in sorted(out.glob("best*.npz")) + [bestf]:
+            q.rename(out / q.name.replace("best", "best24", 1))
+    if bestf.exists():
+        best = json.loads(bestf.read_text())
     curve = out / "curve.csv"
     if not curve.exists():
         curve.write_text("chunk,lessons,rows_taught,time,sel_mean_all,sel_flags_all," + ",".join(f"m{L},f{L}" for L in levels) + "\n")
@@ -161,10 +201,10 @@ def main():
 
     def consider(path, k):
         rec = {}
-        tasks = [dict(policy=str(path), kind="act", level=L, start=s) for L in levels for s in SEL]
+        tasks = [dict(policy=str(path), kind="act", level=L, start=s) for L in levels for s in sel]
         res = pmap(mem.episode, tasks)
         for i, L in enumerate(levels):
-            s = summ(res[i * len(SEL):(i + 1) * len(SEL)]); rec[L] = s
+            s = summ(res[i * len(sel):(i + 1) * len(sel)]); rec[L] = s
             cur = best.get(L)
             if cur is None or (s["flags"], s["mean"]) > (cur["sel_flags"], cur["sel_mean"]):
                 shutil.copyfile(path, out / f"best_{L}.npz")
@@ -237,14 +277,17 @@ def main():
             msg.append(f"{L} +{sum(len(r['labels']) for r in mine)} x{[r['max_x'] for r in mine]}")
         log(f"  dagger ({time.time() - t:.0f}s): " + "; ".join(msg))
 
-    p0 = out / f"{args.name}_ck0000.npz"; b.save(p0)
-    log(f"start: {vars(args)} deep={deep} pid={os.getpid()}")
-    rec0, _ = consider(p0, 0)
-    log("chunk 0: " + " ".join(f"{L} {rec0[L]['flags']}/{len(SEL)} m{rec0[L]['mean']}" for L in levels))
-    with open(out / "history.jsonl", "a") as f:
-        f.write(json.dumps(dict(chunk=0, solo=rec0, t=time.time())) + "\n")
+    log(f"start: {vars(args)} deep={deep} pid={os.getpid()} sel={len(sel)} starts" +
+        (f" RESUME from {init.name} (chunk {k0}), ordered rows " + ", ".join(f"{L} {len(seqs[L].rows)}" for L in levels) if args.resume else ""))
+    if not args.resume:
+        p0 = out / f"{args.name}_ck0000.npz"; b.save(p0)
+        rec0, _ = consider(p0, 0)
+        log("chunk 0: " + " ".join(f"{L} {rec0[L]['flags']}/{len(sel)} m{rec0[L]['mean']}" for L in levels))
+        with open(out / "history.jsonl", "a") as f:
+            f.write(json.dumps(dict(chunk=0, solo=rec0, sel_n=len(sel), t=time.time())) + "\n")
     last_check = 0; slot = None
-    for k in range(1, args.max_chunks + 1):
+    last_k = args.stop_chunk if args.stop_chunk else args.max_chunks
+    for k in range(k0 + 1, last_k + 1):
         if time.time() - last_check > 600:
             g = gamecheck.gaming(); last_check = time.time()
             if g != state["slow"]:
@@ -259,7 +302,7 @@ def main():
                 pol = out / "policy_dagger.npz"; b.save(pol); dagger_round(k, pol)
             t1 = time.time(); lessons(args.chunk); teach_s = round(time.time() - t1)
             p = out / f"{args.name}_ck{k:04d}.npz"; b.save(p)
-            rec = dict(chunk=k, lessons=k * args.chunk, teach_s=teach_s, fit=fit())
+            rec = dict(chunk=k, lessons=k * args.chunk, teach_s=teach_s, fit=fit(), sel_n=len(sel))
             t2 = time.time(); rec["solo"], rec["key"] = consider(p, k); rec["sel_s"] = round(time.time() - t2); rec["t"] = time.time()
         finally:
             if slot is not None:

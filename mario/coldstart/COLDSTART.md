@@ -139,3 +139,54 @@ See RESUME for the numbers. Notes:
 - The within-arm seed gaps (56 AUC, 153 END) are as big as any between-arm difference: with 2 seeds this design can
   only catch a large effect. None showed up.
 - Morning step cost: HELD ~25 min, gauntlets ~5 min on 8 workers.
+
+# Plateau test (11/5): resume to chunk 200 + CiceroLow (pre-registered before launch)
+
+Sean, 11/3: "memory and no-memory learn at about the same pace, but memory plateaus much higher." Sean, 11/5 09:00:
+"Start the test, add that new Cicero brain ..." Design: vault Research/Cadence Training Methods Review 2026-11-05
+(error 9, missing idea 3, revised order) and Plans/Cadence Roadmap 2026-11-02 (Sean's decisions, 11/5 09:00).
+
+## Runs
+- **Resumed**: CatoA/B, CiceroA/B, LivyA/B continue from their last 11/3 checkpoints (chunks 104, 84, 108, 93, 90, 74)
+  to chunk 200 with `ctrain.py --resume` (same out dir; continues chunk numbering, history.jsonl and curve.csv; reloads
+  every `seq_<L>_d*.npz` DAgger file in round order, as mtrain `--more-seq`; replays the main RNG stream to the stop
+  point; refuses a recipe that differs from the first leg's `start:` line). Recipe unchanged: base coach, DAgger every
+  6 chunks x 1 attempt per level from POOL, eta 0.001, crit 3, p_seq 0.5, K 3, chunk 500 batches.
+- **Resume check** (runs/_test/resumeCatoA): CatoA's run dir cut back to chunk 103, resumed for one chunk. The new
+  ck0104 is bit-identical to the original ck0104 (all 27 arrays). That also shows 0.92.1 lessons match 0.91.3 (the
+  11/2 leg ran 0.91.3; play parity 12/12 was checked 11/3).
+- **The one change: SEL on 8 starts.** From the resume point on, SEL scores 8 fixed starts per level (cs.SEL8 = 0, 48,
+  9, 57, 18, 66, 27, 75: two per frame phase, chosen in advance by the review) instead of 24. Checked on the 11/2
+  history (chunk 30 on): the 8-start 12-level mean tracks the 24-start one at r = 0.992, 0.988, 0.988, 0.992, 0.991,
+  0.975 (CatoA..LivyB), difference SD 21-25 x, last-10 means 0-24 x lower. Saves about 2/3 of SEL time (~240 s per
+  chunk). The per-level best_*.npz picks restart on 8 starts; the 24-start ones are kept as best24_*.
+- **New arm CiceroLow** (A seed 0, B seed 1, as every pair): Cicero exactly (mem.SPECS["Cicero"] layout: efference 1.0
+  / decay 0.8, working trace), but working_memory_amplitude **0.3** instead of 3.0. `mkbrains.py --arms CiceroLow`;
+  ck0 is identical to CiceroA/B ck0 except that one value (checked). Why: Cadence docs/teach.md (0.92.1), "The working
+  trace lowers teaching fidelity at its composed amplitude": in the upstream copy task the normalized point agreed with
+  the demonstrator on 0.86 at amplitude 0 or 0.3 and 0.80 at the composed 3.0, "Applications that bootstrap by
+  imitation may lower `working_memory_amplitude`." Fresh, same recipe, 8-start SEL from chunk 0, to chunk 200.
+- All 8: 1 play worker, 1 numba thread, Normal priority, game throttle (memory/gamecheck.py; 2 FIFO slots shared by
+  all ctrain runs, game rechecked inside the wait). A run that releases its slot takes a new ticket, so it queues
+  behind runs already waiting (the 11/1 re-grab hole is closed). Launcher: launch_plateau.ps1.
+
+## Pre-registered (written and committed before launch)
+- **Curve**: per chunk, the mean over the 12 training levels of SEL max x on the 8 SEL8 starts. Chunks scored on 24
+  starts (before the resume) are reduced to the same 8 starts from the per-start x saved in history.jsonl, so every
+  chunk of every run uses one start set.
+- **Primary**: mean of the curve over the last 10 chunks ending at the common chunk C = 200 (chunks 191-200).
+  Arm value = mean of seeds A and B.
+- **CiceroLow at equal chunks**: it starts ~75-125 chunks behind. If both CiceroLow seeds reach 200, C = 200 for all.
+  If not, C = the last chunk both CiceroLow seeds reached, and everyone is scored at that same C on the same rule (the
+  six resumed runs passed it on their way to 200). Both reports go out if they differ.
+- **Noise floor**: within-arm seed gap |A - B| on the primary; floor = the largest gap among the arms scored at C.
+- **"Memory plateaus higher"** (Sean's hypothesis) holds for an arm (Cicero, Livy, CiceroLow) only if BOTH seeds beat
+  the same-letter Cato seed (A vs CatoA, B vs CatoB) by more than the floor. "Plateaus lower" by the mirror rule.
+  Anything else: not distinguishable.
+- **Secondary** (reported, no verdict): 60-chunk OLS slope ending at C with its SE (still climbing or flat);
+  2-1 and 3-4 SEL means over the same window; CiceroLow vs Cicero (does amplitude 0.3 imitate better); HELD 50 and
+  World 4 first sight on the chunk-200 checkpoints if run afterwards.
+- **Scorer**: `plateau.py` (`--at C`), writes runs/plateau_<C>.json. Written before any resumed chunk was scored; only
+  smoke-tested at chunk 74 on 11/2 data.
+- Honest expectation: with 2 seeds the 11/2 floor was 56 (AUC) to 153 (END) x, and at chunk 74 on this metric it is
+  136 x. Only a large plateau gap can show.

@@ -15,6 +15,10 @@ import mem  # noqa: E402
 
 C = mem.C
 SEL, HELD, POOL = C.SEL, C.HELD, C.POOL
+# 8 of the 24 SEL starts, 2 per frame phase (idle frames mod 4), fixed in advance (training methods review 11/5,
+# item 1). On the 11/2 history the 8-start 12-level mean tracks the 24-start one at r 0.975-0.992 from chunk 30 on.
+SEL8 = (0, 48, 9, 57, 18, 66, 27, 75)
+assert set(SEL8) <= set(SEL)
 TRAIN = [f"{w}-{s}" for w in (1, 2, 3) for s in (1, 2, 3, 4)]
 TEST = [f"4-{s}" for s in (1, 2, 3, 4)]
 ALL = TRAIN + TEST

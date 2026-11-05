@@ -228,5 +228,83 @@
     8
    ]
   }
+ },
+ "CiceroLowA": {
+  "seed": 0,
+  "synapses": 582912,
+  "sensory": 2000,
+  "working_memory": true,
+  "efference": true,
+  "history": false,
+  "wm_amplitude": 0.3,
+  "1-1": {
+   "max_x": 40,
+   "end": "stuck",
+   "decisions": 40,
+   "secs": 1.4,
+   "buttons": [
+    40,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "2-1": {
+   "max_x": 40,
+   "end": "stuck",
+   "decisions": 40,
+   "secs": 0.6,
+   "buttons": [
+    40,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ "CiceroLowB": {
+  "seed": 1,
+  "synapses": 582912,
+  "sensory": 2000,
+  "working_memory": true,
+  "efference": true,
+  "history": false,
+  "wm_amplitude": 0.3,
+  "1-1": {
+   "max_x": 594,
+   "end": "stuck",
+   "decisions": 129,
+   "secs": 1.8,
+   "buttons": [
+    31,
+    0,
+    0,
+    3,
+    64,
+    22,
+    9
+   ]
+  },
+  "2-1": {
+   "max_x": 530,
+   "end": "stuck",
+   "decisions": 138,
+   "secs": 1.5,
+   "buttons": [
+    24,
+    0,
+    0,
+    0,
+    74,
+    30,
+    10
+   ]
+  }
  }
 }
