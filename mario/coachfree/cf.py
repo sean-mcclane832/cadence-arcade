@@ -38,8 +38,12 @@ def check_level(L):
 def idle():
     try:  # Windows SetPriorityClass(IDLE_PRIORITY_CLASS); spawned children inherit it
         import ctypes
+        from ctypes import wintypes
         k = ctypes.windll.kernel32
-        k.SetPriorityClass(k.GetCurrentProcess(), 0x40)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetPriorityClass.argtypes = (wintypes.HANDLE, wintypes.DWORD)
+        if not k.SetPriorityClass(k.GetCurrentProcess(), 0x40):
+            raise OSError(ctypes.get_last_error())
     except Exception as e:  # pragma: no cover
         print("idle priority failed:", e, flush=True)
 
