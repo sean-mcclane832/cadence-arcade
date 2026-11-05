@@ -1,31 +1,25 @@
 <!-- RESUME -->
-## RESUME (11/03 09:30 EST, night over, scored, page pushed)
-- **Verdict (pre-registered rule): NOT DISTINGUISHABLE for both memory arms.** Kc = 74 (LivyB, suspended 18:40-23:07,
-  sets the common range; 37,000 lesson batches). AUC / END (mean SEL x over 12 training levels):
-  CatoA 783.4 / 979.3, CatoB 800.5 / 1090.9, CiceroA 790.5 / 1076.6, CiceroB 734.7 / 926.9, LivyA 719.5 / 1118.9,
-  LivyB 738.0 / 966.0. Arms: Cato 792.0 / 1035.1, Cicero 762.6 / 1001.8, Livy 728.8 / 1042.5.
-  Floor (largest within-arm gap): AUC 55.8, END 152.9. Cicero vs Cato: AUC +7.1 / -65.8, END +97.3 / -164.0.
-  Livy vs Cato: AUC -63.9 / -62.5 (both below by more than the floor), END +139.6 / -124.9 -> not "hurts" (rule
-  needs both metrics). runs/morning/curve.json, morning.md.
-- HELD 50 (greedy, act mode) at ck74 and each last ck: 12 training levels 1-18 flags of 600 (mostly 1-4, 2-4, 3-2),
-  mean x 850-1074. **World 4 first sight: 0 flags on 4-1..4-3 for all 11 checkpoints** (mean x 344-751, best CatoB
-  ck84, furthest 1,859 on 4-1). **4-4: every attempt of every brain ends at exactly x 138** (550/550). Checked 11/3:
-  it is a real death, the lava pit right after the start. Holding right dies at x 136-138; a scripted run+jump
-  pattern gets past it (x 1,060). So no harness bug: no brain ever jumps that first pit. runs/morning/held.json.
-- Gauntlets (demos, 48 = 6 runs x greedy/sampled x from 1-1/2-1/3-1/4-1, 5 lives, last ck): one level cleared in
-  total, CiceroA ck108 SAMPLED (temp 0.05) 1-1 on its 4th life, then 1-2 deaths at 918, 886. Every other run died out
-  on its first level. Best World 4: CatoB ck84 greedy 4-1 deaths 346, 1842, 1842, 1320, 344. Clips copied to
-  docs/mario/gauntlet/c01_CiceroA.mp4, c02_CatoB_w4.mp4. runs/morning/gauntlets.json.
-- Page docs/mario/ updated (Cold-start section, scoreboard row 4-1..4-3, gauntlet rows, Latest). Full report in the
-  vault: Research/Cadence Report 2026-10-29 to 11-03.
-- 11/3 14:50: .venv-concepts upgraded 0.91.3 -> 0.92.1 (non-editable, --no-deps; old copy in .cadence-0.91.3-backup/).
-  Parity: 3 brains (CatoA ck91, CiceroA ck104, LivyA ck83) x greedy/sampled x 1-1/2-4, action hashes identical (12/12).
-- Sean's hypothesis (11/3): memory and no-memory learn at about the same pace, but memory plateaus much higher. Tonight's
-  ~20 h is the early part of the curve; testing it needs the runs continued until the curves flatten.
-- 11/5: deeper coach done (../coach/COACH.md): smart coach clears 72/72 coverage runs on the 12 training levels
-  (base 54/72; 2-1 and 3-4 0/6 -> 6/6), 1.8x cost per call. Opt-in: ctrain.py --coach smart. Piles still base.
-- NEXT: rebuild 2-1/3-4 piles with the smart coach;
-  no-coach learning curve on a held-out level. 4-4 checked (real lava-pit death, valid test).
+## RESUME (11/05 09:25 EST, plateau test RUNNING)
+- **Running** (launched 09:25 by launch_plateau.ps1, detached, Normal priority, 1 worker + 1 thread each): CatoA/B,
+  CiceroA/B, LivyA/B RESUMED from chunks 104/84/108/93/90/74, and CiceroLowA/B (Cicero, working memory amplitude 0.3)
+  FRESH from chunk 0. All stop after chunk 200. Base coach, 11/2 recipe, 8-start SEL. Design and pre-registered rule:
+  "Plateau test (11/5)" at the bottom of this file (commit 1e9e723, before launch).
+- **ETA** (gaming throttles to 2 runs at a time and pushes all of these later), measured on the first chunk with all 8 running: teach and
+  SEL take about 2x their 11/2 times (8 full-load runs vs 6 on 8 cores; the Idle coach-free processes get ~0 CPU), so
+  about 700-760 s per chunk for Cato/Cicero and 900-950 s for Livy, DAgger included. Rough finish: CiceroA, CatoA ~04:00-05:00
+  Fri 11/6; CiceroB ~07:00; CatoB ~09:30; LivyA ~14:00; LivyB ~17:00 Fri; CiceroLowA/B (200 chunks from scratch, chunks get
+  slower as the brains get further) about Sat 11/7 midday-evening. Runs speed up as others finish and free cores.
+- **Check**: `tail -1 runs/<name>/log.txt` (one line per chunk: teach / SEL seconds, 12-level mean, flags);
+  `tail -1 runs/<name>/curve.csv`; crashes land in runs/<name>.plateau.err. Alive: `tasklist | grep python` or
+  Get-CimInstance Win32_Process filtered on "ctrain.py --name <name>". Throttle state: "throttle ON/OFF" lines in log.txt,
+  tickets/locks in runs/slots/.
+- **Score**: `python plateau.py` at chunk 200 (or `--at C` at the last chunk both CiceroLow seeds reached; rule says
+  report both if CiceroLow is short of 200). Writes runs/plateau_<C>.json.
+- **Restart** a dead or stopped run: `powershell -File launch_plateau.ps1 <name> [<name> ...]`. It resumes any run that
+  has a history.jsonl from its last scored chunk (bit-exact resume, checked), else starts fresh. Kill the old process
+  first if it is still alive. A crash between a DAgger round and the chunk's history line leaves a seq_*_dNNNN.npz past
+  the last chunk: --resume refuses; delete that file (it gets recollected) and relaunch.
+- Not touched: mario/coachfree/ (parallel coach-free agent, Idle priority), docs/mario (page updated separately).
 <!-- /RESUME -->
 
 # Cold-start night (2026-11-02): Cato / Cicero / Livy from scratch, worlds 1-3, World 4 held out
@@ -139,6 +133,34 @@ See RESUME for the numbers. Notes:
 - The within-arm seed gaps (56 AUC, 153 END) are as big as any between-arm difference: with 2 seeds this design can
   only catch a large effect. None showed up.
 - Morning step cost: HELD ~25 min, gauntlets ~5 min on 8 workers.
+
+## Old RESUME (11/03 09:30 EST, night over, scored, page pushed)
+- **Verdict (pre-registered rule): NOT DISTINGUISHABLE for both memory arms.** Kc = 74 (LivyB, suspended 18:40-23:07,
+  sets the common range; 37,000 lesson batches). AUC / END (mean SEL x over 12 training levels):
+  CatoA 783.4 / 979.3, CatoB 800.5 / 1090.9, CiceroA 790.5 / 1076.6, CiceroB 734.7 / 926.9, LivyA 719.5 / 1118.9,
+  LivyB 738.0 / 966.0. Arms: Cato 792.0 / 1035.1, Cicero 762.6 / 1001.8, Livy 728.8 / 1042.5.
+  Floor (largest within-arm gap): AUC 55.8, END 152.9. Cicero vs Cato: AUC +7.1 / -65.8, END +97.3 / -164.0.
+  Livy vs Cato: AUC -63.9 / -62.5 (both below by more than the floor), END +139.6 / -124.9 -> not "hurts" (rule
+  needs both metrics). runs/morning/curve.json, morning.md.
+- HELD 50 (greedy, act mode) at ck74 and each last ck: 12 training levels 1-18 flags of 600 (mostly 1-4, 2-4, 3-2),
+  mean x 850-1074. **World 4 first sight: 0 flags on 4-1..4-3 for all 11 checkpoints** (mean x 344-751, best CatoB
+  ck84, furthest 1,859 on 4-1). **4-4: every attempt of every brain ends at exactly x 138** (550/550). Checked 11/3:
+  it is a real death, the lava pit right after the start. Holding right dies at x 136-138; a scripted run+jump
+  pattern gets past it (x 1,060). So no harness bug: no brain ever jumps that first pit. runs/morning/held.json.
+- Gauntlets (demos, 48 = 6 runs x greedy/sampled x from 1-1/2-1/3-1/4-1, 5 lives, last ck): one level cleared in
+  total, CiceroA ck108 SAMPLED (temp 0.05) 1-1 on its 4th life, then 1-2 deaths at 918, 886. Every other run died out
+  on its first level. Best World 4: CatoB ck84 greedy 4-1 deaths 346, 1842, 1842, 1320, 344. Clips copied to
+  docs/mario/gauntlet/c01_CiceroA.mp4, c02_CatoB_w4.mp4. runs/morning/gauntlets.json.
+- Page docs/mario/ updated (Cold-start section, scoreboard row 4-1..4-3, gauntlet rows, Latest). Full report in the
+  vault: Research/Cadence Report 2026-10-29 to 11-03.
+- 11/3 14:50: .venv-concepts upgraded 0.91.3 -> 0.92.1 (non-editable, --no-deps; old copy in .cadence-0.91.3-backup/).
+  Parity: 3 brains (CatoA ck91, CiceroA ck104, LivyA ck83) x greedy/sampled x 1-1/2-4, action hashes identical (12/12).
+- Sean's hypothesis (11/3): memory and no-memory learn at about the same pace, but memory plateaus much higher. Tonight's
+  ~20 h is the early part of the curve; testing it needs the runs continued until the curves flatten.
+- 11/5: deeper coach done (../coach/COACH.md): smart coach clears 72/72 coverage runs on the 12 training levels
+  (base 54/72; 2-1 and 3-4 0/6 -> 6/6), 1.8x cost per call. Opt-in: ctrain.py --coach smart. Piles still base.
+- NEXT: rebuild 2-1/3-4 piles with the smart coach;
+  no-coach learning curve on a held-out level. 4-4 checked (real lava-pit death, valid test).
 
 # Plateau test (11/5): resume to chunk 200 + CiceroLow (pre-registered before launch)
 
