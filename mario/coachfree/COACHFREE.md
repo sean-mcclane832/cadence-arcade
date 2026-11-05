@@ -56,3 +56,13 @@ calibrated temperature, |w| <= 1, coach-row anchors, practice on POOL / score on
 - Forgetting: SEL 12-level mean x at the end vs start. "Forgot" if b1's drop exceeds anch's drop by more than 100 x
   (the order of the cold-start night's chunk-to-chunk SEL swings, SD 98-184 x).
 - Levels: 6-1, then 6-2 (every first-sight attempt dies at x 303-306: a clean wall).
+- Added 09:40, before any result: a `b3` arm (b3.py, Brain.live) on both levels, judged by the same rule
+  (D(b3) - D(anch) > floor, floor from the b3 arm's own split-half gap) and the same forgetting rule.
+
+## B3 design (as built)
+- The checkpoints have no arousal genes and `retune` can't add them, so b3.py recomposes Cato (seed 0) with
+  arousal=True (same connectome, pre/post checked) and copies every learned array in. Greedy parity with the original
+  checkpoint is asserted on 3 starts before each run (passed on 6-1 in the smoke test).
+- Every practice decision goes through `live`: reward clip(dx/20, -1, 1), death -1, flag +1, stuck 0 (all done).
+  actor_eta 0.02 (composed 1.0; upstream #169 erosion), youth 0 (a trained brain), critic untrained at the start.
+  Same practice starts as b1. Smoke test: 6-1 attempts ran about half aroused (28/59, 19/91 moments), 1.5 s each.
