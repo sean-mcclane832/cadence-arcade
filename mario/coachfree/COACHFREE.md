@@ -19,8 +19,12 @@
   anch 974.2 / 1. b1's drop exceeds anch's by 88 x < 100: **not "forgot" by the rule**. But both arms lost 15-16 of 17
   flags (2-4 14 -> 1-2): the start checkpoint was the best-of-SEL pick, so part of that is regression from a lucky
   pick, and part is the same fragility.
+- 22:00 reload arm done: frozen brain's practice last-10 = 831.4 (HELD at round 30 = 578.1, greedy is deterministic).
+  Pre-registered secondary: b1 practice - reload = **+43.6 vs floor 38.5 (reload's split-half gap): just over**.
+  anch - reload = -37.4. Weak: one seed of lesson order, a floor from a single 5-vs-5 round split, and the primary
+  (greedy HELD) says nothing. Suggestive at most; it is the thing to re-test with more seeds.
 - STILL RUNNING (Idle priority, starved by the 8 plateau runs; the 6-1 pair took 11 h for ~1 h of CPU work):
-  6-1 `reload` (practice curve of the frozen brain), then 6-1 `b3` (Brain.live). 6-2 was dropped from the queue
+  6-1 `b3` (Brain.live). 6-2 was dropped from the queue
   (runs/SKIP_6-2) to fit. When they finish: `python analyze.py 6-1` adds them to runs/pilot_6-1/score.json.
 - NEXT: see "What to try next" at the bottom. In short: fix the metric before the method (greedy HELD swings are
   bigger than any plausible B1 effect), and test B1 where sampling actually finds progress greedy doesn't.

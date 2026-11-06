@@ -255,11 +255,69 @@
   "practice_halfgap_21_25_vs_26_30": 25.7,
   "forget_sel_mean": 974.2
  },
+ "reload": {
+  "rounds": 30,
+  "held0": 578.12,
+  "held_curve": [
+   [
+    0,
+    578.1,
+    0
+   ],
+   [
+    30,
+    578.1,
+    0
+   ]
+  ],
+  "practice_curve": [
+   969.6,
+   712.4,
+   786.4,
+   823.2,
+   881.3,
+   831.1,
+   870.4,
+   654.8,
+   863.2,
+   829.4,
+   844.4,
+   651.6,
+   655.7,
+   795.8,
+   679.8,
+   969.0,
+   686.2,
+   901.1,
+   789.0,
+   880.9,
+   849.1,
+   944.1,
+   572.2,
+   773.0,
+   922.4,
+   848.9,
+   885.4,
+   732.9,
+   998.4,
+   787.9
+  ],
+  "practice_flags": 0,
+  "practice_last10": 831.4,
+  "practice_first10": 822.2,
+  "practice_halfgap_21_25_vs_26_30": 38.5
+ },
  "verdict": {
   "b1": {
    "diff_vs_anch": -18.0,
    "floor": 125.4,
-   "result": "not distinguishable"
+   "result": "not distinguishable",
+   "practice_vs_reload": 43.6,
+   "practice_floor": 38.5
+  },
+  "anch": {
+   "practice_vs_reload": -37.4,
+   "practice_floor": 38.5
   }
  }
 }
