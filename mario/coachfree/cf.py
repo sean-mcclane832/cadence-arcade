@@ -1,5 +1,5 @@
 """Shared pieces for coach-free work (COACHFREE.md). Worlds 6 and 7 are the coach-free development ground (Sean, 11/5):
-they NEVER get coach labels or coach demonstrations. World 4 stays the clean never-coached final test (not touched here).
+they NEVER get coach labels or coach demonstrations. World 8 (the final world, since 2026-11-06; was World 4) is the clean never-coached final test (not touched here); worlds 4 and 5 stay uncoached for now.
 
 - DEV: the 8 dev levels; TRAIN: worlds 1-3 (coached, used for anchors and the forgetting check).
 - idle(): this process at Idle priority (other agents run 8 training runs on this PC).
@@ -24,14 +24,14 @@ mem = cs.mem
 SEL, HELD, POOL = cs.SEL, cs.HELD, cs.POOL
 DEV = [f"{w}-{s}" for w in (6, 7) for s in (1, 2, 3, 4)]
 TRAIN = cs.TRAIN
-FORBIDDEN_WORLDS = (4,)  # never run anything on World 4 from this folder
+FORBIDDEN_WORLDS = (4, 5, 8)  # never run anything on the final test (World 8) or the still-uncoached worlds 4-5 from this folder
 BRAINS = HERE / "brains0"
 CKPTS = {"CatoA": BRAINS / "CatoA_ck0091.npz", "CatoB": BRAINS / "CatoB_ck0084.npz", "CiceroB": BRAINS / "CiceroB_ck0093.npz"}
 
 
 def check_level(L):
     w = int(str(L).split("-")[0])
-    assert w not in FORBIDDEN_WORLDS, f"World 4 is the held-out final test: {L} refused"
+    assert w not in FORBIDDEN_WORLDS, f"World 8 is the held-out final test (worlds 4-5 stay uncoached): {L} refused"
     return L
 
 

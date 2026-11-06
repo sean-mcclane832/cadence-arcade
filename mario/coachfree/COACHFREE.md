@@ -38,8 +38,8 @@
 
 Sean, 11/5: "add in worlds 6 and 7 to be trained coach free methods". Worlds 6 and 7 (6-1..6-4, 7-1..7-4) are the
 coach-free development ground: methods are built, piloted and debugged here and these levels NEVER get coach labels
-or coach demonstrations. World 4 stays the clean never-coached final test (nothing in this folder runs on it:
-`cf.check_level` refuses World 4). Worlds 1-3 are the coached training set: the starting brains were trained there and
+or coach demonstrations. World 8 is the clean never-coached final test (Sean, 2026-11-06; it was World 4; nothing in this folder runs on it:
+`cf.check_level` refuses worlds 4, 5 and 8; worlds 4-5 stay uncoached for now). Worlds 1-3 are the coached training set: the starting brains were trained there and
 their piles are the anchor rows.
 
 Design source: vault Research/Cadence Training Methods 2026-11-05 (Part B1, B3) and its review (B1 cost fix,
@@ -47,7 +47,7 @@ calibrated temperature, |w| <= 1, coach-row anchors, practice on POOL / score on
 
 ## Files
 - `cf.py`: dev level list, Idle priority (SetPriorityClass), `no_coach()` (any coach call in this process raises),
-  World 4 refusal, worker count (2, or 1 while a game runs).
+  World 4, 5 and 8 refusal, worker count (2, or 1 while a game runs).
 - `firstsight.py`: start check + greedy first sight on 50 HELD starts for 3 cold-start checkpoints.
 - `b1.py`: the B1 driver (`calib`, `run --arm b1|anch|rand|reload`).
 - `brains0/`: copies of the cold-start checkpoints (CatoA ck91, CatoB ck84, CiceroB ck93 = each run's best joint SEL

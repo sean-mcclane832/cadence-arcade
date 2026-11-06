@@ -1,6 +1,6 @@
 """B1: advantage-weighted self-imitation through the normalized teaching learner (COACHFREE.md).
 Coach-free: the brain's own sampled attempts on a dev level (worlds 6-7) are the only signal there. No coach call can
-run in this process (cf.no_coach). World 4 is refused (cf.check_level).
+run in this process (cf.no_coach). Worlds 4, 5 and 8 are refused (cf.check_level).
 
 One process = one arm, played serially (no pool). Arms:
   b1      practice -> own good segments -> lessons (own rows + worlds 1-3 anchor rows)

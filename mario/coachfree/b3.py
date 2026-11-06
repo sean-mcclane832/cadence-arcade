@@ -1,4 +1,4 @@
-"""B3: Brain.live with a progress reward (COACHFREE.md). Coach-free, worlds 6-7 only (cf.no_coach, World 4 refused).
+"""B3: Brain.live with a progress reward (COACHFREE.md). Coach-free, worlds 6-7 only (cf.no_coach, worlds 4, 5, 8 refused).
 
 The cold-start checkpoints were composed without arousal genes and `retune` cannot add them, so `arousal_brain` writes
 a copy of the checkpoint whose layout is recomposed with arousal=True (same seed, so the identical connectome: pre/post
