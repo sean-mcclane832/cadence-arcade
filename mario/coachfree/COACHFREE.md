@@ -23,8 +23,12 @@
   Pre-registered secondary: b1 practice - reload = **+43.6 vs floor 38.5 (reload's split-half gap): just over**.
   anch - reload = -37.4. Weak: one seed of lesson order, a floor from a single 5-vs-5 round split, and the primary
   (greedy HELD) says nothing. Suggestive at most; it is the thing to re-test with more seeds.
-- STILL RUNNING (Idle priority, starved by the 8 plateau runs; the 6-1 pair took 11 h for ~1 h of CPU work):
-  6-1 `b3` (Brain.live). 6-2 was dropped from the queue
+- 22:52 **B3 (Brain.live, actor 0.02, reward dx/20) on 6-1: WORSE.** D -17.5 (b3 - anch = -142.9, floor 125.4);
+  practice last 10 = 721.5 vs reload 831.4 (-109.9, floor 38.5), falling from 801.5 in the first 10.
+  **Forgetting: SEL 12-level mean 940 -> 424.8, 0 flags (anch 974): B3 forgot badly**, the upstream #169 erosion
+  (the reward path erodes the imitation skill), even at actor 0.02 and about a third of moments aroused.
+- Compute note (Idle priority starved by the 8 plateau runs; the 6-1 b1/anch pair took 11 h for ~1 h of CPU work).
+  6-1 `b3` done (Brain.live). 6-2 was dropped from the queue
   (runs/SKIP_6-2) to fit. When they finish: `python analyze.py 6-1` adds them to runs/pilot_6-1/score.json.
 - NEXT: see "What to try next" at the bottom. In short: fix the metric before the method (greedy HELD swings are
   bigger than any plausible B1 effect), and test B1 where sampling actually finds progress greedy doesn't.
@@ -120,6 +124,7 @@ Greedy HELD mean x (50 starts) by round; start 578.1:
    below the wall). That's the 4-4 lava-pit question on a dev level.
 3. **Keep the anchor share but lower lesson volume per round.** 100 lessons per 16 attempts is ~6x more lesson
    mass than evidence; the drift is driven by lessons, not by the own rows. Try 20-30 lessons per round.
-4. B3 result pending (still running at Idle).
+4. B3 lost on every count and wrecked worlds 1-3 (940 -> 425). Drop the reward path as tried; revisit only with
+   much lower actor rates plus anchor lessons interleaved, or macro-actions (review open question 5).
 5. Compute: Idle priority under 8 busy plateau runs gives ~0.1-0.2 of a core. Pilots should run after the plateau
    test frees the CPU, or with 1-2 cores reserved.
