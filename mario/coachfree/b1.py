@@ -154,6 +154,8 @@ def gameslot(state, log):
 def run(args):
     cf.idle(); cf.no_coach()
     L = cf.check_level(args.level)
+    if (HERE / "runs" / f"SKIP_{L}").exists():  # queue control: skip a level without killing the queue
+        print(f"SKIP_{L} present: skipped"); return
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     logf = open(out / "log.txt", "a", encoding="utf-8")
 
