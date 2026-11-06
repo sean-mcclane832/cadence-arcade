@@ -1,0 +1,66 @@
+{
+ "6-1": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "6-1"
+ },
+ "6-2": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "6-2"
+ },
+ "6-3": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "6-3"
+ },
+ "6-4": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "6-4"
+ },
+ "7-1": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "7-1"
+ },
+ "7-2": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "7-2"
+ },
+ "7-3": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "7-3"
+ },
+ "7-4": {
+  "idle_frames_checked": 139,
+  "game_ends_at": null,
+  "bad_starts": [],
+  "x_at_reset": 40,
+  "x_after_idle": 40,
+  "ram_world_stage": "7-4"
+ }
+}
