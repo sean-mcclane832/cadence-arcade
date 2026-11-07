@@ -2,6 +2,8 @@
 
     python live.py --brain runs/LivyA/LivyA_ck0200.npz --name LivyA            # 12 training levels, 5 tries each
     python live.py --brain ... --name LivyA --first 1-1 --last 1-4 --tries 5 --speed 1.5
+    python live.py --follow CiceroLowB        # a run in training: before every try, load its newest checkpoint;
+                                              # loop the levels until q (one try each)
 
 Same player and start rules as cgauntlet.py (greedy act mode, memories on, a fresh level start per try; try k starts
 after RETRY_STARTS[k-1] idle frames because the emulator is deterministic). Unlike the gauntlet, every level gets all its
@@ -99,15 +101,27 @@ def brain_panel(pl, pops, o, fin, a, text):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--brain", required=True); ap.add_argument("--name", required=True)
+    ap.add_argument("--brain", default=None); ap.add_argument("--name", default=None)
+    ap.add_argument("--follow", default=None, help="run name under runs/: always play its newest checkpoint")
     ap.add_argument("--first", default="1-1"); ap.add_argument("--last", default="3-4")
     ap.add_argument("--tries", type=int, default=5); ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--out", default=None)
     ap.add_argument("--seed", type=int, default=0, help="first play seed (follow-run.sh varies it so replays differ)")
     a = ap.parse_args()
     order = ORDER[ORDER.index(a.first):ORDER.index(a.last) + 1]
-    path = str((HERE / a.brain).resolve()) if not Path(a.brain).is_absolute() else a.brain
+
+    def newest():
+        cks = sorted((HERE / "runs" / a.follow).glob(f"{a.follow}_ck[0-9]*.npz"))
+        return str(cks[-1]) if cks else None
+
+    if a.follow:
+        a.name = a.name or a.follow; a.tries = 1; path = newest()
+        import itertools
+        order = itertools.cycle(order)
+    else:
+        path = str((HERE / a.brain).resolve()) if not Path(a.brain).is_absolute() else a.brain
     player = mem.MemPlayer(path, "greedy", 0.05, (), None)
+    label = a.name if not a.follow else f"{a.name} chunk {int(Path(path).stem.split('_ck')[1])}"
     pops = {k: np.asarray(v, np.int32) for k, v in player.b.connectome.populations.items()}
     motor = np.asarray(player.b.motor_index)
     try:
@@ -121,6 +135,12 @@ def main():
         for t in range(a.tries):
             if v.quit or v.skip:
                 break
+            if a.follow:   # a newer checkpoint since the last try: switch to it
+                ck = newest()
+                if ck and ck != path:
+                    path = ck; player = mem.MemPlayer(path, "greedy", 0.05, (), None)
+                    label = f"{a.name} chunk {int(Path(path).stem.split('_ck')[1])}"
+                    print(f"switched to {Path(path).name}", flush=True)
             st = RETRY_STARTS[min(t, len(RETRY_STARTS) - 1)]
             b = C.CBody(st, "body", "lean", lvl); g = b.g
             player.begin(seed=1000 + seed); seed += 1
@@ -134,11 +154,11 @@ def main():
                     act = player.act(o)
                 r = max(recs, key=lambda r: r.steps)
                 fin = np.asarray(r.activation)[-1, 0, :].astype(np.float32)
-                text = f"{a.name} | {L} try {t + 1}/{a.tries} | x {g.x} | decision {g.decisions}"
+                text = f"{label} | {L} try {t + 1}/{a.tries} | x {g.x} | decision {g.decisions}"
                 v.brain(brain_panel(player, pops, o, fin, int(act), text))
                 fr = []
                 g.step(act, keep_frames=fr); b.held = ACTIONS[act]
-                v.head.configure(text=f"{a.name} | {L}  try {t + 1}/{a.tries} | x {g.x} | {ACTION_NAMES[act]}   [space pause, n next level, q quit, +/- speed {v.speed:.2f}x]")
+                v.head.configure(text=f"{label} | {L}  try {t + 1}/{a.tries} | x {g.x} | {ACTION_NAMES[act]}   [space pause, n next level, q quit, +/- speed {v.speed:.2f}x]")
                 t0 = time.time()
                 for f in fr:
                     v.game(f); v.pump()
@@ -150,9 +170,10 @@ def main():
             if player.xkey:
                 oe = np.concatenate([oe, mem.xblock(g.env.ram)])
             player.end(oe, end)
-            log.append(dict(level=L, try_=t + 1, start=st, end=end, max_x=int(g.max_x), decisions=g.decisions))
+            log.append(dict(level=L, try_=t + 1, start=st, end=end, max_x=int(g.max_x), decisions=g.decisions,
+                            brain=Path(path).name))
             print(f"{L} try {t + 1}: {end} x {g.max_x}", flush=True)
-            v.head.configure(text=f"{a.name} | {L} try {t + 1}: {end.upper()} at x {g.max_x}")
+            v.head.configure(text=f"{label} | {L} try {t + 1}: {end.upper()} at x {g.max_x}")
             for _ in range(40):
                 try:
                     s_, _, _, _ = g.env.step(0)
@@ -168,7 +189,7 @@ def main():
     for e in log:
         s = summ.setdefault(e["level"], dict(flags=0, tries=0, best_x=0))
         s["tries"] += 1; s["flags"] += e["end"] == "flag"; s["best_x"] = max(s["best_x"], e["max_x"])
-    out = Path(a.out) if a.out else HERE / "runs" / a.name / f"live_{time.strftime('%Y%m%d_%H%M')}.json"
+    out = Path(a.out) if a.out else HERE / "runs" / (a.follow or a.name) / f"live_{time.strftime('%Y%m%d_%H%M')}.json"
     out.write_text(json.dumps(dict(name=a.name, brain=path, tries=log, summary=summ), indent=1))
     print(json.dumps(summ), flush=True)
     print("saved", out, flush=True)
