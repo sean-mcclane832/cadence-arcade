@@ -103,6 +103,7 @@ def main():
     ap.add_argument("--first", default="1-1"); ap.add_argument("--last", default="3-4")
     ap.add_argument("--tries", type=int, default=5); ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--seed", type=int, default=0, help="first play seed (follow-run.sh varies it so replays differ)")
     a = ap.parse_args()
     order = ORDER[ORDER.index(a.first):ORDER.index(a.last) + 1]
     path = str((HERE / a.brain).resolve()) if not Path(a.brain).is_absolute() else a.brain
@@ -114,7 +115,7 @@ def main():
     except Exception:  # noqa: BLE001
         pass
     v = Viewer(a.name, a.speed)
-    log = []; seed = 0
+    log = []; seed = a.seed
     for L in order:
         lvl = tuple(int(x) for x in L.split("-")); v.skip = False
         for t in range(a.tries):
