@@ -19,7 +19,7 @@ sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE.parent)); sys.path.in
 
 STARTS = (0, 3, 8, 13, 20, 27)  # coachcollect.py's clean-run starts
 TRAIN = [f"{w}-{s}" for w in (1, 2, 3) for s in (1, 2, 3, 4)]
-STUCK, MAX_DECISIONS = 40, 900
+STUCK, MAX_DECISIONS = int(os.environ.get("MARIO_STUCK", 225)), 900  # 225 decisions = 15 s (Sean, 2026-11-06; was 40). Earlier coverage numbers (72/72) were at 40.
 
 
 def below_normal():

@@ -46,7 +46,7 @@ sys.path.insert(0, str(HERE))
 
 EVAL_STARTS = (0, 5, 11, 17, 23)
 MAX_DECISIONS = 900
-STUCK = 40
+STUCK = int(os.environ.get("MARIO_STUCK", 225))  # decisions with no new furthest x before an attempt ends: 225 x 4 frames = 15 s (Sean, 2026-11-06; was 40 = 2.7 s). The plateau runs pin MARIO_STUCK=40.
 COPIES = 8
 HELD_BITS = (0x01, 0x02, 0x80, 0x40)  # A, B, right, left
 

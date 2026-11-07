@@ -6,6 +6,7 @@
 param([string[]]$Runs = @("CatoA", "CatoB", "CiceroA", "CiceroB", "LivyA", "LivyB", "CiceroLowA", "CiceroLowB"))
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $py = Join-Path $here "..\..\.venv-concepts\Scripts\python.exe"
+$env:MARIO_STUCK = "40"  # plateau test was pre-registered at the old 2.7 s stuck limit (2026-11-06)
 $env:NUMBA_NUM_THREADS = "1"; $env:OMP_NUM_THREADS = "1"; $env:MKL_NUM_THREADS = "1"; $env:OPENBLAS_NUM_THREADS = "1"
 foreach ($r in $Runs) {
     $out = "runs/$r"
