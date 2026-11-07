@@ -1,3 +1,4 @@
 *.out
 brains/corvus_live.npz
 brains/tmp*.npz
+brains/corvus_reward.npz
