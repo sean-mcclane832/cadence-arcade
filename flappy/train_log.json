@@ -1,0 +1,16 @@
+[
+ {
+  "round": 0,
+  "dev_median": 0.0,
+  "dev_mean": 0.0,
+  "dev_min": 0,
+  "minutes": 0.3
+ },
+ {
+  "round": 1,
+  "dev_median": 50.0,
+  "dev_mean": 45.35,
+  "dev_min": 2,
+  "minutes": 1.2
+ }
+]
