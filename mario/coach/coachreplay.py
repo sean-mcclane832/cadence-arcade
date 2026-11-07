@@ -48,12 +48,15 @@ def main():
         g = game.Game(noop_start=int(r["start"]), level=lvl, menu="lean", bg_per_frame=True); e = g.env
         done_n = len(runs)
         for k, act in enumerate(r["acts"]):
-            if st["quit"] or st["skip"]:
+            if st["quit"] or st["skip"] or g.done or e.done:
                 break
             sv = (e._time_last, e._x_position_last, e.done); e._backup(); e._frame_advance(0x80); e._restore()
             e._time_last, e._x_position_last, e.done = sv
             fr = []
-            g.step(int(act), keep_frames=fr)
+            try:
+                g.step(int(act), keep_frames=fr)
+            except ValueError:   # the run ended a frame early in this replay
+                break
             head.configure(text=f"[{tagline}] coach on {r['level']} start {r['start']} | decision {k + 1}/{len(r['acts'])} | "
                                 f"x {g.x} | {ACTION_NAMES[int(act)]} | ends: {r['end'].upper()} at x {r['max_x']}   ({done_n}/96 runs done)")
             t0 = time.time()
