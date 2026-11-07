@@ -72,7 +72,7 @@
     <p class="eyebrow">Super Mario Bros. &middot; solo from the screen</p>
     <h1>One Cadence brain beat all of World 1 in a single 5-life gauntlet</h1>
     <p class="lede">Brain W1b ("the balanced finisher", trained overnight 10/31) cleared 1-1, 1-2, 1-3 and 1-4 (Bowser) back to back with the same weights, losing three lives on 1-3, then ran out on 2-1, a level it never trained on. On 50 held-out starts per level it clears 1-1 7, 1-2 8, 1-3 9 and 1-4 27 times: every level, none consistently yet. Other brains still do better on single levels (1-1 50/50 with W1_F2ck110, 1-4 50/50). Every button in every clip is the brain's.</p>
-    <p class="lede"><b>Latest (11/5):</b> a new coach clears all 12 training levels (72 of 72 runs; the old one never cleared 2-1 or 3-4). No brain has trained with it yet. <a href="#latest">Details</a>. <b>11/3:</b> six brains trained from scratch on worlds 1 to 3, with and without memory. Memory made no difference we can tell apart from seed luck, and none of them cleared a World 4 level at first sight. <a href="#coldstart">Details</a>.</p>
+    <p class="lede"><b>Latest (11/6):</b> the plateau test is scored. Eight brains trained from scratch to chunk 200, with and without memory: none of the three memory recipes plateaus higher or lower than the no-memory brain by more than the gap between two seeds of that brain. <a href="#plateau">Details</a>. <b>The goal is now World 8</b>, the final world: never coached, learned by own play only, cleared with at most 1 death in total. Training is coached on worlds 1 to 7. <a href="#goal">The goal</a>.</p>
   </section>
 
   <figure>
@@ -104,16 +104,48 @@
     </div>
   </div>
 
-  <p class="updated">Last updated 2026-11-03 09:30 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="updated">Last updated 2026-11-06 23:59 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <nav class="toc" aria-label="On this page">
-    <a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
+    <a href="#goal">The goal</a><a href="#plateau">Plateau test</a><a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
   </nav>
 
-  <h2 id="coldstart">Cold-start night (11/2 to 11/3): memory from birth, World 4 as the exam</h2>
+  <h2 id="goal">The goal: World 8, never coached</h2>
+  <div class="callout">
+    <h3>Clear all four World 8 levels with at most 1 death in total</h3>
+    <p>World 8 is the final world. No brain is ever coached on it or trained with a coach's labels there: whatever it learns on World 8 it learns by its own play. The gate is 8-1 to 8-4 cleared with at most one death across all four levels. Training is coached on worlds 1 to 7. (Until 11/6 the exam was World 4, and before that World 2.) Nothing on this page has played World 8 yet.</p>
+    <p class="small dim">The coach is verified on worlds 1 to 3 (72 of 72 test runs, 11/5). A coverage run on worlds 4 to 7 (6 starts per level) was in progress at 11/6 23:58: 4-1, 4-2, 5-1, 5-2, 5-4, 6-1, 6-2, 6-4 and 7-1 cleared 6 of 6; 4-3 and 5-3 4 of 6; 4-4 (the maze castle) 0 of 6, all stuck; 6-3 0 of 6, all died; 7-2 to 7-4 still running. Planning lives in GitHub issues: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/1">#1 roadmap</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/2">#2 World 8</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">#4 plateau test</a>.</p>
+  </div>
+
+  <h2 id="plateau">Plateau test (11/5 to 11/6): does memory plateau higher?</h2>
+  <div class="callout">
+    <h3>Short answer: no verdict either way. None of the three memory recipes plateaus higher, and none plateaus lower.</h3>
+    <p>Sean's hypothesis: brains with and without memory learn at about the same pace, but memory plateaus higher. The six cold-start brains below (Cato, Cicero, Livy, two seeds each) resumed exactly where they stopped and trained on to chunk 200, joined by a new arm, CiceroLow (Cicero with its working memory turned down from 3.0 to 0.3, since Cadence's docs say the strong setting hurts imitation). All 8 runs reached chunk 200.</p>
+  </div>
+  <h3>The test, as written before launch (11/5)</h3>
+  <p class="small dim">One number per run: the mean over the 12 training levels of the best x on 8 fixed practice starts, averaged over chunks 191 to 200. (This is the 8-start version of the curve in the cold-start section, so it isn't directly comparable to the AUC / END table there.) Noise floor = the biggest gap between the two seeds of one brain type. Memory "plateaus higher" only if BOTH seeds beat Cato's matching seed by more than the floor; "plateaus lower" by the mirror rule; anything else: not distinguishable.</p>
+  <div class="tw"><table><thead><tr><th>run</th><th class="n">mean best x, chunks 191 to 200</th><th class="n">slope over the last 60 chunks (x per chunk)</th></tr></thead><tbody>
+    <tr><td>Cato A (control)</td><td class="n">1,160</td><td class="n">-1.0 &plusmn; 0.8</td></tr>
+    <tr><td>Cato B (control)</td><td class="n">1,310</td><td class="n">+1.9 &plusmn; 1.1</td></tr>
+    <tr><td>Cicero A</td><td class="n">1,159</td><td class="n">+1.4 &plusmn; 1.0</td></tr>
+    <tr><td>Cicero B</td><td class="n">1,281</td><td class="n">+1.9 &plusmn; 0.9</td></tr>
+    <tr><td>Livy A</td><td class="n">1,251</td><td class="n">+2.5 &plusmn; 1.1</td></tr>
+    <tr><td>Livy B</td><td class="n">1,138</td><td class="n">+0.9 &plusmn; 0.9</td></tr>
+    <tr><td>CiceroLow A</td><td class="n">1,223</td><td class="n">-0.1 &plusmn; 0.9</td></tr>
+    <tr><td>CiceroLow B</td><td class="n">1,254</td><td class="n">+1.2 &plusmn; 0.8</td></tr>
+  </tbody></table></div>
+  <ul class="verdict prose">
+    <li><b>Noise floor:</b> 150.2, the gap between Cato's own two seeds. (Arm gaps: Cicero 122, Livy 113, CiceroLow 31.)</li>
+    <li><b>Cicero vs Cato:</b> -1 / -29 (seed A / seed B): <span class="no">not distinguishable</span>.</li>
+    <li><b>Livy vs Cato:</b> +91 / -172: <span class="no">not distinguishable</span>. Livy B is outside the floor, but Livy A is on the other side, so the both-seeds rule gives no verdict.</li>
+    <li><b>CiceroLow vs Cato:</b> +63 / -56: <span class="no">not distinguishable</span>.</li>
+  </ul>
+  <p class="small dim">Five of the six seed comparisons are inside the floor. With two seeds per brain this test only sees big effects; a small memory benefit or cost is not ruled out. 6 of 8 curves still slope up slightly at chunk 200 (about +1 to +2.5 x per chunk; only Cicero B and Livy A clearly above noise), so "plateau" is loose. Correction on record: an interim text on 11/6 said "Livy plateaus lower" from a chunk-161 read (floor 51 then); at chunk 200 it is not distinguishable. These runs kept the old stuck limit (2.7 s) by design, since the test was registered with it. Notebook: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coldstart/COLDSTART.md">COLDSTART.md</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">issue #4</a>.</p>
+
+  <h2 id="coldstart">Cold-start night (11/2 to 11/3): memory from birth, World 4 as the exam (then; since 11/6 the exam is World 8)</h2>
   <div class="callout">
     <h3>Short answer: no difference we can tell apart from luck. World 4 at first sight: 0 clears.</h3>
-    <p>The memory night started from a brain that already played well without memory, so maybe it never needed one. This time six brains started from nothing: Cato (no memory), Cicero (thought + button memory) and Livy (all four memories), two seeds each, memory live from the first lesson. Same coach, same lessons, about 20 hours, trained on all 12 levels of worlds 1 to 3. World 4 was never coached or trained on: it is the exam.</p>
+    <p>The memory night started from a brain that already played well without memory, so maybe it never needed one. This time six brains started from nothing: Cato (no memory), Cicero (thought + button memory) and Livy (all four memories), two seeds each, memory live from the first lesson. Same coach, same lessons, about 20 hours, trained on all 12 levels of worlds 1 to 3. World 4 was never coached or trained on: it was the exam then. (Since 11/6 the exam is World 8, and World 4 becomes a coached training world.) These six brains continued in the plateau test above.</p>
   </div>
   <h3>The test, as written before the night</h3>
   <p class="small dim">One number per brain: the practice-start mean x averaged over all 12 training levels, as a learning curve. Compared at equal lessons (chunks 0 to 74, 37,000 lesson batches, the most every run reached). AUC = the area under that curve divided by its length (a mean x over training); END = the value at chunk 74. "Noise" = the biggest gap between the two seeds of one brain type. Memory "helps" only if BOTH seeds beat Cato's matching seed by more than the noise, on BOTH numbers.</p>
@@ -130,7 +162,7 @@
     <li><b>Cicero vs Cato:</b> AUC +7 / -66, END +97 / -164 (seed A / seed B). The seeds disagree in sign: <span class="no">not distinguishable</span>.</li>
     <li><b>Livy vs Cato:</b> AUC -64 / -63 (both below Cato by a bit more than the noise), END +140 / -125: <span class="no">not distinguishable</span>. Livy was slower on the area by both seeds, but the rule needs both numbers, and END splits.</li>
   </ul>
-  <h3>World 4, first sight (never coached, never trained)</h3>
+  <h3>World 4, first sight (not coached or trained at the time)</h3>
   <div class="tw"><table><thead><tr><th>checkpoint</th><th class="n">12 training levels, held-out flags of 600</th><th class="n">4-1 to 4-3 flags of 150</th><th class="n">4-1 to 4-3 mean x</th></tr></thead><tbody>
     <tr><td>Cato A ck74 / ck104</td><td class="n">7 / 3</td><td class="n">0 / 0</td><td class="n">520 / 513</td></tr>
     <tr><td>Cato B ck74 / ck84</td><td class="n">8 / 11</td><td class="n">0 / 0</td><td class="n">602 / 751</td></tr>
@@ -192,7 +224,7 @@
     <tr><td>Cicero</td><td class="n">88, 97, 61</td><td class="n">82</td><td class="n">524</td><td class="n">0, 0, 7</td><td class="n no">+18 (88 &rarr; 106)</td></tr>
     <tr><td>Livy</td><td class="n">43, 65, 56</td><td class="n">55</td><td class="n">572</td><td class="n">0, 0, 0</td><td class="n">-28 (43 &rarr; 15)</td></tr>
   </tbody></table></div>
-  <p class="small dim">*AgrippaX's five (and five of W1_F2ck110's) are deaths at x 735, right at the pipe; Cicero's seven, all on one checkpoint, reach x 914 to 1,021, really past it. Nobody cleared 2-1 or 2-2. World 2 is never coached.</p>
+  <p class="small dim">*AgrippaX's five (and five of W1_F2ck110's) are deaths at x 735, right at the pipe; Cicero's seven, all on one checkpoint, reach x 914 to 1,021, really past it. Nobody cleared 2-1 or 2-2. World 2 was not coached that night (it joined training on 11/2).</p>
   <ul class="verdict prose">
     <li><b>Short memory helps</b> (bar: Cicero or Livy beats Cato by 20+ of 200, or by 150+ mean x on 2-1, AND its memory off at play costs 10+ clears): <span class="no">lost</span>. Cicero is +8 (bar 20), Livy -19; on 2-1 both are behind Cato. Cicero with its memory switched off <i>gains</i> 18 clears. Livy loses 28 with its memory off, but its weights grew up leaning on it, and it still plays worse than the control.</li>
     <li><b>Place memory works</b> (bar: retry curve 300+ above the reload control by life 10, or a level cleared that the control never clears): <span class="no">lost</span>. Livy at life 10 on 1-2: x 904 vs 1,320 for the control, and 10 clears vs 18 in 80 lives; 2-1: 501 vs 530. Agrippa and AgrippaX lost the same test on 11/1.</li>
@@ -201,7 +233,7 @@
   <div class="callout">
     <h3>How big is the noise?</h3>
     <p>Cato and AgrippaX are two copies of the same recipe (AgrippaX's place memory stays empty all night, and its extra input never reaches the decisions), so the gap between them is luck. Their top-3 means differ by only 4 clears (74 vs 70), but single checkpoints from one line swing from 33 to 119 of 200, and the twins' best picks differ by 34. A rough estimate from that spread: a top-3 difference under about 25 clears is noise. Cicero (+8) and Livy (-19) are both inside it. On 2-1 the twins' means differ by 82 x. The 1-3 record (Cato_ck20, 46/50) is one lucky draw from many.</p>
-    <p class="small dim">Also unequal: Cicero got about 3 hours less (it stopped itself after 3 hours without a new best and was restarted, then waited for a CPU slot), and Livy's lessons cost about 3x as much, so it saw fewer. One seed per brain. The next nights fix this: 3 seeds per brain, equal lessons, a checkpoint rule fixed in advance.</p>
+    <p class="small dim">Also unequal: Cicero got about 3 hours less (it stopped itself after 3 hours without a new best and was restarted, then waited for a CPU slot), and Livy's lessons cost about 3x as much, so it saw fewer. One seed per brain. The next nights fixed most of this: equal lessons and a rule fixed in advance. The plan said 3 seeds per brain; both later tests (cold start, plateau) used 2.</p>
   </div>
 
   <h3>Retry curves: does it learn from dying?</h3>
@@ -269,9 +301,11 @@
   <tr><td>1-2</td><td class="n big mid">29/50</td><td>1-2_12n59</td><td><span class="no">not yet</span>: up from 8/50 overnight; clears more than half the time</td></tr>
   <tr><td>1-3</td><td class="n big ok">46/50</td><td>Cato_ck20 (best of many)</td><td><span class="ok">consistent</span>; the same brain also clears 1-1 33, 1-2 10, 1-4 30 (119/200). Before: one_11_13 42/50, U3ck83 45/50</td></tr>
   <tr><td>1-4 <span class="tag">Bowser</span></td><td class="n big ok">50/50</td><td>U3ck28</td><td><span class="ok">perfect</span> on held-out starts; the same brain also clears 1-1 on 30/50</td></tr>
-  <tr><td>2-1</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~330 (random buttons ~380)</td></tr>
-  <tr><td>2-2</td><td class="n big no">0/50</td><td>one_11_13, first sight</td><td>never practised: reaches x ~210 (random buttons ~1,230)</td></tr>
-  <tr><td>4-1 to 4-3</td><td class="n big no">0/150</td><td>cold-start brains, first sight</td><td>never coached or trained (the exam): best mean x 751 (Cato B ck84), furthest 1,859</td></tr>
+  <tr><td>2-1</td><td class="n big no">0/50</td><td>cold-start brains (best of 11 checkpoints)</td><td>a training level since 11/2, still never cleared: best mean x 931. At first sight (one_11_13, 10/31) it reached x ~330 (random buttons ~380)</td></tr>
+  <tr><td>2-2</td><td class="n big no">0/50</td><td>cold-start brains (best of 11 checkpoints)</td><td>a training level since 11/2, still never cleared: best mean x 1,266. At first sight (one_11_13, 10/31) it reached x ~210 (random buttons ~1,230)</td></tr>
+  <tr><td>2-3 to 3-4</td><td class="n big mid">best 10/50</td><td>cold-start brains (best of 11 checkpoints)</td><td>training levels since 11/2: 2-3 1, 2-4 9 (Cicero B ck93), 3-1 0, 3-2 10 (Cicero B ck74), 3-3 1, 3-4 0, of 50 each</td></tr>
+  <tr><td>4-1 to 4-3</td><td class="n big no">0/150</td><td>cold-start brains, first sight</td><td>first sight before any coaching (11/3); World 4 is now a coached training world: best mean x 751 (Cato B ck84), furthest 1,859</td></tr>
+  <tr><td>World 8</td><td class="n big">-</td><td>none yet</td><td>the exam: never coached, own play only; gate = all four levels with at most 1 death in total</td></tr>
   </tbody></table></div>
   <p class="small dim">Solo clears out of 50 held-out starts. A start waits a different number of frames before the first button, which moves the enemies and lifts; none of these 50 were used to train the brain or to pick the checkpoint. "Consistent" = at least 40 of 50. Brains by name: see "Meet the brains". The best single brain across three levels is U3ck83 (15 / 45 / 33 on 1-1 / 1-3 / 1-4).</p>
 
@@ -393,6 +427,10 @@
 
   <h2 id="latest">Latest</h2>
   <ul class="log" id="latest-new">
+    <li><time>11/06 23:56</time><span><b>Plateau test final: no verdict either way.</b> All 8 runs reached chunk 200 and were scored exactly as pre-registered. None of the three memory recipes (Cicero, Livy, CiceroLow) passed "plateaus higher", and none passed "plateaus lower". Floor 150.2 = the gap between Cato's own two seeds. Versus the matching Cato seed (A / B): Cicero -1 / -29, Livy +91 / -172, CiceroLow +63 / -56. Five of six inside the floor; Livy B is outside, but Livy A has the opposite sign. Two seeds only see big effects. 6 of 8 curves still slope up slightly, so "plateau" is loose. This corrects an interim 11/6 text that said "Livy plateaus lower" (a chunk-161 read). Details in "Plateau test" above, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">issue #4</a>.</span></li>
+    <li><time>11/06</time><span><b>New goal: World 8, never coached.</b> The exam moves from World 4 to World 8, the final world: learned by own play only, gate = all four levels with at most 1 death in total. Training will be coached on worlds 1 to 7. The coach's coverage run on worlds 4 to 7 (at 23:58): 6 of 6 on 4-1, 4-2, 5-1, 5-2, 5-4, 6-1, 6-2, 6-4, 7-1; 4 of 6 on 4-3 and 5-3; 0 of 6 on 4-4 (maze castle, stuck) and 6-3 (died); 7-2 to 7-4 running. Also new: an attempt now ends after 15 s without progress (was 2.7 s). Plan: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/1">#1</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/2">#2</a>.</span></li>
+    <li><time>11/06</time><span>Side build, not Mario: Corvus, a Cadence brain that plays a Flappy Bird clone by imitating a scripted teacher (four numbers about the pipes, no pixels). Median 70 pipes on 20 fresh games (teacher 100). Two quick attempts to keep learning without the teacher both failed. <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/flappy/FLAPPY.md">FLAPPY.md</a></span></li>
+    <li><time>11/05 22:52</time><span><b>Learning without a coach, first pilots on 6-1: no win.</b> At first sight the cold-start brains cleared 0 of 1,200 attempts on worlds 6 and 7 (then uncoached). On 6-1, B1 (the brain imitates its own best sampled attempts) was not distinguishable from a control that only got the worlds 1 to 3 lessons; those lessons alone swing 6-1 play from x 502 to 1,370 between checks, so the metric is the bottleneck. B3 (Brain.live, learning from reward while playing) was worse than the control and forgot worlds 1 to 3 (12-level mean x 940 to 425, 0 flags). <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coachfree/COACHFREE.md">COACHFREE.md</a></span></li>
     <li><time>11/05 09:25</time><span><b>The plateau test is running.</b> Sean's hypothesis: brains with and without memory learn at about the same pace, but memory plateaus higher. The six cold-start brains (Cato, Cicero, Livy, two seeds each) resumed exactly where they stopped and train on to chunk 200, joined by a new arm, CiceroLow (Cicero with its working memory turned down from 3.0 to 0.3, since Cadence's docs say the strong setting hurts imitation). Rule written before launch: mean of the last 10 chunks, and memory only "plateaus higher" if both seeds beat the matching Cato seed by more than the seed gap. First results Friday; CiceroLow finishes Saturday. Separately, worlds 6 and 7 are now the playground for coach-free learning (never coached); World 4 stays the untouched test.</span></li>
     <li><time>11/05 03:00</time><span><b>A smarter coach: the teacher can now clear every training level.</b> The brains learn by copying a coach that plans a few moves ahead in a copy of the game. The old coach cleared 54 of 72 test runs on the 12 training levels and never cleared 2-1 or 3-4 (0 of 6 each), so no brain could learn those from it. The new one clears 72 of 72, including 2-1 and 3-4 at 6 of 6. Fixes: a jump only counts if Mario can survive after it lands (the old coach picked jumps that died one step past its lookahead), a random search at stalls finds 2-1's springboard bounce, and it sticks with its chosen plan instead of flip-flopping. It costs about 1.5 to 1.8x more time per label. No brain has trained with it yet; World 4 stays coach-free. <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a></span></li>
     <li><time>11/03 09:30</time><span><b>Cold-start night: memory from birth didn't make a difference we can measure.</b> Six fresh brains (Cato, Cicero, Livy, two seeds each) trained about 20 hours on all 12 levels of worlds 1 to 3. At equal lessons the 12-level learning curves (area / end value): Cato 792 / 1,035, Cicero 763 / 1,002, Livy 729 / 1,043, with seed gaps up to 56 / 153. Both memory brains: not distinguishable by the rule written before the night. World 4 at first sight (never coached): 0 of 150 on 4-1 to 4-3 for every brain; 4-4 stops every brain at x 138, the first lava pit (checked: a real death, not a bug). Gauntlets: one 1-1 clear in 48 runs (sampled).</span></li>
@@ -447,6 +485,7 @@
     <li><b>It sees the screen and feels its body.</b> Input: the screen as coarse grey blocks (this frame and the last), plus what Mario's body knows: speed, on the ground or in the air, and which buttons the thumb is holding. No enemy positions from the game's memory.</li>
     <li><b>First it was blind to its own thumb.</b> In Mario a jump starts on the <i>press</i> of A. Holding A does nothing. The early brain couldn't feel held buttons, so the coach's advice for the same screen flipped between "let go" and "press", and it froze against pipes. Feeling the held buttons fixed that, and the first solo clear of 1-1 came the same night.</li>
     <li><b>Coach labels, then its own mistakes (DAgger).</b> A look-ahead coach tries the next second of buttons on a copy of the game and writes down the best button for each screen. The brain plays alone; the coach labels the screens the brain actually reached, especially just before it died. The coach never takes the controls in any test.</li>
+    <li><b>When an attempt ends.</b> A death, a flag, or no new furthest x for too long. From 11/6 that limit is 15 s (225 decisions of 4 frames); before it was 2.7 s (40 decisions), which could end an attempt while Mario was waiting for an enemy or a lift. The earlier results on this page, and the plateau test (kept at 2.7 s by design), used the old limit.</li>
     <li><b>Fragility, and the fix that worked.</b> Its fit to the coach's labels barely moves, but its solo results swing from 10/10 to 2/10 between small training steps: a level is a chain of dozens of must-get-right moments. Weight averaging, voting, smaller steps and longer training didn't steady it. What worked: save a checkpoint every few minutes, test each one alone on fixed practice starts, keep the best, and check it on starts it never saw.</li>
   </ul>
 
@@ -454,9 +493,9 @@
   <ul class="prose">
     <li><b>One brain for everything, but not consistently.</b> W1b clears all four World 1 levels, but 7-27 times in 50, not 40+. one_11_13 holds 1-1 and 1-3 consistently; U3ck83 clears three levels but only 1-3 consistently. The best 1-4 checkpoint (U3ck28, 50/50) clears 1-1 only 30/50. The best all-three checkpoints so far: 1-1 25/50, 1-3 15/50, 1-4 37/50 (U3ck44), or 1-1 15/50, 1-3 45/50, 1-4 33/50 (U3ck83).</li>
     <li><b>1-2 is not cleared reliably.</b> Best 29/50. On 1-2 the brain fits only about 85% of the coach's labels, and even a standard neural net predicts only about 85% of them on screens it hasn't seen. Ruled out: the coach, sharper eyes, step size, more training, a bigger brain.</li>
-    <li><b>Held-out means held-out starts, not new levels.</b> Levels it never practised (2-1, 2-2) go nowhere, even for the brains that clear all of World 1: the skill doesn't transfer yet.</li>
-    <li><b>Memory brains: no gain yet.</b> On the 11/1 night the gap between two copies of the same no-memory recipe (top-3 means 74 vs 70, single checkpoints 33 to 119 of 200) was bigger than anything a memory added. One seed per brain and unequal compute; record numbers from a single checkpoint (like 1-3 46/50) are best-of-many picks. Notebook: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/memory/MEMORY.md">MEMORY.md</a>.</li>
-    <li><b>This is not "Cadence beats Super Mario Bros."</b> It's World 1, with a coach's labels as the teacher. The coach itself can't clear 2-1 yet, so the brain can't be taught it.</li>
+    <li><b>Held-out means held-out starts, not new levels.</b> Levels outside training go nowhere at first sight: World 2 for the World 1 brains, World 4 (0 of 150) and worlds 6 to 7 (0 of 1,200) for the cold-start brains. The skill doesn't transfer yet. And 2-1 and 2-2, training levels since 11/2, are still never cleared.</li>
+    <li><b>Memory brains: no gain yet.</b> On the 11/1 night the gap between two copies of the same no-memory recipe (top-3 means 74 vs 70, single checkpoints 33 to 119 of 200) was bigger than anything a memory added. One seed per brain and unequal compute; record numbers from a single checkpoint (like 1-3 46/50) are best-of-many picks. Memory from birth (cold start, then the plateau test to chunk 200) also showed no difference beyond the seed gap, with 2 seeds per brain. Notebook: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/memory/MEMORY.md">MEMORY.md</a>.</li>
+    <li><b>This is not "Cadence beats Super Mario Bros."</b> It's World 1, with a coach's labels as the teacher, and World 8 has not been played. The old coach never cleared 2-1 or 3-4; the new one clears 72 of 72 test runs on worlds 1 to 3 (11/5, at the old 2.7 s stuck limit), but no brain has trained with it yet.</li>
     <li>Numbers on this page are from the run logs, and earlier claims that didn't hold are corrected in the Latest log. Notebooks, dead ends included: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/concepts/CONCEPTS.md">CONCEPTS.md</a> (the 10/31 night: RAM test, death clinic, the all-four brains, every gauntlet) and <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/LEARNING_FIX.md">LEARNING_FIX.md</a> (everything before).</li>
   </ul>
 
