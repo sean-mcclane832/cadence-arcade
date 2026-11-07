@@ -12,6 +12,6 @@ while true; do
   if [ "$ck" = "$shown" ]; then sleep 20; continue; fi
   shown=$ck; n=$((10#$(echo "$ck" | sed 's/.*_ck\([0-9]*\)\.npz/\1/')))
   echo "$(date +%T) showing $ck"
-  "$PY" live.py --brain "runs/$NAME/$ck" --name "$NAME chunk $n (training)" --tries 1 "$@" || exit 0
+  "$PY" live.py --brain "runs/$NAME/$ck" --name "$NAME chunk $n (training)" --tries 1 --out "runs/$NAME/live_ck$(printf %04d $n).json" "$@" || exit 0
   [ "$n" -ge "$LAST" ] && { echo "last checkpoint shown"; exit 0; }
 done
