@@ -54,3 +54,18 @@ point in Cadence's docs: a pupil that only watches never sees the states its own
 
 ## Next, if wanted
 Pixels instead of the four numbers, reward learning on its own after imitation, and a teacher-free run.
+
+## Learning without the teacher (2026-11-06, quick attempts, both failed)
+Both start from the tested Corvus (dev median 81 on 20 dev games, seed 1000, cap 150, greedy).
+
+- **Reward only** (`watch.py --reward`): `Brain.step` with +1 per pipe, -1 per death, +0.01 per frame, actor_eta 0.1.
+  Corvus's two motor neurons are nearly tied, so sampled moves flip easily: at the composed temperature it scored 0,
+  at 0.001 around 10. Over 43 games it drifted down from about 10 pipes to about 2.
+- **Self-teaching** (`selfteach.py`, the lesson protocol with its own outcomes as labels): 5% of greedy moves flipped
+  to explore; the moves since the last pipe passed become labels. Dev median 81 -> 1.5 after one round, 0 by round 3.
+  A first version that also taught "the opposite of the last 6 moves" before a death went 81 -> 0 in one round.
+
+Why the self-teaching broke: the brain uses `learning_surprise=True`, so only labels that differ from its current
+answer teach anything. Its own greedy moves agree, so the only labels that taught were the random 5% flips: it was
+being taught noise. A pipe passed 50 frames later says nothing about whether a flip helped. Same shape as the Mario
+coach-free pilots (B1 self-imitation not distinguishable, B3 `Brain.live` forgot worlds 1-3).
