@@ -1,1 +1,3 @@
 *.out
+brains/corvus_live.npz
+brains/tmp*.npz
