@@ -22,9 +22,9 @@ def patch_game_class(name="base", opts=None):
 
     def __init__(self, *a, **kw):
         init(self, *a, **kw)
-        if self.level[0] in (4, 5, 8):  # held-out worlds (8 is the final test since 2026-11-06): brains may play them, the coach may not label them
+        if self.level[0] == 8:  # World 8 is the final test (Sean, 2026-11-06): brains may play it, the coach may not label it
             def refuse(*_a, **_k):
-                raise RuntimeError("Worlds 4, 5 and 8 are held out (8 is the final test): no coach labels there")
+                raise RuntimeError("World 8 is the final test: no coach labels there")
             self.coach_weighted = self.coach_scores = self.coach = refuse
             return
         smartcoach.install(self, name, **(opts or {}))

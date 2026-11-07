@@ -44,7 +44,7 @@ def write_level(out, L, rs, horizon):
     runs = [dict(start=k[1], eps=k[2], flag=bool(r["flag"]), end=r["end"], max_x=int(r["max_x"]), decisions=int(r["decisions"]),
                  secs=r["secs"]) for k, r in rs]
     clean = [x for x in runs if x["eps"] == 0.0]
-    cov = dict(level=L, horizon=horizon, stuck=STUCK_USED[0] or 40, clean_clears=sum(x["flag"] for x in clean), clean_runs=len(clean),
+    cov = dict(level=L, horizon=horizon, stuck=STUCK_USED[0] or C.D.STUCK, clean_clears=sum(x["flag"] for x in clean), clean_runs=len(clean),
                all_clears=sum(x["flag"] for x in runs), rows=int(len(y)), critical=int((W > 1).sum()),
                clean_max_x=[x["max_x"] for x in clean], clean_ends=[x["end"] for x in clean], runs=runs)
     (d / "coverage.json").write_text(json.dumps(cov, indent=1))

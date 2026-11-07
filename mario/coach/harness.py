@@ -5,7 +5,7 @@ seconds per coach call.
 
     python harness.py --coach base --levels 1-1,2-1 --out runs/cov_base --workers 4
 
-World 4 is the held-out test: this harness refuses to run it.
+World 8 is the final test (Sean, 2026-11-06): this harness refuses to run it. Worlds 1-7 are the coached training set.
 """
 from __future__ import annotations
 import argparse, json, os, sys, time
@@ -48,7 +48,7 @@ def run_one(task, cb=None):
     import smartcoach
     L = task["level"]
     lvl = tuple(int(v) for v in L.split("-"))
-    assert lvl[0] in (1, 2, 3), "World 4 is the held-out test: no coach runs there"
+    assert lvl[0] in (1, 2, 3, 4, 5, 6, 7), "World 8 is the final test: no coach runs there"
     g = game.Game(noop_start=int(task["start"]), level=lvl, menu="lean", bg_per_frame=True)
     e = g.env
     for a in task.get("prefix", []):  # replay a recorded action prefix (tests from a hard spot)
@@ -98,7 +98,7 @@ def main():
     ap.add_argument("--workers", type=int, default=4); ap.add_argument("--opts", default="{}")
     a = ap.parse_args()
     levels = a.levels.split(",")
-    assert all(L.split("-")[0] in "123" for L in levels), "World 4 is held out"
+    assert all(L.split("-")[0] in "1234567" for L in levels), "World 8 is held out (the final test)"
     out = (HERE / a.out); out.mkdir(parents=True, exist_ok=True)
     opts = json.loads(a.opts)
     nw = workers_allowed(a.workers)
