@@ -1,0 +1,77 @@
+{
+ "at": 200,
+ "CatoA": {
+  "primary": 1160.1,
+  "slope60": -1.04,
+  "slope60_se": 0.78
+ },
+ "CatoB": {
+  "primary": 1310.3,
+  "slope60": 1.89,
+  "slope60_se": 1.06
+ },
+ "CiceroA": {
+  "primary": 1159.0,
+  "slope60": 1.37,
+  "slope60_se": 0.96
+ },
+ "CiceroB": {
+  "primary": 1281.2,
+  "slope60": 1.92,
+  "slope60_se": 0.91
+ },
+ "LivyA": {
+  "primary": 1250.8,
+  "slope60": 2.47,
+  "slope60_se": 1.07
+ },
+ "LivyB": {
+  "primary": 1138.1,
+  "slope60": 0.85,
+  "slope60_se": 0.89
+ },
+ "CiceroLowA": {
+  "primary": 1223.0,
+  "slope60": -0.13,
+  "slope60_se": 0.86
+ },
+ "CiceroLowB": {
+  "primary": 1254.4,
+  "slope60": 1.21,
+  "slope60_se": 0.82
+ },
+ "arms": {
+  "Cato": {
+   "mean": 1235.2,
+   "gap": 150.2
+  },
+  "Cicero": {
+   "mean": 1220.1,
+   "gap": 122.2
+  },
+  "Livy": {
+   "mean": 1194.4,
+   "gap": 112.7
+  },
+  "CiceroLow": {
+   "mean": 1238.7,
+   "gap": 31.4
+  }
+ },
+ "floor": 150.2,
+ "verdict_Cicero": {
+  "dA": -1.1,
+  "dB": -29.1,
+  "verdict": "NOT DISTINGUISHABLE"
+ },
+ "verdict_Livy": {
+  "dA": 90.7,
+  "dB": -172.2,
+  "verdict": "NOT DISTINGUISHABLE"
+ },
+ "verdict_CiceroLow": {
+  "dA": 62.9,
+  "dB": -55.9,
+  "verdict": "NOT DISTINGUISHABLE"
+ }
+}
