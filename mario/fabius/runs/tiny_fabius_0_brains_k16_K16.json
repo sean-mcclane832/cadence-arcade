@@ -1,0 +1,250 @@
+{
+ "arm": "fabius",
+ "lseed": 0,
+ "K": 16,
+ "brains": "brains_k16",
+ "train_rows": 570,
+ "held_rows": 198,
+ "pred_balance": [
+  0.067,
+  0.869,
+  0.064
+ ],
+ "sec_per_lesson": 0.869,
+ "curve": [
+  {
+   "lessons": 0,
+   "seen": {
+    "agree": 0.025,
+    "agree_crit": 0.083,
+    "majority": 0.706,
+    "slot_acc": 0.32,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.035,
+    "agree_crit": 0.059,
+    "majority": 0.783,
+    "slot_acc": 0.339,
+    "slot_same": 0.868
+   },
+   "dw": 0.0
+  },
+  {
+   "lessons": 25,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.866,
+    "slot_same": 0.868
+   },
+   "dw": 0.3423
+  },
+  {
+   "lessons": 50,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.4592
+  },
+  {
+   "lessons": 75,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.4861
+  },
+  {
+   "lessons": 100,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.5392
+  },
+  {
+   "lessons": 125,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.5844
+  },
+  {
+   "lessons": 150,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.6139
+  },
+  {
+   "lessons": 175,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.6439
+  },
+  {
+   "lessons": 200,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.6688
+  },
+  {
+   "lessons": 225,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.6929
+  },
+  {
+   "lessons": 250,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.717
+  },
+  {
+   "lessons": 275,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.867,
+    "slot_same": 0.868
+   },
+   "dw": 0.7382
+  },
+  {
+   "lessons": 300,
+   "seen": {
+    "agree": 0.706,
+    "agree_crit": 0.333,
+    "majority": 0.706,
+    "slot_acc": 0.869,
+    "slot_same": 0.869
+   },
+   "held": {
+    "agree": 0.783,
+    "agree_crit": 0.441,
+    "majority": 0.783,
+    "slot_acc": 0.866,
+    "slot_same": 0.868
+   },
+   "dw": 0.7563
+  }
+ ]
+}

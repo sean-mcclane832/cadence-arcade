@@ -58,7 +58,18 @@ N_FOV = (FOV_W // FOV_B) * (FOV_H // FOV_B)
 def n_inputs(senses: str) -> int:
     from game import N_FRAME, N_PROPRIO_ONE
     n = 2 * N_FRAME + (0 if senses == "blind" else (N_PROPRIO_ONE + len(HELD_BITS)) * COPIES)
+    if senses == "fabius":  # fabius/eyes.py: colour fovea + previous grey at the same window
+        return n + _fabius_eyes().N_FOVEA
     return n + (2 * N_FOV if senses == "fovea" else 0)
+
+
+def _fabius_eyes():
+    import importlib.util
+    m = sys.modules.get("fabius_eyes")
+    if m is None:
+        spec = importlib.util.spec_from_file_location("fabius_eyes", Path(__file__).resolve().parent / "fabius" / "eyes.py")
+        m = importlib.util.module_from_spec(spec); sys.modules["fabius_eyes"] = m; spec.loader.exec_module(m)
+    return m
 
 
 def fovea(screen, ram) -> np.ndarray:
@@ -85,6 +96,7 @@ class Body:
         self.senses = senses
         self.held = 0x00
         self.fprev = None
+        self.sprev = None  # "fabius": the screen at the previous decision
 
     def obs(self) -> np.ndarray:
         g = self.g
@@ -100,12 +112,16 @@ class Body:
             if self.fprev is None:
                 self.fprev = f
             o = np.concatenate([o, f, self.fprev])
+        elif self.senses == "fabius":
+            o = np.concatenate([o, _fabius_eyes().fovea(g.screen, g.screen if self.sprev is None else self.sprev, g.env.ram)])
         return o
 
     def step(self, a: int):
         from game import ACTIONS
         if self.senses == "fovea":
             self.fprev = fovea(self.g.screen, self.g.env.ram)
+        if self.senses == "fabius":
+            self.sprev = self.g.screen.copy()
         self.g.step(a)
         self.held = ACTIONS[a]
 

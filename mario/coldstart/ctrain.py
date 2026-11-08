@@ -15,6 +15,11 @@ stationary memory guess for pile rows, DAgger), changed for a FRESH brain on 12 
 
     python ctrain.py --name CatoA --init brains0/CatoA_ck0.npz --out runs/CatoA --stop-at 08:00
     python ctrain.py --name CatoA --init brains0/CatoA_ck0.npz --out runs/CatoA --resume --sel8 --stop-chunk 200 --stop-at ""
+  - 11/8 (Fabius, vault Plans/Fabius Build 2026-11-08): --senses fabius plays and stores Fabius's eyes (3,536);
+    --pred teaches the prediction slots (fabius/pred.py) next to the button; --mask btn|all|mixN scales the nudge mask of
+    the button neurons / every output neuron by the slot count (each slot's nudge is beta / slots, 0.00095 at 105
+    slots, below the settle tolerance 0.003). Set before every lesson: the learner is rebuilt at the first lesson
+    after a config change, which drops a mask set at load (fabius tiny test, 11/8). --levels-file picks a levels.json (default data/levels.json).
 """
 from __future__ import annotations
 
@@ -118,6 +123,13 @@ def main():
     ap.add_argument("--sel8", action="store_true", help="SEL on cs.SEL8 (8 fixed starts per level) instead of all 24")
     ap.add_argument("--resume", action="store_true", help="continue the run in --out from its last checkpoint")
     ap.add_argument("--stop-chunk", type=int, default=0, help="stop after this chunk (0: no limit besides --max-chunks)")
+    ap.add_argument("--senses", default="body", help="dagger.Body senses (body: 2,000; fabius: 3,536)")
+    ap.add_argument("--pred", action="store_true", help="teach Fabius's prediction slots (brain composed with slots)")
+    ap.add_argument("--mask", default="none", help="nudge mask scaling: none, btn, all, mixN "
+                    "(buttons x slot count, prediction slots x N; mix10 from fabius/TINY.md)")
+    ap.add_argument("--levels-file", default="data/levels.json")
+    ap.add_argument("--dagger-stuck", type=int, default=0, help="stuck limit of the DAgger episodes only (0: the global "
+                    "one). SEL keeps the global limit. Fabius dry run 11/8: a stalled brain at 225 costs ~8 min of coach labels")
     args = ap.parse_args()
     sel = tuple(cs.SEL8) if args.sel8 else tuple(SEL)
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
@@ -129,7 +141,10 @@ def main():
     from cadence import Brain
     levels = args.levels.split(",")
     deep = cs.deep_levels()
-    lv_dirs = json.loads((cs.DATA / "levels.json").read_text())
+    lv_dirs = json.loads((HERE / args.levels_file).read_text())
+    if args.pred:
+        sys.path.insert(0, str(HERE.parent / "fabius"))
+        import pred as PR  # noqa: E402
     if args.coach == "base":  # default: unchanged
         ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=cs.worker_init, initargs=(deep,))
     else:  # opt-in smarter coach for DAgger labels (World 4 refused inside plug)
@@ -147,6 +162,10 @@ def main():
         d = (HERE / lv_dirs[L]).resolve()
         z = np.load(d / "data.npz"); piles[L] = dict(X=z["X"], y=z["y"], W=z["W"].astype(np.float64))
         seqs[L].load(d / f"seq_{L}_coach.npz")
+        if args.pred:  # the pile is the coach attempts in order (coachcollect): its next-picture labels come from them
+            P = np.concatenate([PR.labels(O) for O, _ in seqs[L].atts])
+            assert len(P) == len(piles[L]["y"]) and np.array_equal(np.concatenate([O for O, _ in seqs[L].atts]), piles[L]["X"]), L
+            piles[L]["P"] = P
         if args.resume:  # DAgger attempts this run already collected, in round order (as mtrain --more-seq)
             for q in sorted(out.glob(f"seq_{L}_d*.npz")):
                 seqs[L].load(q)
@@ -164,13 +183,25 @@ def main():
         import ast  # the recipe must match the run's first leg (its first "start:" line in log.txt)
         first = next(l for l in open(out / "log.txt", encoding="utf-8") if " start: {" in l)
         orig = ast.literal_eval(first.split(" start: ", 1)[1].split("} deep=", 1)[0] + "}")
-        for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts"):
+        for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts", "senses", "pred",
+                    "mask", "levels_file", "dagger_stuck"):
             if key in orig or key in ("coach", "coach_opts"):
                 want = orig.get(key, {"coach": "base", "coach_opts": "{}"}.get(key))
                 assert getattr(args, key) == want, f"--resume recipe mismatch: {key} {getattr(args, key)!r} vs first leg {want!r}"
     else:
         init = (HERE / args.init).resolve()
     b = mem.make_cold(Brain.load(init))  # settles from rest, as the act-mode players do
+    assert len(b.sensory_index) == cs.C.D.n_inputs(args.senses), (len(b.sensory_index), args.senses)
+    slotted = b.learner.slot_count > 1
+    assert slotted == args.pred, "--pred needs a brain composed with prediction slots, and only such a brain"
+
+    def set_mask():
+        if args.mask.startswith("mix"):
+            b.learner.output_mask[b.learner.output_index[7:]] = float(args.mask[3:])
+            b.learner.output_mask[b.learner.output_index[:7]] = float(b.learner.slot_count)
+        elif args.mask != "none":
+            idx = b.learner.output_index[:7] if args.mask == "btn" else b.learner.output_index
+            b.learner.output_mask[idx] = float(b.learner.slot_count)
     b.learner.config = dataclasses.replace(b.learner.config, eta=args.eta, eta_bias=args.eta / 10)
     rng = np.random.default_rng(11)
     for k in range(1, k0 + 1):  # replay the main RNG stream to where the run stopped (DAgger starts, lesson seeds)
@@ -201,7 +232,7 @@ def main():
 
     def consider(path, k):
         rec = {}
-        tasks = [dict(policy=str(path), kind="act", level=L, start=s) for L in levels for s in sel]
+        tasks = [dict(policy=str(path), kind="act", level=L, start=s, senses=args.senses) for L in levels for s in sel]
         res = pmap(mem.episode, tasks)
         for i, L in enumerate(levels):
             s = summ(res[i * len(sel):(i + 1) * len(sel)]); rec[L] = s
@@ -234,17 +265,27 @@ def main():
             for _ in range(kk):
                 if L in sp and r2.random() < args.p_seq:
                     a, i, y, _ = seqs[L].rows[int(r2.choice(len(sp[L]), p=sp[L]))]
-                    O, A = seqs[L].atts[a]; items.append((O, A, i)); ys.append(y)
+                    O, A = seqs[L].atts[a]; items.append((O, A, i))
+                    ys.append(np.concatenate([[y], seq_pred(L, a)[i]]) if args.pred else y)
                 else:
                     j = int(r2.choice(len(piles[L]["y"]), p=pile_p[L]))
-                    items.append((piles[L]["X"][j:j + 1], np.zeros(0, np.int64), 0)); ys.append(int(piles[L]["y"][j]))
+                    items.append((piles[L]["X"][j:j + 1], np.zeros(0, np.int64), 0))
+                    ys.append(np.concatenate([[piles[L]["y"][j]], piles[L]["P"][j]]) if args.pred else int(piles[L]["y"][j]))
         return items, np.array(ys, np.int64)
+
+    pred_cache = {}
+
+    def seq_pred(L, a):
+        if (L, a) not in pred_cache:
+            pred_cache[(L, a)] = PR.labels(seqs[L].atts[a][0])
+        return pred_cache[(L, a)]
 
     def lessons(n):
         r2 = np.random.default_rng(rng.integers(1 << 30))
         for _ in range(n):
             items, y = batch_items(32, r2)
             x = mem.prime(b, items, args.K)
+            set_mask()
             b.lesson(x, y)
         b.reset()
 
@@ -253,8 +294,8 @@ def main():
         for _ in range(n // 32):
             items, y = batch_items(32, r2)
             x = mem.prime(b, items, args.K)
-            a = np.asarray(b.act(x, greedy=True)).reshape(-1)
-            agree.append(a == y); agree_seq.append(np.array([len(it[1]) > 0 for it in items]))
+            a = np.asarray(b.act(x, greedy=True)).reshape(len(y), -1)[:, 0]
+            agree.append(a == (y[:, 0] if y.ndim == 2 else y)); agree_seq.append(np.array([len(it[1]) > 0 for it in items]))
         b.reset()
         ag = np.concatenate(agree); sq = np.concatenate(agree_seq)
         return dict(all=round(float(ag.mean()), 3), ordered=round(float(ag[sq].mean()), 3) if sq.any() else None,
@@ -264,7 +305,8 @@ def main():
         t = time.time(); tasks, tl = [], []
         for L in levels:
             for i, s in enumerate(rng.choice(POOL, args.episodes, replace=False)):
-                tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(s), keep_obs=True, label=True, seed=k * 100 + i)); tl.append(L)
+                tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(s), keep_obs=True, label=True, seed=k * 100 + i,
+                                  senses=args.senses, stuck=args.dagger_stuck or None)); tl.append(L)
         res = pmap(mem.episode, tasks)
         msg = []
         for L in levels:
@@ -277,7 +319,9 @@ def main():
             msg.append(f"{L} +{sum(len(r['labels']) for r in mine)} x{[r['max_x'] for r in mine]}")
         log(f"  dagger ({time.time() - t:.0f}s): " + "; ".join(msg))
 
-    log(f"start: {vars(args)} deep={deep} pid={os.getpid()} sel={len(sel)} starts" +
+    if args.senses == "fabius":  # Fabius is registered at the 15 s stuck limit; the plateau scripts pin MARIO_STUCK=40
+        assert cs.C.D.STUCK == 225, f"MARIO_STUCK is {cs.C.D.STUCK}, Fabius runs at 225"
+    log(f"start: {vars(args)} deep={deep} pid={os.getpid()} sel={len(sel)} starts stuck={cs.C.D.STUCK}" +
         (f" RESUME from {init.name} (chunk {k0}), ordered rows " + ", ".join(f"{L} {len(seqs[L].rows)}" for L in levels) if args.resume else ""))
     if not args.resume:
         p0 = out / f"{args.name}_ck0000.npz"; b.save(p0)

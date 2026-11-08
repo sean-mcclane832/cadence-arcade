@@ -8,5 +8,8 @@ cd /d P:\projects\cadence-arcade\mario\coldstart
 set NAME=%1
 if "%NAME%"=="" set NAME=LivyA
 shift
-P:\projects\cadence-arcade\.venv-concepts\Scripts\python.exe live.py --brain runs\%NAME%\%NAME%_ck0200.npz --name %NAME% %1 %2 %3 %4 %5 %6 %7 %8 %9
+set PY=P:\projects\cadence-arcade\.venv-concepts\Scripts\python.exe
+if "%NAME:~0,6%"=="Fabius" set PY=P:\projects\cadence-arcade\.venv-095\Scripts\python.exe
+if "%NAME:~0,5%"=="Cato2" set PY=P:\projects\cadence-arcade\.venv-095\Scripts\python.exe
+%PY% live.py --brain runs\%NAME%\%NAME%_ck0200.npz --name %NAME% %1 %2 %3 %4 %5 %6 %7 %8 %9
 pause

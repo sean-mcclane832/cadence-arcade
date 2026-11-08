@@ -1,0 +1,198 @@
+{
+ "arm": "cato2",
+ "lseed": 1,
+ "K": 8,
+ "brains": "brains_k8",
+ "train_rows": 570,
+ "held_rows": 198,
+ "pred_balance": [
+  0.067,
+  0.869,
+  0.064
+ ],
+ "sec_per_lesson": 0.301,
+ "curve": [
+  {
+   "lessons": 0,
+   "seen": {
+    "agree": 0.019,
+    "agree_crit": 0.0,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.005,
+    "agree_crit": 0.0,
+    "majority": 0.783
+   },
+   "dw": 0.0
+  },
+  {
+   "lessons": 25,
+   "seen": {
+    "agree": 0.781,
+    "agree_crit": 0.875,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.823,
+    "agree_crit": 0.618,
+    "majority": 0.783
+   },
+   "dw": 0.3036
+  },
+  {
+   "lessons": 50,
+   "seen": {
+    "agree": 0.775,
+    "agree_crit": 0.875,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.838,
+    "agree_crit": 0.706,
+    "majority": 0.783
+   },
+   "dw": 0.4095
+  },
+  {
+   "lessons": 75,
+   "seen": {
+    "agree": 0.819,
+    "agree_crit": 0.875,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.813,
+    "agree_crit": 0.618,
+    "majority": 0.783
+   },
+   "dw": 0.5259
+  },
+  {
+   "lessons": 100,
+   "seen": {
+    "agree": 0.863,
+    "agree_crit": 0.875,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.838,
+    "agree_crit": 0.706,
+    "majority": 0.783
+   },
+   "dw": 0.6572
+  },
+  {
+   "lessons": 125,
+   "seen": {
+    "agree": 0.863,
+    "agree_crit": 0.792,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.788,
+    "agree_crit": 0.471,
+    "majority": 0.783
+   },
+   "dw": 0.7977
+  },
+  {
+   "lessons": 150,
+   "seen": {
+    "agree": 0.887,
+    "agree_crit": 0.958,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.828,
+    "agree_crit": 0.676,
+    "majority": 0.783
+   },
+   "dw": 0.9079
+  },
+  {
+   "lessons": 175,
+   "seen": {
+    "agree": 0.887,
+    "agree_crit": 0.875,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.798,
+    "agree_crit": 0.529,
+    "majority": 0.783
+   },
+   "dw": 1.0093
+  },
+  {
+   "lessons": 200,
+   "seen": {
+    "agree": 0.9,
+    "agree_crit": 0.958,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.833,
+    "agree_crit": 0.676,
+    "majority": 0.783
+   },
+   "dw": 1.1168
+  },
+  {
+   "lessons": 225,
+   "seen": {
+    "agree": 0.9,
+    "agree_crit": 0.958,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.813,
+    "agree_crit": 0.618,
+    "majority": 0.783
+   },
+   "dw": 1.2083
+  },
+  {
+   "lessons": 250,
+   "seen": {
+    "agree": 0.912,
+    "agree_crit": 0.958,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.818,
+    "agree_crit": 0.588,
+    "majority": 0.783
+   },
+   "dw": 1.3174
+  },
+  {
+   "lessons": 275,
+   "seen": {
+    "agree": 0.931,
+    "agree_crit": 0.958,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.793,
+    "agree_crit": 0.588,
+    "majority": 0.783
+   },
+   "dw": 1.4209
+  },
+  {
+   "lessons": 300,
+   "seen": {
+    "agree": 0.912,
+    "agree_crit": 0.958,
+    "majority": 0.706
+   },
+   "held": {
+    "agree": 0.682,
+    "agree_crit": 0.676,
+    "majority": 0.783
+   },
+   "dw": 1.5171
+  }
+ ]
+}

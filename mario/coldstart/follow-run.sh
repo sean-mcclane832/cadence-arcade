@@ -5,6 +5,7 @@
 cd /p/projects/cadence-arcade/mario/coldstart || exit 1
 NAME=${1:-CiceroLowB}; LAST=${2:-200}; shift 2 2>/dev/null
 PY=/p/projects/cadence-arcade/.venv-concepts/Scripts/python.exe
+case "$NAME" in Fabius*|Cato2*) PY=/p/projects/cadence-arcade/.venv-095/Scripts/python.exe ;; esac  # Cadence 0.95 brains
 shown=""; pass=0
 while true; do
   ck=$(ls runs/$NAME/ | grep "^${NAME}_ck[0-9]*\.npz$" | sort | tail -1)

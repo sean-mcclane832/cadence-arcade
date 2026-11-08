@@ -1,0 +1,43 @@
+{
+ "capacity": 8,
+ "FabiusA": {
+  "seed": 0,
+  "synapses": 2944512,
+  "sensory": 3536,
+  "outputs": 319,
+  "slots": 105,
+  "recall": true,
+  "capacity": 8,
+  "synapse_rate": null
+ },
+ "Cato2A": {
+  "seed": 0,
+  "synapses": 974336,
+  "sensory": 3536,
+  "outputs": 7,
+  "slots": 1,
+  "recall": false,
+  "capacity": null,
+  "synapse_rate": null
+ },
+ "FabiusB": {
+  "seed": 1,
+  "synapses": 2944512,
+  "sensory": 3536,
+  "outputs": 319,
+  "slots": 105,
+  "recall": true,
+  "capacity": 8,
+  "synapse_rate": null
+ },
+ "Cato2B": {
+  "seed": 1,
+  "synapses": 974336,
+  "sensory": 3536,
+  "outputs": 7,
+  "slots": 1,
+  "recall": false,
+  "capacity": null,
+  "synapse_rate": null
+ }
+}

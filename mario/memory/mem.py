@@ -47,7 +47,8 @@ SPECS = {
 }
 PART_OFF = {"thought": dict(working_memory_amplitude=0.0), "button": dict(efference_amplitude=0.0),
             "echo": dict(history_amplitude=0.0), "place": dict(memory_amplitude=0.0),
-            "x": dict()}  # "x" (AgrippaX only): x block zeroed at play, see MemPlayer.xamp
+            "x": dict(),  # "x" (AgrippaX only): x block zeroed at play, see MemPlayer.xamp
+            "recall": dict(recall_amplitude=0.0)}  # Cadence 0.95 recall memory (Fabius's recall-off gate)
 RETRY = (0, 37, 83, 110, 131, 151, 173, 197, 211, 19)  # idle frames per life (gauntlet.py's 5, extended)
 
 
@@ -132,7 +133,7 @@ def onehot(a, n=7):
 class MemPlayer:
     """A brain playing in act mode. mode: 'greedy' or 'retry' (sampled at `temp` + learn, actor rates 0)."""
 
-    def __init__(self, path, mode="greedy", temp=0.05, off=(), blame=None, cold=True):
+    def __init__(self, path, mode="greedy", temp=0.05, off=(), blame=None, cold=True, senses="body"):
         from cadence import Brain
         self.path = str(path)
         self.b = Brain.load(self.path)
@@ -148,7 +149,8 @@ class MemPlayer:
         if mode == "retry":
             self.b.retune(**FROZEN)
         self.ep = getattr(self.b, "_episodic", None)
-        self.xkey = len(self.b.sensory_index) > 2000
+        self.senses = senses  # dagger.Body senses mode ("fabius": 3,536 inputs, fabius/eyes.py)
+        self.xkey = len(self.b.sensory_index) == D.n_inputs(senses) + XN  # AgrippaX: x block after the senses
         self.xamp = 0.0 if "x" in off else XAMP  # end-of-night ablation: x block zeroed
 
     def begin(self, seed=0):
@@ -192,21 +194,24 @@ class MemPlayer:
         return np.asarray(self.ep.place.recall(o[None].astype(np.float64)))[0]
 
 
-def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=None):
+def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=None, stuck=None):
     """One attempt in act mode. Returns dict like cplay._play (max_x, flag, end, actions, xs[, obs])."""
     lvl = tuple(int(v) for v in level.split("-")) if isinstance(level, str) else tuple(level)
-    body = C.CBody(int(start), "body", "lean", lvl); g = body.g
+    senses = getattr(player, "senses", "body")
+    body = C.CBody(int(start), senses, "lean", lvl); g = body.g
+    n_in = D.n_inputs(senses)
     player.begin(seed)
     acts, xs, obs = [], [], []
     o = None
     cap = max_dec or D.MAX_DECISIONS
-    while not g.done and g.decisions < cap and g.stuck < D.STUCK:
+    lim = stuck or D.STUCK  # stuck: an attempt-specific limit (Fabius DAgger), default the global one
+    while not g.done and g.decisions < cap and g.stuck < lim:
         o = body.obs()
         if getattr(player, "xkey", False):
             o = np.concatenate([o, xblock(g.env.ram, getattr(player, "xamp", XAMP))])
         a = player.act(o)
         if keep_obs:
-            obs.append(np.round(o[:2000] * 255).astype(np.uint8))
+            obs.append(np.round(o[:n_in] * 255).astype(np.uint8))
         acts.append(a); xs.append(int(g.x))
         if cb is not None:
             cb(g, o, a)
@@ -219,7 +224,7 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
     out = dict(start=int(start), max_x=int(g.max_x), flag=bool(g.flag), end=end, decisions=g.decisions,
                actions=acts, xs=xs)
     if keep_obs:
-        out["obs"] = np.array(obs, np.uint8).reshape(-1, 2000)
+        out["obs"] = np.array(obs, np.uint8).reshape(-1, n_in)
     g.close()
     return out
 
@@ -228,11 +233,11 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
 _P = {}
 
 
-def _player(path, mode, temp=0.05, off=(), blame=None, fresh=False, cold=True):
+def _player(path, mode, temp=0.05, off=(), blame=None, fresh=False, cold=True, senses="body"):
     import os
-    st = os.stat(path); key = (path, st.st_mtime_ns, mode, temp, tuple(off), tuple(blame or ()), cold)
+    st = os.stat(path); key = (path, st.st_mtime_ns, mode, temp, tuple(off), tuple(blame or ()), cold, senses)
     if fresh or key not in _P:
-        _P.clear(); _P[key] = MemPlayer(path, mode, temp, off, blame, cold)
+        _P.clear(); _P[key] = MemPlayer(path, mode, temp, off, blame, cold, senses)
     return _P[key]
 
 
@@ -242,8 +247,8 @@ def episode(task):
     if kind == "predict":
         r = C.episode(C.task(task["policy"], "body", task["level"], task["start"]))
         return r
-    pl = _player(task["policy"], "greedy", off=task.get("off", ()), cold=kind != "warm")
-    played = play_attempt(pl, task["level"], task["start"], keep_obs=task.get("keep_obs", False))
+    pl = _player(task["policy"], "greedy", off=task.get("off", ()), cold=kind != "warm", senses=task.get("senses", "body"))
+    played = play_attempt(pl, task["level"], task["start"], keep_obs=task.get("keep_obs", False), stuck=task.get("stuck"))
     if task.get("label"):
         acts = played["actions"]; n = len(acts)
         idx = {i for i in range(n) if i >= n - task.get("last_all", 60) or i % task.get("every", 3) == 0}
@@ -352,9 +357,9 @@ def set_exact(b, items, ts, d_h, d_e):
 def prime(b, items, K):
     """Bring every stream to decision i of its attempt: K greedy burn-in acts on the K previous observations (the
     working trace needs real settles), exact heard history and efference copy (these are fixed functions of what
-    was seen and pressed). items: list of (O uint8 (n, 2000), A actions (n,), i). Rows with i - j < 0 have their
+    was seen and pressed). items: list of (O uint8 (n, width), A actions (n,), i). Rows with i - j < 0 have their
     trace cleared after that act (attempt start). Pile rows (A empty) get the stationary guess (_static).
-    Returns the target observations (B, 2000) as floats."""
+    Returns the target observations (B, width) as floats."""
     d_h, d_e = mem_decays(b)
     B = len(items)
     b.reset()
