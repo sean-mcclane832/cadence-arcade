@@ -211,8 +211,13 @@ class Game:
         if SENSES != "blind":
             self._sense(screen)
         raw = int(self.env._x_position)
-        if raw < self.raw_x - 600 and not self.done:  # new area (pipe), not a step back
-            self.off += self.raw_x + 16 - raw
+        if raw >= 0xF000:  # page byte read as signed: a loop castle's loop-back near the start wraps it to 255
+            raw -= 65536
+        area = int(self.env.ram[0x0750])
+        if raw < self.raw_x - 600 and not self.done and area != getattr(self, "area", area):
+            self.off += self.raw_x + 16 - raw  # new area (pipe), not a step back
+        # same area and 600+ px back = a loop castle's loop-back (4-4, 7-4): a real step back, so x drops
+        self.area = area
         self.raw_x = raw
         self.x = raw + self.off
         if self.x > self.max_x:

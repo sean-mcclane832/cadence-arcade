@@ -1,0 +1,36 @@
+{
+ "coach": "smart",
+ "opts": {},
+ "summary": {
+  "5-3": {
+   "clears": 3,
+   "n": 4,
+   "max_x": [
+    2425,
+    2425,
+    1259,
+    2425
+   ],
+   "ends": "ffdf",
+   "per_call": 4.5326
+  },
+  "6-3": {
+   "clears": 3,
+   "n": 4,
+   "max_x": [
+    2665,
+    2665,
+    2665,
+    2334
+   ],
+   "ends": "fffd",
+   "per_call": 4.9153
+  },
+  "_all": {
+   "calls": 2136,
+   "coach_secs": 10176.9,
+   "per_call": 4.7645,
+   "wall": 5289
+  }
+ }
+}

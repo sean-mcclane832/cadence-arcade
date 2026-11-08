@@ -76,7 +76,8 @@ def run_one(task, cb=None):
              p95_call=round(float(np.percentile(slow, 95)), 4) if slow else 0.0, xs=xs, acts=acts)
     sm = getattr(g, "_smart", None)
     if sm is not None:
-        r.update(found=getattr(sm, "found", []), stalls=getattr(sm, "stalls", 0), cache_hits=getattr(sm, "cache_hits", 0))
+        r.update(found=getattr(sm, "found", []), stalls=getattr(sm, "stalls", 0), cache_hits=getattr(sm, "cache_hits", 0),
+                 fallbacks=getattr(sm, "fallbacks", 0))
     g.close()
     return r
 

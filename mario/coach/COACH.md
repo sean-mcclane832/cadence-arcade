@@ -79,6 +79,29 @@ f flag, d died, s stuck, in start order 0, 3, 8, 13, 20, 27.
 | 3-4 | **0/6** | dddddd | 1434, 1434, 1431, 1433, 1695, 434 | 6/6 | ffffff | 2244, 2266, 2268, 2245, 2267, 2267 | 2.66 |
 | all | 54/72 | | | 72/72 | | | 2.25 |
 
+## Worlds 4-7 (2026-11-07/08): loop castles, lifts, per-level patience
+Training is coached on worlds 1-7 since 11/6 (World 8 is the never-coached exam). Same harness, 6 starts.
+
+| step | what changed | result (clears of 6 per start) | runs/ |
+|---|---|---|---|
+| first pass | smart coach as above | worlds 4-7 74/96: 4-3 4, 5-3 4, 4-4 0 (stuck), 7-4 0 (stuck), 6-3 0 (died on the lifts), the other 11 levels 6 | cov_w4_7 |
+| loop castles | game.py: a same-area step back of 600+ px is the castle's loop-back (x drops, no pipe offset); Sim.run: a loop-back (Player_PageLoc 0x6D back 3-5 pages) or a World 7 check passed wrong (0x6DA up, 0x6D9 not) is a death; `loop_penalty`: px lost per px of height from the next check's y (ROM table at 0x4081), weak (2) while the check is pages away, strong (6) one page before it | 4-4 6, 7-4 6 | loopfix4 |
+| patience 40 (no settle) | the fallback waits 40 decisions without progress instead of 8 | 4-3 6, 6-3 4, 5-3 4; 1-1, 2-4, 3-3 still 6 | pat40 |
+| settle (tried, off) | doom check lets a fall finish (up to 16 more decisions): a long fall off 5-3's high lifts outlasted the 16-decision check | 5-3/6-3 starts 0, 20, 3, 8: 4/8 in pat40 -> 6/8, but new deaths elsewhere | settle1 |
+| patience 40 + settle everywhere | | **153/168**: 4-4 0 (dies at the 2nd check, x 2033-2053), 1-3, 2-1, 2-3, 4-3 5, 5-3 3, 6-3 4 | full_final |
+| **final**: settle off, patience 8, 40 on 4-3 and 6-3 (`LEVEL_PATIENCE`) | | the 7 levels that differed rerun: 1-3, 2-1, 2-3, 4-3, 4-4 6; 5-3 4; 6-3 4 (4-4's flags match loopfix4 exactly) | verify_perlevel |
+
+**Coverage now: 164/168** (worlds 1-3 72/72, worlds 4-7 92/96), assembled from runs/cov_final (1-1, 1-2, 1-4, 2-2, 2-4,
+3-1 to 3-4), verify_perlevel (1-3, 2-1, 2-3, 4-3, 4-4, 5-3, 6-3), cov_w4_7 (4-1, 4-2, 5-1, 5-2, 5-4, 6-1, 6-2, 6-4, 7-1 to
+7-3) and loopfix4 (7-4), each at the settings now in the code. Not one fresh 168-run pass; the code paths for those levels are unchanged
+since those runs (SETTLE 0 is the pre-settle code, game.py's x change left the start-0 replays of all 26 non-castle levels
+identical, checked in-session on 11/7, no comparison file kept).
+- Open: 5-3 starts 0 and 20 (die at x 1606/1611: a long leap off a high lift into the pit, past the doom check's
+  horizon), 6-3 starts 3 and 8 (x 957 on the lifts, x 2403). One case seen (5-3 s8 with settle, x 1259): the coach
+  keeps choosing "right" into a tree's side while falling, because each step a "left" tail would still survive.
+- p40 and settle were only run together on 4-4/1-3/2-1/2-3, so which one broke those is not separated.
+- Tools: loopprobe.py replays a run and logs the loop RAM per decision, with screens (`--at`).
+
 ## Cost per coach call
 Same machine, 4 workers at once, BelowNormal (runs/cov_base_cost vs runs/cov_final, start 0):
 | | base s/call | smart s/call | ratio |

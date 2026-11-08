@@ -19,6 +19,9 @@ from game import ACTIONS, FRAMES, RUN, RUNJUMP, NOOP, LEFT, JUMP, RIGHT, RJUMP
 
 DEAD, ALIVE, FLAG, PIPE = 0, 1, 2, 3
 FLAG_BONUS, PIPE_BONUS, DEATH = 1e6, 5e5, -1e5
+SETTLE = 0  # doom check: extra decisions to let a fall finish (Sim.run settle). 16 rescued 4 targeted 5-3/6-3
+            # starts but lost others (5-3 3/6, 6-3 4/6 in runs/full_final), so off: 0 is the pre-settle code exactly
+LEVEL_PATIENCE = {"4-3": 40, "6-3": 40}  # Smart's patience per level; 8 elsewhere (see Smart's docstring)
 
 
 def tails(T):
@@ -44,11 +47,24 @@ class Sim:
         env._restore()
         env._time_last, env._x_position_last, env.done = self.saved
 
-    def run(self, seq):
-        """Restore root, play seq. Returns (status, x, decisions played)."""
-        env = self.env
+    def run(self, seq, settle=0):
+        """Restore root, play seq. Returns (status, x, decisions played).
+        settle: if Mario is still in the air when seq ends (Player_State 0x1D 1-2, not swimming), keep holding the
+        last button for up to `settle` more decisions until he lands or dies. A long fall off 5-3's high lifts outlasts
+        the doom check's 16 decisions, so a leap into the pit used to look alive (5-3 x 1606).
+        Loop castles (4-4, 7-4) count a wrong path as a death: the game moves Mario back 4 pages (Player_PageLoc
+        0x6D; the x reading wraps to ~65,500 near the start, which used to score as a huge gain), and in World 7
+        a check passed at the wrong y (MultiLoopPassCntr 0x6DA steps without MultiLoopCorrectCntr 0x6D9) dooms
+        the group of three, so it counts as a death at that check rather than two checks later."""
+        env = self.env; ram = env.ram
         env._restore()
+        page, mlc, mlp = int(ram[0x6D]), int(ram[0x6D9]), int(ram[0x6DA])
+        n = len(seq)
+        if settle and not ram[0x0704]:  # SwimmingFlag: underwater Mario is always "in the air"
+            seq = list(seq) + [seq[-1]] * settle
         for t, a in enumerate(seq):
+            if t >= n and int(ram[0x1D]) not in (1, 2):
+                return ALIVE, int(env._x_position) - loop_penalty(ram), t
             byte = ACTIONS[a]
             for _ in range(FRAMES):
                 env._frame_advance(byte); self.frames += 1
@@ -56,9 +72,43 @@ class Sim:
                     return FLAG, int(env._x_position), t + 1
                 if env._is_dying or env._is_dead:
                     return DEAD, int(env._x_position), t + 1
-                if env.ram[0x000E] in (2, 3):
+                if ram[0x000E] in (2, 3):
                     return PIPE, int(env._x_position), t + 1
-        return ALIVE, int(env._x_position), len(seq)
+                p, c, q = int(ram[0x6D]), int(ram[0x6D9]), int(ram[0x6DA])
+                if (page - p) % 256 in (3, 4, 5) or (q == mlp + 1 and c == mlc):
+                    return DEAD, x_signed(env), t + 1
+                page, mlc, mlp = p, c, q
+        return ALIVE, int(env._x_position) - loop_penalty(ram), len(seq)
+
+
+# Loop castles' checks, read from the ROM (bytes at 0x4081 of the iNES file: world index, loader page, Mario's y):
+# when the level loader reaches column 0 of `page`, Mario must stand (Player_State 0) at exactly that y or the
+# castle loops (World 7: three checks a group, judged at the third). 8-4's entries are left out (exam world).
+LOOP_CHECKS = {3: [(5, 64), (9, 176)],                                             # 4-4
+               6: [(4, 176), (5, 128), (6, 64), (8, 64), (9, 128), (10, 64)]}      # 7-4
+LOOP_W_FAR, LOOP_W_NEAR = 2.0, 6.0  # px of score per px of height away from the next check's y
+
+
+def loop_penalty(ram):
+    """While a loop check lies ahead, a plan that ends away from its y loses px: the coach's horizon (16 decisions)
+    is far shorter than the climb to the right corridor (4-4's starts at the first pipe). Weak while the check is
+    pages away (a strong pull there made every jump over 4-4's lava look bad: stuck at x 1,395), strong once the
+    loader is one page from it (a weak pull there let 4-4 run the middle corridor into the second check)."""
+    checks = LOOP_CHECKS.get(int(ram[0x075F]))
+    if not checks or int(ram[0x075C]) != 3:  # LevelNumber 3 = the castle (X-4); 4-1..4-3 and 7-1..7-3 have no loops
+        return 0
+    ld = int(ram[0x0725])
+    nxt = [(p, y) for p, y in checks if p > ld]
+    if not nxt:
+        return 0
+    p, y = nxt[0]
+    return int((LOOP_W_NEAR if p - ld <= 1 else LOOP_W_FAR) * abs(int(ram[0x00CE]) - y))
+
+
+def x_signed(env):
+    """Mario's x with the page byte read as signed (a loop-back near the start puts the page at 255)."""
+    x = int(env._x_position)
+    return x - 65536 if x >= 0xF000 else x
 
 
 def score_of(st, x):
@@ -72,7 +122,7 @@ class Verify:
 
     def doomed(self, sim, plan):
         for tl in self.tails:
-            st, x, _ = sim.run(plan + tl)
+            st, x, _ = sim.run(plan + tl, settle=SETTLE)
             if st != DEAD:
                 return False
         return True
@@ -163,15 +213,21 @@ class Smart(Verify):
       and timed jumps the fixed menu lacks. After a miss, wait `backoff` decisions before shooting again.
     - fallback: no real progress for `patience` decisions and no shot found: label with game.py's own scoring
       for this decision (the doom check can make waiting look safer forever, 1-1 x 2370 / 2-4 x 1714).
+      8 by default, 40 on the levels in LEVEL_PATIENCE (patience=None picks by level): at 8 the fallback cuts
+      the waits for 6-3's lifts short (0/6 vs 4/6 at 40) and 4-3 goes 4/6 (runs/cov_w4_7) vs 6/6 (runs/pat40, 2026-11-07); 40
+      everywhere (with SETTLE 16) cost 4-4 6/6 -> 0/6 and one start each on 1-3, 2-1, 2-3 (runs/full_final,
+      p40 and settle together, cause not separated).
     """
 
     def __init__(self, g, T=8, max_checks=8, N=48, L=40, stall_px=24, seed=0, cache=True, learn=False, near=64,
-                 stuck_min=3, backoff=2, patience=8):
+                 stuck_min=3, backoff=2, patience=None):
         super().__init__(g, T, max_checks)
         self.N, self.L, self.stall_px, self.seed = N, L, stall_px, seed
         self.plan = None; self.plan_at = None; self.stalls = 0; self._pending = None
         self.learn, self.near = learn, near
         self.key = f"{g.level[0]}-{g.level[1]}"
+        if patience is None:
+            patience = LEVEL_PATIENCE.get(self.key, 8)
         self.escapes = load_escapes().get(self.key, []) if cache else []
         self.found = []; self.cache_hits = 0
         self.stuck_min, self.backoff, self.backoff_until, self.lowgain = stuck_min, backoff, 0, 0
