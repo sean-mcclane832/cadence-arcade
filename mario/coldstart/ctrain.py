@@ -130,6 +130,8 @@ def main():
     ap.add_argument("--levels-file", default="data/levels.json")
     ap.add_argument("--dagger-stuck", type=int, default=0, help="stuck limit of the DAgger episodes only (0: the global "
                     "one). SEL keeps the global limit. Fabius dry run 11/8: a stalled brain at 225 costs ~8 min of coach labels")
+    ap.add_argument("--recycle", type=int, default=0, help="replace each play worker after N tasks (0: never). Fabius 11/9: "
+                    "the GPU-placed brains leak VRAM per checkpoint loaded, and the 8 GB card filled at chunk 12")
     args = ap.parse_args()
     sel = tuple(cs.SEL8) if args.sel8 else tuple(SEL)
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
@@ -145,13 +147,15 @@ def main():
     if args.pred:
         sys.path.insert(0, str(HERE.parent / "fabius"))
         import pred as PR  # noqa: E402
+    recycle = args.recycle or None  # a fresh worker every N tasks: Cadence keeps ~8 MB of VRAM per GPU brain loaded (11/9)
     if args.coach == "base":  # default: unchanged
-        ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=cs.worker_init, initargs=(deep,))
+        ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=cs.worker_init, initargs=(deep,),
+                                 max_tasks_per_child=recycle)
     else:  # opt-in smarter coach for DAgger labels (World 4 refused inside plug)
         sys.path.insert(0, str(HERE.parent / "coach"))
         import plug  # noqa: E402
         ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=plug.worker_init,
-                                 initargs=(deep, args.coach, json.loads(args.coach_opts)))
+                                 initargs=(deep, args.coach, json.loads(args.coach_opts)), max_tasks_per_child=recycle)
     state = dict(slow=False)
 
     def pmap(fn, tasks):
@@ -217,8 +221,9 @@ def main():
             st += 86400
         deadline = min(deadline, st)
     best = {}; bestf = out / "best.json"
-    if args.resume and args.sel8 and bestf.exists() and not (out / "best24.json").exists():
+    if args.resume and args.sel8 and not orig.get("sel8") and bestf.exists() and not (out / "best24.json").exists():
         # bests picked on 24 starts are not comparable with 8-start scores: keep them aside, start fresh
+        # (only when the first leg scored on 24; a run that was sel8 from the start keeps its bests)
         for q in sorted(out.glob("best*.npz")) + [bestf]:
             q.rename(out / q.name.replace("best", "best24", 1))
     if bestf.exists():

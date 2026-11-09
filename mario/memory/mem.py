@@ -233,11 +233,22 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
 _P = {}
 
 
+def _free_device():
+    """Free the last checkpoint's brain before the next one is placed: it sits in a reference cycle, so only gc frees
+    it, and torch keeps freed blocks reserved (11/9: ~125 MB of VRAM per checkpoint per worker filled the 8 GB card
+    at Fabius chunk 12)."""
+    import gc
+    gc.collect()
+    torch = sys.modules.get("torch")  # never imported here: CPU-only paths stay as they were
+    if torch is not None and torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+
 def _player(path, mode, temp=0.05, off=(), blame=None, fresh=False, cold=True, senses="body"):
     import os
     st = os.stat(path); key = (path, st.st_mtime_ns, mode, temp, tuple(off), tuple(blame or ()), cold, senses)
     if fresh or key not in _P:
-        _P.clear(); _P[key] = MemPlayer(path, mode, temp, off, blame, cold, senses)
+        _P.clear(); _free_device(); _P[key] = MemPlayer(path, mode, temp, off, blame, cold, senses)
     return _P[key]
 
 
