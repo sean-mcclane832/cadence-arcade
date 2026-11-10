@@ -147,19 +147,27 @@ def main():
     if args.pred:
         sys.path.insert(0, str(HERE.parent / "fabius"))
         import pred as PR  # noqa: E402
-    recycle = args.recycle or None  # a fresh worker every N tasks: Cadence keeps ~8 MB of VRAM per GPU brain loaded (11/9)
-    if args.coach == "base":  # default: unchanged
-        ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=cs.worker_init, initargs=(deep,),
-                                 max_tasks_per_child=recycle)
-    else:  # opt-in smarter coach for DAgger labels (World 4 refused inside plug)
+    # fresh workers every N tasks each: Cadence keeps ~8 MB of VRAM per GPU brain loaded (11/9). The whole pool is
+    # rebuilt between maps; max_tasks_per_child deadlocked on Python 3.11 (11/10: workers retired, none replaced)
+    recycle = args.recycle or None
+    if args.coach != "base":  # opt-in smarter coach for DAgger labels (World 4 refused inside plug)
         sys.path.insert(0, str(HERE.parent / "coach"))
         import plug  # noqa: E402
-        ex = ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=plug.worker_init,
-                                 initargs=(deep, args.coach, json.loads(args.coach_opts)), max_tasks_per_child=recycle)
+
+    def make_pool():
+        if args.coach == "base":  # default: unchanged
+            return ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=cs.worker_init, initargs=(deep,))
+        return ProcessPoolExecutor(args.workers, mp_context=get_context("spawn"), initializer=plug.worker_init,
+                                   initargs=(deep, args.coach, json.loads(args.coach_opts)))
+    pool = dict(ex=make_pool(), done=0)
     state = dict(slow=False)
 
     def pmap(fn, tasks):
-        return list(ex.map(fn, tasks, chunksize=1))
+        if recycle and pool["done"] >= recycle * args.workers:
+            pool["ex"].shutdown(wait=True); pool["ex"] = make_pool(); pool["done"] = 0
+        out = list(pool["ex"].map(fn, tasks, chunksize=1))
+        pool["done"] += len(tasks)
+        return out
 
     piles, seqs = {}, {L: Seq() for L in levels}
     for L in levels:
@@ -364,7 +372,7 @@ def main():
         if time.time() > deadline:
             log("deadline"); break
     log("done. best: " + json.dumps(best))
-    ex.shutdown()
+    pool["ex"].shutdown()
 
 
 if __name__ == "__main__":
