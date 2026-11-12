@@ -1,0 +1,69 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mario Brain Weights</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1c1a;--mut:#6b675f;--line:#dcd8cf;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#171614;--fg:#ece9e2;--mut:#a39e93;--line:#3a3833;--card:#211f1c}}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 Georgia,serif;margin:0;padding:24px 16px}
+main{max-width:920px;margin:auto}h1{font-size:1.7rem;margin:.2em 0}h2{font-size:1.2rem;margin-top:2em;border-top:1px solid var(--line);padding-top:1em}
+p.note,figcaption{color:var(--mut);font-size:.9rem}img{max-width:100%;image-rendering:pixelated;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font:14px/1.4 system-ui,sans-serif;background:var(--card)}td,th{border:1px solid var(--line);padding:6px 8px;text-align:right}th:first-child,td:first-child{text-align:left}
+.wrap{overflow-x:auto}figure{margin:1em 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+</style></head><body><main>
+<h1>What the Mario brains' weights say</h1>
+<p class="note">Weights study, 2026-11-12, leg 1. Copies of finished checkpoints: Cato2A and Cato2B at chunk 83, FabiusA at chunk 39, each against its chunk 0. Scripts: weights.py, probe.py, probe2.py in mario/scipio. No game was played; the brains answered recorded coach frames. Weights alone are not behaviour, so every claim about cause below comes from a test where inputs or parts were blanked.</p>
+
+<h2>1. The brain mostly repeats the button it is holding</h2>
+<p>The coach's button is the same as the one before on 77% of frames. The brain sees which buttons are held. On the coach's own runs (24 levels, 5,760 frames) it gets the easy frames and misses about half of the frames where the button has to change.</p>
+<div class="wrap"><table><tr><th>What the brain is given</th><th>Cato2A right</th><th>Cato2B right</th><th>FabiusA right</th></tr>
+<tr><td>everything (as in play)</td><td>84.6%</td><td>85.1%</td><td>83.4%</td></tr>
+<tr><td>&nbsp;&nbsp;frames where the button repeats</td><td>94.2%</td><td>92.8%</td><td>94.4%</td></tr>
+<tr><td>&nbsp;&nbsp;frames where the button changes (23%)</td><td>52.3%</td><td>59.2%</td><td>46.1%</td></tr>
+<tr><td>screen blanked, body sense kept</td><td>68.5%</td><td>59.7%</td><td>74.3%</td></tr>
+<tr><td>only the four held-button inputs, all else blank</td><td>62.4%</td><td>72.3%</td><td>73.8%</td></tr>
+<tr><td>everything except the held buttons</td><td>56.8%</td><td>50.7%</td><td>51.4%</td></tr></table></div>
+<p class="note">scratch/probe2_*.json. Blanking is a rough tool: a blank screen is a picture the brain never saw.</p>
+
+<h2>2. Why Cato2 stands still on 4-4</h2>
+<p>Both Cato2 seeds score x 40 on 4-4 in every one of chunks 74 to 83. The first frame of 4-4, nothing held: the brain answers "no button". Write "run is held" into the body sense of the same frame: it answers "run". Feed its own answer back as the held button 20 times on that frame: "no button" 20 times. Cato2A does the same on 4-2 (x 181 in play). On the other 22 levels the first answer is "run". FabiusA answers "run" or "run+jump" on all 24.</p>
+
+<h2>3. What moved during training</h2>
+<div class="wrap"><table><tr><th>Connection</th><th>Synapses</th><th>Cato2A: share of all change</th><th>FabiusA: share of all change</th></tr>
+<tr><td>screen and body to the middle layer</td><td>905,216</td><td>90.2%</td><td>32.2%</td></tr>
+<tr><td>recall memory to the middle layer</td><td>905,216</td><td>none</td><td>31.3%</td></tr>
+<tr><td>"what came next" to the middle layer</td><td>905,216</td><td>none</td><td>11.8%</td></tr>
+<tr><td>working trace to the middle layer</td><td>65,536</td><td>7.5%</td><td>2.7%</td></tr>
+<tr><td>middle layer to outputs (both ways)</td><td>3,584 / 163,328</td><td>2.3%</td><td>22.0%</td></tr></table></div>
+<p>In Cato2 the change is spread evenly over the screen: every input group moved about the same per input (2.0 to 3.0). Brighter cells below moved more.</p>
+<figure><img src="img/Cato2A_change_energy.png" alt="change per input, Cato2A"><figcaption>Cato2A, how far each input's weights moved. Top: whole screen now, whole screen one decision ago. Bottom: the window around Mario in red, green, blue, and one decision ago.</figcaption></figure>
+
+<h2>4. Three of the seven buttons were never taught</h2>
+<p>The coach never presses right, right+jump or jump: 0 of 62,057 pile rows. In both Cato2 seeds those three outputs carry one shared "stay off" pattern (their weights correlate 0.8 with each other, bias -0.08, where the four used buttons sit near 0).</p>
+<figure><img src="img/Cato2A_units_to_buttons.png" alt="units to buttons"><figcaption>Cato2A: 256 middle units (across) to 7 buttons (down: none, right, right+jump, run, run+jump, jump, left). Red pushes, blue holds back. Rows 2, 3 and 6 are near copies.</figcaption></figure>
+
+<h2>5. What pushes "jump"</h2>
+<p>First-order map from each input to "a jump button minus a no-jump button" (through the middle layer, ignoring how active each unit is). Red: more of this input, more jump.</p>
+<div class="grid"><figure><img src="img/Cato2A_contrast_jump_vs_nojump.png" alt=""><figcaption>Cato2A</figcaption></figure>
+<figure><img src="img/Cato2B_contrast_jump_vs_nojump.png" alt=""><figcaption>Cato2B</figcaption></figure>
+<figure><img src="img/FabiusA_contrast_jump_vs_nojump.png" alt=""><figcaption>FabiusA</figcaption></figure></div>
+<p class="note">No clean shape, such as "something in front of Mario", shows at this level. Neighbouring cells do agree more than chance (correlation 0.45 to 0.63), so it is not pure noise. The same cell now and one decision ago carry weights that agree (+0.53): the brain mostly adds the two frames, it does not subtract them, so it is not reading motion from them.</p>
+
+<h2>6. Single units</h2>
+<p>The four units that push jump hardest and the four that hold it back most, Cato2A. Each picture is what that unit listens to.</p>
+<div class="grid">
+<figure><img src="img/Cato2A_unit_124.png" alt=""><figcaption>unit 124, jump +0.77. The red patch in the bottom-left panel is red on screen just ahead of Mario.</figcaption></figure>
+<figure><img src="img/Cato2A_unit_47.png" alt=""><figcaption>unit 47, +0.68</figcaption></figure>
+<figure><img src="img/Cato2A_unit_204.png" alt=""><figcaption>unit 204, +0.67</figcaption></figure>
+<figure><img src="img/Cato2A_unit_164.png" alt=""><figcaption>unit 164, +0.66</figcaption></figure>
+<figure><img src="img/Cato2A_unit_96.png" alt=""><figcaption>unit 96, -0.45</figcaption></figure>
+<figure><img src="img/Cato2A_unit_42.png" alt=""><figcaption>unit 42, -0.40</figcaption></figure>
+<figure><img src="img/Cato2A_unit_232.png" alt=""><figcaption>unit 232, -0.39</figcaption></figure>
+<figure><img src="img/Cato2A_unit_228.png" alt=""><figcaption>unit 228, -0.37</figcaption></figure></div>
+
+<h2>7. Does Fabius use its extras?</h2>
+<p>Yes for the recall memory, by weight and by test. Its path into the middle layer grew as strong as the direct senses (5.15 against 5.07). Switched off on 720 coach frames, 25% of answers change and agreement falls from 85.8% to 75.4%. The working trace: switched off, 6% of answers change and agreement does not fall. The prediction outputs moved as much as the button outputs; whether they help play is not answered here. The all-zero "grid" tables in the recall memory are by design: they only apply to memories older than 8 steps, and the memory holds 8.</p>
+
+<h2>What stayed unexplained</h2>
+<ul><li>Play itself. These are the coach's frames, not the brain's own path. The death map and a traced death wait for leg 2.</li>
+<li>Whether the held-button habit is what stops the runs near x 1,000. It explains the 4-4 standstill. The rest is a strong lead, not a result.</li>
+<li>What single units mean. Only unit 124 reads as a thing a person would name.</li></ul>
+</main></body></html>

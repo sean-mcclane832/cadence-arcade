@@ -1,0 +1,17 @@
+{
+ "cadence": "0.98.0",
+ "torch": "2.11.0+cu128",
+ "cuda_available": false,
+ "numpy": "1.26.4",
+ "compose_s": 0.0,
+ "synapses": 3520,
+ "sensory": 64,
+ "lesson_s": 34.22,
+ "lesson_return": "{'scale_step': 0.0017286377963012163, 'bias_step': 8.06930446543082e-05, 'accepted': 1.0, 'qualified': 0.0, 'qualification_required': 0.0, 'attempted_presentations': 32.0, 'accepted_presentations': 32",
+ "predict_shape": [
+  32
+ ],
+ "backend": "None"
+}
+
+[exited with code 0]
