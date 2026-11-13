@@ -21,12 +21,13 @@ for L in LEVELS:
         if a.sub < 1: m = m & (rs.random(len(m)) < a.sub)
         X.append(t["O"][m]); y.append(t["y"][m]); ww = t["w"][m]; w.append(np.where(ww > 1, 3.0, 1.0)); ch.append((t["y"] != t["prev"])[m])
 X = np.concatenate(X); y = np.concatenate(y); w = np.concatenate(w); ch = np.concatenate(ch)
-if a.arm == "change": w = w * np.where(ch, 4.0, 1.0)
+if a.arm.startswith("change"): w = w * np.where(ch, float(a.arm[6:] or 4), 1.0)
 def prep(o, drop=None):
     x = torch.from_numpy(o.astype(np.float32) / 255.0)
-    if a.arm == "noheld" or drop is not None:
+    if a.arm in ("noheld", "aonly") or drop is not None:
         v = x[:, 1664:2000].reshape(len(x), 8, 42)
         if a.arm == "noheld": v[:, :, 38:42] = 0
+        elif a.arm == "aonly": keep = v[:, 0, 38].clone(); v[:, :, 38:42] = 0; v[:, 0, 38] = keep
         else: v[drop, :, 38:42] = 0
     return x
 torch.manual_seed(a.seed); r = np.random.default_rng(a.seed)
@@ -46,4 +47,4 @@ def score(atts, T):
     ok, c, hb = np.concatenate(ok), np.concatenate(c), np.concatenate(hb)
     return dict(all=round(float(ok.mean()), 4), repeat=round(float(ok[~c].mean()), 4), change=round(float(ok[c].mean()), 4), n=int(ok.size), n_change=int(c.sum()), answers_held_button=round(float(hb.mean()), 4))
 out = dict(arm=a.arm, seed=a.seed, epochs=a.epochs, rows=int(len(X)), steps=steps, s=round(time.time() - t0), held=score([held[L] for L in LEVELS], T_EVAL), seen=score([train[L][0] for L in LEVELS], 100))
-Path("scratch/tiny").mkdir(exist_ok=True); json.dump(out, open(f"scratch/tiny/mlp_{a.arm}_{a.seed}" + ("" if a.epochs == 2 else f"_E{int(a.epochs)}") + ".json", "w"), indent=1); print(json.dumps(out))
+Path("scratch/tiny").mkdir(exist_ok=True); torch.save(net.state_dict(), f"scratch/tiny/mlp_{a.arm}_{a.seed}_E{int(a.epochs)}.pt"); json.dump(out, open(f"scratch/tiny/mlp_{a.arm}_{a.seed}" + ("" if a.epochs == 2 else f"_E{int(a.epochs)}") + ".json", "w"), indent=1); print(json.dumps(out))
