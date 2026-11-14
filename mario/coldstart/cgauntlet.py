@@ -15,8 +15,16 @@ deaths included.
 
 Notes: each level starts as a fresh level with small Mario (a mushroom does not carry over). The first try
 of a level uses 0 idle frames ("start 0"); retries use 37, 83, 110, 131 idle frames, because the emulator is
-deterministic and an identical restart would replay the identical death. The 40-decision
-stuck limit counts as losing a life (the brain stood still); the 900-decision cap also.
+deterministic and an identical restart would replay the identical death. The stuck limit (D.STUCK: 225 decisions
+since 11/6, was 40) counts as losing a life (the brain stood still); the 900-decision cap (D.MAX_DECISIONS) also.
+
+11/14 (Scipio public gauntlet, vault Plans/Scipio Design 2026-11-12): --retries mem uses mem.RETRY's 10 idle-frame
+starts (with 10 lives, tries 6-10 of one level would otherwise replay try 5's identical greedy death); the default
+keeps the five. With --senses fabius the previous-screen input is now kept up to date (b.sprev before g.step: this
+loop bypasses Body.step, so the fovea's previous grey and every memory heard a stale screen), the player gets the
+senses, and the stuck limit must be 225.
+    python cgauntlet.py --name ScipioA_ck0010 --brain runs/ScipioA/ScipioA_ck0010.npz --senses fabius --lives 10
+        --retries mem --last 7-4 --mode greedy --out runs/ScipioA/gauntlet/ScipioA_ck0010
 """
 from __future__ import annotations
 import argparse, json, sys, time
@@ -51,7 +59,12 @@ def main():
     ap.add_argument("--mode", choices=["greedy", "sampled", "retry"], default="greedy")
     ap.add_argument("--first", default="1-1"); ap.add_argument("--last", default="4-4"); ap.add_argument("--temp", type=float, default=0.05)
     ap.add_argument("--blame", default=None)
+    ap.add_argument("--retries", choices=["five", "mem"], default="five", help="idle-frame starts per try: five (0, 37, 83, "
+                    "110, 131) or mem (mem.RETRY, 10 values)")
     a = ap.parse_args()
+    retry_starts = RETRY_STARTS if a.retries == "five" else tuple(mem.RETRY)
+    if a.senses == "fabius":
+        assert D.STUCK == 225, f"MARIO_STUCK is {D.STUCK}; Fabius-eyed brains are registered at 225"
     order = ORDER[ORDER.index(a.first):ORDER.index(a.last) + 1]
     import imageio_ffmpeg
     from PIL import Image, ImageDraw
@@ -64,7 +77,7 @@ def main():
         pols = {"default": str((HERE / a.brain).resolve())}
     label = a.label or ("one brain, remembers across lives" if a.mode == "retry" else f"one brain, {a.mode}")
     blame = None if not a.blame else (lambda v: (int(v[0]), int(v[1]), float(v[2])))(a.blame.split(","))
-    player = mem.MemPlayer(pols["default"], "act" if a.mode == "sampled" else a.mode, a.temp, (), blame)
+    player = mem.MemPlayer(pols["default"], "act" if a.mode == "sampled" else a.mode, a.temp, (), blame, senses=a.senses)
     w = imageio_ffmpeg.write_frames(str(out) + ".mp4", (512, 480 + 40), fps=30, codec="libx264", pix_fmt_out="yuv420p",
                                     output_params=["-crf", "30", "-preset", "medium", "-movflags", "+faststart"],
                                     macro_block_size=8)
@@ -86,7 +99,7 @@ def main():
         L = order[li]; lvl = tuple(int(v) for v in L.split("-"))
         who = a.name
         tries = sum(1 for e in log if e["level"] == L)
-        st = RETRY_STARTS[min(tries, len(RETRY_STARTS) - 1)]
+        st = retry_starts[min(tries, len(retry_starts) - 1)]
         b = C.CBody(st, a.senses, "lean", lvl); g = b.g
         player.begin(seed=1000 + len(log))
         text = f"{label}: {who} | {L} try {tries + 1} | lives {lives}/{a.lives} | cleared {len(cleared)}"
@@ -98,6 +111,8 @@ def main():
             if a.senses in ("ram", "ramscreen"):
                 b.eprev = C.concept_map(g.env.ram)[1]
             fr = []
+            if a.senses == "fabius":  # as Body.step: the previous screen for the next observation (fixed 11/14)
+                b.sprev = g.screen.copy()
             g.step(act, keep_frames=fr); b.held = ACTIONS[act]
             for f in fr:
                 send(f, text)
@@ -129,7 +144,7 @@ def main():
     for e in log:
         if e["end"] != "flag":
             deaths.setdefault(e["level"], []).append(e["x"])
-    rep = dict(name=a.name, label=label, pols=pols, mode=a.mode, temp=a.temp if a.mode != "greedy" else None, first=a.first, last=a.last, blame=a.blame, lives=a.lives, cleared=cleared, furthest=log[-1]["level"] if log else None,
+    rep = dict(name=a.name, label=label, pols=pols, mode=a.mode, temp=a.temp if a.mode != "greedy" else None, first=a.first, last=a.last, blame=a.blame, lives=a.lives, retries=a.retries, senses=a.senses, stuck=D.STUCK, cleared=cleared, furthest=log[-1]["level"] if log else None,
                deaths=deaths, lives_left=lives, attempts=log, seconds=round(time.time() - t0),
                when=time.strftime("%Y-%m-%d %H:%M"), clip=out.name + ".mp4", clip_seconds=round(nf[0] / 60, 1))
     Path(str(out) + ".json").write_text(json.dumps(rep, indent=1))

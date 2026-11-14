@@ -20,6 +20,10 @@ stationary memory guess for pile rows, DAgger), changed for a FRESH brain on 12 
     the button neurons / every output neuron by the slot count (each slot's nudge is beta / slots, 0.00095 at 105
     slots, below the settle tolerance 0.003). Set before every lesson: the learner is rebuilt at the first lesson
     after a config change, which drops a mask set at load (fabius tiny test, 11/8). --levels-file picks a levels.json (default data/levels.json).
+  - 11/14 (Scipio, vault Plans/Scipio Design 2026-11-12): --last-all (DAgger label window, default 60), --sel-every (score SEL
+    every N chunks; 50, 100 and the stop chunk always), --horizon (prime's exact-memory window, default mem.HORIZON). SEL
+    records how each attempt ended (died / stuck / never left the start). A brain with history or efference copy must
+    train at --p-seq 1.0. The start line names the cadence version and CADENCE_COMMIT. All defaults keep the old behaviour.
 """
 from __future__ import annotations
 
@@ -130,9 +134,17 @@ def main():
     ap.add_argument("--levels-file", default="data/levels.json")
     ap.add_argument("--dagger-stuck", type=int, default=0, help="stuck limit of the DAgger episodes only (0: the global "
                     "one). SEL keeps the global limit. Fabius dry run 11/8: a stalled brain at 225 costs ~8 min of coach labels")
+    ap.add_argument("--last-all", type=int, default=60, help="DAgger labels: every decision of the last N of an attempt "
+                    "(plus every 3rd before). Scipio 11/14: 100, so every decision of a 100-decision stall is labelled")
+    ap.add_argument("--sel-every", type=int, default=1, help="score SEL every N chunks (chunks 50, 100 and the stop chunk "
+                    "always). Unscored chunks still write a history line (scored false)")
+    ap.add_argument("--horizon", type=int, default=0, help="decisions of exact history / efference in prime (0: mem.HORIZON "
+                    "as it is, 64). Scipio 11/14: 250 (0.97 ** 250 < 0.001), set here, never in mem.py")
     ap.add_argument("--recycle", type=int, default=0, help="replace each play worker after N tasks (0: never). Fabius 11/9: "
                     "the GPU-placed brains leak VRAM per checkpoint loaded, and the 8 GB card filled at chunk 12")
     args = ap.parse_args()
+    if args.horizon:
+        mem.HORIZON = args.horizon
     sel = tuple(cs.SEL8) if args.sel8 else tuple(SEL)
     out = (HERE / args.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     logf = open(out / "log.txt", "a", encoding="utf-8")
@@ -196,7 +208,7 @@ def main():
         first = next(l for l in open(out / "log.txt", encoding="utf-8") if " start: {" in l)
         orig = ast.literal_eval(first.split(" start: ", 1)[1].split("} deep=", 1)[0] + "}")
         for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts", "senses", "pred",
-                    "mask", "levels_file", "dagger_stuck"):
+                    "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon"):
             if key in orig or key in ("coach", "coach_opts"):
                 want = orig.get(key, {"coach": "base", "coach_opts": "{}"}.get(key))
                 assert getattr(args, key) == want, f"--resume recipe mismatch: {key} {getattr(args, key)!r} vs first leg {want!r}"
@@ -204,6 +216,8 @@ def main():
         init = (HERE / args.init).resolve()
     b = mem.make_cold(Brain.load(init))  # settles from rest, as the act-mode players do
     assert len(b.sensory_index) == cs.C.D.n_inputs(args.senses), (len(b.sensory_index), args.senses)
+    if b.history is not None or b.efference is not None:  # pile rows would get mem._static (the stall signature)
+        assert args.p_seq == 1.0, "a brain with heard history / efference copy trains on ordered rows only (--p-seq 1.0)"
     slotted = b.learner.slot_count > 1
     assert slotted == args.pred, "--pred needs a brain composed with prediction slots, and only such a brain"
 
@@ -240,8 +254,10 @@ def main():
     if not curve.exists():
         curve.write_text("chunk,lessons,rows_taught,time,sel_mean_all,sel_flags_all," + ",".join(f"m{L},f{L}" for L in levels) + "\n")
 
-    def summ(ev):
-        return dict(x=[r["max_x"] for r in ev], flags=sum(r["flag"] for r in ev), mean=round(float(np.mean([r["max_x"] for r in ev]))))
+    def summ(ev):  # 11/14 (Scipio): how each attempt ended; nostart = stuck without passing x 60 (as scipio/mapshow.py)
+        return dict(x=[r["max_x"] for r in ev], flags=sum(r["flag"] for r in ev), mean=round(float(np.mean([r["max_x"] for r in ev]))),
+                    died=sum(r["end"] == "died" for r in ev), stuck=sum(r["end"] == "stuck" for r in ev),
+                    nostart=sum(r["end"] == "stuck" and r["max_x"] <= 60 for r in ev))
 
     def consider(path, k):
         rec = {}
@@ -319,7 +335,7 @@ def main():
         for L in levels:
             for i, s in enumerate(rng.choice(POOL, args.episodes, replace=False)):
                 tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(s), keep_obs=True, label=True, seed=k * 100 + i,
-                                  senses=args.senses, stuck=args.dagger_stuck or None)); tl.append(L)
+                                  senses=args.senses, stuck=args.dagger_stuck or None, last_all=args.last_all)); tl.append(L)
         res = pmap(mem.episode, tasks)
         msg = []
         for L in levels:
@@ -334,12 +350,15 @@ def main():
 
     if args.senses == "fabius":  # Fabius is registered at the 15 s stuck limit; the plateau scripts pin MARIO_STUCK=40
         assert cs.C.D.STUCK == 225, f"MARIO_STUCK is {cs.C.D.STUCK}, Fabius runs at 225"
-    log(f"start: {vars(args)} deep={deep} pid={os.getpid()} sel={len(sel)} starts stuck={cs.C.D.STUCK}" +
+    import cadence
+    log(f"start: {vars(args)} deep={deep} pid={os.getpid()} sel={len(sel)} starts stuck={cs.C.D.STUCK} cadence={cadence.__version__}"
+        f" commit={os.environ.get('CADENCE_COMMIT', '?')} horizon={mem.HORIZON}" +
         (f" RESUME from {init.name} (chunk {k0}), ordered rows " + ", ".join(f"{L} {len(seqs[L].rows)}" for L in levels) if args.resume else ""))
     if not args.resume:
         p0 = out / f"{args.name}_ck0000.npz"; b.save(p0)
         rec0, _ = consider(p0, 0)
-        log("chunk 0: " + " ".join(f"{L} {rec0[L]['flags']}/{len(sel)} m{rec0[L]['mean']}" for L in levels))
+        log("chunk 0: " + " ".join(f"{L} {rec0[L]['flags']}/{len(sel)} m{rec0[L]['mean']}" for L in levels) +
+            f" | stuck {sum(rec0[L]['stuck'] for L in levels)} (never left start {sum(rec0[L]['nostart'] for L in levels)})")
         with open(out / "history.jsonl", "a") as f:
             f.write(json.dumps(dict(chunk=0, solo=rec0, sel_n=len(sel), t=time.time())) + "\n")
     last_check = 0; slot = None
@@ -360,13 +379,26 @@ def main():
             t1 = time.time(); lessons(args.chunk); teach_s = round(time.time() - t1)
             p = out / f"{args.name}_ck{k:04d}.npz"; b.save(p)
             rec = dict(chunk=k, lessons=k * args.chunk, teach_s=teach_s, fit=fit(), sel_n=len(sel))
-            t2 = time.time(); rec["solo"], rec["key"] = consider(p, k); rec["sel_s"] = round(time.time() - t2); rec["t"] = time.time()
+            if b.history is not None and b.history.hearing is not None:  # learned gains of the memories (Scipio log item)
+                rec["hearing_history"] = [round(float(v), 5) for v in np.ravel(b.history.hearing)]
+            if b.efference is not None and getattr(b.efference, "hearing", None) is not None:
+                rec["hearing_efference"] = [round(float(v), 5) for v in np.ravel(b.efference.hearing)]
+            scored = k % args.sel_every == 0 or k in (50, 100) or k == last_k
+            if scored:
+                t2 = time.time(); rec["solo"], rec["key"] = consider(p, k); rec["sel_s"] = round(time.time() - t2)
+            rec["scored"] = scored; rec["t"] = time.time()
         finally:
             if slot is not None:
                 slot.unlink(missing_ok=True); slot = None
-        mall = np.mean([rec["solo"][L]["mean"] for L in levels])
-        log(f"chunk {k} (teach {rec['teach_s']}s, SEL {rec['sel_s']}s, fit {rec['fit']}): mean {mall:.0f} flags "
-            f"{rec['key'][0]} | " + " ".join(f"{L} {rec['solo'][L]['flags']}/m{rec['solo'][L]['mean']}" for L in levels))
+        if rec["scored"]:
+            mall = np.mean([rec["solo"][L]["mean"] for L in levels])
+            st = sum(rec["solo"][L]["stuck"] for L in levels); ns = sum(rec["solo"][L]["nostart"] for L in levels)
+            dd = sum(rec["solo"][L]["died"] for L in levels)
+            log(f"chunk {k} (teach {rec['teach_s']}s, SEL {rec['sel_s']}s, fit {rec['fit']}): mean {mall:.0f} flags "
+                f"{rec['key'][0]} died {dd} stuck {st} (never left start {ns}) | " +
+                " ".join(f"{L} {rec['solo'][L]['flags']}/m{rec['solo'][L]['mean']}" for L in levels))
+        else:
+            log(f"chunk {k} (teach {rec['teach_s']}s, not scored, fit {rec['fit']})")
         with open(out / "history.jsonl", "a") as f:
             f.write(json.dumps(rec) + "\n")
         if time.time() > deadline:

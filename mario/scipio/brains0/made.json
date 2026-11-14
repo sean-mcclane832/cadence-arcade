@@ -1,0 +1,49 @@
+{
+ "ScipioA": {
+  "arm": "ScipioA",
+  "seed": 0,
+  "synapses": 1881344,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": [
+   0.97
+  ],
+  "efference": 0.97
+ },
+ "ScipioB": {
+  "arm": "ScipioB",
+  "seed": 1,
+  "synapses": 1881344,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": [
+   0.97
+  ],
+  "efference": 0.97
+ },
+ "ScipioFast": {
+  "arm": "ScipioFast",
+  "seed": 0,
+  "synapses": 1881344,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": [
+   0.8
+  ],
+  "efference": 0.8
+ },
+ "Twin": {
+  "arm": "Twin",
+  "seed": 0,
+  "synapses": 974336,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": null,
+  "efference": null
+ },
+ "cadence": "0.99.0"
+}

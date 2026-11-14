@@ -35,3 +35,4 @@ mario/coachfree/runs/**/*.out
 
 # Scipio scratch (copied checkpoints, logs)
 mario/scipio/scratch/
+mario/scipio/brains0/*.npz
