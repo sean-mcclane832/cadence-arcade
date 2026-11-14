@@ -3,7 +3,10 @@
   idle.sh 095 playstudy.py ties                      held-out coach runs: are change frames timing ties?
   idle.sh 095 playstudy.py play <tag> <ck copy>      SEL8 on 24 levels: where attempts end
   idle.sh 095 playstudy.py label <tag> [starts]      coach scores on the last decisions of those attempts
-  idle.sh 098 playstudy.py mlp <net.pt> <tag> [w7]   the MLP plays SEL8 (and World 7 first sight with w7)
+  idle.sh 098 playstudy.py mlp <net.pt> <tag> --mode none|A [w7]
+                                                     the MLP plays SEL8 (and World 7 first sight with w7). --mode is required
+                                                     and stored in the result (leg 2c fix: the old "Aonly" token was silent).
+                                                     Episodes are appended to scratch/play/mlp_<tag>.jsonl as they land; a rerun skips them.
 World 8 is refused here as well as in coach/plug.py. Results: scratch/play/*.json
 """
 import json, os, sys, time
@@ -94,7 +97,7 @@ def mlp_task(task):
     return dict(level=task["level"], start=task["start"], max_x=r["max_x"], end=r["end"], decisions=r["decisions"], actions=[int(a) for a in r["actions"]], xs=r["xs"])
 
 
-def pmap(fn, tasks, workers=4):
+def pmap(fn, tasks, workers=2):
     from concurrent.futures import ProcessPoolExecutor
     from multiprocessing import get_context
     with ProcessPoolExecutor(workers, mp_context=get_context("spawn"), initializer=init) as ex:
@@ -121,8 +124,18 @@ if __name__ == "__main__":
         eps = [e for e in json.load(open(OUT / f"play_{tag}.json"))["episodes"] if e["start"] in starts and e["end"] != "flag"]
         res = pmap(label_task, eps); json.dump(res, open(OUT / f"label_{tag}.json", "w")); print("labelled", len(res), "attempts")
     elif mode == "mlp":
-        net, tag = sys.argv[2], sys.argv[3]; levels = LEVELS + (W7 if "w7" in sys.argv else []); m = "A" if "Aonly" in sys.argv else None
-        res = pmap(mlp_task, [dict(net=net, level=L, start=s, mode=m) for L in levels for s in SEL8])
+        net, tag = sys.argv[2], sys.argv[3]; levels = LEVELS + (W7 if "w7" in sys.argv else [])
+        assert "Aonly" not in sys.argv, "use --mode A"
+        m = sys.argv[sys.argv.index("--mode") + 1]; assert m in ("none", "A"), m
+        stuck = int(os.environ.get("MARIO_STUCK", "-1")); assert stuck == 225, "set MARIO_STUCK=225"
+        part = OUT / f"mlp_{tag}.jsonl"; res = [json.loads(l) for l in open(part)] if part.exists() else []
+        done = {(r["level"], r["start"]) for r in res}
+        tasks = [dict(net=net, level=L, start=s, mode=None if m == "none" else "A") for L in levels for s in SEL8 if (L, s) not in done]
+        from concurrent.futures import ProcessPoolExecutor, as_completed
+        from multiprocessing import get_context
+        with ProcessPoolExecutor(2, mp_context=get_context("spawn"), initializer=init) as ex, open(part, "a") as fh:
+            for f in as_completed([ex.submit(mlp_task, t) for t in tasks]):
+                r = f.result(); res.append(r); fh.write(json.dumps(r) + "\n"); fh.flush()
         s = summ([r for r in res if r["level"] in LEVELS], LEVELS); s7 = summ([r for r in res if r["level"] in W7], W7) if "w7" in sys.argv else None
-        json.dump(dict(net=net, summary=s, w7=s7, episodes=res), open(OUT / f"mlp_{tag}.json", "w")); print(json.dumps(s)); print(json.dumps(s7))
+        json.dump(dict(net=net, mode=m, stuck=stuck, summary=s, w7=s7, episodes=res), open(OUT / f"mlp_{tag}.json", "w")); print(json.dumps(s)); print(json.dumps(s7))
     print("seconds", round(time.time() - t0))
