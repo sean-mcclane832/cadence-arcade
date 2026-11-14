@@ -15,6 +15,6 @@ for name in $NAMES; do
   fi
   if [ -s runs/$name/history.jsonl ]; then echo "skip $name: runs/$name already has chunks (resume through the guard)"; continue; fi
   mkdir -p runs/$name
-  cmd //c "start /belownormal /b $SCIPIO_PY ctrain.py --name $name --init ../scipio/brains0/${name}_ck0.npz --out runs/$name $SCIPIO_COMMON --workers $WORKERS --stop-chunk $SCIPIO_TARGET >> runs\$name.out 2>&1"
+  cmd //c "start /belownormal /b $SCIPIO_PY ctrain.py --name $name --init ../scipio/brains0/${name}_ck0.npz --out runs/$name $SCIPIO_COMMON --workers $WORKERS --stop-chunk $SCIPIO_TARGET >> runs\\$name.out 2>&1"
   echo "started $name (workers $WORKERS, stop chunk $SCIPIO_TARGET) $(date '+%F %T')"
 done
