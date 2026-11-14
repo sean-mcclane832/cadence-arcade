@@ -56,6 +56,7 @@
   - scoreboard: the table under id="scoreboard"; best-per-level tiles under id="best"
   - brains: one <div class="brain"> card per brain under id="brains", plus the same row in the table inside the details below it
   - gauntlet rows: insert new rows right under the GAUNTLET-ROWS marker
+  - public gauntlet (Scipio, every 10 chunks, 10 lives): new rows right under the PUBLIC-GAUNTLET-ROWS marker; keep at most one new clip per round in gauntlet/
   - latest log: newest <li> at the top of id="latest-new"; move older ones into id="latest-old"
   Styles live in ../assets/site.css. Plain text: no em dashes; RAM results always tagged as a cheat.
 -->
@@ -72,7 +73,7 @@
     <p class="eyebrow">Super Mario Bros. &middot; solo from the screen</p>
     <h1>One Cadence brain beat all of World 1 in a single 5-life gauntlet</h1>
     <p class="lede">Brain W1b ("the balanced finisher", trained overnight 10/31) cleared 1-1, 1-2, 1-3 and 1-4 (Bowser) back to back with the same weights, losing three lives on 1-3, then ran out on 2-1, a level it never trained on. On 50 held-out starts per level it clears 1-1 7, 1-2 8, 1-3 9 and 1-4 27 times: every level, none consistently yet. Other brains still do better on single levels (1-1 50/50 with W1_F2ck110, 1-4 50/50). Every button in every clip is the brain's.</p>
-    <p class="lede"><b>Latest (11/6):</b> the plateau test is scored. Eight brains trained from scratch to chunk 200, with and without memory: none of the three memory recipes passes the pre-registered both-seeds bar in either direction against the no-memory brain (the bar is the 150 x gap between that brain's own two seeds; one Livy seed was 172 below, the other 91 above). <a href="#plateau">Details</a>. <b>The goal is now World 8</b>, the final world: never coached, learned by own play only, cleared with at most 1 death in total. Training is coached on worlds 1 to 7. <a href="#goal">The goal</a>.</p>
+    <p class="lede"><b>Latest (11/14):</b> Fabius (recall memory plus prediction slots) does not beat Cato2, the same brain without them: 920.8 against 958.0 mean x at chunks 81 to 100, a gap of -37 inside the 65 between Cato2's own two seeds. With two seeds per brain they can't be told apart; if anything the point estimate leans toward Cato2. <a href="#fabius">Details</a>. The next brain, <b>Scipio</b>, started 11/14: a slow memory aimed at the stalls where Mario holds one button against a wall. It is early; the registered read is at chunk 50. Every 10 chunks each Scipio brain plays a <a href="#public-gauntlet">public gauntlet</a>: at chunk 10 all four lost their 10 lives on 1-1. <b>The goal is World 8</b>, the final world: never coached, learned by own play only, cleared with at most 1 death in total. <a href="#goal">The goal</a>.</p>
   </section>
 
   <figure>
@@ -104,18 +105,74 @@
     </div>
   </div>
 
-  <p class="updated">Last updated 2026-11-06 23:59 EST. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="updated">Last updated 2026-11-14 12:30 EST. Fabius and Cato2 trained on Cadence 0.95.0, the Scipio brains on 0.99.0. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <nav class="toc" aria-label="On this page">
-    <a href="#goal">The goal</a><a href="#plateau">Plateau test</a><a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
+    <a href="#goal">The goal</a><a href="#scipio">Scipio</a><a href="#public-gauntlet">Public gauntlet</a><a href="#fabius">Fabius vs Cato2</a><a href="#plateau">Plateau test</a><a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
   </nav>
 
   <h2 id="goal">The goal: World 8, never coached</h2>
   <div class="callout">
     <h3>Clear all four World 8 levels with at most 1 death in total</h3>
-    <p>World 8 is the final world. No brain is ever coached on it or trained with a coach's labels there: whatever it learns on World 8 it learns by its own play. The gate is 8-1 to 8-4 cleared with at most one death across all four levels. Training is coached on worlds 1 to 7. (Until 11/6 the exam was World 4, and before that World 2.) Nothing on this page has played World 8 yet.</p>
-    <p class="small dim">The coach is verified on worlds 1 to 7: 164 of 168 test runs (6 starts per level) reach the flag, 11/8, assembled from six runs at the current settings (not one fresh pass). Worlds 1 to 3 72 of 72; worlds 4 to 7 92 of 96. Only 5-3 and 6-3 are short, 4 of 6 each (long leaps off high lifts). <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a>. Planning lives in GitHub issues: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/1">#1 roadmap</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/2">#2 World 8</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">#4 plateau test</a>.</p>
+    <p>World 8 is the final world. No brain is ever coached on it or trained with a coach's labels there: whatever it learns on World 8 it learns by its own play. The gate is 8-1 to 8-4 cleared with at most one death across all four levels. The plan coaches worlds 1 to 7. (Until 11/6 the exam was World 4, and before that World 2.) Nothing on this page has played World 8 yet. So far Fabius, Cato2 and Scipio are coached on worlds 1 to 6 (24 levels), with World 7 held out as a development check.</p>
+    <p class="small dim">The coach is verified on worlds 1 to 7: 164 of 168 test runs (6 starts per level) reach the flag, 11/8, assembled from six runs at the current settings (not one fresh pass). Worlds 1 to 3 72 of 72; worlds 4 to 7 92 of 96. Only 5-3 and 6-3 are short, 4 of 6 each (long leaps off high lifts). <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a>. Planning lives in GitHub issues: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/1">#1 roadmap</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/2">#2 World 8</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">#4 plateau test</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/11">#11 Fabius vs Cato2</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">#12 Scipio</a>.</p>
   </div>
+
+  <h2 id="scipio">Scipio (running since 11/14): does a slow memory fix the stalls?</h2>
+  <div class="callout">
+    <h3>Too early for any answer. The registered read is at chunk 50.</h3>
+    <p>Sean's question: is memory the answer to the holding problem? In the Fabius study every stuck attempt we checked (no new furthest x for 15 s; 108 attempts from Cato2 A and B at chunk 100 and Fabius A at chunk 65) held one button for its last 100+ decisions. On a pipe the screen looks the same on decision 5 and decision 150, so a brain that sees only the present can't tell it has been pushing against the same wall for seconds. Earlier memory tests could not catch this: Cicero's button memory faded within about 5 decisions, and the plateau test scored distance only.</p>
+  </div>
+  <ul class="prose">
+    <li><b>ScipioA / ScipioB:</b> a slow screen memory and a slow button memory, both fading at 0.97 per decision (about 2 s).</li>
+    <li><b>ScipioFast:</b> the same parts, fading at 0.8 (well under a second).</li>
+    <li><b>Twin:</b> the same brain with no memory, the control.</li>
+  </ul>
+  <p class="small dim">All four: Cadence 0.99.0, Cato2's exact eyes (including the colour close-up placed from Mario's position in the game's memory), 256 neurons, 7 buttons, coached on worlds 1 to 6 with the coach labelling stalls up to 100 decisions, scored every 2nd chunk, stop at chunk 50. <b>Registered before launch (11/14):</b> the main number is stuck attempts per 192 practice attempts (8 starts on each of 24 levels), averaged over the last 10 scored chunks, with the 24-level mean x as a guard. The verdict also needs a time-only test on the same checkpoint: the memories cut to hold only the previous moment, so a change in stalls is pinned on how long the memory lasts, not on removing an input. ScipioA started 11/14 03:01, the others 05:44 to 05:46. <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">Issue #12</a>.</p>
+  <h3>Where they are</h3>
+  <div class="tw"><table><thead><tr><th>run</th><th class="n">latest chunk (11/14 12:00)</th><th class="n">24-level mean x, chunk 10</th><th class="n">stuck of 192, chunk 10</th><th class="n">flags of 192, chunk 10</th></tr></thead><tbody>
+    <tr><td>ScipioA (slow memory)</td><td class="n">15</td><td class="n">542</td><td class="n">21</td><td class="n">0</td></tr>
+    <tr><td>ScipioB (slow memory)</td><td class="n">11</td><td class="n">532</td><td class="n">47</td><td class="n">0</td></tr>
+    <tr><td>ScipioFast (fast memory)</td><td class="n">11</td><td class="n">663</td><td class="n">29</td><td class="n">0</td></tr>
+    <tr><td>Twin (no memory, control)</td><td class="n">11</td><td class="n">691</td><td class="n">35</td><td class="n">0</td></tr>
+  </tbody></table></div>
+  <p class="small dim">One scored chunk per run, early in training, on practice starts. These numbers swing a lot from chunk to chunk (ScipioA's stuck count went 21, 27, 32 at chunks 10, 12, 14), so read nothing into the gaps between arms. No Scipio brain has reached a flag yet.</p>
+
+  <h2 id="public-gauntlet">Public gauntlet (every 10 chunks)</h2>
+  <p class="small dim">Sean's idea: every 10 chunks each Scipio brain gets 10 lives in total to play the game from 1-1 in order. Greedy, no learning, a flag moves on to the next level, a death or 15 s without progress costs a life. It stops after 7-4, so World 8 stays unseen. This is for this page only and never decides anything; the registered numbers are in the Scipio section above. Different rules from the older five-life gauntlets further down.</p>
+  <div class="tw stack"><table><thead><tr><th>chunk</th><th>brain</th><th>furthest</th><th>levels cleared</th><th class="n">lives used</th><th>clip</th></tr></thead><tbody>
+  <!--PUBLIC-GAUNTLET-ROWS-->
+  <tr><td>10 (11/14 11:46)</td><td>ScipioA</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td><a href="gauntlet/ScipioA_ck0010.mp4">clip</a></td></tr>
+  <tr><td>10 (11/14 11:47)</td><td>ScipioB</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/14 11:47)</td><td>ScipioFast</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/14 11:48)</td><td>Twin</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  </tbody></table></div>
+  <div class="w1b">
+    <figure>
+      <video class="nes" controls playsinline muted preload="metadata"><source src="gauntlet/ScipioA_ck0010.mp4" type="video/mp4"></video>
+      <figcaption>ScipioA at chunk 10, the first public gauntlet: ten lives on 1-1, every one lost at the same spot (x 312 to 315, 27 decisions in). 17 s.</figcaption>
+    </figure>
+    <div>
+      <p>All four brains played the same way at chunk 10: every life ended at x 312 to 315 on 1-1, about two seconds in. Their practice scores on 1-1 say the same (mean x 314 on all 8 starts). Each chunk-10 checkpoint had about 5 to 6 hours of training. The next gauntlets are at chunk 20.</p>
+    </div>
+  </div>
+
+  <h2 id="fabius">Fabius vs Cato2 (11/8 to 11/14): recall memory plus prediction</h2>
+  <div class="callout">
+    <h3>Short answer: Fabius does not beat Cato2. With two seeds each they can't be told apart.</h3>
+    <p>Fabius A/B: 3,536 inputs (body sense, a grey view of the whole screen, a colour close-up around Mario; the close-up is placed using Mario's position read from the game's memory, but the brain gets only its pixels, never the position numbers), a recall memory and 104 prediction slots, Cadence 0.95.0. Cato2 A/B: the same eyes and the same teaching, with recall off and no prediction slots. Both coached on worlds 1 to 6 (24 levels), 15 s stuck limit. Registered before launch (11/8): one number per run, the 24-level mean x on 8 practice starts per level, averaged over chunks 81 to 100. Fabius wins only if it beats Cato2 by more than the larger gap between two seeds of one brain.</p>
+  </div>
+  <div class="tw"><table><thead><tr><th>run</th><th class="n">mean x, chunks 81 to 100</th><th class="n">flags, of 3,840 attempts</th></tr></thead><tbody>
+    <tr><td>Cato2 A (control)</td><td class="n">990.4</td><td class="n">69</td></tr>
+    <tr><td>Cato2 B (control)</td><td class="n">925.6</td><td class="n">84</td></tr>
+    <tr><td>Fabius A</td><td class="n">905.8</td><td class="n">19</td></tr>
+    <tr><td>Fabius B</td><td class="n">935.7</td><td class="n">40</td></tr>
+  </tbody></table></div>
+  <ul class="verdict prose">
+    <li><b>Fabius vs Cato2:</b> 920.8 against 958.0, a difference of -37. The larger seed gap is Cato2's, 65. <span class="no">Not distinguishable</span>; the registered test fails. The point estimate leans toward Cato2.</li>
+    <li><b>Flags (not registered):</b> Fabius 59, Cato2 153, of 7,680 practice attempts per brain type (3,840 per run: 20 chunks x 192). 84 of Cato2's are on 4-1 alone.</li>
+  </ul>
+  <p class="small dim">Also not registered: both Cato2 seeds stand still on 4-4 at every chunk from 81 to 100. Deviation: the registered chunk-25 recall check (recall switched off against on) was not run on time; the chunk-10 check passed (Fabius A on 374 / off 307, Fabius B on 772 / off 314, floor 288). Practice starts only; none of these brains has been scored on held-out starts. Fabius A and Cato2 A ran on, unregistered, to about chunks 112 and 116 (not read); then all four were stopped. <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/11">Issue #11</a>.</p>
 
   <h2 id="plateau">Plateau test (11/5 to 11/6): does memory plateau higher?</h2>
   <div class="callout">
@@ -372,9 +429,18 @@
     </tbody></table></div>
     </div>
   </details>
+  <h3>Newer brains (from 11/8), trained from scratch on worlds 1 to 6</h3>
+  <p class="small dim">These see more than the cards above: 3,536 inputs, the coarse grey screen plus a colour close-up around Mario. None has been scored on held-out starts yet, so they have no cards; their numbers are practice-start numbers in their own sections.</p>
+  <ul class="prose">
+    <li><b>Cato2 (A, B)</b>: the control for Fabius: the new eyes, no recall memory, no prediction. Cadence 0.95.0, read at chunk 100, now stopped. <a href="#fabius">Fabius vs Cato2</a>.</li>
+    <li><b>Fabius (A, B)</b>: Cato2 plus a recall memory and 104 prediction slots. Did not beat Cato2 (11/14). <a href="#fabius">Fabius vs Cato2</a>.</li>
+    <li><b>Scipio (A, B)</b>: Cato2's eyes plus a slow screen memory and a slow button memory (about 2 s), aimed at stalls. Cadence 0.99.0, training since 11/14. <a href="#scipio">Scipio</a>.</li>
+    <li><b>ScipioFast</b>: the same memory parts, fading in well under a second. Training since 11/14.</li>
+    <li><b>Twin</b>: the Scipio brain with no memory, the control. Training since 11/14.</li>
+  </ul>
 
   <h2 id="gauntlet">Gauntlet</h2>
-  <p class="small dim">Real start of 1-1, five lives. A flag moves on to the next level (1-2, 1-3, 1-4, 2-1 ...); a death restarts the current level; no learning between lives; game over on the fifth death. Retries start a few frames later (the emulator is deterministic, so an identical restart would replay the identical death). "One brain" = the same weights the whole way. Each level starts with small Mario.</p>
+  <p class="small dim">Real start of 1-1, five lives. A flag moves on to the next level (1-2, 1-3, 1-4, 2-1 ...); a death restarts the current level; no learning between lives; game over on the fifth death. Retries start a few frames later (the emulator is deterministic, so an identical restart would replay the identical death). "One brain" = the same weights the whole way. Each level starts with small Mario. The newer 10-life gauntlets for the Scipio brains are in <a href="#public-gauntlet">Public gauntlet</a>.</p>
   <div class="tw stack"><table><thead><tr><th>time</th><th>brain</th><th>cleared</th><th>deaths (level: x)</th><th class="n">lives left</th><th>clip</th></tr></thead><tbody>
   <!--GAUNTLET-ROWS-->
   <tr><td>11/03 08:55 EST</td><td>Cicero A ck108 (cold start, from scratch; one brain, sampled play*)</td><td>1-1</td><td>1-1: 679, 1,797, 1,129; 1-2: 918, 886</td><td class="n">0</td><td><a href="gauntlet/c01_CiceroA.mp4">clip</a></td></tr>
@@ -427,6 +493,9 @@
 
   <h2 id="latest">Latest</h2>
   <ul class="log" id="latest-new">
+    <li><time>11/14 11:48</time><span><b>First public gauntlets.</b> Every 10 chunks each Scipio brain now gets 10 lives to play the game from 1-1 in order, stopping after 7-4 (World 8 stays unseen); for this page only, never a decision metric. At chunk 10 all four (ScipioA, ScipioB, ScipioFast, Twin) lost all 10 lives on 1-1, every one at x 312 to 315. <a href="#public-gauntlet">Public gauntlet</a>.</span></li>
+    <li><time>11/14 05:46</time><span><b>Scipio started.</b> The question: is memory the answer to the stalls, where Mario holds one button against a wall for seconds? ScipioA and ScipioB have a slow screen memory and a slow button memory (about 2 s), ScipioFast the same parts at well under a second, Twin none (the control). Cadence 0.99.0, Cato2's eyes, coached on worlds 1 to 6. Registered before launch: stuck attempts per 192 practice attempts over the last 10 scored chunks, read at chunk 50. No results yet. <a href="#scipio">Scipio</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">issue #12</a>.</span></li>
+    <li><time>11/14 02:10</time><span><b>Fabius vs Cato2, registered read: Fabius does not beat Cato2.</b> Mean x over chunks 81 to 100: Fabius 920.8 (A 905.8 / B 935.7), Cato2 958.0 (A 990.4 / B 925.6). The difference, -37, is inside the larger seed gap (65, Cato2's), so the two are not told apart with two seeds per brain; the point estimate leans toward Cato2. Not registered: flags 59 against 153 of 7,680 practice attempts per brain type, 84 of Cato2's on 4-1. The registered chunk-25 recall check was not run on time. <a href="#fabius">Fabius vs Cato2</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/11">issue #11</a>.</span></li>
     <li><time>11/09 18:51</time><span><b>W1b sent to Pragma Research's cadence-demos.</b> Bernhard asked for the Mario brain; it is now <a href="https://github.com/muellerberndt/cadence-demos/pull/10">pull request #10</a>, a demo with its own nes-py console (identical play on 32,402 decisions), a brain view beside the game and a model card. New for it: 50 fresh starts per level (140 to 189), read once: 1-1 11, 1-2 1, 1-3 15, 1-4 34 of 50 (held-out was 7 / 8 / 9 / 27). 1-2 mostly falls apart on fresh starts, so its held-out 8 was partly the pick; on 1-1 most misses end standing still.</span></li>
     <li><time>11/08 07:30</time><span><b>The coach covers worlds 1 to 7: 164 of 168.</b> The two loop castles now clear from every start (4-4 and 7-4, 6 of 6; they were 0 of 6, stuck): the coach reads the castle's own check table from the ROM and treats a loop-back as a death. 6-3's lifts went from 0 to 4 of 6 by letting the coach wait longer there. One tried fix (letting a fall finish before judging a jump) helped where it was aimed and hurt elsewhere (a full pass dropped to 153), so it is off. Open: 5-3 and 6-3, 4 of 6 each. Next: rebuild the coach demonstrations for worlds 1 to 7, then Fabius. (164 is assembled from six runs, not one fresh pass; see COACH.md.) <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a></span></li>
     <li><time>11/06 23:56</time><span><b>Plateau test final: no verdict either way.</b> All 8 runs reached chunk 200 and were scored exactly as pre-registered. None of the three memory recipes (Cicero, Livy, CiceroLow) passed "plateaus higher", and none passed "plateaus lower". Floor 150.2 = the gap between Cato's own two seeds. Versus the matching Cato seed (A / B): Cicero -1 / -29, Livy +91 / -172, CiceroLow +63 / -56. Five of six inside the floor; Livy B is outside, but Livy A has the opposite sign. Two seeds only see big effects. 6 of 8 curves still slope up slightly, so "plateau" is loose. This corrects an interim 11/6 text that said "Livy plateaus lower" (a chunk-161 read). Details in "Plateau test" above, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">issue #4</a>.</span></li>
@@ -496,8 +565,8 @@
     <li><b>One brain for everything, but not consistently.</b> W1b clears all four World 1 levels, but 7-27 times in 50, not 40+. one_11_13 holds 1-1 and 1-3 consistently; U3ck83 clears three levels but only 1-3 consistently. The best 1-4 checkpoint (U3ck28, 50/50) clears 1-1 only 30/50. The best all-three checkpoints so far: 1-1 25/50, 1-3 15/50, 1-4 37/50 (U3ck44), or 1-1 15/50, 1-3 45/50, 1-4 33/50 (U3ck83).</li>
     <li><b>1-2 is not cleared reliably.</b> Best 29/50. On 1-2 the brain fits only about 85% of the coach's labels, and even a standard neural net predicts only about 85% of them on screens it hasn't seen. Ruled out: the coach, sharper eyes, step size, more training, a bigger brain.</li>
     <li><b>Held-out means held-out starts, not new levels.</b> Levels outside training go nowhere at first sight: World 2 for the World 1 brains, World 4 (0 of 150) and worlds 6 to 7 (0 of 1,200) for the cold-start brains. The skill doesn't transfer yet. And 2-1 and 2-2, training levels since 11/2, are still never cleared.</li>
-    <li><b>Memory brains: no gain yet.</b> On the 11/1 night the gap between two copies of the same no-memory recipe (top-3 means 74 vs 70, single checkpoints 33 to 119 of 200) was bigger than anything a memory added. One seed per brain and unequal compute; record numbers from a single checkpoint (like 1-3 46/50) are best-of-many picks. Memory from birth (cold start, then the plateau test to chunk 200) also showed no difference beyond the seed gap, with 2 seeds per brain. Notebook: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/memory/MEMORY.md">MEMORY.md</a>.</li>
-    <li><b>This is not "Cadence beats Super Mario Bros."</b> It's World 1, with a coach's labels as the teacher, and World 8 has not been played. The old coach never cleared 2-1 or 3-4; the new one clears 72 of 72 test runs on worlds 1 to 3 (11/5, at the old 2.7 s stuck limit), but no brain has trained with it yet.</li>
+    <li><b>Memory brains: no gain yet.</b> On the 11/1 night the gap between two copies of the same no-memory recipe (top-3 means 74 vs 70, single checkpoints 33 to 119 of 200) was bigger than anything a memory added. One seed per brain and unequal compute; record numbers from a single checkpoint (like 1-3 46/50) are best-of-many picks. Memory from birth (cold start, then the plateau test to chunk 200) also showed no difference beyond the seed gap, with 2 seeds per brain, and so did Fabius (recall memory plus prediction) against Cato2 on 11/14. Notebook: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/memory/MEMORY.md">MEMORY.md</a>.</li>
+    <li><b>This is not "Cadence beats Super Mario Bros."</b> It's World 1, with a coach's labels as the teacher, and World 8 has not been played. The old coach never cleared 2-1 or 3-4; the new one clears 72 of 72 test runs on worlds 1 to 3 (11/5, at the old 2.7 s stuck limit) and 164 of 168 on worlds 1 to 7 (11/8). Fabius, Cato2 and Scipio train with it; none of them has cleared a level in a public gauntlet or been scored on held-out starts yet.</li>
     <li>Numbers on this page are from the run logs, and earlier claims that didn't hold are corrected in the Latest log. Notebooks, dead ends included: <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/concepts/CONCEPTS.md">CONCEPTS.md</a> (the 10/31 night: RAM test, death clinic, the all-four brains, every gauntlet) and <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/LEARNING_FIX.md">LEARNING_FIX.md</a> (everything before).</li>
   </ul>
 
