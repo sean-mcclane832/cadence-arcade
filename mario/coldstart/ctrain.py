@@ -211,7 +211,9 @@ def main():
         orig = ast.literal_eval(first.split(" start: ", 1)[1].split("} deep=", 1)[0] + "}")
         for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts", "senses", "pred",
                     "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon", "tie_stuck"):
-            if key in orig or key in ("coach", "coach_opts"):
+            if key == "tie_stuck":  # absent in older logs = the old labels (-1); compared either way (review 11/16)
+                assert args.tie_stuck == orig.get("tie_stuck", -1), f"--resume recipe mismatch: tie_stuck {args.tie_stuck} vs first leg {orig.get('tie_stuck', -1)}"
+            elif key in orig or key in ("coach", "coach_opts"):
                 want = orig.get(key, {"coach": "base", "coach_opts": "{}"}.get(key))
                 assert getattr(args, key) == want, f"--resume recipe mismatch: {key} {getattr(args, key)!r} vs first leg {want!r}"
     else:

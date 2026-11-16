@@ -148,7 +148,9 @@ def _play(task, pol, label_at=None, rng=None):
         lab, wt = g.coach_weighted() if want else (-1, 0.0)
         # tie_stuck K >= 0 (Marcellus, 11/16): the tie rule only while the brain made progress in its last K decisions;
         # in a stall the coach's own label stands (the tie rule had written "noop" onto the 4-2 start stalls)
-        tie_ok = task.get("tie_stuck", -1) < 0 or g.stuck < task["tie_stuck"]
+        # and never before the first advance (g.stuck == g.decisions: no new furthest x yet), so a start stall's
+        # decision 0 carries the coach's label too (review 11/16: the start is decided at decision 0)
+        tie_ok = task.get("tie_stuck", -1) < 0 or g.stuck < min(task["tie_stuck"], g.decisions)
         if want and script is not None and task.get("tiew") and tie_ok and script[i] != lab:
             sc = g.coach_scores(); first = np.array([p_[0] for p_ in g.plans])
             mine = sc[first == script[i]]
