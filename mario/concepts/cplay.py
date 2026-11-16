@@ -146,7 +146,10 @@ def _play(task, pol, label_at=None, rng=None):
         o = b.obs()
         want = label_at == "all" or (label_at is not None and i in label_at)
         lab, wt = g.coach_weighted() if want else (-1, 0.0)
-        if want and script is not None and task.get("tiew") and script[i] != lab:
+        # tie_stuck K >= 0 (Marcellus, 11/16): the tie rule only while the brain made progress in its last K decisions;
+        # in a stall the coach's own label stands (the tie rule had written "noop" onto the 4-2 start stalls)
+        tie_ok = task.get("tie_stuck", -1) < 0 or g.stuck < task["tie_stuck"]
+        if want and script is not None and task.get("tiew") and tie_ok and script[i] != lab:
             sc = g.coach_scores(); first = np.array([p_[0] for p_ in g.plans])
             mine = sc[first == script[i]]
             if len(mine) and sc.max() - mine.max() <= 2.0:

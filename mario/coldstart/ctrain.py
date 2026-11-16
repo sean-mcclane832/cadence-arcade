@@ -138,6 +138,8 @@ def main():
                     "(plus every 3rd before). Scipio 11/14: 100, so every decision of a 100-decision stall is labelled")
     ap.add_argument("--sel-every", type=int, default=1, help="score SEL every N chunks (chunks 50, 100 and the stop chunk "
                     "always). Unscored chunks still write a history line (scored false)")
+    ap.add_argument("--tie-stuck", type=int, default=-1, help="DAgger tie rule (brain's button kept when within 2 px of the "
+                    "coach's best) only while stuck < N decisions; -1: always (the old labels, Scipio and before)")
     ap.add_argument("--horizon", type=int, default=0, help="decisions of exact history / efference in prime (0: mem.HORIZON "
                     "as it is, 64). Scipio 11/14: 250 (0.97 ** 250 < 0.001), set here, never in mem.py")
     ap.add_argument("--recycle", type=int, default=0, help="replace each play worker after N tasks (0: never). Fabius 11/9: "
@@ -208,7 +210,7 @@ def main():
         first = next(l for l in open(out / "log.txt", encoding="utf-8") if " start: {" in l)
         orig = ast.literal_eval(first.split(" start: ", 1)[1].split("} deep=", 1)[0] + "}")
         for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts", "senses", "pred",
-                    "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon"):
+                    "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon", "tie_stuck"):
             if key in orig or key in ("coach", "coach_opts"):
                 want = orig.get(key, {"coach": "base", "coach_opts": "{}"}.get(key))
                 assert getattr(args, key) == want, f"--resume recipe mismatch: {key} {getattr(args, key)!r} vs first leg {want!r}"
@@ -335,7 +337,7 @@ def main():
         for L in levels:
             for i, s in enumerate(rng.choice(POOL, args.episodes, replace=False)):
                 tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(s), keep_obs=True, label=True, seed=k * 100 + i,
-                                  senses=args.senses, stuck=args.dagger_stuck or None, last_all=args.last_all)); tl.append(L)
+                                  senses=args.senses, stuck=args.dagger_stuck or None, last_all=args.last_all, tie_stuck=args.tie_stuck)); tl.append(L)
         res = pmap(mem.episode, tasks)
         msg = []
         for L in levels:

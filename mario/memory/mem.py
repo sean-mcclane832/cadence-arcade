@@ -265,7 +265,7 @@ def episode(task):
         idx = {i for i in range(n) if i >= n - task.get("last_all", 60) or i % task.get("every", 3) == 0}
         rng = np.random.default_rng(task.get("seed", 0))
         lab = C._play(dict(C.task("none", "body", task["level"], task["start"], mode="dagger"), script=acts, tiew=True,
-                           keep_obs=False), None, idx, rng)
+                           keep_obs=False, tie_stuck=task.get("tie_stuck", -1)), None, idx, rng)
         order = sorted(idx)[:len(lab["labels"])]
         played.update(lab_idx=np.array(order, np.int64), labels=lab["labels"], weights=lab["weights"])
     return played
