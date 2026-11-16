@@ -9,12 +9,12 @@ cd "$here/../coldstart" || exit 1
 NAMES=${NAMES:?set NAMES, e.g. NAMES=ScipioA}
 WORKERS=${WORKERS:-2}
 for name in $NAMES; do
-  case $name in ScipioA|ScipioB|ScipioFast|Twin) ;; *) echo "unknown run $name"; exit 1 ;; esac
+  case $name in ScipioA|ScipioB|ScipioFast|Twin|MarcellusA|MarcellusB) ;; *) echo "unknown run $name"; exit 1 ;; esac
   if powershell -NoProfile -c "if (Get-CimInstance Win32_Process -Filter \"name='python.exe'\" | ? { \$_.CommandLine -match 'ctrain.py --name $name ' }) { exit 1 }"; then :; else
     echo "skip $name: already running"; continue
   fi
   if [ -s runs/$name/history.jsonl ]; then echo "skip $name: runs/$name already has chunks (resume through the guard)"; continue; fi
   mkdir -p runs/$name
-  cmd //c "start /belownormal /b $SCIPIO_PY ctrain.py --name $name --init ../scipio/brains0/${name}_ck0.npz --out runs/$name $SCIPIO_COMMON --workers $WORKERS --stop-chunk $SCIPIO_TARGET >> runs\\$name.out 2>&1"
+  cmd //c "start /belownormal /b $SCIPIO_PY ctrain.py --name $name --init ../scipio/brains0/${name}_ck0.npz --out runs/$name $(common_for $name) --workers $WORKERS --stop-chunk $SCIPIO_TARGET >> runs\\$name.out 2>&1"
   echo "started $name (workers $WORKERS, stop chunk $SCIPIO_TARGET) $(date '+%F %T')"
 done

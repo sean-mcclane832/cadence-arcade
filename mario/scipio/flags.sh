@@ -6,3 +6,6 @@ SCIPIO_LEVELS=$(for w in 1 2 3 4 5 6; do for s in 1 2 3 4; do printf "%s-%s," $w
 SCIPIO_COMMON="--levels $SCIPIO_LEVELS --levels-file ../scipio/levels-fab.json --senses fabius --coach smart --sel8 --p-seq 1.0 --K 0 --chunk 500 --dagger-every 4 --episodes 1 --dagger-stuck 100 --last-all 100 --sel-every 2 --horizon 250 --stop-at= --hours 2000"
 SCIPIO_TARGET=50                                         # the registered read; raise to 100 only after the chunk-50 read says continue
 export CUDA_VISIBLE_DEVICES=-1 CADENCE_BACKEND=cpu MARIO_STUCK=225 CADENCE_COMMIT=352587ac
+# Marcellus (vault Plans/Marcellus Design 2026-11-16): Scipio's recipe + the gated DAgger tie rule. Registered read at chunk 50.
+MARCELLUS_COMMON="$SCIPIO_COMMON --tie-stuck 10"
+common_for() { case $1 in Marcellus*) echo "$MARCELLUS_COMMON" ;; *) echo "$SCIPIO_COMMON" ;; esac; }

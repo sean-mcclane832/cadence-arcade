@@ -24,6 +24,9 @@ ARMS = {
     "ScipioB": dict(seed=1, history=0.97, efference=0.97),
     "ScipioFast": dict(seed=0, history=0.8, efference=0.8),
     "Twin": dict(seed=0, history=None, efference=None),
+    # Marcellus (vault Plans/Marcellus Design 2026-11-16): Twin's brain; the change is in the labeller (--tie-stuck), not here
+    "MarcellusA": dict(seed=0, history=None, efference=None),
+    "MarcellusB": dict(seed=1, history=None, efference=None),
 }
 
 
@@ -69,22 +72,24 @@ def check(arm, path):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--out", default="brains0"); ap.add_argument("--check-only", action="store_true")
+    ap.add_argument("--arms", default="ScipioA,ScipioB,ScipioFast,Twin", help="arms to make (others are left untouched)")
     a = ap.parse_args()
+    arms = a.arms.split(",")
     out = HERE / a.out; out.mkdir(exist_ok=True)
     rep = {}
-    for arm in ARMS:
+    for arm in arms:
         p = out / f"{arm}_ck0.npz"
         if not a.check_only:
             compose(arm).save(p)
         rep[arm] = check(arm, p)
         print(arm, {k: v for k, v in rep[arm].items() if k != "config"}, flush=True)
     cfg = {arm: r.pop("config") for arm, r in rep.items()}
-    diff = {k: {arm: cfg[arm][k] for arm in cfg} for k in cfg["ScipioA"] if len({json.dumps(cfg[arm][k], default=str) for arm in cfg}) > 1}
+    diff = {k: {arm: cfg[arm][k] for arm in cfg} for k in cfg[arms[0]] if len({json.dumps(cfg[arm][k], default=str) for arm in cfg}) > 1}
     assert not diff, f"learner configs differ between arms: {diff}"
     import cadence
     rep["cadence"] = cadence.__version__
-    (out / "made.json").write_text(json.dumps(rep, indent=1))
-    print("ck0 asserts PASS for", list(ARMS), flush=True)
+    (out / ("made.json" if arms == list(ARMS)[:4] else f"made_{'_'.join(arms)}.json")).write_text(json.dumps(rep, indent=1))
+    print("ck0 asserts PASS for", arms, flush=True)
 
 
 if __name__ == "__main__":
