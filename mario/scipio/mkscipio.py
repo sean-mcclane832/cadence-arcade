@@ -27,6 +27,7 @@ ARMS = {
     # Marcellus (vault Plans/Marcellus Design 2026-11-16): Twin's brain; the change is in the labeller (--tie-stuck), not here
     "MarcellusA": dict(seed=0, history=None, efference=None),
     "MarcellusB": dict(seed=1, history=None, efference=None),
+    "TwinB": dict(seed=1, history=None, efference=None),  # MarcellusB's control: old labels, seed 1
 }
 
 
