@@ -73,7 +73,7 @@
     <p class="eyebrow">Super Mario Bros. &middot; solo from the screen</p>
     <h1>One Cadence brain beat all of World 1 in a single 5-life gauntlet</h1>
     <p class="lede">Brain W1b ("the balanced finisher", trained overnight 10/31) cleared 1-1, 1-2, 1-3 and 1-4 (Bowser) back to back with the same weights, losing three lives on 1-3, then ran out on 2-1, a level it never trained on. On 50 held-out starts per level it clears 1-1 7, 1-2 8, 1-3 9 and 1-4 27 times: every level, none consistently yet. Other brains still do better on single levels (1-1 50/50 with W1_F2ck110, 1-4 50/50). Every button in every clip is the brain's.</p>
-    <p class="lede"><b>Latest (11/14):</b> Fabius (recall memory plus prediction slots) does not beat Cato2, the same brain without them: 920.8 against 958.0 mean x at chunks 81 to 100, a gap of -37 inside the 65 between Cato2's own two seeds. With two seeds per brain they can't be told apart; if anything the point estimate leans toward Cato2. <a href="#fabius">Details</a>. The next brain, <b>Scipio</b>, started 11/14: a slow memory aimed at the stalls where Mario holds one button against a wall. It is early; the registered read is at chunk 50. Every 10 chunks each Scipio brain plays a <a href="#public-gauntlet">public gauntlet</a>: at chunk 10 all four lost their 10 lives on 1-1. <b>The goal is World 8</b>, the final world: never coached, learned by own play only, cleared with at most 1 death in total. <a href="#goal">The goal</a>.</p>
+    <p class="lede"><b>Latest (11/16):</b> Fabius (recall memory plus prediction slots) does not beat Cato2, the same brain without them: 920.8 against 958.0 mean x at chunks 81 to 100, a gap of -37 inside the 65 between Cato2's own two seeds. With two seeds per brain they can't be told apart; if anything the point estimate leans toward Cato2. <a href="#fabius">Details</a>. <b>Scipio</b> (11/14 to 11/15), a slow memory aimed at the stalls where Mario holds one button against a wall, did not change the stalls (<a href="#scipio">the read</a>). A likely reason, found after the read: a tie rule in the teaching labelled most of the 4-2 start stalls, and the 2-2 stall we checked, as correct. 4-4 is a different case. The next brain, <b>Marcellus</b>, started 11/16 to test this (<a href="#marcellus">details</a>). In the <a href="#public-gauntlet">public gauntlet</a> two Scipio brains cleared 1-1 at chunk 50; none has passed 1-2. <b>The goal is World 8</b>, the final world: never coached, learned by own play only, cleared with at most 1 death in total. <a href="#goal">The goal</a>.</p>
   </section>
 
   <figure>
@@ -105,10 +105,10 @@
     </div>
   </div>
 
-  <p class="updated">Last updated 2026-11-14 12:30 EST. Fabius and Cato2 trained on Cadence 0.95.0, the Scipio brains on 0.99.0. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="updated">Last updated 2026-11-16 07:00 EST. Fabius and Cato2 trained on Cadence 0.95.0, the Scipio and Marcellus brains on 0.99.0. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <nav class="toc" aria-label="On this page">
-    <a href="#goal">The goal</a><a href="#scipio">Scipio</a><a href="#public-gauntlet">Public gauntlet</a><a href="#fabius">Fabius vs Cato2</a><a href="#plateau">Plateau test</a><a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
+    <a href="#goal">The goal</a><a href="#scipio">Scipio</a><a href="#marcellus">Marcellus</a><a href="#public-gauntlet">Public gauntlet</a><a href="#fabius">Fabius vs Cato2</a><a href="#plateau">Plateau test</a><a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
   </nav>
 
   <h2 id="goal">The goal: World 8, never coached</h2>
@@ -118,9 +118,9 @@
     <p class="small dim">The coach is verified on worlds 1 to 7: 164 of 168 test runs (6 starts per level) reach the flag, 11/8, assembled from six runs at the current settings (not one fresh pass). Worlds 1 to 3 72 of 72; worlds 4 to 7 92 of 96. Only 5-3 and 6-3 are short, 4 of 6 each (long leaps off high lifts). <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a>. Planning lives in GitHub issues: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/1">#1 roadmap</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/2">#2 World 8</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">#4 plateau test</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/11">#11 Fabius vs Cato2</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">#12 Scipio</a>.</p>
   </div>
 
-  <h2 id="scipio">Scipio (running since 11/14): does a slow memory fix the stalls?</h2>
+  <h2 id="scipio">Scipio (11/14 to 11/15): does a slow memory fix the stalls?</h2>
   <div class="callout">
-    <h3>Too early for any answer. The registered read is at chunk 50.</h3>
+    <h3>No. The slow memory did not change the stalls (registered read at chunk 50). A likely reason, found after the read, is in the teaching.</h3>
     <p>Sean's question: is memory the answer to the holding problem? In the Fabius study every stuck attempt we checked (no new furthest x for 15 s; 108 attempts from Cato2 A and B at chunk 100 and Fabius A at chunk 65) held one button for its last 100+ decisions. On a pipe the screen looks the same on decision 5 and decision 150, so a brain that sees only the present can't tell it has been pushing against the same wall for seconds. Earlier memory tests could not catch this: Cicero's button memory faded within about 5 decisions, and the plateau test scored distance only.</p>
   </div>
   <ul class="prose">
@@ -129,19 +129,41 @@
     <li><b>Twin:</b> the same brain with no memory, the control.</li>
   </ul>
   <p class="small dim">All four: Cadence 0.99.0, Cato2's exact eyes (including the colour close-up placed from Mario's position in the game's memory), 256 neurons, 7 buttons, coached on worlds 1 to 6 with the coach labelling stalls up to 100 decisions, scored every 2nd chunk, stop at chunk 50. <b>Registered before launch (11/14):</b> the main number is stuck attempts per 192 practice attempts (8 starts on each of 24 levels), averaged over the last 10 scored chunks, with the 24-level mean x as a guard. The verdict also needs a time-only test on the same checkpoint: the memories cut to hold only the previous moment, so a change in stalls is pinned on how long the memory lasts, not on removing an input. ScipioA started 11/14 03:01, the others 05:44 to 05:46. <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">Issue #12</a>.</p>
-  <h3>Where they are</h3>
-  <div class="tw"><table><thead><tr><th>run</th><th class="n">latest chunk (11/14 12:00)</th><th class="n">24-level mean x, chunk 10</th><th class="n">stuck of 192, chunk 10</th><th class="n">flags of 192, chunk 10</th></tr></thead><tbody>
-    <tr><td>ScipioA (slow memory)</td><td class="n">15</td><td class="n">542</td><td class="n">21</td><td class="n">0</td></tr>
-    <tr><td>ScipioB (slow memory)</td><td class="n">11</td><td class="n">532</td><td class="n">47</td><td class="n">0</td></tr>
-    <tr><td>ScipioFast (fast memory)</td><td class="n">11</td><td class="n">663</td><td class="n">29</td><td class="n">0</td></tr>
-    <tr><td>Twin (no memory, control)</td><td class="n">11</td><td class="n">691</td><td class="n">35</td><td class="n">0</td></tr>
+  <h3>The read (11/16)</h3>
+  <div class="tw"><table><thead><tr><th>run</th><th class="n">stuck of 192</th><th class="n">never left the start</th><th class="n">deaths of 192</th><th class="n">flags of 192</th><th class="n">24-level mean x</th></tr></thead><tbody>
+    <tr><td>ScipioA (slow memory)</td><td class="n">44.4</td><td class="n">14.8</td><td class="n">147.2</td><td class="n">0.4</td><td class="n">807</td></tr>
+    <tr><td>ScipioB (slow memory)</td><td class="n">37.3</td><td class="n">14.3</td><td class="n">153.4</td><td class="n">1.3</td><td class="n">837</td></tr>
+    <tr><td>Twin (no memory, control)</td><td class="n">45.5</td><td class="n">14.1</td><td class="n">145.0</td><td class="n">1.5</td><td class="n">827</td></tr>
+    <tr><td>ScipioFast (fast memory, one seed)</td><td class="n">25.0</td><td class="n">0.0</td><td class="n">166.2</td><td class="n">0.8</td><td class="n">884</td></tr>
   </tbody></table></div>
-  <p class="small dim">One scored chunk per run, early in training, on practice starts. These numbers swing a lot from chunk to chunk (ScipioA's stuck count went 21, 27, 32 at chunks 10, 12, 14), so read nothing into the gaps between arms. No Scipio brain has reached a flag yet.</p>
+  <p class="small dim">Means over the last 10 scored chunks (32 to 50), 8 practice starts on each of 24 levels. Registered rules: the memory brains had to beat Twin by more than 10 stuck attempts, and a time-only test (each memory cut to hold only the previous moment, same strength) had to raise their stuck count by more than 10. Neither happened: ScipioA sits 1.1 below Twin and ScipioB 8.2 below, and the time-only test changed stuck by -6.7 (A) and +9.3 (B), the mean over chunks 46, 48 and 50 (per chunk A -14, -16, +10; B +13, 0, +15). The test passed its own check (agreement with the coach fell 0.04, under the 0.05 limit), and the untouched brains replayed every one of their 192 attempts exactly as in training. Verdict: <b>the memory was not used on stalls</b> (this test cannot tell "not used" from "useless"). The time-only cut did cost distance (47 to 402 mean x by checkpoint), but switching the memories off entirely cost less on average (A 157 against 72, B 203 against 40), so that loss reads as a disturbance, not as the memory helping. ScipioFast's lead is mostly in starts it never stood at (4-2 and 4-4); under the time-only test its stuck count rose 13.7 (unregistered, one seed, no verdict).</p>
+  <h3>What was actually holding them</h3>
+  <ul class="prose">
+    <li><b>The coach can get out (one brain, five stalls).</b> Put in ScipioA's own stalls (2-2 underwater, the 4-2 and 4-4 starts), the coach escaped 5 of 5 within 9 to 35 decisions.</li>
+    <li><b>The teaching said "keep doing that".</b> When the brain stalls, the coach labels its last 100 decisions (DAgger). A tie rule in that labeller kept the brain's own button whenever it scored within 2 pixels of the coach's best plan. Standing still at the start of 4-2 then jumping scores 165 pixels; jumping now scores 167. So nearly every frame of a 4-2 start stall was labelled "stand still" (998 to 1,098 of every 1,000 to 1,100 labels in each run that stood there); most of those came from the tie rule, the rest are the coach's own (it waits on about 38 of 100 frames at the training start). On 2-2 the held "run" was labelled correct 15 of 15 times on the stall we checked.</li>
+    <li><b>For the slow-memory brains, start stalls are set in the first decisions</b>, before any memory has anything in it (the time-only test left their start stalls almost unchanged; ScipioFast is the exception, it gained 8 at two checkpoints). A plain network trained on the coach's own runs never stands at a start; add Cato2A's DAgger rows and it gets stuck at 4-4 on all 8 starts, on four seeds.</li>
+  </ul>
+  <p class="small dim">These three were found after the registered read, so they likely explain it; they are not part of it. At the 4-4 training start the coach itself waits on about half the frames, so 4-4 is not a tie-rule stall. Details: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">issue #12</a>.</p>
+
+  <h2 id="marcellus">Marcellus (since 11/16): clean labels on stalls</h2>
+  <p>The next brain is Twin with one change: in a stall (10 decisions without progress) and before the first step forward, the coach's own label stands; the tie rule only applies while the brain is moving. Two seeds, each paired with a control that differs by that rule alone (MarcellusA starts from Twin's exact brain; MarcellusB and the new TwinB share seed 1). Registered before launch: stuck per 192 over the last 10 scored chunks at chunk 50; "labels help stalls" if both pairs beat their control by more than 10. My prediction, written down before launch: 4-2 stalls go to about 0, 2-2 drops but not to 0, and the main number passes but only just. Memory comes back after this, on the clean labels, with two seeds.</p>
 
   <h2 id="public-gauntlet">Public gauntlet (every 10 chunks)</h2>
   <p class="small dim">Sean's idea: every 10 chunks each Scipio brain gets 10 lives in total to play the game from 1-1 in order. Greedy, no learning, a flag moves on to the next level, a death or 15 s without progress costs a life. It stops after 7-4, so World 8 stays unseen. This is for this page only and never decides anything; the registered numbers are in the Scipio section above. Different rules from the older five-life gauntlets further down.</p>
   <div class="tw stack"><table><thead><tr><th>chunk</th><th>brain</th><th>furthest</th><th>levels cleared</th><th class="n">lives used</th><th>clip</th></tr></thead><tbody>
   <!--PUBLIC-GAUNTLET-ROWS-->
+  <tr><td>50 (11/15 10:49)</td><td>ScipioA</td><td>1-2, x 973</td><td>1-1</td><td class="n">10 of 10</td><td><a href="gauntlet/ScipioA_ck0050.mp4">clip</a></td></tr>
+  <tr><td>50 (11/15 14:50)</td><td>ScipioB</td><td>1-2, x 903</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/15 12:49)</td><td>Twin</td><td>1-1, x 901</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/15 09:39)</td><td>ScipioFast</td><td>1-1, x 898</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/15 09:21)</td><td>ScipioB</td><td>1-2, x 1,190</td><td>1-1</td><td class="n">10 of 10</td><td><a href="gauntlet/ScipioB_ck0040.mp4">clip</a></td></tr>
+  <tr><td>40 (11/15 05:09)</td><td>ScipioFast</td><td>1-2, x 945</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/15 05:31)</td><td>ScipioA</td><td>1-1, x 2,757</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/15 07:01)</td><td>Twin</td><td>1-1, x 898</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/14 22:39)</td><td>ScipioFast</td><td>1-1, x 723</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/14 22:10)</td><td>ScipioA</td><td>1-1, x 596</td><td>none</td><td class="n">10 of 10</td><td><a href="gauntlet/ScipioA_ck0030.mp4">clip</a></td></tr>
+  <tr><td>30 (11/15 01:59)</td><td>ScipioB</td><td>1-1, x 434</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/15 00:07)</td><td>Twin</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
   <tr><td>20 (11/14 18:07)</td><td>ScipioFast</td><td>1-1, x 2,386</td><td>none</td><td class="n">10 of 10</td><td><a href="gauntlet/ScipioFast_ck0020.mp4">clip</a></td></tr>
   <tr><td>20 (11/14 19:46)</td><td>ScipioB</td><td>1-1, x 1,789</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
   <tr><td>20 (11/14 16:36)</td><td>ScipioA</td><td>1-1, x 1,433</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
@@ -157,7 +179,8 @@
       <figcaption>ScipioFast at chunk 20: ten lives on 1-1, the furthest of the four (x 2,386 of the level's roughly 3,160). 151 s. The chunk-10 clip (ScipioA) is linked in the table.</figcaption>
     </figure>
     <div>
-      <p>All four brains played the same way at chunk 10: every life ended at x 312 to 315 on 1-1, about two seconds in. Their practice scores on 1-1 say the same (mean x 314 on all 8 starts). Each chunk-10 checkpoint had about 5 to 6 hours of training. At chunk 20 (11/14 afternoon and evening) all four still spent their 10 lives on 1-1, but got further: furthest x 2,386 (ScipioFast), 1,789 (ScipioB), 1,433 (ScipioA), 899 (Twin). One gauntlet per brain is a public look, not a test; these numbers decide nothing. The next gauntlets are at chunk 30.</p>
+      <p>All four brains played the same way at chunk 10: every life ended at x 312 to 315 on 1-1, about two seconds in. Their practice scores on 1-1 say the same (mean x 314 on all 8 starts). Each chunk-10 checkpoint had about 5 to 6 hours of training. At chunk 20 (11/14 afternoon and evening) all four still spent their 10 lives on 1-1, but got further: furthest x 2,386 (ScipioFast), 1,789 (ScipioB), 1,433 (ScipioA), 899 (Twin). One gauntlet per brain is a public look, not a test; these numbers decide nothing. </p>
+      <p>Chunk 30 went backwards for the three memory brains: every one of their lives on 1-1 ended standing still (15 s without progress, x 434 to 723), and Twin died 10 times at x 315. At chunk 40 ScipioB and ScipioFast cleared 1-1 for the first time in a gauntlet and died on 1-2; ScipioA got to x 2,757 on 1-1 without the flag. At chunk 50 (the last checkpoint) ScipioA and ScipioB cleared 1-1 and died on 1-2; ScipioFast and Twin spent all 10 lives on 1-1. No brain has passed 1-2. One gauntlet per brain is a public look; it swings from round to round and decides nothing.</p>
     </div>
   </div>
 
