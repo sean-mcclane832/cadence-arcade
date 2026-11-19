@@ -14,7 +14,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 CS = HERE.parent / "coldstart"
-RUNS = ("ScipioA", "ScipioB", "Twin", "ScipioFast", "MarcellusA", "MarcellusB", "TwinB")
+RUNS = ("ScipioA", "ScipioB", "Twin", "ScipioFast", "MarcellusA", "MarcellusB", "TwinB", "CamillusA", "CamillusB", "MarcellusC", "TwinC")
 LOCK = CS / "runs" / "gauntlet.lock"
 MIN_FREE_GB = 4.0
 

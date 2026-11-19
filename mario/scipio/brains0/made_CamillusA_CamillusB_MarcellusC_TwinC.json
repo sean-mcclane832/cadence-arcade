@@ -1,0 +1,47 @@
+{
+ "CamillusA": {
+  "arm": "CamillusA",
+  "seed": 0,
+  "synapses": 1881344,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": [
+   0.97
+  ],
+  "efference": 0.97
+ },
+ "CamillusB": {
+  "arm": "CamillusB",
+  "seed": 1,
+  "synapses": 1881344,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": [
+   0.97
+  ],
+  "efference": 0.97
+ },
+ "MarcellusC": {
+  "arm": "MarcellusC",
+  "seed": 2,
+  "synapses": 974336,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": null,
+  "efference": null
+ },
+ "TwinC": {
+  "arm": "TwinC",
+  "seed": 2,
+  "synapses": 974336,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": null,
+  "efference": null
+ },
+ "cadence": "0.99.0"
+}

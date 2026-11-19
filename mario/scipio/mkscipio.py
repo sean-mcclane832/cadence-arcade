@@ -28,6 +28,11 @@ ARMS = {
     "MarcellusA": dict(seed=0, history=None, efference=None),
     "MarcellusB": dict(seed=1, history=None, efference=None),
     "TwinB": dict(seed=1, history=None, efference=None),  # MarcellusB's control: old labels, seed 1
+    # Camillus (vault Plans/Camillus Design 2026-11-19): Scipio's slow memory on the tie-gate labels; + a seed-2 Marcellus/Twin pair
+    "CamillusA": dict(seed=0, history=0.97, efference=0.97),
+    "CamillusB": dict(seed=1, history=0.97, efference=0.97),
+    "MarcellusC": dict(seed=2, history=None, efference=None),
+    "TwinC": dict(seed=2, history=None, efference=None),  # MarcellusC's control: old labels, seed 2
 }
 
 
