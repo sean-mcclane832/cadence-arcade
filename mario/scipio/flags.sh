@@ -9,4 +9,6 @@ export CUDA_VISIBLE_DEVICES=-1 CADENCE_BACKEND=cpu MARIO_STUCK=225 CADENCE_COMMI
 # Marcellus (vault Plans/Marcellus Design 2026-11-16): Scipio's recipe + the gated DAgger tie rule. Registered read at chunk 50.
 MARCELLUS_COMMON="$SCIPIO_COMMON --tie-stuck 10"
 # Camillus (vault Plans/Camillus Design 2026-11-19): Scipio's memory brain on the same tie-gate recipe.
-common_for() { case $1 in Marcellus*|Camillus*) echo "$MARCELLUS_COMMON" ;; *) echo "$SCIPIO_COMMON" ;; esac; }
+# Agrippa (vault Plans/World 2 Plan 2026-11-19): Marcellus's recipe + one level added every 5 chunks (1-1 alone first).
+AGRIPPA_COMMON="$MARCELLUS_COMMON --add-every 5"
+common_for() { case $1 in Marcellus*|Camillus*) echo "$MARCELLUS_COMMON" ;; Agrippa*) echo "$AGRIPPA_COMMON" ;; *) echo "$SCIPIO_COMMON" ;; esac; }

@@ -33,6 +33,9 @@ ARMS = {
     "CamillusB": dict(seed=1, history=0.97, efference=0.97),
     "MarcellusC": dict(seed=2, history=None, efference=None),
     "TwinC": dict(seed=2, history=None, efference=None),  # MarcellusC's control: old labels, seed 2
+    # Agrippa (vault Plans/World 2 Plan 2026-11-19): Marcellus's brain and labels; the change is the curriculum (--add-every)
+    "AgrippaA": dict(seed=0, history=None, efference=None),
+    "AgrippaB": dict(seed=1, history=None, efference=None),
 }
 
 

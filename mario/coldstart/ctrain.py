@@ -140,6 +140,8 @@ def main():
                     "always). Unscored chunks still write a history line (scored false)")
     ap.add_argument("--tie-stuck", type=int, default=-1, help="DAgger tie rule (brain's button kept when within 2 px of the "
                     "coach's best) only while stuck < N decisions; -1: always (the old labels, Scipio and before)")
+    ap.add_argument("--add-every", type=int, default=0, help="curriculum (Agrippa 11/19): chunk k trains the first "
+                    "1 + (k-1)//N levels of --levels in order (lessons and DAgger); SEL still scores all. 0: all from chunk 1")
     ap.add_argument("--horizon", type=int, default=0, help="decisions of exact history / efference in prime (0: mem.HORIZON "
                     "as it is, 64). Scipio 11/14: 250 (0.97 ** 250 < 0.001), set here, never in mem.py")
     ap.add_argument("--recycle", type=int, default=0, help="replace each play worker after N tasks (0: never). Fabius 11/9: "
@@ -156,6 +158,9 @@ def main():
 
     from cadence import Brain
     levels = args.levels.split(",")
+
+    def active(k):  # levels trained in chunk k (lessons, fit, DAgger); --add-every 0 = all of them, as before
+        return levels if not args.add_every else levels[:min(len(levels), 1 + (k - 1) // args.add_every)]
     deep = cs.deep_levels()
     lv_dirs = json.loads((HERE / args.levels_file).read_text())
     if args.pred:
@@ -210,8 +215,10 @@ def main():
         first = next(l for l in open(out / "log.txt", encoding="utf-8") if " start: {" in l)
         orig = ast.literal_eval(first.split(" start: ", 1)[1].split("} deep=", 1)[0] + "}")
         for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts", "senses", "pred",
-                    "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon", "tie_stuck"):
-            if key == "tie_stuck":  # absent in older logs = the old labels (-1); compared either way (review 11/16)
+                    "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon", "tie_stuck", "add_every"):
+            if key == "add_every":  # absent in older logs = no curriculum (0)
+                assert args.add_every == orig.get("add_every", 0), f"--resume recipe mismatch: add_every {args.add_every} vs first leg {orig.get('add_every', 0)}"
+            elif key == "tie_stuck":  # absent in older logs = the old labels (-1); compared either way (review 11/16)
                 assert args.tie_stuck == orig.get("tie_stuck", -1), f"--resume recipe mismatch: tie_stuck {args.tie_stuck} vs first leg {orig.get('tie_stuck', -1)}"
             elif key in orig or key in ("coach", "coach_opts"):
                 want = orig.get(key, {"coach": "base", "coach_opts": "{}"}.get(key))
@@ -236,7 +243,7 @@ def main():
     rng = np.random.default_rng(11)
     for k in range(1, k0 + 1):  # replay the main RNG stream to where the run stopped (DAgger starts, lesson seeds)
         if args.dagger_every and k % args.dagger_every == 0:
-            for L in levels:
+            for L in active(k):
                 rng.choice(POOL, args.episodes, replace=False)
         rng.integers(1 << 30)
     deadline = time.time() + args.hours * 3600
@@ -291,10 +298,11 @@ def main():
         w = np.array([r[3] for r in seqs[L].rows]); w = w * np.where(w > 1, args.crit, 1.0); return w / w.sum()
 
     def batch_items(n, r2):
-        share = np.ones(len(levels)) / len(levels)
+        lv = active(state["k"])
+        share = np.ones(len(lv)) / len(lv)
         c = r2.multinomial(n, share); items, ys = [], []
-        sp = {L: seq_p(L) for L in levels if seqs[L].rows}
-        for L, kk in zip(levels, c):
+        sp = {L: seq_p(L) for L in lv if seqs[L].rows}
+        for L, kk in zip(lv, c):
             for _ in range(kk):
                 if L in sp and r2.random() < args.p_seq:
                     a, i, y, _ = seqs[L].rows[int(r2.choice(len(sp[L]), p=sp[L]))]
@@ -336,13 +344,13 @@ def main():
 
     def dagger_round(k, pol):
         t = time.time(); tasks, tl = [], []
-        for L in levels:
+        for L in active(k):
             for i, s in enumerate(rng.choice(POOL, args.episodes, replace=False)):
                 tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(s), keep_obs=True, label=True, seed=k * 100 + i,
                                   senses=args.senses, stuck=args.dagger_stuck or None, last_all=args.last_all, tie_stuck=args.tie_stuck)); tl.append(L)
         res = pmap(mem.episode, tasks)
         msg = []
-        for L in levels:
+        for L in active(k):
             mine = [r for r, l in zip(res, tl) if l == L]
             atts = []
             for r in mine:
@@ -368,6 +376,9 @@ def main():
     last_check = 0; slot = None
     last_k = args.stop_chunk if args.stop_chunk else args.max_chunks
     for k in range(k0 + 1, last_k + 1):
+        state["k"] = k
+        if args.add_every and (k == k0 + 1 or len(active(k)) > len(active(k - 1))):
+            log(f"  curriculum: chunk {k} trains {len(active(k))} levels ({active(k)[0]}..{active(k)[-1]})")
         if time.time() - last_check > 600:
             g = gamecheck.gaming(); last_check = time.time()
             if g != state["slow"]:
