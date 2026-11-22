@@ -6,6 +6,7 @@ SCIPIO_LEVELS=$(for w in 1 2 3 4 5 6; do for s in 1 2 3 4; do printf "%s-%s," $w
 SCIPIO_COMMON="--levels $SCIPIO_LEVELS --levels-file ../scipio/levels-fab.json --senses fabius --coach smart --sel8 --p-seq 1.0 --K 0 --chunk 500 --dagger-every 4 --episodes 1 --dagger-stuck 100 --last-all 100 --sel-every 2 --horizon 250 --stop-at= --hours 2000"
 SCIPIO_TARGET=8                                          # Romulus trial (chunks 0-8, read by a session before 11/30); the launch target comes with the registered design
 export CUDA_VISIBLE_DEVICES=-1 CADENCE_BACKEND=cpu MARIO_STUCK=225 CADENCE_COMMIT=6a5f8081
+export MARIO_SLOTS=P:/projects/cadence-arcade-scipio/mario/coldstart/runs/slots  # game throttle: share the 2 FIFO slots with the scipio worktree's runs
 # Marcellus (vault Plans/Marcellus Design 2026-11-16): Scipio's recipe + the gated DAgger tie rule. Registered read at chunk 50.
 MARCELLUS_COMMON="$SCIPIO_COMMON --tie-stuck 10"
 # Camillus (vault Plans/Camillus Design 2026-11-19): Scipio's memory brain on the same tie-gate recipe.

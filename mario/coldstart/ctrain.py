@@ -46,7 +46,7 @@ import seqcollect  # noqa: E402  (memory/)
 
 mem = cs.mem
 SEL, POOL = cs.SEL, cs.POOL
-SLOTS = HERE / "runs" / "slots"
+SLOTS = Path(os.environ.get("MARIO_SLOTS") or HERE / "runs" / "slots")  # Romulus 11/21: one shared FIFO across worktrees
 NSLOTS = 2
 
 
