@@ -365,9 +365,9 @@ def main():
                 tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(s), keep_obs=True, label=True, seed=k * 100 + i,
                                   senses=args.senses, stuck=args.dagger_stuck or None, last_all=args.last_all, tie_stuck=args.tie_stuck)); tl.append(L)
             for j, nb in enumerate(wall_back):  # wall starts: no RNG draws, so --wall-back leaves the RNG stream as before
-                w = walls.get(L)
-                pre = w["actions"][:max(0, len(w["actions"]) - nb)] if w else []
-                tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(w["start"]) if w else int(POOL[0]), keep_obs=True,
+                w = walls.get(L)  # cut nb decisions before the attempt's peak (its last new furthest x): a stall ends 100
+                pre = w["actions"][:max(0, w["peak"] - nb)] if w else []  # decisions past it, a death right at it (review 11/22)
+                tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(w["start"]) if w else int(POOL[1 + j]), keep_obs=True,
                                   label=True, seed=k * 100 + args.episodes + j, senses=args.senses, stuck=args.dagger_stuck or None,
                                   last_all=args.last_all, tie_stuck=args.tie_stuck, prefix=pre)); tl.append(L)
         res = pmap(mem.episode, tasks)
@@ -376,6 +376,10 @@ def main():
             mine = [r for r, l in zip(res, tl) if l == L]
             atts = []
             for r in mine:
+                if r.get("prefix"):  # wall attempt: keep only the brain's own play (the replayed screens are never taught;
+                    p0 = r["prefix"]  # with --K 0 a row primes from its own screen only), so RAM and files stay ~level-start size
+                    assert args.K == 0 and min(r["lab_idx"], default=p0) >= p0
+                    r = dict(r, obs=r["obs"][p0:], actions=r["actions"][p0:], lab_idx=np.asarray(r["lab_idx"]) - p0)
                 seqs[L].add(r["obs"], r["actions"], r["lab_idx"], r["labels"], r["weights"])
                 atts.append(dict(obs=r["obs"], actions=r["actions"], lab_idx=r["lab_idx"], labels=r["labels"], weights=r["weights"]))
             seqcollect.save_attempts(out / f"seq_{L}_d{k:04d}.npz", atts)
@@ -386,7 +390,7 @@ def main():
                 if failed:
                     r, task = max(failed, key=lambda rt: rt[0]["max_x"])
                     walls[L] = dict(start=int(task["start"]), actions=[int(a) for a in r["actions"]], x=int(r["max_x"]),
-                                    end=r["end"], round=k)
+                                    peak=next((i for i, x in enumerate(r["xs"]) if x >= r["max_x"]), len(r["xs"])), end=r["end"], round=k)
         if wall_back:
             (out / f"walls_d{k:04d}.json").write_text(json.dumps(walls))
         log(f"  dagger ({time.time() - t:.0f}s): " + "; ".join(msg))

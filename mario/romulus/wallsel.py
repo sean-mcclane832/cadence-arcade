@@ -44,7 +44,11 @@ def build():
         for w in walls:
             for s, A in zip(CLEAN, runs):
                 r = mem.play_attempt(Idle(), L, s, prefix=[int(a) for a in A])
-                m = next((i for i, x in enumerate(r["xs"]) if x >= w - 150), 0)
+                assert r["flag"], f"{L} start {s}: the coach's clean run did not replay to the flag (lean vs coach replay)"
+                if w - 150 <= r["xs"][0]:  # a wall at the start (4-4: its failure is the start stall): a plain level start
+                    m = 0
+                else:
+                    m = next(i for i, x in enumerate(r["xs"]) if x >= w - 150)  # StopIteration = an unreachable wall
                 out[L].append(dict(wall=w, start=s, prefix=[int(a) for a in A[:m]], x0=int(r["xs"][m]) if m else 0))
         print(L, [(d["wall"], d["start"], len(d["prefix"]), d["x0"]) for d in out[L]], flush=True)
     FIXED.write_text(json.dumps(out))

@@ -1,6 +1,6 @@
 # Scipio's training recipe (vault Plans/Scipio Design 2026-11-12, registered 11/14). Sourced by scipio/launch.sh and by
 # P:/agent/tools/training-guard.sh, so a first start and every resume use the same flags (ctrain --resume checks them).
-# Run from mario/coldstart of the worktree P:/projects/cadence-arcade-scipio (branch scipio).
+# Run from mario/coldstart of the worktree P:/projects/cadence-arcade-romulus (branch romulus; Scipio-era runs live in cadence-arcade-scipio).
 SCIPIO_PY="..\..\.venv-101\Scripts\python.exe"        # Romulus worktree (P:/projects/cadence-arcade-romulus): Cadence 0.101.0 (v0.101.0, 6a5f8081)
 SCIPIO_LEVELS=$(for w in 1 2 3 4 5 6; do for s in 1 2 3 4; do printf "%s-%s," $w $s; done; done); SCIPIO_LEVELS=${SCIPIO_LEVELS%,}
 SCIPIO_COMMON="--levels $SCIPIO_LEVELS --levels-file ../scipio/levels-fab.json --senses fabius --coach smart --sel8 --p-seq 1.0 --K 0 --chunk 500 --dagger-every 4 --episodes 1 --dagger-stuck 100 --last-all 100 --sel-every 2 --horizon 250 --stop-at= --hours 2000"
