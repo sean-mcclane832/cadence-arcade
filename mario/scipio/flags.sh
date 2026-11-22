@@ -4,7 +4,7 @@
 SCIPIO_PY="..\..\.venv-101\Scripts\python.exe"        # Romulus worktree (P:/projects/cadence-arcade-romulus): Cadence 0.101.0 (v0.101.0, 6a5f8081)
 SCIPIO_LEVELS=$(for w in 1 2 3 4 5 6; do for s in 1 2 3 4; do printf "%s-%s," $w $s; done; done); SCIPIO_LEVELS=${SCIPIO_LEVELS%,}
 SCIPIO_COMMON="--levels $SCIPIO_LEVELS --levels-file ../scipio/levels-fab.json --senses fabius --coach smart --sel8 --p-seq 1.0 --K 0 --chunk 500 --dagger-every 4 --episodes 1 --dagger-stuck 100 --last-all 100 --sel-every 2 --horizon 250 --stop-at= --hours 2000"
-SCIPIO_TARGET=8                                          # Romulus trial (chunks 0-8, read by a session before 11/30); the launch target comes with the registered design
+SCIPIO_TARGET=300                                        # Romulus (registered 11/22): read at chunk 100, train on to 300 while Sean is away (trial 0-8 read 11/22)
 export CUDA_VISIBLE_DEVICES=-1 CADENCE_BACKEND=cpu MARIO_STUCK=225 CADENCE_COMMIT=6a5f8081
 export MARIO_SLOTS=P:/projects/cadence-arcade-scipio/mario/coldstart/runs/slots  # game throttle: share the 2 FIFO slots with the scipio worktree's runs
 # Marcellus (vault Plans/Marcellus Design 2026-11-16): Scipio's recipe + the gated DAgger tie rule. Registered read at chunk 50.
