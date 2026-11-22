@@ -1,0 +1,23 @@
+{
+ "RomulusA": {
+  "arm": "RomulusA",
+  "seed": 0,
+  "synapses": 974336,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": null,
+  "efference": null
+ },
+ "RomulusB": {
+  "arm": "RomulusB",
+  "seed": 1,
+  "synapses": 974336,
+  "sensory": 3536,
+  "outputs": 7,
+  "working_amplitude": 0.0,
+  "history": null,
+  "efference": null
+ },
+ "cadence": "0.101.0"
+}
