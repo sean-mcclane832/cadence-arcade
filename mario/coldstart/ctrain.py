@@ -366,8 +366,10 @@ def main():
                                   senses=args.senses, stuck=args.dagger_stuck or None, last_all=args.last_all, tie_stuck=args.tie_stuck)); tl.append(L)
             for j, nb in enumerate(wall_back):  # wall starts: no RNG draws, so --wall-back leaves the RNG stream as before
                 w = walls.get(L)  # cut nb decisions before the attempt's peak (its last new furthest x): a stall ends 100
-                pre = w["actions"][:max(0, w["peak"] - nb)] if w else []  # decisions past it, a death right at it (review 11/22)
-                tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(w["start"]) if w else int(POOL[1 + j]), keep_obs=True,
+                cut = max(0, w["peak"] - nb) if w else 0  # decisions past it, a death right at it (review 11/22)
+                pre = w["actions"][:cut] if cut else []  # nothing to replay (no wall yet, or it is within nb decisions of the
+                start = int(w["start"]) if cut else int(POOL[1 + j])  # start): another level start, never a duplicate (trial 11/22)
+                tasks.append(dict(policy=str(pol), kind="act", level=L, start=start, keep_obs=True,
                                   label=True, seed=k * 100 + args.episodes + j, senses=args.senses, stuck=args.dagger_stuck or None,
                                   last_all=args.last_all, tie_stuck=args.tie_stuck, prefix=pre)); tl.append(L)
         res = pmap(mem.episode, tasks)
