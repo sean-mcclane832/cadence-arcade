@@ -36,6 +36,10 @@ ARMS = {
     # Agrippa (vault Plans/World 2 Plan 2026-11-19): Marcellus's brain and labels; the change is the curriculum (--add-every)
     "AgrippaA": dict(seed=0, history=None, efference=None),
     "AgrippaB": dict(seed=1, history=None, efference=None),
+    # Romulus (vault Plans/Romulus Design 2026-11-21): Marcellus's brain (no memory parts) on Cadence 0.101.0; the change is
+    # in the teaching (--wall-back, --own-weight). The last from-scratch brain: later changes are grow/graft onto it.
+    "RomulusA": dict(seed=0, history=None, efference=None),
+    "RomulusB": dict(seed=1, history=None, efference=None),
 }
 
 
@@ -57,7 +61,8 @@ def check(arm, path):
     from cadence import Brain
     s = ARMS[arm]
     b = Brain.load(path)
-    assert cadence.__version__ == "0.99.0", cadence.__version__
+    want = "0.101.0" if arm.startswith("Romulus") else "0.99.0"
+    assert cadence.__version__ == want, (cadence.__version__, want)
     assert len(b.sensory_index) == eyes.N_FABIUS == 3536, len(b.sensory_index)
     assert len(b.learner.output_index) == 7 and b.learner.slot_count == 1
     assert getattr(b, "recall", None) is None, "recall must be off"

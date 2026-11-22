@@ -140,6 +140,11 @@ def main():
                     "always). Unscored chunks still write a history line (scored false)")
     ap.add_argument("--tie-stuck", type=int, default=-1, help="DAgger tie rule (brain's button kept when within 2 px of the "
                     "coach's best) only while stuck < N decisions; -1: always (the old labels, Scipio and before)")
+    ap.add_argument("--wall-back", default="", help="Romulus 11/21: per DAgger round and level, one extra attempt per value N "
+                    "that replays the level's wall (the last round's furthest failed own attempt) up to N decisions before its end, then "
+                    "the brain plays on; labels only after the replay. Comma list, e.g. 45,90. Empty: off (as before)")
+    ap.add_argument("--own-weight", type=float, default=1.0, help="Romulus 11/21: sampling weight of the brain's own (DAgger) "
+                    "rows relative to the coach's ordered rows (upstream #319: corrections beside watched episodes at 0.25). 1: as before")
     ap.add_argument("--add-every", type=int, default=0, help="curriculum (Agrippa 11/19): chunk k trains the first "
                     "1 + (k-1)//N levels of --levels in order (lessons and DAgger); SEL still scores all. 0: all from chunk 1")
     ap.add_argument("--horizon", type=int, default=0, help="decisions of exact history / efference in prime (0: mem.HORIZON "
@@ -188,11 +193,13 @@ def main():
         pool["done"] += len(tasks)
         return out
 
-    piles, seqs = {}, {L: Seq() for L in levels}
+    piles, seqs, n_coach = {}, {L: Seq() for L in levels}, {}
+    wall_back = [int(v) for v in args.wall_back.split(",") if v.strip()]
+    walls = {}  # level -> dict(start, actions, x, end, round): the last round's furthest failed own attempt (wall starts replay it)
     for L in levels:
         d = (HERE / lv_dirs[L]).resolve()
         z = np.load(d / "data.npz"); piles[L] = dict(X=z["X"], y=z["y"], W=z["W"].astype(np.float64))
-        seqs[L].load(d / f"seq_{L}_coach.npz")
+        seqs[L].load(d / f"seq_{L}_coach.npz"); n_coach[L] = len(seqs[L].rows)  # rows past this are the brain's own
         if args.pred:  # the pile is the coach attempts in order (coachcollect): its next-picture labels come from them
             P = np.concatenate([PR.labels(O) for O, _ in seqs[L].atts])
             assert len(P) == len(piles[L]["y"]) and np.array_equal(np.concatenate([O for O, _ in seqs[L].atts]), piles[L]["X"]), L
@@ -210,13 +217,19 @@ def main():
         assert ck.exists(), ck
         late = sorted(q for q in out.glob("seq_*_d*.npz") if int(q.stem.rsplit("_d", 1)[1]) > k0)
         assert not late, f"DAgger files past the last scored chunk {k0}: {late[:3]}"
+        wf = sorted(q for q in out.glob("walls_d*.json") if int(q.stem.rsplit("_d", 1)[1]) <= k0)
+        if wf:
+            walls.update(json.loads(wf[-1].read_text()))
         init = ck
         import ast  # the recipe must match the run's first leg (its first "start:" line in log.txt)
         first = next(l for l in open(out / "log.txt", encoding="utf-8") if " start: {" in l)
         orig = ast.literal_eval(first.split(" start: ", 1)[1].split("} deep=", 1)[0] + "}")
         for key in ("levels", "p_seq", "K", "chunk", "eta", "crit", "dagger_every", "episodes", "coach", "coach_opts", "senses", "pred",
-                    "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon", "tie_stuck", "add_every"):
-            if key == "add_every":  # absent in older logs = no curriculum (0)
+                    "mask", "levels_file", "dagger_stuck", "last_all", "sel_every", "horizon", "tie_stuck", "add_every", "wall_back", "own_weight"):
+            if key in ("wall_back", "own_weight"):  # absent in older logs = off
+                want = orig.get(key, {"wall_back": "", "own_weight": 1.0}[key])
+                assert getattr(args, key) == want, f"--resume recipe mismatch: {key} {getattr(args, key)!r} vs first leg {want!r}"
+            elif key == "add_every":  # absent in older logs = no curriculum (0)
                 assert args.add_every == orig.get("add_every", 0), f"--resume recipe mismatch: add_every {args.add_every} vs first leg {orig.get('add_every', 0)}"
             elif key == "tie_stuck":  # absent in older logs = the old labels (-1); compared either way (review 11/16)
                 assert args.tie_stuck == orig.get("tie_stuck", -1), f"--resume recipe mismatch: tie_stuck {args.tie_stuck} vs first leg {orig.get('tie_stuck', -1)}"
@@ -295,7 +308,10 @@ def main():
     pile_p = {L: (lambda w: w / w.sum())(piles[L]["W"] * np.where(piles[L]["W"] > 1, args.crit, 1.0)) for L in levels}
 
     def seq_p(L):
-        w = np.array([r[3] for r in seqs[L].rows]); w = w * np.where(w > 1, args.crit, 1.0); return w / w.sum()
+        w = np.array([r[3] for r in seqs[L].rows]); w = w * np.where(w > 1, args.crit, 1.0)
+        if args.own_weight != 1.0:
+            w[n_coach[L]:] *= args.own_weight
+        return w / w.sum()
 
     def batch_items(n, r2):
         lv = active(state["k"])
@@ -348,6 +364,12 @@ def main():
             for i, s in enumerate(rng.choice(POOL, args.episodes, replace=False)):
                 tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(s), keep_obs=True, label=True, seed=k * 100 + i,
                                   senses=args.senses, stuck=args.dagger_stuck or None, last_all=args.last_all, tie_stuck=args.tie_stuck)); tl.append(L)
+            for j, nb in enumerate(wall_back):  # wall starts: no RNG draws, so --wall-back leaves the RNG stream as before
+                w = walls.get(L)
+                pre = w["actions"][:max(0, len(w["actions"]) - nb)] if w else []
+                tasks.append(dict(policy=str(pol), kind="act", level=L, start=int(w["start"]) if w else int(POOL[0]), keep_obs=True,
+                                  label=True, seed=k * 100 + args.episodes + j, senses=args.senses, stuck=args.dagger_stuck or None,
+                                  last_all=args.last_all, tie_stuck=args.tie_stuck, prefix=pre)); tl.append(L)
         res = pmap(mem.episode, tasks)
         msg = []
         for L in active(k):
@@ -357,7 +379,16 @@ def main():
                 seqs[L].add(r["obs"], r["actions"], r["lab_idx"], r["labels"], r["weights"])
                 atts.append(dict(obs=r["obs"], actions=r["actions"], lab_idx=r["lab_idx"], labels=r["labels"], weights=r["weights"]))
             seqcollect.save_attempts(out / f"seq_{L}_d{k:04d}.npz", atts)
-            msg.append(f"{L} +{sum(len(r['labels']) for r in mine)} x{[r['max_x'] for r in mine]}")
+            msg.append(f"{L} +{sum(len(r['labels']) for r in mine)} x{[r['max_x'] for r in mine]}" +
+                       (f" p{[r['prefix'] for r in mine if r['prefix']]}" if wall_back else ""))
+            if wall_back:  # the wall is this round's furthest failed attempt (it follows the brain; kept if all cleared)
+                failed = [(r, task) for r, task, l in zip(res, tasks, tl) if l == L and not r["flag"]]
+                if failed:
+                    r, task = max(failed, key=lambda rt: rt[0]["max_x"])
+                    walls[L] = dict(start=int(task["start"]), actions=[int(a) for a in r["actions"]], x=int(r["max_x"]),
+                                    end=r["end"], round=k)
+        if wall_back:
+            (out / f"walls_d{k:04d}.json").write_text(json.dumps(walls))
         log(f"  dagger ({time.time() - t:.0f}s): " + "; ".join(msg))
 
     if args.senses == "fabius":  # Fabius is registered at the 15 s stuck limit; the plateau scripts pin MARIO_STUCK=40

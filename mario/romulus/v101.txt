@@ -1,0 +1,21 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+cadence 0.101.0
+1-1 0 899 died 135 4b5d641feab7
+1-1 48 1128 died 109 bbe71bcea9bc
+1-1 9 899 died 136 586635182094
+1-1 57 1128 died 111 0a99d0797642
+1-1 18 435 stuck 266 e39a189107c1
+1-1 66 435 stuck 266 eaaa0be11a52
+1-1 27 435 stuck 266 e39a189107c1
+1-1 75 435 stuck 266 eaaa0be11a52
+2-1 0 338 died 33 978ea169486f
+2-1 48 338 died 36 ffb2b3a121e7
+2-1 9 338 died 36 ffb2b3a121e7
+2-1 57 338 died 36 ffb2b3a121e7
+2-1 18 338 died 33 978ea169486f
+2-1 66 338 died 33 978ea169486f
+2-1 27 338 died 36 ffb2b3a121e7
+2-1 75 338 died 36 ffb2b3a121e7

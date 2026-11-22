@@ -9,7 +9,7 @@ cd "$here/../coldstart" || exit 1
 NAMES=${NAMES:?set NAMES, e.g. NAMES=ScipioA}
 WORKERS=${WORKERS:-2}
 for name in $NAMES; do
-  case $name in ScipioA|ScipioB|ScipioFast|Twin|MarcellusA|MarcellusB|TwinB|CamillusA|CamillusB|MarcellusC|TwinC|AgrippaA|AgrippaB) ;; *) echo "unknown run $name"; exit 1 ;; esac
+  case $name in ScipioA|ScipioB|ScipioFast|Twin|MarcellusA|MarcellusB|TwinB|CamillusA|CamillusB|MarcellusC|TwinC|AgrippaA|AgrippaB|RomulusA|RomulusB) ;; *) echo "unknown run $name"; exit 1 ;; esac
   if powershell -NoProfile -c "if (Get-CimInstance Win32_Process -Filter \"name='python.exe'\" | ? { \$_.CommandLine -match 'ctrain.py --name $name ' }) { exit 1 }"; then :; else
     echo "skip $name: already running"; continue
   fi

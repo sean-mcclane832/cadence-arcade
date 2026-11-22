@@ -194,8 +194,12 @@ class MemPlayer:
         return np.asarray(self.ep.place.recall(o[None].astype(np.float64)))[0]
 
 
-def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=None, stuck=None):
-    """One attempt in act mode. Returns dict like cplay._play (max_x, flag, end, actions, xs[, obs])."""
+def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=None, stuck=None, prefix=None):
+    """One attempt in act mode. Returns dict like cplay._play (max_x, flag, end, actions, xs[, obs]).
+    prefix (Romulus wall starts, 11/21): these actions are replayed first instead of the player's own (the emulator is
+    deterministic, so a prefix cut from an earlier attempt reaches its exact state); the player acts from then on.
+    The player still sees every prefix screen (player.act is called and its answer discarded), so a brain with
+    traces arrives with them built on the replayed path. None or empty: the attempt as before."""
     lvl = tuple(int(v) for v in level.split("-")) if isinstance(level, str) else tuple(level)
     senses = getattr(player, "senses", "body")
     body = C.CBody(int(start), senses, "lean", lvl); g = body.g
@@ -210,6 +214,8 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
         if getattr(player, "xkey", False):
             o = np.concatenate([o, xblock(g.env.ram, getattr(player, "xamp", XAMP))])
         a = player.act(o)
+        if prefix is not None and len(acts) < len(prefix):
+            a = int(prefix[len(acts)])
         if keep_obs:
             obs.append(np.round(o[:n_in] * 255).astype(np.uint8))
         acts.append(a); xs.append(int(g.x))
@@ -222,7 +228,7 @@ def play_attempt(player, level, start, seed=0, keep_obs=False, cb=None, max_dec=
         oe = np.concatenate([oe, xblock(g.env.ram, getattr(player, "xamp", XAMP))])
     player.end(oe, end)
     out = dict(start=int(start), max_x=int(g.max_x), flag=bool(g.flag), end=end, decisions=g.decisions,
-               actions=acts, xs=xs)
+               actions=acts, xs=xs, prefix=len(prefix) if prefix is not None else 0)
     if keep_obs:
         out["obs"] = np.array(obs, np.uint8).reshape(-1, n_in)
     g.close()
@@ -259,10 +265,11 @@ def episode(task):
         r = C.episode(C.task(task["policy"], "body", task["level"], task["start"]))
         return r
     pl = _player(task["policy"], "greedy", off=task.get("off", ()), cold=kind != "warm", senses=task.get("senses", "body"))
-    played = play_attempt(pl, task["level"], task["start"], keep_obs=task.get("keep_obs", False), stuck=task.get("stuck"))
+    played = play_attempt(pl, task["level"], task["start"], keep_obs=task.get("keep_obs", False), stuck=task.get("stuck"),
+                          prefix=task.get("prefix"))
     if task.get("label"):
-        acts = played["actions"]; n = len(acts)
-        idx = {i for i in range(n) if i >= n - task.get("last_all", 60) or i % task.get("every", 3) == 0}
+        acts = played["actions"]; n = len(acts); p0 = played["prefix"]  # wall starts: label only the brain's own play
+        idx = {i for i in range(p0, n) if i >= n - task.get("last_all", 60) or i % task.get("every", 3) == 0}
         rng = np.random.default_rng(task.get("seed", 0))
         lab = C._play(dict(C.task("none", "body", task["level"], task["start"], mode="dagger"), script=acts, tiew=True,
                            keep_obs=False, tie_stuck=task.get("tie_stuck", -1)), None, idx, rng)
