@@ -40,6 +40,9 @@ import mem  # noqa: E402
 RETRY_STARTS = (0, 37, 83, 110, 131)  # idle frames for try 1..5 of a level (the emulator is deterministic:
 # an identical restart replays the identical death, so each retry starts a few frames later, like a real restart)
 ORDER = [f"{w}-{s}" for w in range(1, 9) for s in range(1, 5)]
+# 11/25 endless gauntlet (Sean: "see how far he can get if he just keeps trying"): mem.RETRY's 10 starts first, so
+# tries 1-10 match the registered gauntlet, then every other idle count 1..240 in a fixed order (37 steps mod 241, prime)
+MANY_STARTS = tuple(mem.RETRY) + tuple(v for v in ((k * 37) % 241 for k in range(1, 241)) if v not in mem.RETRY)
 
 
 def font(size):
@@ -59,13 +62,20 @@ def main():
     ap.add_argument("--mode", choices=["greedy", "sampled", "retry"], default="greedy")
     ap.add_argument("--first", default="1-1"); ap.add_argument("--last", default="4-4"); ap.add_argument("--temp", type=float, default=0.05)
     ap.add_argument("--blame", default=None)
-    ap.add_argument("--retries", choices=["five", "mem"], default="five", help="idle-frame starts per try: five (0, 37, 83, "
-                    "110, 131) or mem (mem.RETRY, 10 values)")
+    ap.add_argument("--retries", choices=["five", "mem", "many"], default="five", help="idle-frame starts per try: five (0, 37, 83, "
+                    "110, 131), mem (mem.RETRY, 10 values) or many (mem.RETRY, then the rest of 1..240: endless gauntlet)")
+    ap.add_argument("--max-tries", type=int, default=0, help="cap tries per level (0 = no cap)")
+    ap.add_argument("--on-cap", choices=["stop", "skip"], default="stop", help="a capped level ends the run, or is skipped")
+    ap.add_argument("--clip", choices=["all", "clears"], default="all", help="all = every try on video (as before); clears = "
+                    "no video while playing, then replay only the clears and each capped level's last try")
     a = ap.parse_args()
-    retry_starts = RETRY_STARTS if a.retries == "five" else tuple(mem.RETRY)
+    retry_starts = {"five": RETRY_STARTS, "mem": tuple(mem.RETRY), "many": MANY_STARTS}[a.retries]
+    assert a.max_tries <= len(retry_starts) or a.retries != "many", f"--max-tries above {len(retry_starts)} would repeat a start"
     if a.senses == "fabius":
         assert D.STUCK == 225, f"MARIO_STUCK is {D.STUCK}; Fabius-eyed brains are registered at 225"
     order = ORDER[ORDER.index(a.first):ORDER.index(a.last) + 1]
+    if a.retries == "many" or a.lives == 0:  # the endless gauntlet never sees World 8 (the unseen test)
+        assert not any(L.startswith("8-") for L in order), "World 8 is the never-played test"
     import imageio_ffmpeg
     from PIL import Image, ImageDraw
     from game import ACTIONS
@@ -78,12 +88,15 @@ def main():
     label = a.label or ("one brain, remembers across lives" if a.mode == "retry" else f"one brain, {a.mode}")
     blame = None if not a.blame else (lambda v: (int(v[0]), int(v[1]), float(v[2])))(a.blame.split(","))
     player = mem.MemPlayer(pols["default"], "act" if a.mode == "sampled" else a.mode, a.temp, (), blame, senses=a.senses)
-    w = imageio_ffmpeg.write_frames(str(out) + ".mp4", (512, 480 + 40), fps=30, codec="libx264", pix_fmt_out="yuv420p",
-                                    output_params=["-crf", "30", "-preset", "medium", "-movflags", "+faststart"],
-                                    macro_block_size=8)
-    w.send(None)
     f16 = font(18)
     nf = [0]
+    wr = [None]
+
+    def open_writer():
+        wr[0] = imageio_ffmpeg.write_frames(str(out) + ".mp4", (512, 480 + 40), fps=30, codec="libx264", pix_fmt_out="yuv420p",
+                                            output_params=["-crf", "30", "-preset", "medium", "-movflags", "+faststart"],
+                                            macro_block_size=8)
+        wr[0].send(None)
 
     def send(screen, text, colour=(30, 30, 30)):
         nf[0] += 1
@@ -92,17 +105,14 @@ def main():
         img = Image.new("RGB", (512, 520), colour)
         img.paste(Image.fromarray(screen).resize((512, 480), Image.NEAREST), (0, 40))
         d = ImageDraw.Draw(img); d.text((8, 10), text, fill=(255, 255, 255), font=f16)
-        w.send(np.ascontiguousarray(np.asarray(img)))
+        wr[0].send(np.ascontiguousarray(np.asarray(img)))
 
-    lives = a.lives; li = 0; log = []; cleared = []; t0 = time.time(); poster = None
-    while lives > 0 and li < len(order):
-        L = order[li]; lvl = tuple(int(v) for v in L.split("-"))
-        who = a.name
-        tries = sum(1 for e in log if e["level"] == L)
-        st = retry_starts[min(tries, len(retry_starts) - 1)]
+    poster = [None]
+
+    def attempt(L, st, seed, text, rec):  # one try of level L after st idle frames; rec False = no video (clears pass 1)
+        lvl = tuple(int(v) for v in L.split("-"))
         b = C.CBody(st, a.senses, "lean", lvl); g = b.g
-        player.begin(seed=1000 + len(log))
-        text = f"{label}: {who} | {L} try {tries + 1} | lives {lives}/{a.lives} | cleared {len(cleared)}"
+        player.begin(seed=seed)
         while not g.done and g.decisions < D.MAX_DECISIONS and g.stuck < D.STUCK:
             o = b.obs()
             if player.xkey:  # AgrippaX: place key carries x from RAM (cortex weights from it are 0)
@@ -113,33 +123,68 @@ def main():
             fr = []
             if a.senses == "fabius":  # as Body.step: the previous screen for the next observation (fixed 11/14)
                 b.sprev = g.screen.copy()
-            g.step(act, keep_frames=fr); b.held = ACTIONS[act]
+            g.step(act, keep_frames=fr if rec else None); b.held = ACTIONS[act]
             for f in fr:
                 send(f, text)
-            if poster is None and g.decisions == 40:
-                poster = g.screen.copy()
+            if rec and poster[0] is None and g.decisions == 40:
+                poster[0] = g.screen.copy()
         end = "flag" if g.flag else ("died" if g.done else "stuck")
         oe = b.obs()
         if player.xkey:
             oe = np.concatenate([oe, mem.xblock(g.env.ram)])
         player.end(oe, end)
-        tail = f"{L}: FLAG" if g.flag else f"{L}: {'died' if g.done else 'stuck'} at x {g.max_x}"
-        for _ in range(45 if g.flag else 30):
-            try:
-                s_, _, _, _ = g.env.step(0)
-            except Exception:  # noqa: BLE001
-                break
-            send(s_, text + "   " + tail, (20, 90, 20) if g.flag else (120, 20, 20))
+        if rec:
+            tail = f"{L}: FLAG" if g.flag else f"{L}: {'died' if g.done else 'stuck'} at x {g.max_x}"
+            for _ in range(45 if g.flag else 30):
+                try:
+                    s_, _, _, _ = g.env.step(0)
+                except Exception:  # noqa: BLE001
+                    break
+                send(s_, text + "   " + tail, (20, 90, 20) if g.flag else (120, 20, 20))
         g.close()
-        log.append(dict(level=L, brain=who, start=st, end=end, x=int(g.max_x), decisions=g.decisions, lives_before=lives))
-        print(f"{L} {who}: {end} x {g.max_x} (lives {lives})", flush=True)
-        if g.flag:
+        return end, int(g.max_x), g.decisions
+
+    if a.clip == "all":
+        open_writer()
+    unlimited = a.lives == 0
+    lives = a.lives; li = 0; log = []; cleared = []; capped = []; t0 = time.time()
+    while (unlimited or lives > 0) and li < len(order):
+        L = order[li]
+        who = a.name
+        tries = sum(1 for e in log if e["level"] == L)
+        if a.max_tries and tries >= a.max_tries:  # --max-tries (0 = no cap, as before)
+            capped.append(L); print(f"{L}: capped after {tries} tries", flush=True)
+            if a.on_cap == "stop":
+                break
+            li += 1; continue
+        st = retry_starts[min(tries, len(retry_starts) - 1)]
+        seed = 1000 + len(log)
+        text = f"{label}: {who} | {L} try {tries + 1} | lives {'unlimited' if unlimited else f'{lives}/{a.lives}'} | cleared {len(cleared)}"
+        end, mx, dec = attempt(L, st, seed, text, a.clip == "all")
+        log.append(dict(level=L, brain=who, start=st, seed=seed, end=end, x=mx, decisions=dec, lives_before=lives, try_=tries + 1))
+        print(f"{L} {who}: {end} x {mx} (try {tries + 1}, lives {lives})", flush=True)
+        if end == "flag":
             cleared.append(L); li += 1
-        else:
+        elif not unlimited:
             lives -= 1
-    w.close()
-    if poster is not None:
-        Image.fromarray(poster).resize((512, 480), Image.NEAREST).save(str(out) + "_poster.png")
+    replayed = []
+    if a.clip == "clears":  # pass 2: replay only the clears and each capped level's last try (deterministic, checked)
+        open_writer()
+        n_tries = {}
+        for e in log:
+            n_tries[e["level"]] = e["try_"]
+        last_of = {L: max(i for i, e in enumerate(log) if e["level"] == L) for L in capped}
+        keep = [i for i, e in enumerate(log) if e["end"] == "flag" or i in last_of.values()]
+        for i in keep:
+            e = log[i]
+            text = (f"{who}: {e['level']} try {e['try_']} of {n_tries[e['level']]} | cleared {sum(1 for x in log[:i] if x['end'] == 'flag')}"
+                    " | failed tries cut")
+            end, mx, _ = attempt(e["level"], e["start"], e["seed"], text, True)
+            assert (end, mx) == (e["end"], e["x"]), f"replay of {e['level']} try {e['try_']} gave {end} x {mx}, run had {e['end']} x {e['x']}"
+            replayed.append(i)
+    wr[0].close()
+    if poster[0] is not None:
+        Image.fromarray(poster[0]).resize((512, 480), Image.NEAREST).save(str(out) + "_poster.png")
     deaths = {}
     for e in log:
         if e["end"] != "flag":
@@ -147,6 +192,10 @@ def main():
     rep = dict(name=a.name, label=label, pols=pols, mode=a.mode, temp=a.temp if a.mode != "greedy" else None, first=a.first, last=a.last, blame=a.blame, lives=a.lives, retries=a.retries, senses=a.senses, stuck=D.STUCK, cleared=cleared, furthest=log[-1]["level"] if log else None,
                deaths=deaths, lives_left=lives, attempts=log, seconds=round(time.time() - t0),
                when=time.strftime("%Y-%m-%d %H:%M"), clip=out.name + ".mp4", clip_seconds=round(nf[0] / 60, 1))
+    if a.retries == "many" or a.max_tries or a.clip != "all":  # endless gauntlet fields (11/25); old reports unchanged
+        rep.update(max_tries=a.max_tries, on_cap=a.on_cap, clip_mode=a.clip, capped=capped, reached=list(dict.fromkeys(e["level"] for e in log)),
+                   tries={L: sum(1 for e in log if e["level"] == L) for L in dict.fromkeys(e["level"] for e in log)},
+                   clear_try={e["level"]: e["try_"] for e in log if e["end"] == "flag"}, replayed=replayed)
     Path(str(out) + ".json").write_text(json.dumps(rep, indent=1))
     print(json.dumps({k: rep[k] for k in ("name", "cleared", "deaths", "lives_left", "clip_seconds")}), flush=True)
 
