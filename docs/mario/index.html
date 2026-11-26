@@ -73,7 +73,7 @@
     <p class="eyebrow">Super Mario Bros. &middot; solo from the screen</p>
     <h1>One Cadence brain beat all of World 1 in a single 5-life gauntlet</h1>
     <p class="lede">Brain W1b ("the balanced finisher", trained overnight 10/31) cleared 1-1, 1-2, 1-3 and 1-4 (Bowser) back to back with the same weights, losing three lives on 1-3, then ran out on 2-1, a level it never trained on. On 50 held-out starts per level it clears 1-1 7, 1-2 8, 1-3 9 and 1-4 27 times: every level, none consistently yet. Other brains still do better on single levels (1-1 50/50 with W1_F2ck110, 1-4 50/50). Every button in every clip is the brain's.</p>
-    <p class="lede"><b>Latest (11/19):</b> Marcellus, the coach's fixed labels on stalls, helps: at chunk 100 stuck attempts fell by 14.2 and 11.6 per 192 against same-seed controls (the second just past the bar of 10), and the brains went further too. <b>Camillus</b> now trains: Scipio's slow memory on the fixed labels, plus a third-seed check of Marcellus. Read about 11/23. Where the brains stand: no brain has ever cleared 2-1 from a held-out start, so World 3 is not in sight; the chunk-100 gauntlets clear 1-1 at most. <a href="#marcellus">Details</a>, <a href="#public-gauntlet">gauntlets</a>.</p>
+    <p class="lede"><b>Latest (11/25):</b> Romulus, the last brain built from scratch, practices from just before its own failures and learns mostly from its own play. Read at chunk 100: split. RomulusB cleared 112 of 1,920 practice attempts against 38 for the same starting brain without the two changes; RomulusA 58 against 64. Then, with unlimited lives and 30 tries per level, RomulusB cleared 8 of the 28 levels in worlds 1 to 7 at its best checkpoint (5 at chunk 100), including 7-3, in World 7, which no brain here has been coached on so far. 1-2 and 2-1 still beat it every time. Before Romulus, Camillus (memory on the fixed labels) and Agrippa (one level at a time) both read no effect. <a href="#endless">Keeps trying</a>, <a href="#romulus">Romulus</a>, <a href="#public-gauntlet">gauntlets</a>.</p>
   </section>
 
   <figure>
@@ -105,18 +105,91 @@
     </div>
   </div>
 
-  <p class="updated">Last updated 2026-11-16 07:00 EST. Fabius and Cato2 trained on Cadence 0.95.0, the Scipio and Marcellus brains on 0.99.0. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
+  <p class="updated">Last updated 2026-11-25 20:32 EST. Romulus trains on Cadence 0.101.0 (identical play and learning to 0.99.0 here, checked); Fabius and Cato2 trained on 0.95.0, the Scipio, Marcellus, Camillus and Agrippa brains on 0.99.0. Older brains trained on Cadence (cadence-net) 0.91.1 and re-scored on 0.91.3: identical answers, identical scores. The 10/31 overnight brains trained on 0.91.3. Cadence is by Pragma Research; this experiment is independent.</p>
 
   <nav class="toc" aria-label="On this page">
-    <a href="#goal">The goal</a><a href="#scipio">Scipio</a><a href="#marcellus">Marcellus</a><a href="#public-gauntlet">Public gauntlet</a><a href="#fabius">Fabius vs Cato2</a><a href="#plateau">Plateau test</a><a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
+    <a href="#goal">The goal</a><a href="#endless">Keeps trying</a><a href="#romulus">Romulus</a><a href="#scipio">Scipio</a><a href="#marcellus">Marcellus</a><a href="#camillus">Camillus</a><a href="#agrippa">Agrippa</a><a href="#public-gauntlet">Public gauntlet</a><a href="#fabius">Fabius vs Cato2</a><a href="#plateau">Plateau test</a><a href="#coldstart">Cold start</a><a href="#memory">Memory night</a><a href="#best">Best per level</a><a href="#scoreboard">Scoreboard</a><a href="#brains">Meet the brains</a><a href="#gauntlet">Gauntlet</a><a href="#tests">Tests</a><a href="#latest">Latest</a><a href="#clips">Clips</a><a href="#how">How it learned</a><a href="#caveats">Caveats</a>
   </nav>
 
   <h2 id="goal">The goal: World 8, never coached</h2>
   <div class="callout">
     <h3>Clear all four World 8 levels with at most 1 death in total</h3>
     <p>World 8 is the final world. No brain is ever coached on it or trained with a coach's labels there: whatever it learns on World 8 it learns by its own play. The gate is 8-1 to 8-4 cleared with at most one death across all four levels. The plan coaches worlds 1 to 7. (Until 11/6 the exam was World 4, and before that World 2.) Nothing on this page has played World 8 yet. So far Fabius, Cato2 and Scipio are coached on worlds 1 to 6 (24 levels), with World 7 held out as a development check.</p>
-    <p class="small dim">The coach is verified on worlds 1 to 7: 164 of 168 test runs (6 starts per level) reach the flag, 11/8, assembled from six runs at the current settings (not one fresh pass). Worlds 1 to 3 72 of 72; worlds 4 to 7 92 of 96. Only 5-3 and 6-3 are short, 4 of 6 each (long leaps off high lifts). <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a>. Planning lives in GitHub issues: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/1">#1 roadmap</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/2">#2 World 8</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">#4 plateau test</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/11">#11 Fabius vs Cato2</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">#12 Scipio</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/13">#13 Marcellus</a>.</p>
+    <p class="small dim">The coach is verified on worlds 1 to 7: 164 of 168 test runs (6 starts per level) reach the flag, 11/8, assembled from six runs at the current settings (not one fresh pass). Worlds 1 to 3 72 of 72; worlds 4 to 7 92 of 96. Only 5-3 and 6-3 are short, 4 of 6 each (long leaps off high lifts). <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a>. Planning lives in GitHub issues: <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/1">#1 roadmap</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/2">#2 World 8</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/4">#4 plateau test</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/11">#11 Fabius vs Cato2</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/12">#12 Scipio</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/13">#13 Marcellus</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/14">#14 Romulus</a>.</p>
   </div>
+
+  <h2 id="endless">Keeps trying (11/25): RomulusB, unlimited lives, 30 tries per level</h2>
+  <p>Sean's idea: let the best Romulus brain play the levels in order and just keep trying. Worlds 1 to 7 from 1-1, no learning between tries, unlimited lives. A level gets up to 30 tries; after 30 failures the brain moves on to the next level anyway, so every level gets its chance. World 8 is never played (it is the test). Each try starts after a different number of idle frames: the game and the brain are both deterministic, so the same start would replay the same run.</p>
+  <div class="w1b">
+    <figure>
+      <video class="nes" controls playsinline muted preload="metadata" poster="gauntlet/RomulusB_ck0096_endless_poster.png"><source src="gauntlet/RomulusB_ck0096_endless.mp4" type="video/mp4"></video>
+      <figcaption>RomulusB at checkpoint 96: its 8 clears, plus the last failed try on each of the other 20 levels, in order; all other failed tries cut (330 s). The banner shows the level, which try it was, and how many levels it had cleared before.</figcaption>
+    </figure>
+    <div>
+      <p><b>Cleared 8 of 28 levels</b> at checkpoint 96 (its best practice checkpoint, picked before the run) and <b>5 of 28</b> at checkpoint 100 (the registered one). Not "beat the gauntlet": cleared 8 of 28 with unlimited lives and 30 tries per level, most failed tries cut.</p>
+      <ul class="prose">
+        <li><b>7-3, on try 7.</b> No brain here has been coached on World 7 so far (it is held out as a check), so this is a level it never trained on. 7-3 is built on 2-3's layout (bridges and flying fish) with more enemies, and 2-3 is one Romulus trains on and often clears. I gave a World 7 clear 10%.</li>
+        <li><b>The same walls as always.</b> 1-2 and 2-1 beat it on all 30 tries at both checkpoints; on 4-4 it never got past x 40. Played the strict way (stop at the first level it can't clear in 30 tries), both checkpoints would end on 1-2 (my 70% guess).</li>
+        <li><b>Some clears take patience.</b> 1-1 took 20 tries at checkpoint 96 (1 at checkpoint 100), 2-4 took 17 and 6-1 15. Most tries end in a death: 404 of 665 at checkpoint 96, 253 standing still, 8 at the flag.</li>
+        <li><b>My guesses.</b> 6 levels at checkpoint 96 (80% range 3 to 10): 8, inside the range. Checkpoint 96 beating 100 (55%): yes, 8 to 5, though one checkpoint to the next wobbles about this much anyway.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tw"><table><thead><tr><th>level</th><th>checkpoint 96</th><th>checkpoint 100</th></tr></thead><tbody>
+    <tr><td>1-1</td><td class="ok">cleared, try 20</td><td class="ok">cleared, try 1</td></tr>
+    <tr><td>1-2</td><td class="dim">not in 30, best x 1,826</td><td class="dim">not in 30, best x 1,655</td></tr>
+    <tr><td>1-3</td><td class="dim">not in 30, best x 995</td><td class="dim">not in 30, best x 1,716</td></tr>
+    <tr><td>1-4</td><td class="ok">cleared, try 1</td><td class="dim">not in 30, best x 1,446</td></tr>
+    <tr><td>2-1</td><td class="dim">not in 30, best x 2,002</td><td class="dim">not in 30, best x 1,964</td></tr>
+    <tr><td>2-2</td><td class="dim">not in 30, best x 1,906</td><td class="dim">not in 30, best x 1,124</td></tr>
+    <tr><td>2-3</td><td class="ok">cleared, try 2</td><td class="ok">cleared, try 20</td></tr>
+    <tr><td>2-4</td><td class="ok">cleared, try 17</td><td class="dim">not in 30, best x 1,455</td></tr>
+    <tr><td>3-1</td><td class="dim">not in 30, best x 1,579</td><td class="dim">not in 30, best x 1,478</td></tr>
+    <tr><td>3-2</td><td class="dim">not in 30, best x 3,090</td><td class="ok">cleared, try 2</td></tr>
+    <tr><td>3-3</td><td class="dim">not in 30, best x 1,482</td><td class="dim">not in 30, best x 1,707</td></tr>
+    <tr><td>3-4</td><td class="ok">cleared, try 2</td><td class="ok">cleared, try 14</td></tr>
+    <tr><td>4-1</td><td class="ok">cleared, try 1</td><td class="ok">cleared, try 4</td></tr>
+    <tr><td>4-2</td><td class="dim">not in 30, best x 1,234</td><td class="dim">not in 30, best x 1,234</td></tr>
+    <tr><td>4-3</td><td class="dim">not in 30, best x 1,195</td><td class="dim">not in 30, best x 1,193</td></tr>
+    <tr><td>4-4</td><td class="dim">not in 30, best x 40</td><td class="dim">not in 30, best x 40</td></tr>
+    <tr><td>5-1</td><td class="dim">not in 30, best x 692</td><td class="dim">not in 30, best x 692</td></tr>
+    <tr><td>5-2</td><td class="dim">not in 30, best x 1,849</td><td class="dim">not in 30, best x 210</td></tr>
+    <tr><td>5-3</td><td class="dim">not in 30, best x 1,175</td><td class="dim">not in 30, best x 1,173</td></tr>
+    <tr><td>5-4</td><td class="dim">not in 30, best x 1,768</td><td class="dim">not in 30, best x 1,768</td></tr>
+    <tr><td>6-1</td><td class="ok">cleared, try 15</td><td class="dim">not in 30, best x 1,394</td></tr>
+    <tr><td>6-2</td><td class="dim">not in 30, best x 439</td><td class="dim">not in 30, best x 1,503</td></tr>
+    <tr><td>6-3</td><td class="dim">not in 30, best x 989</td><td class="dim">not in 30, best x 2,084</td></tr>
+    <tr><td>6-4</td><td class="dim">not in 30, best x 1,371</td><td class="dim">not in 30, best x 1,383</td></tr>
+    <tr><td>7-1</td><td class="dim">not in 30, best x 883</td><td class="dim">not in 30, best x 434</td></tr>
+    <tr><td>7-2</td><td class="dim">not in 30, best x 1,271</td><td class="dim">not in 30, best x 1,388</td></tr>
+    <tr><td>7-3</td><td class="ok">cleared, try 7</td><td class="dim">not in 30, best x 1,483</td></tr>
+    <tr><td>7-4</td><td class="dim">not in 30, best x 347</td><td class="dim">not in 30, best x 1,659</td></tr>
+  </tbody></table></div>
+  <p class="small dim">About 3.2 hours of CPU for checkpoint 96. "best x" is the furthest point reached in any of the 30 tries. Code: <code>mario/romulus/endless.sh</code> on the <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/romulus/mario/romulus">romulus branch</a>.</p>
+
+  <h2 id="romulus">Romulus (from 11/22): practice at its own walls. Read at chunk 100: helped on one seed, not the other</h2>
+  <p>Romulus is the last Mario brain built from scratch (Sean, 11/21). Every later change grows or grafts onto it. It is Marcellus's brain (no memory, the coach's fixed labels on stalls, Fabius's eyes) with the same starting weights per seed, trained on Cadence 0.101.0, which plays and learns identically to 0.99.0 here (Marcellus's first three chunks reproduce exactly). Two changes:</p>
+  <ul class="prose">
+    <li><b>Wall starts.</b> Each coaching round, on every level, the brain plays once from the level start as before, plus twice from just before its own last failure: the game replays its most recent failed attempt up to 45 or 90 decisions (3 or 6 s) before it stopped making progress, then the brain plays on and the coach labels what it does from there. The emulator is deterministic, so the replay lands on the exact moment.</li>
+    <li><b>Its own play counts more.</b> Lessons draw rows from its own attempts 4 times as often as rows from the coach's runs. By chunk 100 about 85 to 90% of lessons are its own play (Marcellus about 40%), so a result here is about the package, not wall starts alone.</li>
+  </ul>
+  <p class="small dim"><b>Registered before the first chunk (11/22):</b> level clears out of 1,920 practice attempts (24 levels x 8 fixed starts x the 10 scored chunks 82 to 100), each Romulus seed against the Marcellus run with the same starting brain (MarcellusA 64, MarcellusB 38). Bar 30 per seed. Both past +30 is "helps"; one past and the other in between is "split (helps)". My prediction, written down first: helps 35%, split (helps) 30%, no effect 30%; about +35 clears per seed. Plan: <code>Plans/Romulus Design 2026-11-21</code> in the project notes; code on the <a href="https://github.com/sean-mcclane832/cadence-arcade/tree/romulus/mario/romulus">romulus branch</a>; <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/14">issue #14</a>.</p>
+  <h3>The read (11/25): split (helps)</h3>
+  <div class="tw"><table><thead><tr><th>run</th><th class="n">clears of 1,920</th><th class="n">vs same seed</th><th class="n">stuck of 192</th><th class="n">deaths of 192</th><th class="n">24-level mean x</th></tr></thead><tbody>
+    <tr><td>RomulusB</td><td class="n">112</td><td class="n">+74</td><td class="n">50.5</td><td class="n">130.3</td><td class="n">1,057</td></tr>
+    <tr><td>MarcellusB (same seed)</td><td class="n">38</td><td class="n"></td><td class="n">36.8</td><td class="n">151.4</td><td class="n">1,043</td></tr>
+    <tr><td>RomulusA</td><td class="n">58</td><td class="n">-6</td><td class="n">42.6</td><td class="n">143.6</td><td class="n">1,035</td></tr>
+    <tr><td>MarcellusA (same seed)</td><td class="n">64</td><td class="n"></td><td class="n">32.8</td><td class="n">152.8</td><td class="n">1,044</td></tr>
+  </tbody></table></div>
+  <ul class="prose">
+    <li><b>One seed helped, a lot; the other did not.</b> RomulusB cleared nearly three times as many practice attempts as MarcellusB, mostly on worlds 1 and 4 (World 1 34 vs 9, World 4 43 vs 10, World 3 16 vs 4, World 2 14 vs 7). RomulusA is 6 short of MarcellusA, well inside the bar. So the registered verdict is split (helps), not helps.</li>
+    <li><b>How much to trust +74.</b> The same brain's checkpoint-to-checkpoint wobble alone moves a 10-checkpoint total by about 12, and the two Marcellus seeds differ by 26, so +74 is far past noise for one seed. But a recipe that helps should help both, and A shows nothing. Two seeds cannot say whether B is the rule or the exception.</li>
+    <li><b>Fewer deaths, more stalls, on both seeds.</b> Deaths fell by 9.2 and 21.1 per 192 (my 55% guess that both would fall hit). Stuck attempts rose by 9.8 and 13.7, past the stall bar of about 5: more lives now end standing still instead of dying. Distance is flat (-8 and +14, inside the bar of about 50 to 150).</li>
+    <li><b>Still no 2-1.</b> No practice start of 2-1 was cleared by any of the four brains (my 25% guess that one would missed). No brain has ever cleared 2-1 from a held-out start.</li>
+    <li><b>My guesses.</b> The case I gave 30%, split (helps), is the one that happened; my point guess of about +35 per seed missed both ways (-6 and +74). The deaths, 2-1 and wall-start guesses are scored in their own bullets.</li>
+    <li><b>Wall starts (fixed set, chunk 100).</b> The same 263 starts for every brain: on each level, the coach's own clean run replayed to 150 px before the two places brains most often failed at chunk 100 (25 of 288 planned starts dropped because the coach's replay drifted before reaching them). Walls passed, and flags: RomulusA 164 and 23, RomulusB 159 and 24, MarcellusA 157 and 12, MarcellusB 167 and 25. Against the same seed that is +7 and -8 walls passed, about the size of chance on 263 tries, so the practice did not show up as passing these walls more often (my 75% guess that both seeds would pass more missed). These are the walls the older brains failed at, not each Romulus brain's own.</li>
+  </ul>
+  <p class="small dim">Means over the 10 scored chunks 82 to 100, 8 practice starts on each of 24 levels. Checked after the read and added beside it (not part of it), as registered on 11/22: clears over all 19 checkpoints 82 to 100 (the odd ones scored afterwards, about 10 hours of CPU), added here when done. Romulus keeps training to chunk 300; the public gauntlet below keeps running every 10 chunks.</p>
 
   <h2 id="scipio">Scipio (11/14 to 11/15): does a slow memory fix the stalls?</h2>
   <div class="callout">
@@ -148,13 +221,88 @@
   <h2 id="marcellus">Marcellus (11/16 to 11/19): clean labels on stalls. Read at chunk 100: labels helped on both seeds (B thin)</h2>
   <p>The next brain is Twin with one change: in a stall (10 decisions without progress) and before the first step forward, the coach's own label stands; the tie rule only applies while the brain is moving. Two seeds, each paired with a control that differs by that rule alone (MarcellusA starts from Twin's exact brain; MarcellusB and the new TwinB share seed 1). Registered before launch: stuck per 192 over the last 10 scored chunks at chunk 50; "labels help stalls" if both pairs beat their control by more than 10. My prediction, written down before launch: 4-2 stalls go to about 0, 2-2 drops but not to 0, and the main number passes but only just. Memory comes back after this, on the clean labels, with two seeds. <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/13">Issue #13</a>.</p>
 
-  <h2 id="camillus">Camillus (since 11/19): memory again, now on clean labels</h2>
-  <p>Scipio's slow memory did not change the stalls, but it was trained on labels that told the brain its own stalls were right. Camillus asks again with the fixed labels: CamillusA and CamillusB are Scipio's exact starting brains (seeds 0 and 1) trained with Marcellus's labels, each compared with the Marcellus run on the same seed. A third pair, MarcellusC and TwinC (seed 2), checks whether "labels help" holds on a new seed. The target is 4-4, where every brain so far stands still on all 8 starts and the brain's screen alone does not tell when the coach would go. Registered read at chunk 100, about 11/23; my guess, written down before launch, is that memory still shows no effect larger than the bar. Plan: <code>Plans/Camillus Design 2026-11-19</code> in the project notes.</p>
+  <h2 id="camillus">Camillus (11/19 to 11/22): memory again, now on clean labels. Read at chunk 100: no effect beyond the bar</h2>
+  <p>Scipio's slow memory did not change the stalls, but it was trained on labels that told the brain its own stalls were right. Camillus asks again with the fixed labels: CamillusA and CamillusB are Scipio's exact starting brains (seeds 0 and 1) trained with Marcellus's labels, each compared with the Marcellus run on the same seed. A third pair (MarcellusC and TwinC, seed 2) was planned to check "labels help" on a new seed, then dropped before it started so Agrippa could have the cores, so Marcellus's "help" stays two seeds. The target is 4-4, where every brain so far stands still on all 8 starts and the brain's screen alone does not tell when the coach would go. Registered: stuck per 192 over the scored chunks 82 to 100, bar 10 per seed; my guess, written down before launch, was that memory still shows no effect larger than the bar. Plan: <code>Plans/Camillus Design 2026-11-19</code> in the project notes.</p>
+  <ul class="prose">
+    <li><b>The read (11/22): no effect larger than the bar.</b> Stuck attempts per 192 fell by 4.4 (CamillusA vs MarcellusA) and 9.6 (CamillusB vs MarcellusB). Both point toward fewer stalls, and B is 0.4 short of the bar. My guess hit.</li>
+    <li><b>4-4 did not move:</b> 8 of 8 starts stuck in both Camillus brains, as in every brain before. 4-2 stalls fell (0.9 vs 3.1 and 1.1 vs 4.6 of 8).</li>
+    <li><b>Reported beside it:</b> deaths rose by 5.4 and 8.9 per 192; clears of 1,920 were 54 vs 64 and 45 vs 38; distance moved +17 and -18, nothing.</li>
+  </ul>
+
+  <h2 id="agrippa">Agrippa (11/19 to 11/21): one level at a time. Read at chunk 100: no effect on World 2</h2>
+  <p>No brain had ever cleared 2-1 from a held-out start, so the question was whether learning the levels in order would open World 2. Agrippa is Marcellus with one change: the 24 training levels are added one at a time, a new one every 5 chunks (1-1 alone in chunks 1 to 5, 1-2 from chunk 6, 2-1 from 21, 2-2 from 26 and so on; World 6 never joins before chunk 100). AgrippaA and AgrippaB start from MarcellusA's and MarcellusB's exact chunk-0 brains. Registered before launch: World 2 clears out of 320 practice attempts (4 levels x 8 starts x the 10 scored chunks 82 to 100), each seed against its Marcellus pair, bar 8.</p>
+  <ul class="prose">
+    <li><b>The read (11/21): no effect.</b> AgrippaA 5 vs 5 (+0), AgrippaB 3 vs 7 (-4). 2-1 and 2-2 stayed at 0 in all four brains. My guess (no effect, 35%) hit; my point guess of +6 missed.</li>
+    <li><b>The cost.</b> World 6, which never trained, fell from a mean x of 1,078 and 990 to 410 and 461 (clears 16 and 8 to 0 and 0); worlds 3 and 5 also fell. World 1 rose (+7 and +27 clears).</li>
+    <li><b>Stalls into deaths.</b> Stuck attempts per 192 fell (27.5 and 24.8 vs 32.8 and 36.8), but deaths rose by about as much (+7 and +10).</li>
+    <li><b>One first.</b> AgrippaB left the 4-4 start, where every earlier brain stands still on all 8 starts, on about 2.5 of 8 starts (furthest x 1,490), with no clears there.</li>
+  </ul>
 
   <h2 id="public-gauntlet">Public gauntlet (every 10 chunks)</h2>
-  <p class="small dim">Sean's idea: every 10 chunks each Scipio, Marcellus or Camillus brain gets 10 lives in total to play the game from 1-1 in order. Greedy, no learning, a flag moves on to the next level, a death or 15 s without progress costs a life. It stops after 7-4, so World 8 stays unseen. This is for this page only and never decides anything; the registered numbers are in the Scipio section above. Different rules from the older five-life gauntlets further down.</p>
+  <p class="small dim">Sean's idea: every 10 chunks each Scipio, Marcellus, Camillus, Agrippa or Romulus brain gets 10 lives in total to play the game from 1-1 in order. Greedy, no learning, a flag moves on to the next level, a death or 15 s without progress costs a life. It stops after 7-4, so World 8 stays unseen. This is for this page only and never decides anything; the registered numbers are in the sections above. Different rules from the older five-life gauntlets further down.</p>
   <div class="tw stack"><table><thead><tr><th>chunk</th><th>brain</th><th>furthest</th><th>levels cleared</th><th class="n">lives used</th><th>clip</th></tr></thead><tbody>
   <!--PUBLIC-GAUNTLET-ROWS-->
+  <tr><td>100 (11/25 13:58)</td><td>RomulusB</td><td>1-2, x 854</td><td>1-1</td><td class="n">10 of 10</td><td><a href="gauntlet/RomulusB_ck0100.mp4">clip</a></td></tr>
+  <tr><td>110 (11/25 11:15)</td><td>RomulusA</td><td>1-1, x 2,756</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>100 (11/25 05:53)</td><td>RomulusA</td><td>1-1, x 722</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>90 (11/25 04:55)</td><td>RomulusB</td><td>1-2, x 878</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>80 (11/24 22:54)</td><td>RomulusB</td><td>1-2, x 859</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>90 (11/24 21:53)</td><td>RomulusA</td><td>1-2, x 1,206</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>80 (11/24 15:55)</td><td>RomulusA</td><td>1-2, x 905</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>70 (11/24 12:45)</td><td>RomulusB</td><td>1-2, x 965</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>60 (11/24 07:04)</td><td>RomulusB</td><td>1-1, x 2,029</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>70 (11/24 06:54)</td><td>RomulusA</td><td>1-2, x 928</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>60 (11/24 01:26)</td><td>RomulusA</td><td>1-1, x 722</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/23 22:23)</td><td>RomulusB</td><td>1-1, x 1,527</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/23 17:03)</td><td>RomulusA</td><td>1-2, x 979</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/23 16:26)</td><td>RomulusB</td><td>1-1, x 596</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/23 11:06)</td><td>RomulusA</td><td>1-2, x 982</td><td>1-1</td><td class="n">10 of 10</td><td><a href="gauntlet/RomulusA_ck0040.mp4">clip</a></td></tr>
+  <tr><td>30 (11/23 08:34)</td><td>RomulusB</td><td>1-1, x 2,850</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/23 03:53)</td><td>RomulusA</td><td>1-1, x 1,526</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>20 (11/23 02:45)</td><td>RomulusB</td><td>1-1, x 594</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>20 (11/22 22:43)</td><td>RomulusA</td><td>1-1, x 722</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/22 18:32)</td><td>RomulusB</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/22 13:12)</td><td>RomulusA</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>100 (11/22 06:23)</td><td>CamillusB</td><td>1-2, x 943</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>100 (11/22 04:23)</td><td>CamillusA</td><td>1-1, x 2,226</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>90 (11/21 23:33)</td><td>CamillusB</td><td>1-1, x 1,675</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>90 (11/21 18:54)</td><td>CamillusA</td><td>1-1, x 2,994</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>80 (11/21 14:04)</td><td>CamillusB</td><td>1-1, x 1,676</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>80 (11/21 12:34)</td><td>CamillusA</td><td>1-2, x 1,195</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>100 (11/21 08:25)</td><td>AgrippaB</td><td>1-1, x 2,930</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>100 (11/21 08:03)</td><td>AgrippaA</td><td>1-1, x 1,800</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>70 (11/21 07:35)</td><td>CamillusB</td><td>1-1, x 1,674</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>70 (11/21 05:24)</td><td>CamillusA</td><td>1-1, x 2,466</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>90 (11/21 03:15)</td><td>AgrippaB</td><td>1-2, x 1,647</td><td>1-1</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>90 (11/21 02:45)</td><td>AgrippaA</td><td>1-1, x 3,154</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>60 (11/21 01:44)</td><td>CamillusB</td><td>1-1, x 1,676</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>60 (11/20 21:04)</td><td>CamillusA</td><td>1-1, x 1,128</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>80 (11/20 19:14)</td><td>AgrippaB</td><td>1-2, x 978</td><td>1-1</td><td class="n">10 of 10</td><td><a href="gauntlet/AgrippaB_ck0080.mp4">clip</a></td></tr>
+  <tr><td>80 (11/20 18:43)</td><td>AgrippaA</td><td>1-1, x 1,127</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>70 (11/20 14:55)</td><td>AgrippaB</td><td>1-1, x 434</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>70 (11/20 14:24)</td><td>AgrippaA</td><td>1-1, x 2,355</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/20 14:14)</td><td>CamillusB</td><td>1-1, x 1,666</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/20 13:54)</td><td>CamillusA</td><td>1-1, x 722</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>60 (11/20 12:05)</td><td>AgrippaB</td><td>1-1, x 722</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>60 (11/20 11:06)</td><td>AgrippaA</td><td>1-1, x 1,961</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/20 09:43)</td><td>CamillusB</td><td>1-1, x 722</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/20 08:33)</td><td>CamillusA</td><td>1-1, x 1,521</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/20 08:24)</td><td>AgrippaB</td><td>1-1, x 2,476</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>50 (11/20 07:44)</td><td>AgrippaA</td><td>1-1, x 1,960</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/20 06:34)</td><td>AgrippaB</td><td>1-1, x 1,957</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>40 (11/20 05:06)</td><td>AgrippaA</td><td>1-1, x 596</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/20 03:53)</td><td>AgrippaB</td><td>1-1, x 1,522</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/20 03:13)</td><td>CamillusB</td><td>1-1, x 1,673</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/20 02:23)</td><td>AgrippaA</td><td>1-1, x 2,471</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>20 (11/20 02:05)</td><td>AgrippaB</td><td>1-1, x 2,758</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>30 (11/20 01:43)</td><td>CamillusA</td><td>1-1, x 1,243</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>20 (11/20 00:34)</td><td>AgrippaA</td><td>1-1, x 1,128</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/20 00:26)</td><td>AgrippaB</td><td>1-1, x 2,472</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/19 22:45)</td><td>AgrippaA</td><td>1-1, x 1,789</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>20 (11/19 22:36)</td><td>CamillusB</td><td>1-1, x 1,275</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>20 (11/19 21:03)</td><td>CamillusA</td><td>1-1, x 898</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/19 17:02)</td><td>CamillusB</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
+  <tr><td>10 (11/19 15:12)</td><td>CamillusA</td><td>1-1, x 315</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
   <tr><td>100 (11/19 08:44)</td><td>TwinB</td><td>1-2, x 851</td><td>1-1</td><td class="n">10 of 10</td><td><a href="gauntlet/TwinB_ck0100.mp4">clip</a></td></tr>
   <tr><td>100 (11/19 06:34)</td><td>Twin</td><td>1-1, x 596</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
   <tr><td>100 (11/19 00:14)</td><td>MarcellusB</td><td>1-1, x 722</td><td>none</td><td class="n">10 of 10</td><td>-</td></tr>
@@ -472,9 +620,13 @@
   <ul class="prose">
     <li><b>Cato2 (A, B)</b>: the control for Fabius: the new eyes, no recall memory, no prediction. Cadence 0.95.0, read at chunk 100, now stopped. <a href="#fabius">Fabius vs Cato2</a>.</li>
     <li><b>Fabius (A, B)</b>: Cato2 plus a recall memory and 104 prediction slots. Did not beat Cato2 (11/14). <a href="#fabius">Fabius vs Cato2</a>.</li>
-    <li><b>Scipio (A, B)</b>: Cato2's eyes plus a slow screen memory and a slow button memory (about 2 s), aimed at stalls. Cadence 0.99.0, training since 11/14. <a href="#scipio">Scipio</a>.</li>
-    <li><b>ScipioFast</b>: the same memory parts, fading in well under a second. Training since 11/14.</li>
-    <li><b>Twin</b>: the Scipio brain with no memory, the control. Training since 11/14.</li>
+    <li><b>Scipio (A, B)</b>: Cato2's eyes plus a slow screen memory and a slow button memory (about 2 s), aimed at stalls. Cadence 0.99.0, trained 11/14 to 11/15 (to chunk 50). Read: no change in stalls. <a href="#scipio">Scipio</a>.</li>
+    <li><b>ScipioFast</b>: the same memory parts, fading in well under a second. Trained 11/14 to 11/15.</li>
+    <li><b>Twin (A, B)</b>: the Scipio brain with no memory, the control for Scipio and then for Marcellus, trained to chunk 100.</li>
+    <li><b>Marcellus (A, B)</b>: Twin plus the coach's fixed labels on stalls. 11/16 to 11/19. Read: fewer stalls on both seeds (B thin). <a href="#marcellus">Marcellus</a>.</li>
+    <li><b>Camillus (A, B)</b>: Scipio's slow memory on Marcellus's fixed labels. 11/19 to 11/22. Read: no effect beyond the bar. <a href="#camillus">Camillus</a>.</li>
+    <li><b>Agrippa (A, B)</b>: Marcellus with the levels added one at a time. 11/19 to 11/21. Read: no effect on World 2. <a href="#agrippa">Agrippa</a>.</li>
+    <li><b>Romulus (A, B)</b>: Marcellus plus practice from just before its own failures, its own play weighted 4x. Cadence 0.101.0, the last brain from scratch, from 11/22. Read: split (helps); training to chunk 300. <a href="#romulus">Romulus</a>, <a href="#endless">keeps trying</a>.</li>
   </ul>
 
   <h2 id="gauntlet">Gauntlet</h2>
@@ -531,7 +683,12 @@
 
   <h2 id="latest">Latest</h2>
   <ul class="log" id="latest-new">
-    <li><time>11/19 11:36</time><span><b>Camillus started.</b> Scipio's slow memory on Marcellus's fixed labels (two seeds), plus a seed-2 Marcellus/Twin pair. Read at chunk 100, about 11/23. Also: the chunk-100 gauntlets are in the table; TwinB cleared 1-1 and died on 1-2, the others spent all 10 lives on 1-1. <a href="#camillus">Camillus</a>.</span></li>
+    <li><time>11/25 20:27</time><span><b>Keeps trying: RomulusB cleared 8 of 28.</b> Worlds 1 to 7 in order, unlimited lives, 30 tries per level, then on to the next. At checkpoint 96 it cleared 1-1, 1-4, 2-3, 2-4, 3-4, 4-1, 6-1 and 7-3 (World 7 has never been coached); at checkpoint 100, 5 levels. 1-2 and 2-1: 0 of 30 at both. <a href="#endless">Keeps trying</a>.</span></li>
+    <li><time>11/25 18:02</time><span><b>Romulus chunk-100 read: split (helps).</b> Level clears out of 1,920 practice attempts (scored chunks 82 to 100) against the Marcellus run with the same starting brain: RomulusB 112 vs 38 (+74), RomulusA 58 vs 64 (-6). The registered bar was 30 per seed, so one seed helped and the other shows nothing. Both seeds die less (-9 and -21 per 192) and stall more (+10 and +14), and go no further on average. On a fixed set of 263 starts just before the older brains' usual walls, Romulus passes about as many as Marcellus (+7, -8), so the practice did not show up there. Still 0 clears on 2-1. Training continues to chunk 300. <a href="#romulus">Romulus</a>, <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/14">issue #14</a>.</span></li>
+    <li><time>11/22 08:41</time><span><b>Romulus started:</b> the last brain built from scratch (Sean's call). Marcellus's brain and starting weights, on Cadence 0.101.0, plus two changes: each coaching round it also plays twice from just before its own latest failure, and its own play counts 4 times as much in lessons. Registered before the first chunk: clears out of 1,920 at chunk 100, bar 30 per seed.</span></li>
+    <li><time>11/22 06:18</time><span><b>Camillus chunk-100 read: no effect larger than the bar.</b> Memory on the fixed labels cut stuck attempts per 192 by 4.4 and 9.6 against the same-seed Marcellus runs; the bar was 10. 4-4 stayed stuck on all 8 starts. Deaths rose by 5 and 9 per 192. <a href="#camillus">Camillus</a>.</span></li>
+    <li><time>11/21 08:13</time><span><b>Agrippa chunk-100 read: no effect on World 2.</b> Adding the levels one at a time (from 11/19) left World 2 where it was: clears out of 320 of 5 vs 5 and 3 vs 7 against the same-seed Marcellus runs, bar 8; 2-1 and 2-2 still 0. World 6, never trained, fell from a mean x of about 1,000 to about 430. AgrippaB was the first brain to leave the 4-4 start. <a href="#agrippa">Agrippa</a>.</span></li>
+    <li><time>11/19 11:36</time><span><b>Camillus started.</b> Scipio's slow memory on Marcellus's fixed labels (two seeds), plus a seed-2 Marcellus/Twin pair. Read at chunk 100, about 11/23 <i>(the seed-2 pair was dropped that evening; the read came 11/22)</i>. Also: the chunk-100 gauntlets are in the table; TwinB cleared 1-1 and died on 1-2, the others spent all 10 lives on 1-1. <a href="#camillus">Camillus</a>.</span></li>
     <li><time>11/19 09:35</time><span><b>Marcellus chunk-100 read: labels help stalls (thin on B).</b> Over the last 10 scored chunks, the tie gate cut stuck attempts per 192 by 14.2 (MarcellusA vs Twin) and 11.6 (MarcellusB vs TwinB), both past the registered bar of 10, so the registered verdict is "help". B clears the bar by only 1.6, and one chunk earlier it was 0.3 past it; one seed per arm. The two controls now agree (47.0 and 48.4), which makes this cleaner than the chunk-50 split. The biggest drop is now at the 2-2 start (5.3 to 1.3 and 4.5 to 2.2 of 8), which had not moved at chunk 50; 4-2 fell less (5.7 to 3.1 and 4.6); 4-4 is still 8 of 8 everywhere. Fewer stalls, and further too: mean distance on the scored starts is up 75 and 50, while deaths rose about 11 per 192. My committed prediction called a split again and missed. Correction: the chunk-50 entry below said both Marcellus brains went about 60 less far. That column was the scoring run time in seconds, not distance; the real distance shows them further then too (+13 and +62). <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/13">#13</a>.</span></li>
     <li><time>11/17 18:35</time><span><b>Marcellus chunk-50 read: split.</b> The tie gate (the coach's label stands while the brain is stalled) cut stuck attempts per 192 by 21.9 in one pair (MarcellusB vs TwinB) and by 2.4 in the other (MarcellusA vs Twin); the registered bar was 10 in both. Stuck at the 4-2 start fell from 6 of 8 to 2 and 3; 2-2 barely moved and 4-4 stayed 8 of 8. The two controls differ by 11.3 themselves, so about half of B's gap is TwinB sitting high. Fewer stalls has not meant further yet: both Marcellus brains average about 60 less on the 8 test starts, and MarcellusB dies more. <i>(Wrong: that column was scoring run time in seconds, not distance. See the 11/19 entry.)</i> My prediction missed (0 to 1 at 4-2, under 5 at 2-2). Registered rule on a split: all four runs continue to chunk 100. <a href="https://github.com/sean-mcclane832/cadence-arcade/issues/13">#13</a>.</span></li>
     <li><time>11/14 19:46</time><span><b>Chunk-20 gauntlets.</b> Still no brain past 1-1 with 10 lives, but further than at chunk 10: furthest x 2,386 (ScipioFast), 1,789 (ScipioB), 1,433 (ScipioA), 899 (Twin). Public only, not a test.</span></li>
@@ -548,15 +705,15 @@
     <li><time>11/05 03:00</time><span><b>A smarter coach: the teacher can now clear every training level.</b> The brains learn by copying a coach that plans a few moves ahead in a copy of the game. The old coach cleared 54 of 72 test runs on the 12 training levels and never cleared 2-1 or 3-4 (0 of 6 each), so no brain could learn those from it. The new one clears 72 of 72, including 2-1 and 3-4 at 6 of 6. Fixes: a jump only counts if Mario can survive after it lands (the old coach picked jumps that died one step past its lookahead), a random search at stalls finds 2-1's springboard bounce, and it sticks with its chosen plan instead of flip-flopping. It costs about 1.5 to 1.8x more time per label. No brain has trained with it yet; World 4 stays coach-free. <a href="https://github.com/sean-mcclane832/cadence-arcade/blob/master/mario/coach/COACH.md">COACH.md</a></span></li>
     <li><time>11/03 09:30</time><span><b>Cold-start night: memory from birth didn't make a difference we can measure.</b> Six fresh brains (Cato, Cicero, Livy, two seeds each) trained about 20 hours on all 12 levels of worlds 1 to 3. At equal lessons the 12-level learning curves (area / end value): Cato 792 / 1,035, Cicero 763 / 1,002, Livy 729 / 1,043, with seed gaps up to 56 / 153. Both memory brains: not distinguishable by the rule written before the night. World 4 at first sight (never coached): 0 of 150 on 4-1 to 4-3 for every brain; 4-4 stops every brain at x 138, the first lava pit (checked: a real death, not a bug). Gauntlets: one 1-1 clear in 48 runs (sampled).</span></li>
     <li><time>11/02 07:30</time><span><b>Memory night results: memory didn't help, by every test written in advance.</b> Four brains trained side by side for about 15 hours from W1_F2ck110: a no-memory control (Cato), its twin (AgrippaX, same recipe, used to measure the noise), Cicero (thought + button memory) and Livy (all four memories). Top-3 means on held-out World 1: Cato 74, AgrippaX 70, Cicero 82, Livy 55 of 200, all inside the noise. Cicero with its memory switched off gets better (88 to 106). Livy's place memory loses its retry test (life 10 on 1-2: x 904 vs 1,320 for the reloaded control). No World 2 clears. New 1-3 high, Cato_ck20 46/50, labelled best of many. Details in "Memory night" above.</span></li>
-    <li><time>11/02 01:03</time><span>Demo: Cicero, a memory brain, beats all of World 1 in one five-life run (1-2 and 1-3 on the second try). One run of one checkpoint, and its held-out scores go up with the memory off, so it's a capable brain, not proof that memory helps.</span></li>
-    <li><time>11/01 06:35</time><span>Night over, all training stopped. One brain clears every World 1 level (best total: W1_F2ck110, 50 / 11 / 6 / 25 of 50), and one (W1b) beat World 1 in a single five-life gauntlet. Still not consistent on 1-2 and 1-3, and World 2 at first sight is unchanged (no clears). The RAM-map brain had 5 more hours and still never cleared 1-2.</span></li>
-    <li><time>11/01 05:11</time><span>Another all-four brain from the same run: W1_F2ck110 clears 1-1 on all 50 held-out starts, plus 1-2 11, 1-3 6, 1-4 25. Eight checkpoints of that run now clear every World 1 level on held-out starts.</span></li>
-    <li><time>11/01 02:30</time><span><b>Milestone:</b> one brain (W1b) beats all of World 1 in one five-life gauntlet run: 1-1, 1-2, 1-4 first try, 1-3 on the fourth. Three more checkpoints of the same run also clear all four levels on held-out starts.</span></li>
   </ul>
   <details>
-    <summary>Older entries <span class="dim">(10/29 to 11/01 01:49)</span></summary>
+    <summary>Older entries <span class="dim">(10/29 to 11/02 01:03)</span></summary>
     <div class="in">
     <ul class="log" id="latest-old">
+      <li><time>11/02 01:03</time><span>Demo: Cicero, a memory brain, beats all of World 1 in one five-life run (1-2 and 1-3 on the second try). One run of one checkpoint, and its held-out scores go up with the memory off, so it's a capable brain, not proof that memory helps.</span></li>
+      <li><time>11/01 06:35</time><span>Night over, all training stopped. One brain clears every World 1 level (best total: W1_F2ck110, 50 / 11 / 6 / 25 of 50), and one (W1b) beat World 1 in a single five-life gauntlet. Still not consistent on 1-2 and 1-3, and World 2 at first sight is unchanged (no clears). The RAM-map brain had 5 more hours and still never cleared 1-2.</span></li>
+      <li><time>11/01 05:11</time><span>Another all-four brain from the same run: W1_F2ck110 clears 1-1 on all 50 held-out starts, plus 1-2 11, 1-3 6, 1-4 25. Eight checkpoints of that run now clear every World 1 level on held-out starts.</span></li>
+      <li><time>11/01 02:30</time><span><b>Milestone:</b> one brain (W1b) beats all of World 1 in one five-life gauntlet run: 1-1, 1-2, 1-4 first try, 1-3 on the fourth. Three more checkpoints of the same run also clear all four levels on held-out starts.</span></li>
       <li><time>11/01 01:49</time><span><b>Milestone:</b> one brain (W1_F2ck20) clears all four World 1 levels with the same weights on held-out starts: 1-1 16/50, 1-2 10/50, 1-3 1/50, 1-4 34/50. Clips above. Not consistent on 1-3 or 1-2 yet.</span></li>
       <li><time>11/01 01:15</time><span>Death clinic for 1-2 (practice from just before each death): no gain over plain coaching, and neither beat the 29/50 starting brain in 3 hours. Now trying to grow one brain that clears all four World 1 levels.</span></li>
       <li><time>11/01 01:00</time><span>New brain F30: 1-1 42/50, 1-2 9/50 and 1-4 34/50 with the same weights, the first brain to clear both 1-2 and 1-4. 1-3 is still missing; training continues.</span></li>
